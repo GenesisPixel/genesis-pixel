@@ -4,24 +4,34 @@
 @import url('https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap');
 
 
-h1, h2, h3, h4, h5{
-    font-family: "DynaPuff", system-ui;
+h1,
+h2,
+h3,
+h4,
+h5 {
+  font-family: "DynaPuff", system-ui;
 }
 
-h1{
+h1 {
   font-size: 6rem;
 }
 
-a, p{
+a,
+p {
   font-family: "Google Sans Flex", sans-serif;
   font-weight: 300;
   font-size: 16px;
 }
 
+
+
 :root {
   --color-bg: hsla(158, 23%, 18%, 1);
   --color-text: hsla(160, 52%, 71%, 1);
-  --color-gradient: linear-gradient(to bottom, hsla(158, 23%, 18%, 0) 0%, hsla(158, 23%, 18%, .013) 9.7%, hsla(158, 23%, 18%, .049) 18.1%, hsla(158, 23%, 18%, .104) 25.5%, hsla(158, 23%, 18%, .175) 31.9%, hsla(158, 23%, 18%, .259) 37.7%, hsla(158, 23%, 18%, .352) 43%, hsla(158, 23%, 18%, .45) 47.9%, hsla(158, 23%, 18%, .55) 52.8%, hsla(158, 23%, 18%, .648) 57.7%, hsla(158, 23%, 18%, .741) 63%, hsla(158, 23%, 18%, .825) 68.7%, hsla(158, 23%, 18%, .896) 75%, hsla(158, 23%, 18%, .951) 82.2%, hsla(158, 23%, 18%, .987) 90.5%, hsl(158, 23%, 18%) 100%);
+
+  --color-gradient: linear-gradient(to bottom, hsla(36, 31%, 90%, 0) 0%, hsla(36, 31%, 90%, .013) 9.7%, hsla(36, 31%, 90%, .049) 18.1%, hsla(36, 31%, 90%, .104) 25.5%, hsla(36, 31%, 90%, .175) 31.9%, hsla(36, 31%, 90%, .259) 37.7%, hsla(36, 31%, 90%, .352) 43%, hsla(36, 31%, 90%, .45) 47.9%, hsla(36, 31%, 90%, .55) 52.8%, hsla(36, 31%, 90%, .648) 57.7%, hsla(36, 31%, 90%, .741) 63%, hsla(36, 31%, 90%, .825) 68.7%, hsla(36, 31%, 90%, .896) 75%, hsla(36, 31%, 90%, .951) 82.2%, hsla(36, 31%, 90%, .987) 90.5%, hsl(36, 31%, 90%) 100%);
+
+  --background-hero: linear-gradient(135deg, #a0f36d, #d3dbab, #590a8198, #8a880fca, #5A4894, #ff94c3, #7cffee);
 
   --font-gt: 'GT', sans-serif;
   --font-acorn: 'Acorn', sans-serif;
@@ -125,16 +135,37 @@ a, p{
   0% {
     background-position: 0% 0%;
   }
+
   50% {
     background-position: 0% 100%;
   }
+
   100% {
     background-position: 0% 0%;
   }
 }
 
 .gradient-animated {
-  background: var(--color-gradient);
-  background-size: 100% 200%;
-  animation: gradient-move 8s ease-in-out infinite;
+  background: var(--background-hero);
+  background-size: 500%;
+  z-index: -2;
+  animation: animate-gradient 35s infinite linear;
+}
+
+@keyframes animate-gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.gradient-hero {
+  background: linear-gradient(to top, hsla(158, 23%, 18%, 1), hsla(158, 23%, 18%, 1), rgba(35, 56, 49, 0.956), rgba(35, 56, 49, 0.877), rgba(35, 56, 49, 0.897));
 }
