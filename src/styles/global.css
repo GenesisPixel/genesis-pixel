@@ -1,4 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=DynaPuff:wght@400..700&display=swap');
+
+h1, h2, h3, h4, h5{
+    font-family: "DynaPuff", system-ui;
+}
+
+h1{
+  font-size: ;
+}
+
 :root {
+  --color-bg: hsla(158, 23%, 18%, 1);
+  --color-text: hsla(160, 52%, 71%, 1);
+  --color-gradient: linear-gradient(to bottom, hsla(158, 23%, 18%, 0) 0%, hsla(158, 23%, 18%, .013) 9.7%, hsla(158, 23%, 18%, .049) 18.1%, hsla(158, 23%, 18%, .104) 25.5%, hsla(158, 23%, 18%, .175) 31.9%, hsla(158, 23%, 18%, .259) 37.7%, hsla(158, 23%, 18%, .352) 43%, hsla(158, 23%, 18%, .45) 47.9%, hsla(158, 23%, 18%, .55) 52.8%, hsla(158, 23%, 18%, .648) 57.7%, hsla(158, 23%, 18%, .741) 63%, hsla(158, 23%, 18%, .825) 68.7%, hsla(158, 23%, 18%, .896) 75%, hsla(158, 23%, 18%, .951) 82.2%, hsla(158, 23%, 18%, .987) 90.5%, hsl(158, 23%, 18%) 100%);
+
+  --font-gt: 'GT', sans-serif;
+  --font-acorn: 'Acorn', sans-serif;
+
   --radius-base: .75rem;
 
   --app-color-white: #ffffff;
@@ -57,4 +74,39 @@
   --color-doodler-purple: #6e56cf;
   --color-doodler-purple-dark: #5746af;
   --color-doodler-lavender: #EBECFF;
+  --color-doodler-base-yellow: #FFC555;
+  --color-doodler-base-pink: #F23459;
+  --color-doodler-base-black: #444444;
+
+  --doodler-radius-menu: 13px;
+  --doodler-radius-md: 6px;
+  --doodler-radius-lg: 20px;
+
+  --dm-dark-500: #1C1C1E;
+  --dm-dark-400: #2C2C2E;
+  --dm-dark-300: #3A3A3C;
+  --dm-dark-200: #48484A;
+  --dm-dark-100: #636366;
+  --dm-black: #161616;
+  --dm-blur: rgba(28, 28, 30, .7);
+  --dm-light-300: #8E8E93;
+  --dm-light-200: #AEAEB2;
+  --dm-light-100: #C7C7CC;
+
+  --dm-blue: #57B0FB;
+  --dm-blue-dark: #22282E;
+  --dm-yellow: #FFC555;
+  --dm-yellow-dark: #29241A;
+  --dm-green: #56C288;
+  --dm-green-dark: #172920;
+  --dm-red: #FC5D7D;
+  --dm-red-dark: #332024;
+  --dm-purple: #9FA6FF;
+  --dm-purple-dark: #24242E;
+  --dm-indigo: #527CEB;
+  --dm-indigo-dark: #202739;
+
+  --curve: cubic-bezier(0, .49, 0, 1.49);
+  --curve-timing: .35s;
+  --shadow-menu: 0px 10px 60px rgba(0, 0, 0, .1);
 }

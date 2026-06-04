@@ -1,12 +1,12 @@
 ---
+import '../styles/fonts.css';
+import '../styles/global.css';
+
 interface Props {
   title: string;
 }
 
 const { title } = Astro.props;
-const COLOR_BG = import.meta.env.COLOR_BG || 'hsla(158, 23%, 18%, 1)';
-const COLOR_TEXT = import.meta.env.COLOR_TEXT || 'hsla(160, 52%, 71%, 1)';
-const COLOR_GRADIENT = import.meta.env.COLOR_GRADIENT || 'linear-gradient(to bottom, hsla(158, 23%, 18%, 0) 0%, hsl(158, 23%, 18%) 100%)';
 ---
 
 <!doctype html>
@@ -18,10 +18,7 @@ const COLOR_GRADIENT = import.meta.env.COLOR_GRADIENT || 'linear-gradient(to bot
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
   </head>
-  <body
-    class="min-h-screen"
-    style={`--color-bg: ${COLOR_BG}; --color-text: ${COLOR_TEXT}; --color-gradient: ${COLOR_GRADIENT}; background-color: var(--color-bg); color: var(--color-text);`}
-  >
+  <body class="min-h-screen" style="background-color: var(--color-bg); color: var(--color-text);">
     <slot />
   </body>
 </html>
