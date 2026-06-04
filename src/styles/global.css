@@ -1,0 +1,60 @@
+:root {
+  --radius-base: .75rem;
+
+  --app-color-white: #ffffff;
+  --app-color-blue100: #F3FBFF;
+  --app-color-blue200: #D6EDFF;
+  --app-color-blue300: #A0D4FF;
+  --app-color-blue400: #57B0FB;
+  --app-color-blue500: #1292EE;
+  --app-color-blue600: #0077CC;
+  --app-color-blue700: #005CA4;
+  --app-color-blue800: #034077;
+
+  --app-color-grey200: #F9FAFA;
+  --app-color-grey300: #F1F3F5;
+  --app-color-grey400: #E5E9EC;
+  --app-color-grey500: #D5DCE1;
+  --app-color-grey600: #C5CED6;
+  --app-color-grey700: #B7C2CC;
+  --app-color-grey800: #A5B2BD;
+
+  --app-color-charcoal200: #93A1B0;
+  --app-color-charcoal300: #748494;
+  --app-color-charcoal400: #556575;
+  --app-color-charcoal500: #405261;
+  --app-color-charcoal600: #314351;
+  --app-color-charcoal700: #253642;
+  --app-color-charcoal800: #1D2B36;
+
+  --app-color-yellow100: #FFF9EF;
+  --app-color-yellow200: #FFF2D7;
+  --app-color-yellow300: #FFE7B8;
+  --app-color-yellow400: #FDD88E;
+  --app-color-yellow500: #FFC555;
+  --app-color-yellow600: #FAB347;
+  --app-color-yellow900: #B24319;
+
+  --app-color-green200: #E3FBEE;
+  --app-color-green500: #56C288;
+  --app-color-green600: #39AC6E;
+  --app-color-green700: #268C55;
+  --app-color-green750: #248451;
+  --app-color-green800: #106236;
+
+  --app-color-indigo200: #DFE7FF;
+  --app-color-purple100: #F9F9FF;
+  --app-color-purple200: hsla(237, 100%, 96%, 1);
+  --app-color-lavender200: #EBECFF;
+
+  --color-doodler-white: #FFF;
+  --color-doodler-grey: #FCFCFC;
+  --color-doodler-border: rgba(0, 0, 0, .1);
+  --color-doodler-active: #007AFF;
+  --color-doodler-base-grey: #636366;
+  --color-doodler-base-green: #56C288;
+  --color-doodler-base-indigo: #527CEB;
+  --color-doodler-purple: #6e56cf;
+  --color-doodler-purple-dark: #5746af;
+  --color-doodler-lavender: #EBECFF;
+}
