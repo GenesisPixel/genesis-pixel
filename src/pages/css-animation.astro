@@ -1,32 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import Navbar from '../components/Navbar.astro';
-import Footer from '../components/Footer.astro';
-import Container from '../components/Container.astro';
-
-const chapters = [
-  {
-    number: '01',
-    title: 'Keyframes',
-    description: 'Aprende a crear animaciones CSS desde ceros usando @keyframes.',
-    lessons: 10,
-    href: '/css-animation/keyframes',
-  },
-  {
-    number: '02',
-    title: 'Transforms',
-    description: 'Domina las transformaciones 2D y 3D para animar elementos.',
-    lessons: 10,
-    href: '/css-animation/transforms',
-  },
-  {
-    number: '03',
-    title: 'Transitions',
-    description: 'Controla los cambios suaves entre estados de tus elementos.',
-    lessons: 9,
-    href: '/css-animation/transitions',
-  },
-];
+import CourseLayout from '../layouts/CourseLayout.astro';
 
 const stats = [
   { label: 'Capítulos', value: '3' },
@@ -62,142 +35,135 @@ const faq = [
 ];
 ---
 
-<Layout title="CSS Animation - GenesisPixel">
-  <Navbar />
+<CourseLayout
+  title="CSS Animation - GenesisPixel"
+  currentLesson="/css-animation"
+  nextLesson={{ title: '¿Qué son los Keyframes?', href: '/css-animation/keyframes/que-son' }}
+>
+  <div class="mb-8">
+    <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-[var(--dm-light-200)]">
+      <span class="h-2 w-2 rounded-full bg-[var(--dm-green)] animate-pulse"></span>
+      Curso Actualizado 2024
+    </div>
+    
+    <h1 class="font-afronaut text-4xl font-light leading-tight tracking-tight text-[var(--color-text)] sm:text-5xl">
+      CSS Animations
+    </h1>
+    
+    <p class="mt-4 text-lg text-[var(--dm-light-200)]">
+      Domina el arte de crear animaciones web profesionales. Desde keyframes básicos hasta transformaciones 3D complejas.
+    </p>
+    
+    <p class="mt-4 text-[var(--dm-light-300)]">
+      Aprende a dar vida a tus interfaces con animaciones fluidas, performantes y compatibles con todos los navegadores modernos. Este curso te llevará desde los conceptos fundamentales hasta técnicas avanzadas utilizadas en las mejores aplicaciones web del mundo.
+    </p>
 
-  <main class="pb-24">
-    <!-- Hero Section -->
-    <section class="relative overflow-hidden py-24">
-      <Container>
-        <div class="max-w-3xl">
-          <div class="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-[var(--dm-light-200)]">
-            <span class="h-2 w-2 rounded-full bg-[var(--dm-green)] animate-pulse"></span>
-            Curso Actualizado 2024
+    <div class="mt-8 flex flex-col gap-4 sm:flex-row">
+      <a
+        href="/css-animation/keyframes/que-son"
+        class="inline-flex items-center justify-center gap-2 rounded-[var(--radius-base)] bg-[var(--color-text)] px-6 py-3 text-sm font-semibold text-[var(--dm-dark-500)] transition-all hover:opacity-90"
+      >
+        Comenzar Curso
+        <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+        </svg>
+      </a>
+      <a
+        href="#recursos"
+        class="inline-flex items-center justify-center gap-2 rounded-[var(--radius-base)] border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-[var(--color-text)] transition-all hover:bg-white/10"
+      >
+        Explorar Recursos
+      </a>
+    </div>
+  </div>
+
+  <div class="mb-8 grid grid-cols-2 gap-4 sm:grid-cols-4">
+    {stats.map((stat) => (
+      <div class="rounded-xl border border-white/5 bg-white/[0.02] p-4">
+        <div class="text-2xl font-light text-[var(--color-text)]">{stat.value}</div>
+        <div class="mt-1 text-sm text-[var(--dm-light-300)]">{stat.label}</div>
+      </div>
+    ))}
+  </div>
+
+  <div class="mb-8 rounded-xl border border-white/5 bg-white/[0.02] p-6">
+    <h2 class="mb-4 font-afronaut text-xl font-light text-[var(--color-text)]">¿Qué aprenderás?</h2>
+    <ul class="grid gap-3 sm:grid-cols-2 text-sm text-[var(--dm-light-200)]">
+      <li class="flex items-start gap-2">
+        <svg class="mt-0.5 h-4 w-4 text-[var(--dm-green)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        Crear animaciones fluidas con @keyframes
+      </li>
+      <li class="flex items-start gap-2">
+        <svg class="mt-0.5 h-4 w-4 text-[var(--dm-green)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        Transformar elementos en 2D y 3D
+      </li>
+      <li class="flex items-start gap-2">
+        <svg class="mt-0.5 h-4 w-4 text-[var(--dm-green)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        Controlar transiciones suaves
+      </li>
+      <li class="flex items-start gap-2">
+        <svg class="mt-0.5 h-4 w-4 text-[var(--dm-green)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        Optimizar rendimiento de animaciones
+      </li>
+      <li class="flex items-start gap-2">
+        <svg class="mt-0.5 h-4 w-4 text-[var(--dm-green)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        Timing functions y easing
+      </li>
+      <li class="flex items-start gap-2">
+        <svg class="mt-0.5 h-4 w-4 text-[var(--dm-green)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        Mejores prácticas para producción
+      </li>
+    </ul>
+  </div>
+
+  <div id="faq" class="mb-8">
+    <h2 class="mb-4 font-afronaut text-xl font-light text-[var(--color-text)]">Preguntas Frecuentes</h2>
+    <div class="space-y-3">
+      {faq.map((item) => (
+        <details class="group rounded-xl border border-white/5 bg-white/[0.02]">
+          <summary class="flex cursor-pointer items-center justify-between p-4 text-[var(--color-text)] hover:bg-white/[0.02] rounded-xl">
+            <span class="font-medium text-sm">{item.question}</span>
+            <svg class="h-4 w-4 text-[var(--dm-light-300)] transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </summary>
+          <div class="px-4 pb-4 text-sm text-[var(--dm-light-300)]">
+            {item.answer}
           </div>
-          
-          <h1 class="font-afronaut text-5xl font-light leading-tight tracking-tight text-[var(--color-text)] sm:text-7xl">
-            CSS Animations
-          </h1>
-          
-          <p class="mt-6 text-xl text-[var(--dm-light-200)]">
-            Domina el arte de crear animaciones web profesionales. Desde keyframes básicos hasta transformaciones 3D complejas.
-          </p>
-          
-          <p class="mt-4 text-[var(--dm-light-300)]">
-            Aprende a dar vida a tus interfaces con animaciones fluidas, performantes y compatibles con todos los navegadores modernos. Este curso te llevará desde los conceptos fundamentales hasta técnicas avanzadas utilizadas en las mejores aplicaciones web del mundo.
-          </p>
+        </details>
+      ))}
+    </div>
+  </div>
 
-          <div class="mt-8 flex flex-col gap-4 sm:flex-row">
-            <a
-              href="/css-animation/keyframes"
-              class="inline-flex items-center justify-center gap-2 rounded-[var(--radius-base)] bg-[var(--color-text)] px-6 py-3 text-sm font-semibold text-[var(--dm-dark-500)] transition-all hover:opacity-90"
-            >
-              Comenzar Curso
-              <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-              </svg>
-            </a>
-            <a
-              href="#capitulos"
-              class="inline-flex items-center justify-center gap-2 rounded-[var(--radius-base)] border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-[var(--color-text)] transition-all hover:bg-white/10"
-            >
-              Explorar Capítulos
-            </a>
+  <div id="recursos">
+    <h2 class="mb-4 font-afronaut text-xl font-light text-[var(--color-text)]">Recursos Recomendados</h2>
+    <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+      {resources.map((resource) => (
+        <a
+          href={resource.url}
+          target="_blank"
+          rel="noopener noreferrer"
+          class="group flex items-start gap-3 rounded-xl border border-white/5 bg-white/[0.02] p-4 transition-all hover:border-white/10 hover:bg-white/[0.04]"
+        >
+          <span class="text-xl">{resource.icon}</span>
+          <div>
+            <h3 class="text-sm font-medium text-[var(--color-text)] group-hover:text-white">{resource.name}</h3>
+            <p class="mt-1 text-xs text-[var(--dm-light-300)]">{resource.description}</p>
           </div>
-        </div>
-
-        <div class="mt-16 grid grid-cols-2 gap-4 sm:grid-cols-4">
-          {stats.map((stat) => (
-            <div class="rounded-xl border border-white/5 bg-white/[0.02] p-4">
-              <div class="text-2xl font-light text-[var(--color-text)]">{stat.value}</div>
-              <div class="mt-1 text-sm text-[var(--dm-light-300)]">{stat.label}</div>
-            </div>
-          ))}
-        </div>
-      </Container>
-    </section>
-
-    <!-- Chapters Section -->
-    <section id="capitulos" class="py-16">
-      <Container>
-        <h2 class="font-afronaut text-3xl font-light text-[var(--color-text)]">Capítulos</h2>
-        <p class="mt-2 text-[var(--dm-light-300)]">Tres pilares fundamentales de las animaciones CSS.</p>
-
-        <div class="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
-          {chapters.map((chapter) => (
-            <a
-              href={chapter.href}
-              class="group block rounded-2xl border border-white/5 bg-white/[0.02] p-6 transition-all duration-300 hover:border-white/10 hover:bg-white/[0.05]"
-            >
-              <div class="flex items-center gap-3">
-                <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-[var(--color-text)]/10 text-sm font-semibold text-[var(--color-text)]">
-                  {chapter.number}
-                </span>
-                <div>
-                  <h3 class="font-afronaut text-xl font-light text-[var(--color-text)]">{chapter.title}</h3>
-                  <span class="text-xs text-[var(--dm-light-300)]">{chapter.lessons} lecciones</span>
-                </div>
-              </div>
-              <p class="mt-4 text-sm text-[var(--dm-light-300)]">{chapter.description}</p>
-              <div class="mt-4 flex items-center gap-2 text-sm text-[var(--color-text)] opacity-0 transition-opacity group-hover:opacity-100">
-                Comenzar
-                <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </a>
-          ))}
-        </div>
-      </Container>
-    </section>
-
-    <!-- FAQ Section -->
-    <section class="py-16 border-t border-white/5">
-      <Container>
-        <h2 class="font-afronaut text-3xl font-light text-[var(--color-text)]">Preguntas Frecuentes</h2>
-        <p class="mt-2 text-[var(--dm-light-300)]">Resolvemos tus dudas sobre el curso.</p>
-
-        <div class="mt-8 space-y-4">
-          {faq.map((item) => (
-            <details class="group rounded-xl border border-white/5 bg-white/[0.02]">
-              <summary class="flex cursor-pointer items-center justify-between p-5 text-[var(--color-text)] hover:bg-white/[0.02] rounded-xl">
-                <span class="font-medium">{item.question}</span>
-                <svg class="h-5 w-5 text-[var(--dm-light-300)] transition-transform group-open:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                </svg>
-              </summary>
-              <div class="px-5 pb-5 text-sm text-[var(--dm-light-300)]">
-                {item.answer}
-              </div>
-            </details>
-          ))}
-        </div>
-      </Container>
-    </section>
-
-    <!-- Resources Section -->
-    <section class="py-16 border-t border-white/5">
-      <Container>
-        <h2 class="font-afronaut text-3xl font-light text-[var(--color-text)]">Recursos Recomendados</h2>
-        <p class="mt-2 text-[var(--dm-light-300)]">Enlaces útiles para profundizar en CSS Animations.</p>
-
-        <div class="mt-8 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {resources.map((resource) => (
-            <a
-              href={resource.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              class="group block rounded-xl border border-white/5 bg-white/[0.02] p-5 transition-all hover:border-white/10 hover:bg-white/[0.04]"
-            >
-              <div class="text-2xl">{resource.icon}</div>
-              <h3 class="mt-3 font-medium text-[var(--color-text)] group-hover:text-white">{resource.name}</h3>
-              <p class="mt-1 text-xs text-[var(--dm-light-300)]">{resource.description}</p>
-            </a>
-          ))}
-        </div>
-      </Container>
-    </section>
-  </main>
-
-  <Footer />
-</Layout>
+        </a>
+      ))}
+    </div>
+  </div>
+</CourseLayout>
