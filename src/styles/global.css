@@ -62,13 +62,17 @@ h6 {
 }
 
 .prose p {
-  color: white;
+  color: rgba(255, 255, 255, 0.85);
   line-height: 1.7;
 }
 
 .prose strong {
   color: white;
   font-weight: 600;
+}
+
+.text-soft-white {
+  color: rgba(255, 255, 255, 0.7);
 }
 
 @media (max-width: 1024px) {

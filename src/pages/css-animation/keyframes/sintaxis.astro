@@ -84,30 +84,26 @@ const selectorExample = `.element {
 
   <h2 class="mt-8 mb-4 font-afronaut text-2xl font-light text-[var(--color-text)]">Ejemplos de Sintaxis</h2>
   
-  <div class="mb-6">
-    <div class="flex items-center justify-between">
-      <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">Sintaxis Básica</h3>
-      <button class="copy-btn mb-4 flex items-center gap-1.5 rounded-md bg-white/10 px-3 py-1 text-xs font-light text-white hover:bg-white/20 transition-colors" data-code={syntaxExample}>
-        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-        </svg>
-        Copiar
-      </button>
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <div class="flex-1">
+      <div class="mb-4 flex items-center gap-2">
+        <button class="code-tab active rounded-md px-3 py-1.5 text-xs font-light text-soft-white transition-colors" data-tab="syntax">Sintaxis Básica</button>
+        <button class="code-tab rounded-md px-3 py-1.5 text-xs font-light text-soft-white transition-colors" data-tab="props">Propiedades</button>
+        <div class="flex-1"></div>
+        <button class="copy-btn flex items-center gap-1.5 rounded-md bg-white/10 px-3 py-1 text-xs font-light text-soft-white hover:bg-white/20 transition-colors">
+          <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+          </svg>
+          Copiar
+        </button>
+      </div>
+      <div class="code-content" data-tab="syntax">
+        <pre class="overflow-x-auto rounded-lg bg-[var(--dm-dark-500)] p-4 text-sm text-[var(--dm-light-200)]"><code>{syntaxExample}</code></pre>
+      </div>
+      <div class="code-content hidden" data-tab="props">
+        <pre class="overflow-x-auto rounded-lg bg-[var(--dm-dark-500)] p-4 text-sm text-[var(--dm-light-200)]"><code>{selectorExample}</code></pre>
+      </div>
     </div>
-    <pre class="overflow-x-auto rounded-lg bg-[var(--dm-dark-500)] p-4 text-sm text-[var(--dm-light-200)]"><code>{syntaxExample}</code></pre>
-  </div>
-
-  <div class="mb-6">
-    <div class="flex items-center justify-between">
-      <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">Propiedades de Animación</h3>
-      <button class="copy-btn mb-4 flex items-center gap-1.5 rounded-md bg-white/10 px-3 py-1 text-xs text-white hover:bg-white/20 transition-colors" data-code={selectorExample}>
-        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
-        </svg>
-        Copiar
-      </button>
-    </div>
-    <pre class="overflow-x-auto rounded-lg bg-[var(--dm-dark-500)] p-4 text-sm text-[var(--dm-light-200)]"><code>{selectorExample}</code></pre>
   </div>
 
   <div class="my-8 flex flex-col gap-6">
@@ -124,7 +120,7 @@ const selectorExample = `.element {
       <h3 class="mb-4 font-medium text-[var(--color-text)]">
         Errores Comunes
       </h3>
-      <ul class="space-y-2 text-sm text-white">
+      <ul class="space-y-2 text-sm text-soft-white">
         <li class="flex items-start gap-2">
           <span class="mt-1 text-yellow-500">•</span>
           <span><strong>Olvidar el guion en animation-name:</strong> La propiedad se escribe con guion, no en camelCase.</span>
@@ -144,10 +140,10 @@ const selectorExample = `.element {
       <h3 class="mb-4 font-medium text-[var(--color-text)]">
         Practica lo Aprendido
       </h3>
-      <p class="mb-4 text-sm text-white">
+      <p class="mb-4 text-sm text-soft-white">
         Crea una animación que cambie el color de fondo de un elemento a través de 4 colores diferentes. Usa porcentajes para definir cada cambio.
       </p>
-      <ol class="list-inside list-decimal space-y-2 text-sm text-white">
+      <ol class="list-inside list-decimal space-y-2 text-sm text-soft-white">
         <li>Define un @keyframes con nombre "colorCycle"</li>
         <li>Usa 0%, 25%, 50%, 75% y 100% para 4 colores</li>
         <li>Aplica la animación a un elemento div</li>
@@ -158,19 +154,46 @@ const selectorExample = `.element {
 </CourseLayout>
 
 <script>
-  document.querySelectorAll('.copy-btn').forEach((btn) => {
-    btn.addEventListener('click', async () => {
-      const code = btn.getAttribute('data-code');
-      if (code) {
-        await navigator.clipboard.writeText(code);
-        const originalText = btn.textContent;
-        btn.textContent = 'Copiado!';
-        btn.classList.add('bg-[var(--dm-green)]');
-        setTimeout(() => {
-          btn.textContent = originalText;
-          btn.classList.remove('bg-[var(--dm-green)]');
-        }, 2000);
-      }
+  document.addEventListener('astro:page-load', () => {
+    document.querySelectorAll('.copy-btn').forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        let codeToCopy = btn.getAttribute('data-code');
+        
+        if (!codeToCopy) {
+          const container = btn.closest('.flex-1');
+          const activeTab = container?.querySelector('.code-content:not(.hidden) code');
+          if (activeTab) {
+            codeToCopy = activeTab.textContent || '';
+          }
+        }
+
+        if (codeToCopy) {
+          await navigator.clipboard.writeText(codeToCopy);
+          const originalText = btn.innerHTML;
+          btn.innerHTML = '<svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg> Copiado!';
+          btn.classList.add('bg-[var(--dm-green)]');
+          setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.classList.remove('bg-[var(--dm-green)]');
+          }, 2000);
+        }
+      });
+    });
+
+    document.querySelectorAll('.code-tab').forEach((tab) => {
+      tab.addEventListener('click', () => {
+        const container = tab.closest('.flex-1');
+        container?.querySelectorAll('.code-tab').forEach(t => t.classList.remove('active'));
+        container?.querySelectorAll('.code-content').forEach(c => c.classList.add('hidden'));
+        tab.classList.add('active');
+        container?.querySelector(`.code-content[data-tab="${tab.getAttribute('data-tab')}"]`)?.classList.remove('hidden');
+      });
     });
   });
 </script>
+
+<style>
+  .code-tab.active {
+    background: rgba(255, 255, 255, 0.1);
+  }
+</style>
