@@ -53,11 +53,22 @@ h6 {
 .prose h3 {
   margin-top: 2.5rem;
   margin-bottom: 1rem;
+  font-family: var(--font-afronaut);
   font-size: 1.75rem;
   font-weight: 400;
   color: var(--color-text);
   line-height: 1.2;
   letter-spacing: -0.02em;
+}
+
+.prose p {
+  color: white;
+  line-height: 1.7;
+}
+
+.prose strong {
+  color: white;
+  font-weight: 600;
 }
 
 @media (max-width: 1024px) {

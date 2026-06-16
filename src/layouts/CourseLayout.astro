@@ -84,6 +84,8 @@ const chapters = [
     height: calc(100vh - 120px);
     overflow-y: auto;
     padding-right: 16px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
   }
 
   .sidebar::-webkit-scrollbar {
@@ -308,3 +310,55 @@ const chapters = [
 
   <Footer />
 </Layout>
+
+<script>
+  import gsap from 'gsap';
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const h1 = document.querySelector('.main-content h1');
+    
+    if (h1) {
+      const text = h1.textContent || '';
+      const computedStyle = window.getComputedStyle(h1);
+      const fontFamily = computedStyle.fontFamily;
+      const fontWeight = computedStyle.fontWeight;
+      const fontSize = computedStyle.fontSize;
+      const lineHeight = computedStyle.lineHeight;
+      const letterSpacing = computedStyle.letterSpacing;
+      
+      h1.innerHTML = '';
+      h1.style.fontFamily = fontFamily;
+      h1.style.fontWeight = fontWeight;
+      h1.style.fontSize = fontSize;
+      h1.style.lineHeight = lineHeight;
+      h1.style.letterSpacing = letterSpacing;
+      
+      [...text].forEach((char) => {
+        const span = document.createElement('span');
+        span.className = 'h1-char';
+        span.style.display = 'inline-block';
+        span.style.opacity = '0';
+        span.style.transform = 'translateY(20px) rotateX(90deg)';
+        span.style.filter = 'blur(4px)';
+        span.style.fontFamily = fontFamily;
+        span.textContent = char === ' ' ? '\u00A0' : char;
+        h1.appendChild(span);
+      });
+      
+      const chars = h1.querySelectorAll('.h1-char');
+      gsap.to(chars, {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        filter: 'blur(0px)',
+        duration: 0.5,
+        stagger: {
+          each: 0.02,
+          from: 'start'
+        },
+        ease: 'power3.out',
+        delay: 0.3
+      });
+    }
+  });
+</script>
