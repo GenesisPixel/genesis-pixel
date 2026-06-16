@@ -4,9 +4,10 @@ interface Props {
   description: string;
   primaryCTA?: { label: string; href: string };
   secondaryCTA?: { label: string; href: string };
+  tertiaryCTA?: { label: string; href: string };
 }
 
-const { title, description, primaryCTA, secondaryCTA } = Astro.props;
+const { title, description, primaryCTA, secondaryCTA, tertiaryCTA } = Astro.props;
 ---
 
 <style>
@@ -64,6 +65,18 @@ const { title, description, primaryCTA, secondaryCTA } = Astro.props;
           class="inline-flex items-center justify-center rounded-[var(--radius-base)] border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-[var(--color-text)] transition-all hover:bg-white/10"
         >
           {secondaryCTA.label}
+        </a>
+      )}
+
+      {tertiaryCTA && (
+        <a
+          href={tertiaryCTA.href}
+          class="inline-flex items-center justify-center rounded-[var(--radius-base)] border border-white/10 bg-white/5 px-6 py-3 text-sm font-semibold text-[var(--color-text)] transition-all hover:bg-white/10"
+        >
+          {tertiaryCTA.label}
+          <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
+          </svg>
         </a>
       )}
     </div>
