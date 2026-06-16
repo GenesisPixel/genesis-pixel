@@ -110,28 +110,25 @@ const cssCode = `.slider-item {
     </p>
   </article>
 
-  <div class="my-8 rounded-xl bg-[var(--color-text)] p-6">
-    <h3 class="mb-4 font-medium text-[var(--dm-dark-500)]">
-      Consejo Profesional
-    </h3>
-    <p class="text-sm text-[var(--dm-dark-500)]">
-      Usa <code>translate()</code> en lugar de <code>top/left/right/bottom</code> para animaciones. Las transformaciones son aceleradas por hardware y ofrecen mejor rendimiento que las propiedades de posicionamiento.
-    </p>
-  </div>
-
   <h2 class="mt-8 mb-4 font-afronaut text-2xl font-light text-[var(--color-text)]">Ejemplos Prácticos</h2>
   
-  <div class="mb-6 rounded-xl border border-white/5 bg-white/[0.02] p-6">
-    <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">Sintaxis de Translate</h3>
+  <div class="mb-6">
+    <div class="flex items-center justify-between">
+      <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">Sintaxis de Translate</h3>
+      <button class="copy-btn mb-4 rounded-md bg-white/10 px-3 py-1 text-xs text-white hover:bg-white/20 transition-colors" data-code={translateExample}>Copiar</button>
+    </div>
     <pre class="overflow-x-auto rounded-lg bg-[var(--dm-dark-500)] p-4 text-sm text-[var(--dm-light-200)]"><code>{translateExample}</code></pre>
   </div>
 
-  <div class="mb-6 rounded-xl border border-white/5 bg-white/[0.02] p-6">
-    <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">Animación con Translate</h3>
+  <div class="mb-6">
+    <div class="flex items-center justify-between">
+      <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">Animación con Translate</h3>
+      <button class="copy-btn mb-4 rounded-md bg-white/10 px-3 py-1 text-xs text-white hover:bg-white/20 transition-colors" data-code={animationExample}>Copiar</button>
+    </div>
     <pre class="overflow-x-auto rounded-lg bg-[var(--dm-dark-500)] p-4 text-sm text-[var(--dm-light-200)]"><code>{animationExample}</code></pre>
   </div>
 
-  <div class="mb-6 rounded-xl border border-white/5 bg-white/[0.02] p-6">
+  <div class="mb-6">
     <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">Vista Previa</h3>
     <div class="flex flex-col gap-4 rounded-lg bg-[var(--dm-dark-500)] p-8">
       <div class="animate-slideIn rounded-lg bg-[var(--color-text)] px-6 py-3 text-[var(--dm-dark-500)] text-sm font-medium">
@@ -146,51 +143,66 @@ const cssCode = `.slider-item {
     </div>
   </div>
 
-  <div class="mb-6 rounded-xl border border-white/5 bg-white/[0.02] p-6">
-    <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">HTML</h3>
+  <div class="mb-6">
+    <div class="flex items-center justify-between">
+      <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">HTML</h3>
+      <button class="copy-btn mb-4 rounded-md bg-white/10 px-3 py-1 text-xs text-white hover:bg-white/20 transition-colors" data-code={htmlCode}>Copiar</button>
+    </div>
     <pre class="overflow-x-auto rounded-lg bg-[var(--dm-dark-500)] p-4 text-sm text-[var(--dm-light-200)]"><code>{htmlCode}</code></pre>
   </div>
 
-  <div class="mb-6 rounded-xl border border-white/5 bg-white/[0.02] p-6">
-    <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">CSS</h3>
+  <div class="mb-6">
+    <div class="flex items-center justify-between">
+      <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">CSS</h3>
+      <button class="copy-btn mb-4 rounded-md bg-white/10 px-3 py-1 text-xs text-white hover:bg-white/20 transition-colors" data-code={cssCode}>Copiar</button>
+    </div>
     <pre class="overflow-x-auto rounded-lg bg-[var(--dm-dark-500)] p-4 text-sm text-[var(--dm-light-200)]"><code>{cssCode}</code></pre>
   </div>
 
-  <div class="my-8 rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-6">
-    <h3 class="mb-4 flex items-center gap-2 text-[var(--color-text)]">
-      <span class="text-xl">⚠️</span>
-      Errores Comunes
-    </h3>
-    <ul class="space-y-2 text-sm text-[var(--dm-light-200)]">
-      <li class="flex items-start gap-2">
-        <span class="mt-1 text-yellow-500">•</span>
-        <span><strong>Olvidar la unidad:</strong> Siempre especifica una unidad (px, %, em, etc.). Los valores sin unidad pueden causar comportamientos inesperados.</span>
-      </li>
-      <li class="flex items-start gap-2">
-        <span class="mt-1 text-yellow-500">•</span>
-        <span><strong>Confundir % en translate con % en top/left:</strong> En translate, el porcentaje se calcula sobre el tamaño del elemento, no del contenedor.</span>
-      </li>
-      <li class="flex items-start gap-2">
-        <span class="mt-1 text-yellow-500">•</span>
-        <span><strong>No usar GPU acceleration:</strong> Para mejores performances, combina translate con will-change o transform: translateZ(0).</span>
-      </li>
-    </ul>
-  </div>
+  <div class="my-8 flex flex-col gap-6">
+    <div class="rounded-xl bg-[var(--color-text)] p-6">
+      <h3 class="mb-4 font-medium text-[var(--dm-dark-500)]">
+        Consejo Profesional
+      </h3>
+      <p class="text-sm text-[var(--dm-dark-500)]">
+        Usa <code>translate()</code> en lugar de <code>top/left/right/bottom</code> para animaciones. Las transformaciones son aceleradas por hardware y ofrecen mejor rendimiento que las propiedades de posicionamiento.
+      </p>
+    </div>
 
-  <div class="my-8 rounded-xl border border-white/5 bg-white/[0.02] p-6">
-    <h3 class="mb-4 flex items-center gap-2 text-[var(--color-text)]">
-      <span class="text-xl">🧪</span>
-      Practica lo Aprendido
-    </h3>
-    <p class="mb-4 text-sm text-[var(--dm-light-200)]">
-      Crea un carrusel de elementos que se deslicen desde la derecha. Cada elemento debe entrar con un ligero retraso escalonado.
-    </p>
-    <ol class="list-inside list-decimal space-y-2 text-sm text-[var(--dm-light-200)]">
-      <li>Crea 5 elementos div con diferentes textos</li>
-      <li>Define un @keyframes que use translateX para moverlos</li>
-      <li>Aplica animation-delay escalonado a cada elemento</li>
-      <li>Experimenta con diferentes valores de translate</li>
-    </ol>
+    <div class="rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-6">
+      <h3 class="mb-4 font-medium text-[var(--color-text)]">
+        Errores Comunes
+      </h3>
+      <ul class="space-y-2 text-sm text-white">
+        <li class="flex items-start gap-2">
+          <span class="mt-1 text-yellow-500">•</span>
+          <span><strong>Olvidar la unidad:</strong> Siempre especifica una unidad (px, %, em, etc.). Los valores sin unidad pueden causar comportamientos inesperados.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="mt-1 text-yellow-500">•</span>
+          <span><strong>Confundir % en translate con % en top/left:</strong> En translate, el porcentaje se calcula sobre el tamaño del elemento, no del contenedor.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="mt-1 text-yellow-500">•</span>
+          <span><strong>No usar GPU acceleration:</strong> Para mejores performances, combina translate con will-change o transform: translateZ(0).</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rounded-xl border border-white/10 bg-white/5 p-6">
+      <h3 class="mb-4 font-medium text-[var(--color-text)]">
+        Practica lo Aprendido
+      </h3>
+      <p class="mb-4 text-sm text-white">
+        Crea un carrusel de elementos que se deslicen desde la derecha. Cada elemento debe entrar con un ligero retraso escalonado.
+      </p>
+      <ol class="list-inside list-decimal space-y-2 text-sm text-white">
+        <li>Crea 5 elementos div con diferentes textos</li>
+        <li>Define un @keyframes que use translateX para moverlos</li>
+        <li>Aplica animation-delay escalonado a cada elemento</li>
+        <li>Experimenta con diferentes valores de translate</li>
+      </ol>
+    </div>
   </div>
 </CourseLayout>
 
@@ -220,3 +232,21 @@ const cssCode = `.slider-item {
     opacity: 0;
   }
 </style>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const code = btn.getAttribute('data-code');
+      if (code) {
+        await navigator.clipboard.writeText(code);
+        const originalText = btn.textContent;
+        btn.textContent = 'Copiado!';
+        btn.classList.add('bg-[var(--dm-green)]');
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.classList.remove('bg-[var(--dm-green)]');
+        }, 2000);
+      }
+    });
+  });
+</script>

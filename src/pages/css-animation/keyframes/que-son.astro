@@ -88,23 +88,22 @@ const cssCode = `.card {
     </p>
   </article>
 
-  <div class="my-8 rounded-xl bg-[var(--color-text)] p-6">
-    <h3 class="mb-4 font-medium text-[var(--dm-dark-500)]">
-      Consejo Profesional
-    </h3>
-    <p class="text-sm text-[var(--dm-dark-500)]">
-      Siempre define explícitamente los keyframes 0% y 100% aunque no cambies ningún estilo. Esto hace tu código más claro y evita comportamientos inesperados en diferentes navegadores.
-    </p>
-  </div>
-
   <h2 class="mt-8 mb-4 font-afronaut text-2xl font-light text-[var(--color-text)]">Ejemplo Práctico</h2>
   
-  <div class="mb-6 rounded-xl border border-white/5 bg-white/[0.02] p-6">
-    <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">Código de Ejemplo</h3>
+  <div class="mb-6">
+    <div class="flex items-center justify-between">
+      <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">Código de Ejemplo</h3>
+      <button class="copy-btn mb-4 flex items-center gap-1.5 rounded-md bg-white/10 px-3 py-1 text-xs text-white hover:bg-white/20 transition-colors" data-code={codeExample}>
+        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+        Copiar
+      </button>
+    </div>
     <pre class="overflow-x-auto rounded-lg bg-[var(--dm-dark-500)] p-4 text-sm text-[var(--dm-light-200)]"><code>{codeExample}</code></pre>
   </div>
 
-  <div class="mb-6 rounded-xl border border-white/5 bg-white/[0.02] p-6">
+  <div class="mb-6">
     <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">Vista Previa</h3>
     <div class="flex items-center justify-center rounded-lg bg-[var(--dm-dark-500)] p-8">
       <div class="animate-fadeIn rounded-lg bg-[var(--color-text)] px-6 py-4 text-[var(--dm-dark-500)]">
@@ -116,51 +115,76 @@ const cssCode = `.card {
     </p>
   </div>
 
-  <div class="mb-6 rounded-xl border border-white/5 bg-white/[0.02] p-6">
-    <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">HTML</h3>
+  <div class="mb-6">
+    <div class="flex items-center justify-between">
+      <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">HTML</h3>
+      <button class="copy-btn mb-4 flex items-center gap-1.5 rounded-md bg-white/10 px-3 py-1 text-xs text-white hover:bg-white/20 transition-colors" data-code={htmlCode}>
+        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+        Copiar
+      </button>
+    </div>
     <pre class="overflow-x-auto rounded-lg bg-[var(--dm-dark-500)] p-4 text-sm text-[var(--dm-light-200)]"><code>{htmlCode}</code></pre>
   </div>
 
-  <div class="mb-6 rounded-xl border border-white/5 bg-white/[0.02] p-6">
-    <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">CSS</h3>
+  <div class="mb-6">
+    <div class="flex items-center justify-between">
+      <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">CSS</h3>
+      <button class="copy-btn mb-4 flex items-center gap-1.5 rounded-md bg-white/10 px-3 py-1 text-xs text-white hover:bg-white/20 transition-colors" data-code={cssCode}>
+        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+        </svg>
+        Copiar
+      </button>
+    </div>
     <pre class="overflow-x-auto rounded-lg bg-[var(--dm-dark-500)] p-4 text-sm text-[var(--dm-light-200)]"><code>{cssCode}</code></pre>
   </div>
 
-  <div class="my-8 rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-6">
-    <h3 class="mb-4 flex items-center gap-2 text-[var(--color-text)]">
-      <span class="text-xl">⚠️</span>
-      Errores Comunes
-    </h3>
-    <ul class="space-y-2 text-sm text-[var(--dm-light-200)]">
-      <li class="flex items-start gap-2">
-        <span class="mt-1 text-yellow-500">•</span>
-        <span><strong>Omitir el nombre de la animación:</strong> Siempre define un nombre único para cada @keyframes.</span>
-      </li>
-      <li class="flex items-start gap-2">
-        <span class="mt-1 text-yellow-500">•</span>
-        <span><strong>No incluir todos los estados:</strong> Asegúrate de definir tanto el estado inicial como el final.</span>
-      </li>
-      <li class="flex items-start gap-2">
-        <span class="mt-1 text-yellow-500">•</span>
-        <span><strong>Usar valores absolutos sin fallback:</strong> Siempre incluye un fallback para navegadores antiguos.</span>
-      </li>
-    </ul>
-  </div>
+  <div class="my-8 flex flex-col gap-6">
+    <div class="rounded-xl bg-[var(--color-text)] p-6">
+      <h3 class="mb-4 font-medium text-[var(--dm-dark-500)]">
+        Consejo Profesional
+      </h3>
+      <p class="text-sm text-[var(--dm-dark-500)]">
+        Siempre define explícitamente los keyframes 0% y 100% aunque no cambies ningún estilo. Esto hace tu código más claro y evita comportamientos inesperados en diferentes navegadores.
+      </p>
+    </div>
 
-  <div class="my-8 rounded-xl border border-white/5 bg-white/[0.02] p-6">
-    <h3 class="mb-4 flex items-center gap-2 text-[var(--color-text)]">
-      <span class="text-xl">🧪</span>
-      Practica lo Aprendido
-    </h3>
-    <p class="mb-4 text-sm text-[var(--dm-light-200)]">
-      Crea una animación que haga que un cuadrado se mueva de izquierda a derecha y vuelva al punto de origen. Usa al menos 3 keyframes intermedios.
-    </p>
-    <ol class="list-inside list-decimal space-y-2 text-sm text-[var(--dm-light-200)]">
-      <li>Crea un elemento div con dimensiones de 100x100px</li>
-      <li>Define un @keyframes que mueva el elemento</li>
-      <li>Aplica la animación con duración de 2 segundos</li>
-      <li>Experimenta con diferentes valores de iteración</li>
-    </ol>
+    <div class="rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-6">
+      <h3 class="mb-4 font-medium text-[var(--color-text)]">
+        Errores Comunes
+      </h3>
+      <ul class="space-y-2 text-sm text-white">
+        <li class="flex items-start gap-2">
+          <span class="mt-1 text-yellow-500">•</span>
+          <span><strong>Omitir el nombre de la animación:</strong> Siempre define un nombre único para cada @keyframes.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="mt-1 text-yellow-500">•</span>
+          <span><strong>No incluir todos los estados:</strong> Asegúrate de definir tanto el estado inicial como el final.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="mt-1 text-yellow-500">•</span>
+          <span><strong>Usar valores absolutos sin fallback:</strong> Siempre incluye un fallback para navegadores antiguos.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rounded-xl border border-white/10 bg-white/5 p-6">
+      <h3 class="mb-4 font-medium text-[var(--color-text)]">
+        Practica lo Aprendido
+      </h3>
+      <p class="mb-4 text-sm text-white">
+        Crea una animación que haga que un cuadrado se mueva de izquierda a derecha y vuelva al punto de origen. Usa al menos 3 keyframes intermedios.
+      </p>
+      <ol class="list-inside list-decimal space-y-2 text-sm text-white">
+        <li>Crea un elemento div con dimensiones de 100x100px</li>
+        <li>Define un @keyframes que mueva el elemento</li>
+        <li>Aplica la animación con duración de 2 segundos</li>
+        <li>Experimenta con diferentes valores de iteración</li>
+      </ol>
+    </div>
   </div>
 
   <div class="my-8 rounded-xl border border-white/5 bg-white/[0.02] p-6">
@@ -197,3 +221,21 @@ const cssCode = `.card {
     animation: fadeIn 0.5s ease-out forwards;
   }
 </style>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const code = btn.getAttribute('data-code');
+      if (code) {
+        await navigator.clipboard.writeText(code);
+        const originalText = btn.textContent;
+        btn.textContent = 'Copiado!';
+        btn.classList.add('bg-[var(--dm-green)]');
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.classList.remove('bg-[var(--dm-green)]');
+        }, 2000);
+      }
+    });
+  });
+</script>

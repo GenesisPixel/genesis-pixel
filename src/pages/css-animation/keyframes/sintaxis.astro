@@ -82,61 +82,85 @@ const selectorExample = `.element {
     </p>
   </article>
 
-  <div class="my-8 rounded-xl bg-[var(--color-text)] p-6">
-    <h3 class="mb-4 font-medium text-[var(--dm-dark-500)]">
-      Consejo Profesional
-    </h3>
-    <p class="text-sm text-[var(--dm-dark-500)]">
-      Organiza tus keyframes en orden cronológico. Aunque CSS los procesará correctamente en cualquier orden, mantener el orden cronológico hace tu código más legible y fácil de mantener.
-    </p>
-  </div>
-
   <h2 class="mt-8 mb-4 font-afronaut text-2xl font-light text-[var(--color-text)]">Ejemplos de Sintaxis</h2>
   
-  <div class="mb-6 rounded-xl border border-white/5 bg-white/[0.02] p-6">
-    <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">Sintaxis Básica</h3>
+  <div class="mb-6">
+    <div class="flex items-center justify-between">
+      <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">Sintaxis Básica</h3>
+      <button class="copy-btn mb-4 rounded-md bg-white/10 px-3 py-1 text-xs text-white hover:bg-white/20 transition-colors" data-code={syntaxExample}>Copiar</button>
+    </div>
     <pre class="overflow-x-auto rounded-lg bg-[var(--dm-dark-500)] p-4 text-sm text-[var(--dm-light-200)]"><code>{syntaxExample}</code></pre>
   </div>
 
-  <div class="mb-6 rounded-xl border border-white/5 bg-white/[0.02] p-6">
-    <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">Propiedades de Animación</h3>
+  <div class="mb-6">
+    <div class="flex items-center justify-between">
+      <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">Propiedades de Animación</h3>
+      <button class="copy-btn mb-4 rounded-md bg-white/10 px-3 py-1 text-xs text-white hover:bg-white/20 transition-colors" data-code={selectorExample}>Copiar</button>
+    </div>
     <pre class="overflow-x-auto rounded-lg bg-[var(--dm-dark-500)] p-4 text-sm text-[var(--dm-light-200)]"><code>{selectorExample}</code></pre>
   </div>
 
-  <div class="my-8 rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-6">
-    <h3 class="mb-4 flex items-center gap-2 text-[var(--color-text)]">
-      <span class="text-xl">⚠️</span>
-      Errores Comunes
-    </h3>
-    <ul class="space-y-2 text-sm text-[var(--dm-light-200)]">
-      <li class="flex items-start gap-2">
-        <span class="mt-1 text-yellow-500">•</span>
-        <span><strong>Olvidar el guion en animation-name:</strong> La propiedad se escribe con guion, no en camelCase.</span>
-      </li>
-      <li class="flex items-start gap-2">
-        <span class="mt-1 text-yellow-500">•</span>
-        <span><strong>No cerrar las llaves:</strong> Asegúrate de que cada keyframe esté correctamente cerrado.</span>
-      </li>
-      <li class="flex items-start gap-2">
-        <span class="mt-1 text-yellow-500">•</span>
-        <span><strong>Mezclar porcentajes y palabras clave:</strong> No uses from/to junto con porcentajes en el mismo keyframe.</span>
-      </li>
-    </ul>
-  </div>
+  <div class="my-8 flex flex-col gap-6">
+    <div class="rounded-xl bg-[var(--color-text)] p-6">
+      <h3 class="mb-4 font-medium text-[var(--dm-dark-500)]">
+        Consejo Profesional
+      </h3>
+      <p class="text-sm text-[var(--dm-dark-500)]">
+        Organiza tus keyframes en orden cronológico. Aunque CSS los procesará correctamente en cualquier orden, mantener el orden cronológico hace tu código más legible y fácil de mantener.
+      </p>
+    </div>
 
-  <div class="my-8 rounded-xl border border-white/5 bg-white/[0.02] p-6">
-    <h3 class="mb-4 flex items-center gap-2 text-[var(--color-text)]">
-      <span class="text-xl">🧪</span>
-      Practica lo Aprendido
-    </h3>
-    <p class="mb-4 text-sm text-[var(--dm-light-200)]">
-      Crea una animación que cambie el color de fondo de un elemento a través de 4 colores diferentes. Usa porcentajes para definir cada cambio.
-    </p>
-    <ol class="list-inside list-decimal space-y-2 text-sm text-[var(--dm-light-200)]">
-      <li>Define un @keyframes con nombre "colorCycle"</li>
-      <li>Usa 0%, 25%, 50%, 75% y 100% para 4 colores</li>
-      <li>Aplica la animación a un elemento div</li>
-      <li>Experimenta con diferentes duraciones</li>
-    </ol>
+    <div class="rounded-xl border border-yellow-500/20 bg-yellow-500/5 p-6">
+      <h3 class="mb-4 font-medium text-[var(--color-text)]">
+        Errores Comunes
+      </h3>
+      <ul class="space-y-2 text-sm text-white">
+        <li class="flex items-start gap-2">
+          <span class="mt-1 text-yellow-500">•</span>
+          <span><strong>Olvidar el guion en animation-name:</strong> La propiedad se escribe con guion, no en camelCase.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="mt-1 text-yellow-500">•</span>
+          <span><strong>No cerrar las llaves:</strong> Asegúrate de que cada keyframe esté correctamente cerrado.</span>
+        </li>
+        <li class="flex items-start gap-2">
+          <span class="mt-1 text-yellow-500">•</span>
+          <span><strong>Mezclar porcentajes y palabras clave:</strong> No uses from/to junto con porcentajes en el mismo keyframe.</span>
+        </li>
+      </ul>
+    </div>
+
+    <div class="rounded-xl border border-white/10 bg-white/5 p-6">
+      <h3 class="mb-4 font-medium text-[var(--color-text)]">
+        Practica lo Aprendido
+      </h3>
+      <p class="mb-4 text-sm text-white">
+        Crea una animación que cambie el color de fondo de un elemento a través de 4 colores diferentes. Usa porcentajes para definir cada cambio.
+      </p>
+      <ol class="list-inside list-decimal space-y-2 text-sm text-white">
+        <li>Define un @keyframes con nombre "colorCycle"</li>
+        <li>Usa 0%, 25%, 50%, 75% y 100% para 4 colores</li>
+        <li>Aplica la animación a un elemento div</li>
+        <li>Experimenta con diferentes duraciones</li>
+      </ol>
+    </div>
   </div>
 </CourseLayout>
+
+<script>
+  document.querySelectorAll('.copy-btn').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const code = btn.getAttribute('data-code');
+      if (code) {
+        await navigator.clipboard.writeText(code);
+        const originalText = btn.textContent;
+        btn.textContent = 'Copiado!';
+        btn.classList.add('bg-[var(--dm-green)]');
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.classList.remove('bg-[var(--dm-green)]');
+        }, 2000);
+      }
+    });
+  });
+</script>
