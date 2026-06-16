@@ -315,63 +315,59 @@ const currentPath = Astro.url.pathname;
 </div>
 
 <script>
-  const island = document.getElementById('nav-island');
-  const navLinks = document.getElementById('nav-links');
-  const indicator = document.getElementById('nav-indicator');
-  const menuToggle = document.getElementById('mobile-menu-toggle');
-  const mobileMenu = document.getElementById('mobile-menu');
+  document.addEventListener('astro:page-load', () => {
+    const island = document.getElementById('nav-island');
+    const navLinks = document.getElementById('nav-links');
+    const indicator = document.getElementById('nav-indicator');
+    const menuToggle = document.getElementById('mobile-menu-toggle');
+    const mobileMenu = document.getElementById('mobile-menu');
 
-  function updateIndicator() {
-    const activeLink = navLinks?.querySelector('a.active') as HTMLElement;
-    if (!activeLink || !indicator || !navLinks) return;
+    function updateIndicator() {
+      const activeLink = navLinks?.querySelector('a.active') as HTMLElement;
+      if (!activeLink || !indicator || !navLinks) return;
 
-    const linksRect = navLinks.getBoundingClientRect();
-    const activeRect = activeLink.getBoundingClientRect();
+      const linksRect = navLinks.getBoundingClientRect();
+      const activeRect = activeLink.getBoundingClientRect();
 
-    indicator.style.left = `${activeRect.left - linksRect.left}px`;
-    indicator.style.width = `${activeRect.width}px`;
-    indicator.classList.add('visible');
-  }
-
-  function handleHover(e: Event) {
-    const target = e.target as HTMLElement;
-    if (target.tagName !== 'A' || !indicator || !navLinks) return;
-
-    const linksRect = navLinks.getBoundingClientRect();
-    const targetRect = target.getBoundingClientRect();
-
-    indicator.style.left = `${targetRect.left - linksRect.left}px`;
-    indicator.style.width = `${targetRect.width}px`;
-    indicator.classList.add('visible');
-  }
-
-  function handleHoverEnd() {
-    updateIndicator();
-  }
-
-  navLinks?.addEventListener('mouseover', handleHover);
-  navLinks?.addEventListener('mouseout', handleHoverEnd);
-
-  let mobileOpen = false;
-  menuToggle?.addEventListener('click', () => {
-    mobileOpen = !mobileOpen;
-    mobileMenu?.classList.toggle('open', mobileOpen);
-    menuToggle?.classList.toggle('open', mobileOpen);
-  });
-
-  document.addEventListener('click', (e) => {
-    if (mobileOpen && !mobileMenu?.contains(e.target as Node) && !menuToggle?.contains(e.target as Node)) {
-      mobileOpen = false;
-      mobileMenu?.classList.remove('open');
-      menuToggle?.classList.remove('open');
+      indicator.style.left = `${activeRect.left - linksRect.left}px`;
+      indicator.style.width = `${activeRect.width}px`;
+      indicator.classList.add('visible');
     }
-  });
 
-  window.addEventListener('load', () => {
-    setTimeout(updateIndicator, 100);
-  });
+    function handleHover(e: Event) {
+      const target = e.target as HTMLElement;
+      if (target.tagName !== 'A' || !indicator || !navLinks) return;
 
-  document.addEventListener('DOMContentLoaded', () => {
+      const linksRect = navLinks.getBoundingClientRect();
+      const targetRect = target.getBoundingClientRect();
+
+      indicator.style.left = `${targetRect.left - linksRect.left}px`;
+      indicator.style.width = `${targetRect.width}px`;
+      indicator.classList.add('visible');
+    }
+
+    function handleHoverEnd() {
+      updateIndicator();
+    }
+
+    navLinks?.addEventListener('mouseover', handleHover);
+    navLinks?.addEventListener('mouseout', handleHoverEnd);
+
+    let mobileOpen = false;
+    menuToggle?.addEventListener('click', () => {
+      mobileOpen = !mobileOpen;
+      mobileMenu?.classList.toggle('open', mobileOpen);
+      menuToggle?.classList.toggle('open', mobileOpen);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (mobileOpen && !mobileMenu?.contains(e.target as Node) && !menuToggle?.contains(e.target as Node)) {
+        mobileOpen = false;
+        mobileMenu?.classList.remove('open');
+        menuToggle?.classList.remove('open');
+      }
+    });
+
     setTimeout(updateIndicator, 50);
   });
 </script>

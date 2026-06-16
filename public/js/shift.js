@@ -22,8 +22,10 @@ let circles;
 let circleProps;
 let simplex;
 let baseHue;
+let animationId;
 
 function setup() {
+  if (animationId) window.cancelAnimationFrame(animationId);
 	createCanvas();
   resize();
   initCircles();
@@ -160,8 +162,8 @@ function draw() {
   ctx.b.fillRect(0, 0, canvas.b.width, canvas.b.height);
   updateCircles();
   render();
-	window.requestAnimationFrame(draw);
+	animationId = window.requestAnimationFrame(draw);
 }
 
-window.addEventListener('load', setup);
+document.addEventListener('astro:page-load', setup);
 window.addEventListener('resize', resize);

@@ -137,7 +137,7 @@ const titleChars = title.split('').map((char, i) =>
 <script>
   import gsap from 'gsap';
 
-  document.addEventListener('DOMContentLoaded', () => {
+  document.addEventListener('astro:page-load', () => {
     const title = document.getElementById('hero-title');
     const chars = title?.querySelectorAll('.hero-char');
     const svgOrbit = document.querySelector('.svg-animate');
