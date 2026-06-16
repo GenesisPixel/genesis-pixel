@@ -1,6 +1,6 @@
 ---
 ---
-<div class="gradient-blur-container">
+<div class="gradient-blur-container" id="gradient-container">
   <div class="content--canvas gradient-blur-wrapper"></div>
   <div class="gradient-overlay"></div>
 </div>
@@ -9,9 +9,24 @@
 <script is:inline src="/js/util.js"></script>
 <script is:inline src="/js/shift.js"></script>
 
+<script is:inline>
+  document.addEventListener('scroll', () => {
+    const container = document.getElementById('gradient-container');
+    if (!container) return;
+    
+    // The gradient height is 80vh. We want to leave 10vh visible at the top.
+    // So it can scroll up by a maximum of 70vh.
+    const maxScroll = window.innerHeight * 0.7;
+    const scrollY = window.scrollY;
+    
+    const y = Math.min(scrollY, maxScroll);
+    container.style.transform = `translateY(-${y}px)`;
+  }, { passive: true });
+</script>
+
 <style>
   .gradient-blur-container {
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -19,6 +34,7 @@
     z-index: -10;
     pointer-events: none;
     overflow: hidden;
+    will-change: transform;
   }
 
   .gradient-blur-wrapper {

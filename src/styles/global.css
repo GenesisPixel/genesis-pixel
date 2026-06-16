@@ -202,3 +202,25 @@ p {
 /* .gradient-hero {
   background: linear-gradient(to top, hsla(158, 23%, 18%, 1), hsla(158, 23%, 18%, 1), rgba(35, 56, 49, 0.956), rgba(35, 56, 49, 0.877), rgba(35, 56, 49, 0.897));
 } */
+
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.4);
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+}
