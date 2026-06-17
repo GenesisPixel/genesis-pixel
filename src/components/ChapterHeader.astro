@@ -1,0 +1,28 @@
+---
+interface Props {
+  chapterNumber: string;
+  chapterLabel: string;
+  title: string;
+  readingTime: number;
+  difficulty?: string;
+}
+
+const { chapterNumber, chapterLabel, title, readingTime, difficulty = 'Principiante' } = Astro.props;
+---
+
+<div class="mb-8">
+  <div class="inline-flex items-center gap-2 text-sm text-[var(--dm-light-300)]">
+    <span class="flex h-6 w-6 items-center justify-center rounded-md bg-[var(--color-text)]/10 text-xs font-semibold text-[var(--color-text)]">{chapterNumber}</span>
+    {chapterLabel}
+  </div>
+  <h1 class="mt-4 font-afronaut text-4xl font-light text-[var(--color-text)] sm:text-5xl">{title}</h1>
+  <div class="mt-4 flex flex-wrap gap-3 text-sm text-[var(--dm-light-300)]">
+    <span class="flex items-center gap-1">
+      <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+      </svg>
+      {readingTime} min de lectura
+    </span>
+    <span class="rounded-full bg-[var(--dm-green)]/20 px-3 py-1 text-xs font-medium text-[var(--dm-green)]">{difficulty}</span>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+---
+interface Props {
+  tip: string;
+}
+
+const { tip } = Astro.props;
+---
+
+<div class="border-l-[3px] border-[var(--color-text)] bg-[var(--dm-green-bg)] p-6">
+  <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">
+    Consejo Profesional
+  </h3>
+  <p class="text-sm text-soft-white">
+    <Fragment set:html={tip} />
+  </p>
+</div>
