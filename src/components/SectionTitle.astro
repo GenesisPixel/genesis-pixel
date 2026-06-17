@@ -9,46 +9,84 @@ const icons = ['star.svg', 'pencil.svg', 'mobile-phone.svg', 'frame.svg'];
 const shuffled = icons.sort(() => 0.5 - Math.random());
 const icon1 = shuffled[0];
 const icon2 = shuffled[1];
+
+const renderChars = (text: string) => text.split('').map((char) =>
+  char === ' ' ? `<span class="inline-block">&nbsp;</span>` : `<span class="section-title-char inline-block opacity-0">${char}</span>`
+).join('');
+
+const titleChars = renderChars(title);
 ---
 
-<div class="relative flex justify-center">
-  <div class="relative inline-block">
+<div class="relative flex justify-center" style="perspective: 800px;">
+  <div class="relative inline-block" style="transform-style: preserve-3d;">
     <img src={`/svg/${icon1}`} alt="" class="absolute -top-8 -right-14 w-[80px] opacity-60 svg-icon-animate" aria-hidden="true" />
     <img src={`/svg/${icon2}`} alt="" class="absolute -bottom-4 w-[50px] opacity-60 svg-icon-animate-delay" style="left: 80px;" aria-hidden="true" />
     <h1 class="font-afronaut font-light text-[var(--color-text)]" style="line-height: 0.85; letter-spacing: -0.05em;">
-      {title}
+      <Fragment set:html={titleChars} />
     </h1>
   </div>
 </div>
+
+<style>
+  :global(.section-title-char) {
+    font-family: var(--font-afronaut) !important;
+  }
+</style>
 
 <script>
   import gsap from 'gsap';
 
   document.addEventListener('astro:page-load', () => {
+    const chars = document.querySelectorAll('.section-title-char');
     const icons = document.querySelectorAll('.svg-icon-animate');
     const iconsDelay = document.querySelectorAll('.svg-icon-animate-delay');
 
+    if (chars.length) {
+      gsap.set(chars, {
+        opacity: 0,
+        y: 60,
+        rotateX: -40,
+        scale: 0.9,
+        filter: 'blur(10px)'
+      });
+
+      gsap.to(chars, {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        scale: 1,
+        filter: 'blur(0px)',
+        duration: 0.9,
+        stagger: {
+          each: 0.025,
+          from: 'start'
+        },
+        ease: 'power3.out',
+        delay: 0.2
+      });
+    }
+
     icons.forEach(el => {
-      gsap.set(el, { opacity: 0, y: 30, filter: 'blur(8px)' });
+      gsap.set(el, { opacity: 0, y: 40, filter: 'blur(10px)' });
       gsap.to(el, {
         opacity: 0.6,
         y: 0,
         filter: 'blur(0px)',
-        duration: 0.8,
+        duration: 0.9,
         ease: 'power3.out',
-        delay: 1.2
+        delay: 1.5
       });
     });
 
     iconsDelay.forEach(el => {
-      gsap.set(el, { opacity: 0, y: 30, filter: 'blur(8px)' });
+      gsap.set(el, { opacity: 0, y: 40, filter: 'blur(10px)' });
       gsap.to(el, {
         opacity: 0.6,
         y: 0,
         filter: 'blur(0px)',
-        duration: 0.8,
+        duration: 0.9,
         ease: 'power3.out',
-        delay: 1.4
+        delay: 1.7
       });
     });
   });
