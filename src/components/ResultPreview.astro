@@ -7,13 +7,43 @@ const { description } = Astro.props;
 ---
 
 <div class="flex-1">
-  <h3 class="mb-4 text-sm font-medium text-[var(--color-text)]">Resultado</h3>
-  <div class="flex items-center justify-center rounded-lg bg-[var(--dm-dark-500)] p-8">
-    <slot />
+  <div class="overflow-hidden rounded-xl bg-[var(--dm-dark-500)] shadow-lg border border-white/5">
+    <!-- Console Header -->
+    <div class="flex items-center gap-4 border-b border-white/5 bg-[#1a1b26]/50 px-4 py-3">
+      <div class="flex gap-1.5">
+        <div class="h-3 w-3 rounded-full bg-[#FF5F56]"></div>
+        <div class="h-3 w-3 rounded-full bg-[#FFBD2E]"></div>
+        <div class="h-3 w-3 rounded-full bg-[#27C93F]"></div>
+      </div>
+      <h3 class="text-xs font-medium text-soft-white">Resultado</h3>
+    </div>
+    
+    <!-- Result Content -->
+    <div class="flex items-center justify-center p-8 min-h-[150px] max-h-[400px] overflow-y-auto custom-scrollbar">
+      <slot />
+    </div>
   </div>
+  
   {description && (
     <p class="mt-4 text-sm text-[var(--dm-light-300)]">
       {description}
     </p>
   )}
 </div>
+
+<style>
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+</style>

@@ -8,28 +8,61 @@ const { tabs, group = 'default' } = Astro.props;
 const tabGroupId = `tab-group-${group}`;
 ---
 
-<div class="mb-6">
-  <div class="mb-4 flex items-center gap-2">
-    {tabs.map((tab, i) => (
-      <button
-        class={`code-tab rounded-md px-3 py-1.5 text-xs font-light text-soft-white transition-colors ${i === 0 ? 'active' : ''}`}
-        data-tab={tab.id}
-        data-group={tabGroupId}
-      >
-        {tab.label}
-      </button>
-    ))}
-    <div class="flex-1"></div>
-    <button class="copy-btn flex items-center gap-1.5 rounded-md bg-white/10 px-3 py-1 text-xs font-light text-soft-white hover:bg-white/20 transition-colors">
+<div class="mb-6 overflow-hidden rounded-xl bg-[var(--dm-dark-500)] shadow-lg border border-white/5">
+  <!-- Console Header -->
+  <div class="flex items-center justify-between border-b border-white/5 bg-[#1a1b26]/50 px-4 py-2.5">
+    <div class="flex items-center gap-4">
+      <div class="flex gap-1.5">
+        <div class="h-3 w-3 rounded-full bg-[#FF5F56]"></div>
+        <div class="h-3 w-3 rounded-full bg-[#FFBD2E]"></div>
+        <div class="h-3 w-3 rounded-full bg-[#27C93F]"></div>
+      </div>
+      
+      <!-- Tabs -->
+      <div class="flex items-center gap-1">
+        {tabs.map((tab, i) => (
+          <button
+            class={`code-tab rounded-md px-3 py-1 text-xs font-medium text-soft-white transition-colors hover:bg-white/5 ${i === 0 ? 'active' : ''}`}
+            data-tab={tab.id}
+            data-group={tabGroupId}
+          >
+            {tab.label}
+          </button>
+        ))}
+      </div>
+    </div>
+
+    <button class="copy-btn flex items-center gap-1.5 rounded-md bg-white/5 px-2.5 py-1 text-xs font-light text-soft-white transition-colors hover:bg-white/10">
       <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
       </svg>
       Copiar
     </button>
   </div>
-  {tabs.map((tab, i) => (
-    <div class={`code-content ${i !== 0 ? 'hidden' : ''}`} data-tab={tab.id} data-group={tabGroupId}>
-      <pre class="overflow-x-auto rounded-lg bg-[var(--dm-dark-500)] p-4 text-sm text-[var(--dm-light-200)]"><code>{tab.code}</code></pre>
-    </div>
-  ))}
+  
+  <!-- Code Content with fixed height & scroll -->
+  <div class="max-h-[400px] overflow-y-auto custom-scrollbar">
+    {tabs.map((tab, i) => (
+      <div class={`code-content ${i !== 0 ? 'hidden' : ''}`} data-tab={tab.id} data-group={tabGroupId}>
+        <pre class="m-0 overflow-x-auto p-4 text-sm text-[var(--dm-light-200)] bg-transparent"><code>{tab.code}</code></pre>
+      </div>
+    ))}
+  </div>
 </div>
+
+<style>
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.2);
+  }
+</style>
