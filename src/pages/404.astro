@@ -1,0 +1,99 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Footer from '../components/Footer.astro';
+
+const title = "404 - Página no encontrada";
+const description = "Lo sentimos, nos hemos perdido en el espacio. La página que buscas no existe o ha sido movida.";
+
+const renderChars = (text: string) => text.split('').map((char) => 
+  char === ' ' ? `<span class="inline-block">&nbsp;</span>` : `<span class="hero-char inline-block opacity-0">${char}</span>`
+).join('');
+
+const titleChars = renderChars("Oops... 404");
+---
+
+<Layout title={title}>
+  <section class="relative flex min-h-[70vh] items-center justify-center overflow-hidden px-6 pt-16">
+    <div class="relative z-10 mx-auto max-w-4xl text-center">
+      <div class="relative inline-block mb-4">
+        <img src="/svg/stars-in-orbit.svg" alt="" class="absolute -top-10 -right-12 w-[90px] opacity-60 svg-animate" aria-hidden="true" />
+        <img src="/svg/garabato.svg" alt="" class="absolute -bottom-6 w-[55px] opacity-60 svg-animate-delay" style="left: -30px;" aria-hidden="true" />
+        <h1 id="error-title" class="font-afronaut font-light text-[var(--color-text)] text-7xl md:text-9xl" style="line-height: 0.85; letter-spacing: -0.05em; font-family: var(--font-afronaut);">
+          <Fragment set:html={titleChars} />
+        </h1>
+      </div>
+
+      <p class="mx-auto mt-6 max-w-lg text-lg text-[var(--dm-light-200)] sm:text-xl">
+        {description}
+      </p>
+
+      <div class="mt-12 flex items-center justify-center">
+        <a
+          href="/"
+          class="inline-flex items-center justify-center rounded-[30px] bg-[var(--color-text)] px-8 py-3 text-sm font-medium text-[var(--dm-dark-500)] transition-transform duration-300 hover:scale-105 hover:opacity-90"
+        >
+          Volver al Inicio
+          <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <Footer />
+</Layout>
+
+<style>
+  :global(.hero-char) {
+    font-family: var(--font-afronaut) !important;
+  }
+</style>
+
+<script>
+  import gsap from 'gsap';
+
+  document.addEventListener('astro:page-load', () => {
+    const title = document.getElementById('error-title');
+    const chars = title?.querySelectorAll('.hero-char');
+    const svgs = document.querySelectorAll('.svg-animate, .svg-animate-delay');
+    
+    if (chars && chars.length > 0) {
+      gsap.set(chars, { 
+        opacity: 0, 
+        y: 60, 
+        rotateX: -40,
+        scale: 0.9,
+        filter: 'blur(10px)' 
+      });
+      
+      gsap.to(chars, {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        scale: 1,
+        filter: 'blur(0px)',
+        duration: 0.9,
+        stagger: {
+          each: 0.025,
+          from: 'start'
+        },
+        ease: 'power3.out',
+        delay: 0.2
+      });
+    }
+
+    if (svgs.length > 0) {
+      gsap.set(svgs, { opacity: 0, y: 40, filter: 'blur(10px)' });
+      gsap.to(svgs, {
+        opacity: 0.6,
+        y: 0,
+        filter: 'blur(0px)',
+        duration: 0.9,
+        stagger: 0.2,
+        ease: 'power3.out',
+        delay: 1.5
+      });
+    }
+  });
+</script>
