@@ -1,0 +1,59 @@
+---
+interface Props {
+  errors: { label: string; description: string }[];
+}
+
+const { errors } = Astro.props;
+---
+
+<div class="py-6">
+  <!-- Terminal window -->
+  <div class="overflow-hidden rounded-2xl" style="background-color: hsla(158, 23%, 10%, 1);">
+    
+    <!-- Terminal header -->
+    <div class="flex items-center gap-3 border-b px-5 py-3.5" style="border-color: rgba(255,255,255,0.06); background-color: hsla(158, 23%, 8%, 1);">
+      <div class="flex gap-2">
+        <span class="h-3 w-3 rounded-full" style="background-color: #FF5F57;"></span>
+        <span class="h-3 w-3 rounded-full" style="background-color: #FEBC2E;"></span>
+        <span class="h-3 w-3 rounded-full" style="background-color: #28C840;"></span>
+      </div>
+      <span class="mx-auto font-mono text-[11px] text-white/30">
+        DevTools — Console
+      </span>
+    </div>
+
+    <!-- Rows -->
+    <div class="divide-y" style="divide-color: rgba(255,255,255,0.04);">
+      {errors.slice(0, 4).map((error, index) => (
+        <div class="group flex items-start gap-4 px-5 py-4 transition-colors hover:bg-white/[0.02]">
+          
+          <!-- Line number -->
+          <span class="mt-0.5 shrink-0 font-mono text-[11px] select-none" style="color: rgba(255,255,255,0.2); min-width: 20px;">
+            {index + 1}
+          </span>
+
+          <!-- Error icon -->
+          <span class="mt-0.5 shrink-0 text-[13px]" style="color: #FF5F57;">✕</span>
+
+          <!-- Content -->
+          <div class="flex flex-col gap-1 min-w-0">
+            <span class="font-mono text-[13px] font-medium" style="color: #FF8B8B; opacity: 1 !important;">
+              {error.label}
+            </span>
+            <span class="text-[12px] leading-relaxed" style="color: rgba(255,255,255,0.45); opacity: 1 !important;">
+              {error.description}
+            </span>
+          </div>
+
+        </div>
+      ))}
+    </div>
+
+  </div>
+</div>
+
+<style>
+  div[class*="divide-y"] > * + * {
+    border-top: 1px solid rgba(255,255,255,0.04);
+  }
+</style>
