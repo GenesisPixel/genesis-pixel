@@ -7,9 +7,9 @@ const { description } = Astro.props;
 ---
 
 <div class="flex-1">
-  <div class="overflow-hidden rounded-xl bg-[var(--dm-dark-500)] shadow-lg border border-white/5">
+  <div class="overflow-hidden rounded-none shadow-lg" style="background-color: hsla(158, 23%, 10%, 1);">
     <!-- Console Header -->
-    <div class="flex items-center gap-4 border-b border-white/5 bg-[#1a1b26]/50 px-4 py-3">
+    <div class="flex items-center gap-4 border-b px-4 py-3" style="border-color: rgba(255,255,255,0.06); background-color: hsla(158, 23%, 8%, 1);">
       <div class="flex gap-1.5">
         <div class="h-2.5 w-2.5 rounded-full bg-[var(--dm-red)]"></div>
         <div class="h-2.5 w-2.5 rounded-full bg-[var(--dm-yellow)]"></div>
@@ -18,14 +18,14 @@ const { description } = Astro.props;
       <div class="flex items-center gap-1.5 font-mono text-[11px]">
         <span class="flex tracking-tighter text-[var(--dm-green)]">
           <span class="font-bold">></span>
-          <span class="animate-pulse font-bold">_</span>
+          <span class="animate-blink font-bold">_</span>
         </span>
         <span class="text-white/40">DevTools — Render</span>
       </div>
     </div>
     
     <!-- Result Content -->
-    <div class="flex items-center justify-center p-8 min-h-[150px] max-h-[400px] overflow-y-auto">
+    <div class="flex items-center justify-center p-8 min-h-[250px] max-h-[400px] overflow-y-auto">
       <slot />
     </div>
   </div>

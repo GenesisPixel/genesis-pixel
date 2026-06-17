@@ -309,6 +309,7 @@ p {
 
 ::-webkit-scrollbar {
   width: 6px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-track {
@@ -379,5 +380,14 @@ html {
 
 ::view-transition-old(root),
 ::view-transition-new(root) {
-  mix-blend-mode: normal;
+  animation-duration: 0.3s;
+}
+
+@keyframes blink-step {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink-step 1s step-end infinite;
 }
