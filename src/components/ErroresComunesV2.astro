@@ -7,22 +7,28 @@ const { errors } = Astro.props;
 ---
 
 <div class="py-6">
-  <h3 class="mb-6 font-medium text-[var(--color-text)] text-lg">
-    Errores Comunes
-  </h3>
-  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-    {errors.slice(0, 9).map((error, index) => (
-      <div class="flex flex-col gap-3 rounded-2xl border border-white/10 bg-white/[0.04] p-5">
-        <span class="font-afronaut text-[11px] tracking-widest text-[var(--dm-light-300)] opacity-60">
-          {String(index + 1).padStart(3, '0')}
-        </span>
-        <h4 class="font-afronaut text-[16px] font-light leading-tight text-[var(--color-text)]">
-          {error.label}
-        </h4>
-        <p class="m-0 text-[13px] leading-relaxed text-[var(--dm-light-200)]">
-          {error.description}
-        </p>
-      </div>
-    ))}
+  <div class="rounded-[32px] overflow-hidden" style="background-color: hsla(158, 23%, 12%, 1);">
+    <!-- Título dentro del padre -->
+    <div class="px-8 pt-8 pb-4">
+      <h3 class="font-medium text-[var(--color-text)] text-lg">
+        Errores Comunes
+      </h3>
+    </div>
+    <!-- Grid 2x2 -->
+    <div class="grid grid-cols-2 gap-px" style="background-color: hsla(158, 23%, 8%, 1);">
+      {errors.slice(0, 4).map((error, index) => (
+        <div class="flex flex-col gap-4 p-8" style="background-color: hsla(158, 23%, 12%, 1);">
+          <span class="font-afronaut text-[11px] tracking-widest text-[var(--dm-light-300)] opacity-60">
+            {String(index + 1).padStart(3, '0')}
+          </span>
+          <h4 class="font-afronaut text-[16px] font-light leading-tight text-[var(--color-text)]">
+            {error.label}
+          </h4>
+          <p class="m-0 text-[13px] leading-relaxed text-[var(--dm-light-200)]">
+            {error.description}
+          </p>
+        </div>
+      ))}
+    </div>
   </div>
 </div>
