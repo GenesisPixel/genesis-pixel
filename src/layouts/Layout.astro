@@ -28,6 +28,11 @@ const { title } = Astro.props;
     <Navbar transition:persist />
     <GradientBlur />
     <slot />
+    
+    <!-- Footer Gradient - Always at bottom -->
+    <div class="pointer-events-none absolute bottom-0 left-1/2 -z-10 h-[500px] w-full -translate-x-1/2 opacity-100 blur-[100px]">
+      <div class="gradient-animated h-full w-full rounded-full"></div>
+    </div>
   </body>
 </html>
 
