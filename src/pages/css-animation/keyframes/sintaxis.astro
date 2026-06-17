@@ -6,6 +6,7 @@ import ConsejoProfesional from '../../../components/ConsejoProfesional.astro';
 import ErroresComunes from '../../../components/ErroresComunes.astro';
 import ErroresComunesV2 from '../../../components/ErroresComunesV2.astro';
 import ErroresComunesV3 from '../../../components/ErroresComunesV3.astro';
+import ErroresComunesV4 from '../../../components/ErroresComunesV4.astro';
 import PracticeCards from '../../../components/PracticeCards.astro';
 import { initCodeInteractions } from '../../../scripts/code-interactions.js';
 
@@ -115,6 +116,13 @@ const practiceSteps = [
     ]} />
 
     <ErroresComunesV3 errors={[
+      { label: 'Olvidar el guion en animation-name', description: 'La propiedad se escribe con guion, no en camelCase.' },
+      { label: 'No cerrar las llaves', description: 'Asegúrate de que cada keyframe esté correctamente cerrado.' },
+      { label: 'Mezclar porcentajes y palabras clave', description: 'No uses from/to junto con porcentajes en el mismo keyframe.' },
+      { label: 'Nombres de animación duplicados', description: 'Si dos @keyframes tienen el mismo nombre, el último sobreescribe al primero sin advertencia.' },
+    ]} />
+
+    <ErroresComunesV4 errors={[
       { label: 'Olvidar el guion en animation-name', description: 'La propiedad se escribe con guion, no en camelCase.' },
       { label: 'No cerrar las llaves', description: 'Asegúrate de que cada keyframe esté correctamente cerrado.' },
       { label: 'Mezclar porcentajes y palabras clave', description: 'No uses from/to junto con porcentajes en el mismo keyframe.' },
