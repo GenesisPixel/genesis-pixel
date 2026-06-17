@@ -206,24 +206,24 @@ const cssCode = `.btn-transition {
         Crea un botón que tenga múltiples transiciones: color de fondo, color de texto, sombra, y transformación al hacer hover.
       </p>
       <div class="flex gap-3">
-        <div class="flex-1 p-3 text-center text-xs text-soft-white h-[120px] flex flex-col items-center justify-center" style="background: var(--dm-yellow-dark); transform: rotate(10deg);">
-          <span class="mb-1 block text-lg font-medium" style="color: var(--dm-yellow);">1</span>
+        <div class="flex-1 p-3 text-center text-xs text-soft-white h-[120px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-purple); transform: rotate(10deg); transition-timing-function: var(--curve); transition-duration: 0.4s;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(10deg)'">
+          <span class="mb-1 block text-lg font-medium" style="color: var(--dm-dark-500);">1</span>
           Crea un botón con estilos base atractivos
         </div>
-        <div class="flex-1 p-3 text-center text-xs text-soft-white h-[120px] flex flex-col items-center justify-center" style="background: var(--dm-purple-dark); transform: rotate(2deg);">
-          <span class="mb-1 block text-lg font-medium" style="color: var(--dm-purple);">2</span>
+        <div class="flex-1 p-3 text-center text-xs text-soft-white h-[120px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-green); transform: rotate(2deg); transition-timing-function: var(--curve); transition-duration: 0.4s;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(2deg)'">
+          <span class="mb-1 block text-lg font-medium" style="color: var(--dm-dark-500);">2</span>
           Agrega transiciones para cada propiedad
         </div>
-        <div class="flex-1 p-3 text-center text-xs text-soft-white h-[120px] flex flex-col items-center justify-center" style="background: var(--dm-blue-dark); transform: rotate(-5deg);">
-          <span class="mb-1 block text-lg font-medium" style="color: var(--dm-blue);">3</span>
+        <div class="flex-1 p-3 text-center text-xs text-soft-white h-[120px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-yellow); transform: rotate(-5deg); transition-timing-function: var(--curve); transition-duration: 0.4s;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(-5deg)'">
+          <span class="mb-1 block text-lg font-medium" style="color: var(--dm-dark-500);">3</span>
           Define diferentes duraciones para cada una
         </div>
-        <div class="flex-1 p-3 text-center text-xs text-soft-white h-[120px] flex flex-col items-center justify-center" style="background: var(--dm-green-dark); transform: rotate(2deg);">
-          <span class="mb-1 block text-lg font-medium" style="color: var(--dm-green);">4</span>
+        <div class="flex-1 p-3 text-center text-xs text-soft-white h-[120px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-blue); transform: rotate(2deg); transition-timing-function: var(--curve); transition-duration: 0.4s;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(2deg)'">
+          <span class="mb-1 block text-lg font-medium" style="color: var(--dm-dark-500);">4</span>
           Experimenta con diferentes timing functions
         </div>
-        <div class="flex-1 p-3 text-center text-xs text-soft-white h-[120px] flex flex-col items-center justify-center" style="background: var(--dm-indigo-dark); transform: rotate(-5deg);">
-          <span class="mb-1 block text-lg font-medium" style="color: var(--dm-indigo);">5</span>
+        <div class="flex-1 p-3 text-center text-xs text-soft-white h-[120px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-red); transform: rotate(-5deg); transition-timing-function: var(--curve); transition-duration: 0.4s;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(-5deg)'">
+          <span class="mb-1 block text-lg font-medium" style="color: var(--dm-dark-500);">5</span>
           Añade efectos de sombra con box-shadow
         </div>
       </div>
