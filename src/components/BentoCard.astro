@@ -20,7 +20,7 @@ const {
 } = Astro.props;
 ---
 
-<a href={href} class:list={['relative flex flex-col justify-between overflow-hidden rounded-[40px] pt-10 pb-0', className]}>
+<a href={href} class:list={['group relative flex flex-col justify-between overflow-hidden rounded-[40px] pt-10 pb-0 transition-transform duration-300 hover:-translate-y-[10px]', className]}>
   <!-- Text -->
   <div class="relative z-10 flex flex-col items-end text-right mb-8">
     <span class:list={['text-[10px] font-bold tracking-[0.2em] uppercase mb-1', textColor]}>{subtitle}</span>
@@ -28,7 +28,7 @@ const {
   </div>
   
   <!-- Mockup UI -->
-  <picture class="relative w-[120%] h-[300px] translate-x-[15px] translate-y-[15px]">
+  <picture class="relative w-[120%] h-[300px] translate-x-[15px] translate-y-[15px] transition-transform duration-300 group-hover:translate-y-[25px]">
     <img src={imageSrc} alt={imageAlt} class="w-[100%] h-[100%] rounded-t-[18px] mt-auto object-cover object-top object-left" />
   </picture>
 </a>
