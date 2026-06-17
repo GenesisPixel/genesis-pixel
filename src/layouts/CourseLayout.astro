@@ -344,26 +344,34 @@ const chapters = [
         span.className = 'h1-char';
         span.style.display = 'inline-block';
         span.style.opacity = '0';
-        span.style.transform = 'translateY(20px) rotateX(90deg)';
-        span.style.filter = 'blur(4px)';
         span.style.fontFamily = fontFamily;
         span.textContent = char === ' ' ? '\u00A0' : char;
         h1.appendChild(span);
       });
       
       const chars = h1.querySelectorAll('.h1-char');
+      
+      gsap.set(chars, { 
+        opacity: 0, 
+        y: 60, 
+        rotateX: -40,
+        scale: 0.9,
+        filter: 'blur(10px)' 
+      });
+      
       gsap.to(chars, {
         opacity: 1,
         y: 0,
         rotateX: 0,
+        scale: 1,
         filter: 'blur(0px)',
-        duration: 0.5,
+        duration: 0.9,
         stagger: {
-          each: 0.02,
+          each: 0.025,
           from: 'start'
         },
         ease: 'power3.out',
-        delay: 0.3
+        delay: 0.2
       });
     }
   });
