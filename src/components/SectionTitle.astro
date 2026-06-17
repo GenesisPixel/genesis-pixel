@@ -10,9 +10,11 @@ const shuffled = icons.sort(() => 0.5 - Math.random());
 const icon1 = shuffled[0];
 const icon2 = shuffled[1];
 
-const renderChars = (text: string) => text.split('').map((char) =>
-  char === ' ' ? `<span class="inline-block">&nbsp;</span>` : `<span class="section-title-char inline-block opacity-0">${char}</span>`
-).join('');
+const renderChars = (text: string) => text.split(' ').map((word) =>
+  `<span class="inline-block whitespace-nowrap">` +
+  word.split('').map(char => `<span class="section-title-char inline-block opacity-0">${char}</span>`).join('') +
+  `</span>`
+).join(' ');
 
 const titleChars = renderChars(title);
 ---

@@ -13,9 +13,11 @@ const splitIndex = title.indexOf(' con ');
 const firstLine = title.substring(0, splitIndex);
 const secondLine = title.substring(splitIndex + 1);
 
-const renderChars = (text) => text.split('').map((char) => 
-  char === ' ' ? `<span class="inline-block">&nbsp;</span>` : `<span class="hero-char inline-block opacity-0">${char}</span>`
-).join('');
+const renderChars = (text) => text.split(' ').map(word => 
+  `<span class="inline-block whitespace-nowrap">` +
+  word.split('').map(char => `<span class="hero-char inline-block opacity-0">${char}</span>`).join('') +
+  `</span>`
+).join(' ');
 
 const titleChars = renderChars(firstLine) + '<br/>' + renderChars(secondLine);
 ---
