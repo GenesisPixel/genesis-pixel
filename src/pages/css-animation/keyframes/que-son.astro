@@ -5,6 +5,7 @@ import TabbedCodeBlock from '../../../components/TabbedCodeBlock.astro';
 import ResultPreview from '../../../components/ResultPreview.astro';
 import ConsejoProfesional from '../../../components/ConsejoProfesional.astro';
 import ErroresComunes from '../../../components/ErroresComunes.astro';
+import ErroresComunesV2 from '../../../components/ErroresComunesV2.astro';
 import PracticeCards from '../../../components/PracticeCards.astro';
 import Playground from '../../../components/Playground.astro';
 
@@ -102,6 +103,13 @@ const practiceSteps = [
       { label: 'Omitir el nombre de la animación', description: 'Siempre define un nombre único para cada @keyframes.' },
       { label: 'No incluir todos los estados', description: 'Asegúrate de definir tanto el estado inicial como el final.' },
       { label: 'Usar valores absolutos sin fallback', description: 'Siempre incluye un fallback para navegadores antiguos.' },
+    ]} />
+
+    <ErroresComunesV2 errors={[
+      { label: 'Omitir el nombre de la animación', description: 'Siempre define un nombre único para cada @keyframes.' },
+      { label: 'No incluir todos los estados', description: 'Asegúrate de definir tanto el estado inicial como el final.' },
+      { label: 'Usar valores absolutos sin fallback', description: 'Siempre incluye un fallback para navegadores antiguos.' },
+      { label: 'Olvidar animation-fill-mode', description: 'Sin forwards, el elemento vuelve a su estado original al terminar la animación.' },
     ]} />
 
     <PracticeCards
