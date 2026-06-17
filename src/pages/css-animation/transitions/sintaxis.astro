@@ -5,6 +5,7 @@ import TabbedCodeBlock from '../../../components/TabbedCodeBlock.astro';
 import ResultPreview from '../../../components/ResultPreview.astro';
 import ConsejoProfesional from '../../../components/ConsejoProfesional.astro';
 import ErroresComunes from '../../../components/ErroresComunes.astro';
+import ErroresComunesV2 from '../../../components/ErroresComunesV2.astro';
 import PracticeCards from '../../../components/PracticeCards.astro';
 
 const syntaxExample = `/* Sintaxis completa */
@@ -147,6 +148,13 @@ const practiceSteps = [
       { label: 'No especificar duración', description: 'Sin duration, la transición no será visible porque tendrá una duración de 0s.' },
       { label: 'Mezclar shorthand con propiedades individuales', description: 'Las propiedades individuales pueden sobreescribir el shorthand de forma inesperada.' },
       { label: 'Animar propiedades que no son performantes', description: 'Evita animar width, height, top, left, margin, y padding directamente.' },
+    ]} />
+
+    <ErroresComunesV2 errors={[
+      { label: 'No especificar duración', description: 'Sin duration, la transición no será visible porque tendrá una duración de 0s.' },
+      { label: 'Mezclar shorthand con propiedades individuales', description: 'Las propiedades individuales pueden sobreescribir el shorthand de forma inesperada.' },
+      { label: 'Animar propiedades que no son performantes', description: 'Evita animar width, height, top, left, margin, y padding directamente.' },
+      { label: 'Olvidar el delay en shorthand', description: 'En el shorthand, el primer tiempo es duration y el segundo es delay. Confundirlos rompe la animación.' },
     ]} />
 
     <PracticeCards
