@@ -1,5 +1,6 @@
 ---
 import CourseLayout from '../../../layouts/CourseLayout.astro';
+import PracticeCards from '../../../components/PracticeCards.astro';
 
 const syntaxExample = `/* Sintaxis completa */
 .element {
@@ -61,6 +62,14 @@ const cssCode = `.btn-transition {
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15);
 }`;
+
+const practiceSteps = [
+  { number: 1, text: 'Crea un botón con estilos base atractivos', color: 'dm-purple', rotate: '10deg' },
+  { number: 2, text: 'Agrega transiciones para cada propiedad', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'Define diferentes duraciones para cada una', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Experimenta con diferentes timing functions', color: 'dm-blue', rotate: '2deg' },
+  { number: 5, text: 'Añade efectos de sombra con box-shadow', color: 'dm-red', rotate: '-5deg' },
+];
 ---
 
 <CourseLayout
@@ -198,36 +207,11 @@ const cssCode = `.btn-transition {
       </ul>
     </div>
 
-    <div class="p-6">
-      <h3 class="mb-4 font-medium text-[var(--color-text)]">
-        Practica lo Aprendido
-      </h3>
-      <p class="mb-4 text-sm text-soft-white">
-        Crea un botón que tenga múltiples transiciones: color de fondo, color de texto, sombra, y transformación al hacer hover.
-      </p>
-      <div class="flex gap-3">
-        <div class="flex-1 p-3 text-center text-xs h-[140px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-purple); transform: rotate(10deg); transition: transform 0.2s ease-in-out;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(10deg)'">
-          <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">1</span>
-          <span style="color: var(--color-bg);">Crea un botón con estilos base atractivos</span>
-        </div>
-        <div class="flex-1 p-3 text-center text-xs h-[140px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-green); transform: rotate(2deg); transition: transform 0.2s ease-in-out;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(2deg)'">
-          <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">2</span>
-          <span style="color: var(--color-bg);">Agrega transiciones para cada propiedad</span>
-        </div>
-        <div class="flex-1 p-3 text-center text-xs h-[140px] flex flex-col items-center justify-center transition-transform" style="background: var(--app-color-yellow400); transform: rotate(-5deg); transition: transform 0.2s ease-in-out;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(-5deg)'">
-          <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">3</span>
-          <span style="color: var(--color-bg);">Define diferentes duraciones para cada una</span>
-        </div>
-        <div class="flex-1 p-3 text-center text-xs h-[140px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-blue); transform: rotate(2deg); transition: transform 0.2s ease-in-out;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(2deg)'">
-          <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">4</span>
-          <span style="color: var(--color-bg);">Experimenta con diferentes timing functions</span>
-        </div>
-        <div class="flex-1 p-3 text-center text-xs h-[140px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-red); transform: rotate(-5deg); transition: transform 0.2s ease-in-out;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(-5deg)'">
-          <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">5</span>
-          <span style="color: var(--color-bg);">Añade efectos de sombra con box-shadow</span>
-        </div>
-      </div>
-    </div>
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Crea un botón que tenga múltiples transiciones: color de fondo, color de texto, sombra, y transformación al hacer hover."
+      steps={practiceSteps}
+    />
   </div>
 </CourseLayout>
 

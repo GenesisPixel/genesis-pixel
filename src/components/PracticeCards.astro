@@ -1,0 +1,31 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  steps: { number: number; text: string; color: string; rotate: string }[];
+}
+
+const { title, description, steps } = Astro.props;
+---
+
+<div class="p-6">
+  <h3 class="mb-4 font-medium text-[var(--color-text)]">
+    {title}
+  </h3>
+  <p class="mb-4 text-sm text-soft-white">
+    {description}
+  </p>
+  <div class="flex gap-3">
+    {steps.map((step) => (
+      <div
+        class="flex-1 p-3 text-center text-xs h-[140px] flex flex-col items-center justify-center"
+        style={`background: var(--${step.color}); transform: rotate(${step.rotate}); transition: transform 0.2s ease-in-out;`}
+        onmouseenter="this.style.transform='rotate(0deg)'"
+        onmouseleave={`this.style.transform='rotate(${step.rotate})'`}
+      >
+        <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">{step.number}</span>
+        <span style="color: var(--color-bg);">{step.text}</span>
+      </div>
+    ))}
+  </div>
+</div>

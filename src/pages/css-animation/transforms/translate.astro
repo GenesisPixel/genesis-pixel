@@ -1,5 +1,6 @@
 ---
 import CourseLayout from '../../../layouts/CourseLayout.astro';
+import PracticeCards from '../../../components/PracticeCards.astro';
 
 const translateExample = `/* Movimiento horizontal */
 .element {
@@ -62,6 +63,14 @@ const cssCode = `.slider-item {
     opacity: 1;
   }
 }`;
+
+const practiceSteps = [
+  { number: 1, text: 'Crea 5 elementos div con diferentes textos', color: 'dm-purple', rotate: '10deg' },
+  { number: 2, text: 'Define un @keyframes que use translateX para moverlos', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'Aplica animation-delay escalonado a cada elemento', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Experimenta con diferentes valores de translate', color: 'dm-blue', rotate: '2deg' },
+  { number: 5, text: 'Añade efectos de opacidad para cada entrada', color: 'dm-red', rotate: '-5deg' },
+];
 ---
 
 <CourseLayout
@@ -207,36 +216,11 @@ const cssCode = `.slider-item {
       </ul>
     </div>
 
-    <div class="p-6">
-      <h3 class="mb-4 font-medium text-[var(--color-text)]">
-        Practica lo Aprendido
-      </h3>
-      <p class="mb-4 text-sm text-soft-white">
-        Crea un carrusel de elementos que se deslicen desde la derecha. Cada elemento debe entrar con un ligero retraso escalonado.
-      </p>
-      <div class="flex gap-3">
-        <div class="flex-1 p-3 text-center text-xs h-[140px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-purple); transform: rotate(10deg); transition: transform 0.2s ease-in-out;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(10deg)'">
-          <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">1</span>
-          <span style="color: var(--color-bg);">Crea 5 elementos div con diferentes textos</span>
-        </div>
-        <div class="flex-1 p-3 text-center text-xs h-[140px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-green); transform: rotate(2deg); transition: transform 0.2s ease-in-out;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(2deg)'">
-          <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">2</span>
-          <span style="color: var(--color-bg);">Define un @keyframes que use translateX para moverlos</span>
-        </div>
-        <div class="flex-1 p-3 text-center text-xs h-[140px] flex flex-col items-center justify-center transition-transform" style="background: var(--app-color-yellow400); transform: rotate(-5deg); transition: transform 0.2s ease-in-out;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(-5deg)'">
-          <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">3</span>
-          <span style="color: var(--color-bg);">Aplica animation-delay escalonado a cada elemento</span>
-        </div>
-        <div class="flex-1 p-3 text-center text-xs h-[140px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-blue); transform: rotate(2deg); transition: transform 0.2s ease-in-out;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(2deg)'">
-          <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">4</span>
-          <span style="color: var(--color-bg);">Experimenta con diferentes valores de translate</span>
-        </div>
-        <div class="flex-1 p-3 text-center text-xs h-[140px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-red); transform: rotate(-5deg); transition: transform 0.2s ease-in-out;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(-5deg)'">
-          <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">5</span>
-          <span style="color: var(--color-bg);">Añade efectos de opacidad para cada entrada</span>
-        </div>
-      </div>
-    </div>
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Crea un carrusel de elementos que se deslicen desde la derecha. Cada elemento debe entrar con un ligero retraso escalonado."
+      steps={practiceSteps}
+    />
   </div>
 </CourseLayout>
 

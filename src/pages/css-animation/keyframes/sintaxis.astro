@@ -1,5 +1,6 @@
 ---
 import CourseLayout from '../../../layouts/CourseLayout.astro';
+import PracticeCards from '../../../components/PracticeCards.astro';
 
 const syntaxExample = `/* Sintaxis básica */
 @keyframes animationName {
@@ -39,6 +40,14 @@ const selectorExample = `.element {
 .element {
   animation: fadeIn 0.5s ease-out 0s 1 normal forwards running;
 }`;
+
+const practiceSteps = [
+  { number: 1, text: 'Define un @keyframes con nombre "colorCycle"', color: 'dm-purple', rotate: '10deg' },
+  { number: 2, text: 'Usa 0%, 25%, 50%, 75% y 100% para 4 colores', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'Aplica la animación a un elemento div', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Experimenta con diferentes duraciones', color: 'dm-blue', rotate: '2deg' },
+  { number: 5, text: 'Ajusta las easing functions para efectos suaves', color: 'dm-red', rotate: '-5deg' },
+];
 ---
 
 <CourseLayout
@@ -136,36 +145,11 @@ const selectorExample = `.element {
       </ul>
     </div>
 
-    <div class="p-6">
-      <h3 class="mb-4 font-medium text-[var(--color-text)]">
-        Practica lo Aprendido
-      </h3>
-      <p class="mb-4 text-sm text-soft-white">
-        Crea una animación que cambie el color de fondo de un elemento a través de 4 colores diferentes. Usa porcentajes para definir cada cambio.
-      </p>
-      <div class="flex gap-3">
-        <div class="flex-1 p-3 text-center text-xs h-[140px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-purple); transform: rotate(10deg); transition: transform 0.2s ease-in-out;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(10deg)'">
-          <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">1</span>
-          <span style="color: var(--color-bg);">Define un @keyframes con nombre "colorCycle"</span>
-        </div>
-        <div class="flex-1 p-3 text-center text-xs h-[140px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-green); transform: rotate(2deg); transition: transform 0.2s ease-in-out;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(2deg)'">
-          <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">2</span>
-          <span style="color: var(--color-bg);">Usa 0%, 25%, 50%, 75% y 100% para 4 colores</span>
-        </div>
-        <div class="flex-1 p-3 text-center text-xs h-[140px] flex flex-col items-center justify-center transition-transform" style="background: var(--app-color-yellow400); transform: rotate(-5deg); transition: transform 0.2s ease-in-out;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(-5deg)'">
-          <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">3</span>
-          <span style="color: var(--color-bg);">Aplica la animación a un elemento div</span>
-        </div>
-        <div class="flex-1 p-3 text-center text-xs h-[140px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-blue); transform: rotate(2deg); transition: transform 0.2s ease-in-out;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(2deg)'">
-          <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">4</span>
-          <span style="color: var(--color-bg);">Experimenta con diferentes duraciones</span>
-        </div>
-        <div class="flex-1 p-3 text-center text-xs h-[140px] flex flex-col items-center justify-center transition-transform" style="background: var(--dm-red); transform: rotate(-5deg); transition: transform 0.2s ease-in-out;" onmouseenter="this.style.transform='rotate(0deg)'" onmouseleave="this.style.transform='rotate(-5deg)'">
-          <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">5</span>
-          <span style="color: var(--color-bg);">Ajusta las easing functions para efectos suaves</span>
-        </div>
-      </div>
-    </div>
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Crea una animación que cambie el color de fondo de un elemento a través de 4 colores diferentes. Usa porcentajes para definir cada cambio."
+      steps={practiceSteps}
+    />
   </div>
 </CourseLayout>
 
