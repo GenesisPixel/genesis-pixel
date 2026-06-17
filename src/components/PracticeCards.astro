@@ -8,13 +8,15 @@ interface Props {
 const { title, description, steps } = Astro.props;
 ---
 
-<div class="p-6">
-  <h3 class="mb-4 text-center font-medium text-[var(--color-text)]">
-    {title}
-  </h3>
-  <p class="mb-6 text-center text-sm text-soft-white max-w-2xl mx-auto">
-    {description}
-  </p>
+<div class="py-6">
+  <div class="mb-8">
+    <h3 class="mb-2 text-center font-medium text-[var(--color-text)]">
+      {title}
+    </h3>
+    <p class="text-center text-sm text-soft-white max-w-2xl mx-auto">
+      {description}
+    </p>
+  </div>
   <div class="flex gap-3">
     {steps.map((step) => (
       <div
