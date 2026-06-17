@@ -6,62 +6,66 @@ import BentoCard from './BentoCard.astro';
   <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
     
     <!-- Card 1: AI -->
-    <BentoCard 
-      href="#"
-      class="bg-[#cd94eb] col-span-1 md:col-span-4 px-8"
-      subtitle="Ayuda a los scouts"
-      title="AI"
-      textColor="text-[#5c3e73]"
-      imageAlt="AI Mockup"
-    >
-      <div slot="icons" class="absolute inset-0 z-20 pointer-events-none">
-        <img src="/svg/stars-in-orbit.svg" alt="Icon" class="absolute -top-4 left-4 w-[100px] h-[100px] opacity-0 translate-y-[28px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
+    <div class="col-span-1 md:col-span-4 relative group transition-transform duration-300 hover:-translate-y-[6px]">
+      <div class="absolute inset-0 z-20 pointer-events-none">
+        <img src="/svg/stars-in-orbit.svg" alt="Icon" class="absolute -top-[46px] left-4 w-[112px] h-[112px] opacity-0 translate-y-[28px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
       </div>
-    </BentoCard>
+      <BentoCard 
+        href="#"
+        class="bg-[#cd94eb] px-8"
+        subtitle="Ayuda a los scouts"
+        title="AI"
+        textColor="text-[#5c3e73]"
+        imageAlt="AI Mockup"
+      />
+    </div>
 
     <!-- Card 2: Artículos -->
-    <BentoCard 
-      href="#"
-      class="bg-[#aee2cd] col-span-1 md:col-span-8 px-10"
-      subtitle="Ayuda a los scouts"
-      title="Artículos"
-      textColor="text-[#3a6355]"
-      imageAlt="Artículos Mockup"
-    >
-      <div slot="icons" class="absolute inset-0 z-20 pointer-events-none">
-        <img src="/svg/pencil.svg" alt="Icon" class="absolute -top-4 left-8 w-[100px] h-[100px] opacity-0 translate-y-[28px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
-        <img src="/svg/garabato.svg" alt="Icon" class="absolute top-6 left-1/3 w-[100px] h-[100px] opacity-0 translate-y-[28px] transition-all duration-500 delay-75 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
+    <div class="col-span-1 md:col-span-8 relative group transition-transform duration-300 hover:-translate-y-[6px]">
+      <div class="absolute inset-0 z-20 pointer-events-none">
+        <img src="/svg/pencil.svg" alt="Icon" class="absolute -top-[46px] left-8 w-[112px] h-[112px] opacity-0 translate-y-[28px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
+        <img src="/svg/garabato.svg" alt="Icon" class="absolute -top-[6px] left-1/3 w-[112px] h-[112px] opacity-0 translate-y-[28px] transition-all duration-500 delay-75 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
       </div>
-    </BentoCard>
+      <BentoCard 
+        href="#"
+        class="bg-[#aee2cd] px-10"
+        subtitle="Ayuda a los scouts"
+        title="Artículos"
+        textColor="text-[#3a6355]"
+        imageAlt="Artículos Mockup"
+      />
+    </div>
 
     <!-- Card 3: Figma Plugins -->
-    <BentoCard 
-      href="#"
-      class="bg-[#e3bc9b] col-span-1 md:col-span-8 px-10"
-      subtitle="Figma"
-      title="Plugins"
-      textColor="text-[#5e4b3c]"
-      imageAlt="Plugins Mockup"
-    >
-      <div slot="icons" class="absolute inset-0 z-20 pointer-events-none">
-        <img src="/svg/frame.svg" alt="Icon" class="absolute -top-4 left-8 w-[100px] h-[100px] opacity-0 translate-y-[28px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
-        <img src="/svg/stars.svg" alt="Icon" class="absolute top-4 left-1/3 w-[100px] h-[100px] opacity-0 translate-y-[28px] transition-all duration-500 delay-75 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
+    <div class="col-span-1 md:col-span-8 relative group transition-transform duration-300 hover:-translate-y-[6px]">
+      <div class="absolute inset-0 z-20 pointer-events-none">
+        <img src="/svg/frame.svg" alt="Icon" class="absolute -top-[46px] left-8 w-[112px] h-[112px] opacity-0 translate-y-[28px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
+        <img src="/svg/stars.svg" alt="Icon" class="absolute -top-[14px] left-1/3 w-[112px] h-[112px] opacity-0 translate-y-[28px] transition-all duration-500 delay-75 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
       </div>
-    </BentoCard>
+      <BentoCard 
+        href="#"
+        class="bg-[#e3bc9b] px-10"
+        subtitle="Figma"
+        title="Plugins"
+        textColor="text-[#5e4b3c]"
+        imageAlt="Plugins Mockup"
+      />
+    </div>
 
     <!-- Card 4: Help Scout Mobile -->
-    <BentoCard 
-      href="#"
-      class="bg-[#bce1fb] col-span-1 md:col-span-4 px-8"
-      subtitle="Help Scout"
-      title="Mobile"
-      textColor="text-[#3e5366]"
-      imageAlt="Mobile Mockup"
-    >
-      <div slot="icons" class="absolute inset-0 z-20 pointer-events-none">
-        <img src="/svg/mobile-phone.svg" alt="Icon" class="absolute -top-4 left-4 w-[100px] h-[100px] opacity-0 translate-y-[28px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
+    <div class="col-span-1 md:col-span-4 relative group transition-transform duration-300 hover:-translate-y-[6px]">
+      <div class="absolute inset-0 z-20 pointer-events-none">
+        <img src="/svg/mobile-phone.svg" alt="Icon" class="absolute -top-[46px] left-4 w-[112px] h-[112px] opacity-0 translate-y-[28px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
       </div>
-    </BentoCard>
+      <BentoCard 
+        href="#"
+        class="bg-[#bce1fb] px-8"
+        subtitle="Help Scout"
+        title="Mobile"
+        textColor="text-[#3e5366]"
+        imageAlt="Mobile Mockup"
+      />
+    </div>
 
   </div>
 </section>
