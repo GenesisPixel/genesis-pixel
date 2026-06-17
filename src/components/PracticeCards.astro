@@ -11,7 +11,7 @@ const { title, description, steps } = Astro.props;
 <div class="py-6">
   <div class="mb-8">
     <h3 class="mb-2 text-center font-medium text-[var(--color-text)]">
-      {title}
+      {title.charAt(0).toUpperCase() + title.slice(1).toLowerCase()}
     </h3>
     <p class="text-center text-sm text-soft-white max-w-2xl mx-auto">
       {description}
@@ -25,7 +25,7 @@ const { title, description, steps } = Astro.props;
         onmouseenter="this.style.transform='rotate(0deg)'"
         onmouseleave={`this.style.transform='rotate(${step.rotate})'`}
       >
-        <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">{step.number}</span>
+        <span class="mb-1 block text-lg font-medium font-afronaut" style="color: var(--color-bg);">{String(step.number).padStart(2, '0')}</span>
         <span style="color: var(--color-bg);">{step.text}</span>
       </div>
     ))}
