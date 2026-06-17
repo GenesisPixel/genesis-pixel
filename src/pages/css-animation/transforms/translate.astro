@@ -8,6 +8,7 @@ import ConsejoProfesional from '../../../components/ConsejoProfesional.astro';
 import ErroresComunes from '../../../components/ErroresComunes.astro';
 import ErroresComunesV2 from '../../../components/ErroresComunesV2.astro';
 import ErroresComunesV3 from '../../../components/ErroresComunesV3.astro';
+import ErroresComunesV4 from '../../../components/ErroresComunesV4.astro';
 import PracticeCards from '../../../components/PracticeCards.astro';
 
 const translateExample = `/* Movimiento horizontal */
@@ -162,6 +163,13 @@ const practiceSteps = [
     ]} />
 
     <ErroresComunesV3 errors={[
+      { label: 'Olvidar la unidad', description: 'Siempre especifica una unidad (px, %, em, etc.). Los valores sin unidad pueden causar comportamientos inesperados.' },
+      { label: 'Confundir % en translate con % en top/left', description: 'En translate, el porcentaje se calcula sobre el tamaño del elemento, no del contenedor.' },
+      { label: 'No usar GPU acceleration', description: 'Para mejores performances, combina translate con will-change o transform: translateZ(0).' },
+      { label: 'Usar top/left en lugar de translate', description: 'Animar top/left causa reflow del layout y es mucho menos performante que usar translate.' },
+    ]} />
+
+    <ErroresComunesV4 errors={[
       { label: 'Olvidar la unidad', description: 'Siempre especifica una unidad (px, %, em, etc.). Los valores sin unidad pueden causar comportamientos inesperados.' },
       { label: 'Confundir % en translate con % en top/left', description: 'En translate, el porcentaje se calcula sobre el tamaño del elemento, no del contenedor.' },
       { label: 'No usar GPU acceleration', description: 'Para mejores performances, combina translate con will-change o transform: translateZ(0).' },
