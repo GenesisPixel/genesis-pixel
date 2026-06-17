@@ -1,0 +1,50 @@
+---
+interface Props {
+  title: string;
+}
+
+const { title } = Astro.props;
+---
+
+<div class="relative flex justify-center">
+  <div class="relative inline-block">
+    <img src="/svg/stars-in-orbit.svg" alt="" class="absolute -top-8 -right-14 w-[80px] opacity-60 svg-icon-animate" aria-hidden="true" />
+    <img src="/svg/stars.svg" alt="" class="absolute -bottom-4 w-[50px] opacity-60 svg-icon-animate-delay" style="left: 80px;" aria-hidden="true" />
+    <h1 class="font-afronaut font-light text-[var(--color-text)]" style="line-height: 0.85; letter-spacing: -0.05em;">
+      {title}
+    </h1>
+  </div>
+</div>
+
+<script>
+  import gsap from 'gsap';
+
+  document.addEventListener('astro:page-load', () => {
+    const icons = document.querySelectorAll('.svg-icon-animate');
+    const iconsDelay = document.querySelectorAll('.svg-icon-animate-delay');
+
+    icons.forEach(el => {
+      gsap.set(el, { opacity: 0, y: 30, filter: 'blur(8px)' });
+      gsap.to(el, {
+        opacity: 0.6,
+        y: 0,
+        filter: 'blur(0px)',
+        duration: 0.8,
+        ease: 'power3.out',
+        delay: 1.2
+      });
+    });
+
+    iconsDelay.forEach(el => {
+      gsap.set(el, { opacity: 0, y: 30, filter: 'blur(8px)' });
+      gsap.to(el, {
+        opacity: 0.6,
+        y: 0,
+        filter: 'blur(0px)',
+        duration: 0.8,
+        ease: 'power3.out',
+        delay: 1.4
+      });
+    });
+  });
+</script>
