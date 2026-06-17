@@ -21,6 +21,8 @@ const {
 ---
 
 <a href={href} class:list={['group relative flex flex-col justify-between overflow-hidden rounded-[40px] pt-10 pb-0 transition-transform duration-300 hover:-translate-y-[6px]', className]}>
+  <slot name="icons" />
+  
   <!-- Text -->
   <div class="relative z-10 flex flex-col items-end text-right mb-8">
     <span class:list={['text-[10px] font-bold tracking-[0.2em] uppercase mb-1', textColor]}>{subtitle}</span>
