@@ -11,18 +11,21 @@ const { errors } = Astro.props;
     Errores Comunes
   </h3>
   <div class="flex flex-col gap-4">
-    {errors.map((error, index) => (
-      <div class="block w-full">
-        <div 
-          class="w-fit max-w-[90%] rounded-[20px] bg-[var(--color-text)] p-5 text-[var(--color-bg)] shadow-md transition-transform hover:-translate-y-1"
-          style={`transform: translateX(${index * 20}px);`}
-        >
-          <p class="m-0 text-[15px] font-medium">
-            <span class="mr-1 font-bold text-[16px]">{error.label}:</span>
-            {error.description}
-          </p>
+    {errors.slice(0, 4).map((error, index) => {
+      const widths = ['380px', '320px', '400px', '300px'];
+      return (
+        <div class="block w-full">
+          <div
+            style={`width: ${widths[index]}; transform: translateX(${index * 20}px);`}
+            class="rounded-[20px] bg-[var(--color-text)] px-4 py-3 text-[var(--color-bg)] shadow-md transition-transform hover:-translate-y-1"
+          >
+            <p class="m-0 text-[12px] leading-snug">
+              <span class="mr-1 font-bold text-[13px]">{error.label}:</span>
+              {error.description}
+            </p>
+          </div>
         </div>
-      </div>
-    ))}
+      );
+    })}
   </div>
 </div>
