@@ -173,9 +173,9 @@ const multiplesCode = `.hero-image {
 <style>
   .glow-box {
     padding: 12px 24px;
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 12px;
+    background: var(--dm-purple, #9FA6FF);
+    border: none;
+    border-radius: 0;
     color: var(--color-bg);
     font-family: var(--font-afronaut, system-ui, sans-serif);
     font-weight: bold;
@@ -184,16 +184,20 @@ const multiplesCode = `.hero-image {
     animation-duration: 3s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+  }
+
+  .glow-box:hover {
+    opacity: 0.8;
   }
 
   @keyframes textGlowEffect {
     0%, 100% {
       box-shadow: 0 0 5px 0px rgba(168, 85, 247, 0.2);
-      border-color: rgba(168, 85, 247, 0.2);
     }
     50% {
       box-shadow: 0 0 20px 2px rgba(168, 85, 247, 0.6);
-      border-color: rgba(168, 85, 247, 0.8);
     }
   }
 </style>

@@ -27,8 +27,8 @@ const htmlCode = `<div class="speed-tester">
 </div>`;
 
 const cssCode = `@keyframes slideAcross {
-  0%, 100% { transform: translateX(0); }
-  50% { transform: translateX(calc(100% - 16px)); }
+  0%, 100% { left: 2px; }
+  50% { left: calc(100% - 18px); }
 }
 
 .speed-tester {
@@ -63,6 +63,9 @@ const cssCode = `@keyframes slideAcross {
   height: 16px;
   border-radius: 50%;
   background-color: var(--dm-purple, #a855f7);
+  position: absolute;
+  top: 2px;
+  left: 2px;
   animation: slideAcross infinite ease-in-out;
 }
 
@@ -213,8 +216,8 @@ const practiceSteps = [
 
 <style>
   @keyframes slideAcross {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(calc(100% - 16px)); }
+    0%, 100% { left: 2px; }
+    50% { left: calc(100% - 18px); }
   }
 
   .speed-tester {
@@ -249,6 +252,9 @@ const practiceSteps = [
     height: 16px;
     border-radius: 50%;
     background-color: var(--dm-purple, #a855f7);
+    position: absolute;
+    top: 2px;
+    left: 2px;
     animation: slideAcross infinite ease-in-out;
   }
 
