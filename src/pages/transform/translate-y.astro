@@ -1,25 +1,198 @@
 ---
 import TransformLayout from '../../layouts/TransformLayout.astro';
 import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
 
+const htmlCode = `<div class="contenedor-cards">
+  <div class="card-producto">
+    <div class="card-img"></div>
+    <h4>Producto Premium</h4>
+    <p>Calidad superior garantizada</p>
+    <button class="btn-comprar">Añadir al carrito</button>
+  </div>
+</div>`;
+
+const cssCode = `.card-producto {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+  padding: 20px;
+  color: white;
+  font-family: system-ui, sans-serif;
+  cursor: pointer;
+  
+  /* Preparamos la transición */
+  transition: transform 0.35s ease, box-shadow 0.35s ease;
+}
+
+/* La tarjeta se eleva al pasar el ratón */
+.card-producto:hover {
+  transform: translateY(-12px);
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
+}
+
+.btn-comprar {
+  /* El botón también reacciona, pero con un offset distinto */
+  transition: transform 0.25s ease;
+}
+
+.card-producto:hover .btn-comprar {
+  transform: translateY(-3px);
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Crea una tarjeta sencilla con fondo y padding', color: 'dm-purple', rotate: '-2deg' },
+  { number: 2, text: 'Añade transition: transform 0.3s ease en la tarjeta', color: 'dm-green', rotate: '3deg' },
+  { number: 3, text: 'En el :hover de la tarjeta usa transform: translateY(-8px)', color: 'app-color-yellow400', rotate: '-4deg' },
+  { number: 4, text: 'Experimenta con valores negativos y positivos para ver la diferencia', color: 'dm-blue', rotate: '2deg' },
+];
 ---
 
 <TransformLayout
   title="Translate Y - Genesis Pixel"
   currentLesson="/transform/translate-y"
-  prevLesson={{ title: 'Lección Anterior', href: '/transform/translate-x' }}
-  nextLesson={{ title: 'Lección Siguiente', href: '/transform/translate' }}
+  prevLesson={{ title: 'Translate X', href: '/transform/translate-x' }}
+  nextLesson={{ title: 'Translate', href: '/transform/translate' }}
 >
   <ChapterHeader
     chapterNumber="02"
     chapterLabel="Capítulo 2 · Lección 4"
     title="Translate Y"
-    readingTime={5}
+    readingTime={6}
     difficulty="CSS Transform"
   />
 
   <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
-    <h3>Próximamente...</h3>
-    <p>Estamos redactando esta lección con historias reales y ejemplos visuales de calidad premium.</p>
+    <h3>El efecto de elevación que seduce al usuario</h3>
+    <p>
+      Hay una razón por la que las tarjetas de producto en Shopify, las tarjetas de artículo en Medium y las opciones de precio en Stripe hacen exactamente lo mismo cuando pasas el ratón por encima: se elevan ligeramente. No suben mucho, apenas unos 8 o 12 píxeles. Pero ese pequeño movimiento cambia por completo la percepción del usuario.
+    </p>
+    <p>
+      Esta técnica universal se llama "elevación por hover" y se implementa exclusivamente con <code>translateY()</code> y una sombra más profunda. Es la piedra angular del diseño de interfaces interactivas premium.
+    </p>
+
+    <h3>¿Qué es translateY?</h3>
+    <p>
+      <code>translateY()</code> mueve un elemento a lo largo del <strong>eje Y</strong> (la línea vertical) sin alterar nada a su alrededor. El eje Y en un navegador funciona así:
+    </p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Valores Negativos (ej. -12px):</strong> Mueven el elemento hacia <strong>arriba</strong>. Es el valor que más usarás para efectos de elevación en hover.</li>
+      <li><strong>Valores Positivos (ej. 12px):</strong> Mueven el elemento hacia <strong>abajo</strong>. Ideal para animar entradas de elementos desde fuera de la pantalla por la parte superior.</li>
+    </ul>
+
+    <h3>La psicología detrás del efecto</h3>
+    <p>
+      En el mundo físico, cuando acercas la mano a un objeto, este parece elevarse para recibirla (piensa en un botón físico que sobresale, listo para ser presionado). Nuestros cerebros, acostumbrados a cientos de millones de años de física real, están hardwireados para interpretar un objeto que se eleva como algo que está "disponible para interactuar".
+    </p>
+    <p>
+      Al combinar <code>translateY(-12px)</code> con un <code>box-shadow</code> más grande y profundo en el estado hover, creas una ilusión perfecta de elevación que activa instintivamente el deseo de hacer clic.
+    </p>
+
+    <h3>Animaciones de entrada: el fade-in que cae</h3>
+    <p>
+      Más allá del hover, <code>translateY()</code> es fundamental para las animaciones de entrada (enter animations). Una técnica muy usada en landings premium es la de hacer que los elementos aparezcan cayendo suavemente desde arriba:
+    </p>
+    <p>
+      El elemento empieza con <code>translateY(-30px)</code> y <code>opacity: 0</code>. Al cargar la página, se anima a <code>translateY(0)</code> y <code>opacity: 1</code>. Esta combinación es tan efectiva que prácticamente todas las landing pages de startups de alto calibre la usan.
+    </p>
+
+    <h3>Casos reales</h3>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>E-commerce (Shopify, WooCommerce):</strong> Tarjetas de producto que se elevan con <code>translateY(-8px)</code> en el hover.</li>
+      <li><strong>Blogs y Medios (Medium, Substack):</strong> Tarjetas de artículos que suben ligeramente al hacer hover.</li>
+      <li><strong>SaaS Dashboards:</strong> Widgets de métricas que reaccionan visualmente para indicar que son clickeables.</li>
+      <li><strong>Menús desplegables (Dropdowns):</strong> Suelen animarse apareciendo desde arriba con <code>translateY(-10px)</code> a <code>translateY(0)</code>.</li>
+    </ul>
   </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="El 'sweet spot' para un efecto de elevación en hover de tarjeta es entre -6px y -16px. Menos de 6px pasa desapercibido. Más de 16px se percibe como un error. Ajusta según el tamaño de la tarjeta: tarjetas pequeñas con valores pequeños, tarjetas grandes con valores mayores. No olvides añadir una transición también al box-shadow para completar la ilusión." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Elevación en acción
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="translatey-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Pasa el ratón sobre la tarjeta. Observa cómo se eleva suavemente con translateY(-12px) y la sombra se vuelve más profunda para completar la ilusión.">
+      <div class="flex items-center justify-center h-full w-full p-4">
+        <div class="card-demo">
+          <div class="card-img-demo"></div>
+          <h4 class="my-2 text-sm font-semibold text-white">Producto Premium</h4>
+          <p class="my-0 text-xs text-white/50">Calidad superior garantizada</p>
+          <button class="btn-demo mt-3">Añadir al carrito</button>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Elevar demasiado (-50px o más)', description: 'Un desplazamiento exagerado rompe la realidad. El elemento parece saltar en lugar de elevarse, lo que desorientas al usuario.' },
+      { label: 'Olvidar la transición en box-shadow', description: 'Muchos devs animan el translateY pero olvidan poner transition en box-shadow también. El resultado es un movimiento suave pero una sombra que aparece bruscamente.' },
+      { label: 'Animar top en lugar de translateY', description: 'La propiedad top fuerza un recálculo del layout. translateY usa la GPU y es notablemente más fluido. Siempre usa transform.' },
+    ]} />
+
+    <PracticeCards
+      title="Eleva tus Cards"
+      description="Toma una de las tarjetas de tu proyecto y aplica el efecto de elevación. Prueba diferentes valores entre -6px y -20px para encontrar el punto dulce de tu diseño."
+      steps={practiceSteps}
+    />
+  </div>
 </TransformLayout>
+
+<style>
+  .card-demo {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 16px;
+    width: 100%;
+    max-width: 220px;
+    cursor: pointer;
+    transition: transform 0.35s ease, box-shadow 0.35s ease;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+
+  :global(.preview-container:hover) .card-demo {
+    transform: translateY(-12px);
+    box-shadow: 0 24px 48px rgba(0,0,0,0.6);
+  }
+
+  .card-img-demo {
+    width: 100%;
+    height: 80px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #a855f7, #3b82f6);
+    margin-bottom: 8px;
+  }
+
+  .btn-demo {
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    color: #a855f7;
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 11px;
+    font-family: var(--font-afronaut, system-ui, sans-serif);
+    cursor: pointer;
+    transition: transform 0.25s ease, background 0.25s ease;
+    width: 100%;
+  }
+
+  :global(.preview-container:hover) .btn-demo {
+    transform: translateY(-3px);
+    background: rgba(168, 85, 247, 0.25);
+  }
+</style>

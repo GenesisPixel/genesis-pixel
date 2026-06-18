@@ -1,25 +1,209 @@
 ---
 import TransformLayout from '../../layouts/TransformLayout.astro';
 import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
 
+const htmlCode = `<div class="contenedor-centrado">
+  <div class="tooltip-trigger">
+    Pasa el ratón
+    <div class="tooltip">¡Hola! Estoy perfectamente centrado.</div>
+  </div>
+</div>`;
+
+const cssCode = `.tooltip-trigger {
+  position: relative;
+  display: inline-block;
+  padding: 12px 24px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  color: white;
+  font-family: system-ui, sans-serif;
+  cursor: default;
+}
+
+.tooltip {
+  position: absolute;
+  
+  /* Centrado horizontal perfecto con translate */
+  left: 50%;
+  transform: translate(-50%, -10px);
+  
+  /* Posición base: encima del elemento */
+  bottom: calc(100% + 8px);
+  
+  background: #a855f7;
+  color: white;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.25s ease;
+}
+
+.tooltip-trigger:hover .tooltip {
+  opacity: 1;
+  /* Al aparecer, vuelve a su posición base */
+  transform: translate(-50%, 0);
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Crea un elemento con position: relative', color: 'dm-purple', rotate: '2deg' },
+  { number: 2, text: 'Añade un hijo con position: absolute, left: 50%', color: 'dm-green', rotate: '-3deg' },
+  { number: 3, text: 'Aplica transform: translate(-50%, -50%) al hijo', color: 'app-color-yellow400', rotate: '4deg' },
+  { number: 4, text: 'Observa cómo queda perfectamente centrado sin importar su tamaño', color: 'dm-blue', rotate: '-1deg' },
+];
 ---
 
 <TransformLayout
   title="Translate - Genesis Pixel"
   currentLesson="/transform/translate"
-  prevLesson={{ title: 'Lección Anterior', href: '/transform/translate-y' }}
-  nextLesson={{ title: 'Lección Siguiente', href: '/transform/scale' }}
+  prevLesson={{ title: 'Translate Y', href: '/transform/translate-y' }}
+  nextLesson={{ title: 'Scale', href: '/transform/scale' }}
 >
   <ChapterHeader
     chapterNumber="02"
     chapterLabel="Capítulo 2 · Lección 5"
     title="Translate"
-    readingTime={5}
+    readingTime={7}
     difficulty="CSS Transform"
   />
 
   <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
-    <h3>Próximamente...</h3>
-    <p>Estamos redactando esta lección con historias reales y ejemplos visuales de calidad premium.</p>
+    <h3>La solución elegante al problema de centrado</h3>
+    <p>
+      Durante años, centrar un elemento de tamaño desconocido en CSS fue uno de los mayores dolores de cabeza en el desarrollo frontend. Si no sabías exactamente cuántos píxeles medía el elemento, era prácticamente imposible centrarlo con precisión usando solo <code>top</code> y <code>left</code>.
+    </p>
+    <p>
+      Había que usar margin negativo, pero ese valor era fijo. Si el elemento cambiaba de tamaño por el contenido, el centrado se rompía. Flexbox resolvió muchos casos, pero no todos, especialmente en el posicionamiento absoluto.
+    </p>
+    <p>
+      La solución definitiva llegó con <code>translate()</code> y el uso estratégico de porcentajes.
+    </p>
+
+    <h3>Movimiento en dos ejes simultáneos</h3>
+    <p>
+      <code>translate(x, y)</code> es simplemente una versión combinada de <code>translateX()</code> y <code>translateY()</code> en una sola función. El primer valor controla el eje horizontal y el segundo el vertical:
+    </p>
+    <div class="p-4 bg-white/5 rounded-lg border border-white/10 my-4 font-mono text-sm text-[var(--dm-light-200)]">
+      <span class="text-[var(--color-text)]">/* Equivalencias exactas */</span><br/>
+      transform: translate(50px, 30px);<br/>
+      <span class="opacity-50">/* = translateX(50px) translateY(30px) */</span>
+    </div>
+
+    <h3>El truco del centrado perfecto</h3>
+    <p>
+      Ahora viene la técnica que todo desarrollador frontend debe memorizar. Es sencilla, pero cambia por completo la forma en que piensas sobre el posicionamiento:
+    </p>
+    <p>
+      Si pones un elemento en <code>position: absolute</code> con <code>top: 50%</code> y <code>left: 50%</code>, el navegador coloca la <strong>esquina superior izquierda</strong> del elemento exactamente en el centro de su contenedor. Eso no es lo que quieres.
+    </p>
+    <p>
+      Si añades <code>transform: translate(-50%, -50%)</code>, el elemento se mueve hacia la izquierda un 50% de <strong>su propio ancho</strong> y hacia arriba un 50% de <strong>su propia altura</strong>. Como recordarás, los porcentajes en <code>transform</code> son relativos al propio elemento, no al padre. Esto lo coloca perfectamente centrado, sin importar cuánto mida.
+    </p>
+    <div class="p-4 bg-white/5 rounded-lg border border-white/10 my-4 font-mono text-sm text-[var(--dm-light-200)]">
+      .elemento-centrado {"{"}
+      <br/>&nbsp;&nbsp;position: absolute;<br/>
+      &nbsp;&nbsp;top: 50%;<br/>
+      &nbsp;&nbsp;left: 50%;<br/>
+      &nbsp;&nbsp;<span class="text-green-400">transform: translate(-50%, -50%);</span> <span class="opacity-50">/* La clave */</span><br/>
+      {"}"}
+    </div>
+
+    <h3>Tooltips: el caso de uso más común</h3>
+    <p>
+      Los tooltips (las pequeñas burbujas de texto que aparecen al hacer hover sobre un icono) son probablemente el caso de uso más frecuente de esta técnica. El tooltip necesita aparecer centrado horizontalmente sobre su elemento padre, sin importar cuánto texto contenga. Si el texto cambia, el centrado debe mantenerse automáticamente.
+    </p>
+    <p>
+      La solución es colocar el tooltip con <code>left: 50%</code> y luego moverlo con <code>translate(-50%, 0)</code> para que su centro quede alineado con el centro del padre.
+    </p>
+
+    <h3>Diferencia clave con top y left</h3>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>top/left:</strong> Mueven la posición del elemento <em>en el flujo del documento</em>, lo que puede afectar al layout. No son amigables para la GPU.</li>
+      <li><strong>translate():</strong> Mueve únicamente la <em>representación visual</em> del elemento, sin tocar el layout. La GPU lo maneja eficientemente.</li>
+    </ul>
   </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="translate(-50%, -50%) para centrar absolutamente es una técnica tan fundamental que debes tenerla memorizada. No es magia, es matemática: llevamos el elemento a la mitad del padre con top/left y luego lo retrocedemos la mitad de sí mismo con transform. Es el centrado CSS más robusto que existe fuera de Flexbox/Grid." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Tooltip centrado con Translate
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="translate-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Pasa el ratón sobre el botón. El tooltip aparece perfectamente centrado gracias a translate(-50%, 0), independientemente de cuánto texto contenga.">
+      <div class="flex items-center justify-center h-full w-full">
+        <div class="tooltip-trigger-demo">
+          Pasa el ratón
+          <div class="tooltip-demo">¡Hola! Estoy perfectamente centrado.</div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Usar margin: auto para centrar elementos absolutos', description: 'margin: auto no funciona en elementos con position: absolute a menos que definas todos los lados (top, right, bottom, left). translate(-50%, -50%) es mucho más predecible y poderoso.' },
+      { label: 'Olvidar el segundo valor de translate()', description: 'translate(50%) equivale a translate(50%, 0). Si escribes translate(50%, ) con una coma pero sin segundo valor, el CSS se invalida. Siempre pon ambos valores o usa translateX() / translateY().' },
+    ]} />
+
+    <PracticeCards
+      title="Centra cualquier cosa"
+      description="Crea un modal (ventana emergente) que aparezca perfectamente centrado en la pantalla usando position: fixed con top:50%, left:50% y transform: translate(-50%, -50%)."
+      steps={practiceSteps}
+    />
+  </div>
 </TransformLayout>
+
+<style>
+  .tooltip-trigger-demo {
+    position: relative;
+    display: inline-block;
+    padding: 12px 24px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 10px;
+    color: white;
+    font-family: var(--font-afronaut, system-ui, sans-serif);
+    cursor: default;
+    font-size: 0.85rem;
+  }
+
+  .tooltip-demo {
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -8px);
+    bottom: calc(100% + 10px);
+    background: #a855f7;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.2s ease, transform 0.25s ease;
+  }
+
+  .tooltip-trigger-demo:hover .tooltip-demo {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+</style>
