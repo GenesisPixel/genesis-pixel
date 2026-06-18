@@ -26,10 +26,29 @@ let animationId;
 
 function setup() {
   if (animationId) window.cancelAnimationFrame(animationId);
-	createCanvas();
+
+  container = document.querySelector('.content--canvas');
+
+  // If the canvas already exists (persisted via transition:persist), reuse it.
+  // Otherwise create a fresh one.
+  const existingCanvas = container && container.querySelector('canvas');
+  if (!existingCanvas) {
+    createCanvas();
+  } else {
+    // Restore references to the existing persisted canvases
+    canvas = {
+      a: document.createElement('canvas'),
+      b: existingCanvas
+    };
+    ctx = {
+      a: canvas.a.getContext('2d'),
+      b: canvas.b.getContext('2d')
+    };
+  }
+
   resize();
   initCircles();
-	draw();
+  draw();
 }
 
 function initCircles() {
@@ -165,10 +184,6 @@ function draw() {
 	animationId = window.requestAnimationFrame(draw);
 }
 
-// Only initialize once — the canvas container is persisted via transition:persist
-// so we must NOT re-call setup() on subsequent page navigations.
-if (!window.__gradientBlurInitialized) {
-  window.__gradientBlurInitialized = true;
-  document.addEventListener('astro:page-load', setup, { once: true });
-}
+// Re-run setup on every page navigation — the canvas is reused if persisted
+document.addEventListener('astro:page-load', setup);
 window.addEventListener('resize', resize);

@@ -73,10 +73,10 @@ const titleChars = renderChars(firstLine) + '<br/>' + renderChars(secondLine);
 
   <div class="relative z-10 mx-auto max-w-4xl text-center">
     <div class="relative inline-block">
-      <h1 id="hero-title" class="relative font-afronaut font-light text-[var(--color-text)]" style="line-height: 0.85; letter-spacing: -0.05em; font-family: var(--font-afronaut);">
+      <img src="/svg/stars-in-orbit.svg" alt="" class="absolute -top-10 -right-12 w-[90px] opacity-60 svg-animate" aria-hidden="true" />
+      <img src="/svg/stars.svg" alt="" class="absolute -bottom-4 w-[55px] opacity-60 svg-animate-delay" style="left: 90px;" aria-hidden="true" />
+      <h1 id="hero-title" class="font-afronaut font-light text-[var(--color-text)]" style="line-height: 0.85; letter-spacing: -0.05em; font-family: var(--font-afronaut);">
         <Fragment set:html={titleChars} />
-        <img src="/svg/stars-in-orbit.svg" alt="" class="absolute -top-6 -right-8 w-[90px] opacity-60 svg-animate" aria-hidden="true" />
-        <img src="/svg/stars.svg" alt="" class="absolute -bottom-2 w-[55px] opacity-60 svg-animate-delay" style="left: 90px;" aria-hidden="true" />
       </h1>
     </div>
 
