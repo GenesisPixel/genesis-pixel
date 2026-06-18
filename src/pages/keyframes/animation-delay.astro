@@ -98,12 +98,16 @@ const cssCode = `@keyframes pulseScale {
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 9999px;
   padding: 2px;
+  position: relative;
 }
 
 .dot {
   width: 16px;
   height: 16px;
   border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
   animation: slideDelay 2s infinite ease-in-out;
 }
 
@@ -229,8 +233,8 @@ const practiceSteps = [
   }
 
   @keyframes slideDelay {
-    0%, 100% { transform: translateX(0); }
-    50% { transform: translateX(calc(100% - 16px)); }
+    0%, 100% { left: 2px; }
+    50% { left: calc(100% - 18px); }
   }
 
   .delay-container {
@@ -288,12 +292,16 @@ const practiceSteps = [
     background-color: rgba(255, 255, 255, 0.05);
     border-radius: 9999px;
     padding: 2px;
+    position: relative;
   }
 
   .dot {
     width: 16px;
     height: 16px;
     border-radius: 50%;
+    position: absolute;
+    top: 2px;
+    left: 2px;
     animation: slideDelay 2s infinite ease-in-out;
   }
 

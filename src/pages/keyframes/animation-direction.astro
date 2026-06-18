@@ -27,8 +27,8 @@ const htmlCode = `<div class="direction-demo">
 </div>`;
 
 const cssCode = `@keyframes moveRight {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(calc(100% - 16px)); }
+  0%   { left: 2px; }
+  100% { left: calc(100% - 18px); }
 }
 
 .direction-demo {
@@ -55,6 +55,7 @@ const cssCode = `@keyframes moveRight {
   background-color: rgba(255, 255, 255, 0.05);
   border-radius: 9999px;
   padding: 2px;
+  position: relative;
 }
 
 .dot {
@@ -62,6 +63,9 @@ const cssCode = `@keyframes moveRight {
   height: 16px;
   border-radius: 50%;
   background-color: var(--dm-purple, #a855f7);
+  position: absolute;
+  top: 2px;
+  left: 2px;
   animation: moveRight 2s infinite ease-in-out;
 }
 
@@ -195,8 +199,8 @@ const practiceSteps = [
 
 <style>
   @keyframes moveRight {
-    0% { transform: translateX(0); }
-    100% { transform: translateX(calc(100% - 16px)); }
+    0%   { left: 2px; }
+    100% { left: calc(100% - 18px); }
   }
 
   .direction-demo {
@@ -218,6 +222,7 @@ const practiceSteps = [
     background-color: rgba(255, 255, 255, 0.05);
     border-radius: 9999px;
     padding: 2px;
+    position: relative;
   }
 
   .dot {
@@ -225,6 +230,9 @@ const practiceSteps = [
     height: 16px;
     border-radius: 50%;
     background-color: var(--dm-purple, #a855f7);
+    position: absolute;
+    top: 2px;
+    left: 2px;
     animation: moveRight 2s infinite ease-in-out;
   }
 
