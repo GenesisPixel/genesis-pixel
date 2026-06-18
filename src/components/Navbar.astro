@@ -3,6 +3,7 @@ const navItems = [
   { href: '/', label: 'Inicio' },
   { href: '/aprender', label: 'Aprender' },
   { href: '/keyframes/que-son', label: 'Keyframes' },
+  { href: '/transform/que-es', label: 'Transform' },
   { href: '/ejemplos', label: 'Ejemplos' },
   { href: '/proyectos', label: 'Proyectos' },
   { href: '/recursos', label: 'Recursos' },
@@ -357,7 +358,10 @@ const navItems = [
     const currentPath = window.location.pathname;
     navLinks?.querySelectorAll('a[data-nav-item]').forEach((link) => {
       const href = link.getAttribute('href');
-      const isActive = href === currentPath || (href === '/keyframes/que-son' && currentPath.startsWith('/keyframes/'));
+      const isActive =
+        href === currentPath ||
+        (href === '/keyframes/que-son' && currentPath.startsWith('/keyframes/')) ||
+        (href === '/transform/que-es' && currentPath.startsWith('/transform/'));
       if (isActive) {
         link.classList.add('active');
       } else {
@@ -366,7 +370,10 @@ const navItems = [
     });
     mobileMenu?.querySelectorAll('a').forEach((link) => {
       const href = link.getAttribute('href');
-      const isActive = href === currentPath || (href === '/keyframes/que-son' && currentPath.startsWith('/keyframes/'));
+      const isActive =
+        href === currentPath ||
+        (href === '/keyframes/que-son' && currentPath.startsWith('/keyframes/')) ||
+        (href === '/transform/que-es' && currentPath.startsWith('/transform/'));
       if (isActive) {
         link.classList.add('active');
       } else {
