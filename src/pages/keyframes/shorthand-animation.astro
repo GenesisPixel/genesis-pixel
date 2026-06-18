@@ -32,12 +32,12 @@ const cssCode = `/* Equivalente Longhand (8 líneas) */
 @keyframes slideGlow {
   from {
     transform: translateX(-40px);
-    background-color: var(--dm-purple, #a855f7);
+    background-color: #a855f7;
     box-shadow: 0 0 5px rgba(168, 85, 247, 0.4);
   }
   to {
     transform: translateX(40px);
-    background-color: var(--dm-green, #22c55e);
+    background-color: #22c55e;
     box-shadow: 0 0 20px rgba(34, 197, 94, 0.8);
   }
 }`;
@@ -167,12 +167,12 @@ const multipleShorthandCode = `.button-fancy {
   @keyframes slideGlow {
     from {
       transform: translateX(-40px);
-      background-color: var(--dm-purple, #a855f7);
+      background-color: #a855f7;
       box-shadow: 0 0 5px rgba(168, 85, 247, 0.4);
     }
     to {
       transform: translateX(40px);
-      background-color: var(--dm-green, #22c55e);
+      background-color: #22c55e;
       box-shadow: 0 0 20px rgba(34, 197, 94, 0.8);
     }
   }
@@ -180,14 +180,14 @@ const multipleShorthandCode = `.button-fancy {
   .shorthand-box {
     width: 100px;
     height: 40px;
-    background-color: var(--dm-purple, #a855f7);
+    background-color: #a855f7;
     border-radius: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.75rem;
-    color: var(--color-bg);
-    font-family: var(--font-afronaut, system-ui, sans-serif);
+    color: #121212;
+    font-family: system-ui, sans-serif;
     font-weight: bold;
     animation: slideGlow 2s ease-in-out 0.5s infinite alternate both;
   }

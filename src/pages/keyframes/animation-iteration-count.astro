@@ -46,7 +46,7 @@ const cssCode = `@keyframes spinAround {
 
 .label {
   font-size: 0.75rem;
-  color: var(--dm-light-300);
+  color: #9ca3af;
 }
 
 .box-container {
@@ -61,12 +61,12 @@ const cssCode = `@keyframes spinAround {
   width: 32px;
   height: 32px;
   border-radius: 8px;
-  background-color: var(--dm-purple, #a855f7);
+  background-color: #a855f7;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-bg);
-  font-family: var(--font-afronaut, system-ui, sans-serif);
+  color: #121212;
+  font-family: system-ui, sans-serif;
   font-weight: bold;
   font-size: 0.75rem;
   animation: spinAround 1.5s ease-in-out;
@@ -78,12 +78,12 @@ const cssCode = `@keyframes spinAround {
 
 .iter-3 {
   animation-iteration-count: 3;
-  background-color: var(--dm-blue, #3b82f6);
+  background-color: #3b82f6;
 }
 
 .iter-infinite {
   animation-iteration-count: infinite;
-  background-color: var(--dm-green, #22c55e);
+  background-color: #22c55e;
 }`;
 
 const practiceSteps = [
@@ -168,15 +168,15 @@ const practiceSteps = [
       <div class="flex items-center justify-center h-full w-full px-4">
         <div class="iteration-demo">
           <div class="demo-card">
-            <span class="label" style="font-size: 0.75rem; color: var(--dm-light-300);">iteration-count: 1</span>
+            <span class="label" style="font-size: 0.75rem; color: #9ca3af;">iteration-count: 1</span>
             <div class="box-container"><div class="spin-box iter-1">1</div></div>
           </div>
           <div class="demo-card">
-            <span class="label" style="font-size: 0.75rem; color: var(--dm-light-300);">iteration-count: 3</span>
+            <span class="label" style="font-size: 0.75rem; color: #9ca3af;">iteration-count: 3</span>
             <div class="box-container"><div class="spin-box iter-3">3</div></div>
           </div>
           <div class="demo-card">
-            <span class="label" style="font-size: 0.75rem; color: var(--dm-light-300);">iteration-count: infinite</span>
+            <span class="label" style="font-size: 0.75rem; color: #9ca3af;">iteration-count: infinite</span>
             <div class="box-container"><div class="spin-box iter-infinite">∞</div></div>
           </div>
         </div>
@@ -233,12 +233,12 @@ const practiceSteps = [
     width: 32px;
     height: 32px;
     border-radius: 0;
-    background-color: var(--dm-purple, #a855f7);
+    background-color: #a855f7;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: var(--color-bg);
-    font-family: var(--font-afronaut, system-ui, sans-serif);
+    color: #121212;
+    font-family: system-ui, sans-serif;
     font-weight: 700;
     font-size: 0.875rem;
     animation: spinAround 1.5s ease-in-out;
@@ -250,12 +250,12 @@ const practiceSteps = [
 
   .iter-3 {
     animation-iteration-count: 3;
-    background-color: var(--dm-blue, #3b82f6);
+    background-color: #3b82f6;
   }
 
   .iter-infinite {
     animation-iteration-count: infinite;
-    background-color: var(--dm-green, #22c55e);
+    background-color: #22c55e;
   }
 </style>
 

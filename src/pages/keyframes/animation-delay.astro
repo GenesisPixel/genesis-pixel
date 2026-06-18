@@ -64,14 +64,14 @@ const cssCode = `@keyframes pulseScale {
   width: 24px;
   height: 24px;
   border-radius: 50%;
-  background-color: var(--dm-purple, #a855f7);
+  background-color: #a855f7;
   animation: pulseScale 2s infinite ease-in-out;
 }
 
 /* Secuenciación (Staggering) */
 .delay-0 { animation-delay: 0s; }
-.delay-1 { animation-delay: 0.2s; background-color: var(--dm-blue, #3b82f6); }
-.delay-2 { animation-delay: 0.4s; background-color: var(--dm-green, #22c55e); }
+.delay-1 { animation-delay: 0.2s; background-color: #3b82f6; }
+.delay-2 { animation-delay: 0.4s; background-color: #22c55e; }
 
 .tracks-column {
   display: flex;
@@ -87,7 +87,7 @@ const cssCode = `@keyframes pulseScale {
 
 .track-label {
   font-size: 0.65rem;
-  color: var(--dm-light-300);
+  color: #9ca3af;
   width: 120px;
   flex-shrink: 0;
 }
@@ -113,12 +113,12 @@ const cssCode = `@keyframes pulseScale {
 
 .pos-delay {
   animation-delay: 1s;
-  background-color: var(--dm-red, #ef4444);
+  background-color: #ef4444;
 }
 
 .neg-delay {
   animation-delay: -1s; /* Empieza al 50% inmediatamente */
-  background-color: var(--dm-green, #22c55e);
+  background-color: #22c55e;
 }`;
 
 const practiceSteps = [
@@ -186,7 +186,7 @@ const practiceSteps = [
       <div class="flex items-center justify-center h-full w-full px-4">
         <div class="delay-container">
           <div class="stagger-group">
-            <span class="label" style="font-size:0.75rem; color:var(--dm-light-300);">Efecto Secuencia (Staggered)</span>
+            <span class="label" style="font-size:0.75rem; color:#9ca3af;">Efecto Secuencia (Staggered)</span>
             <div class="circles-row">
               <div class="circle delay-0"></div>
               <div class="circle delay-1"></div>
@@ -195,7 +195,7 @@ const practiceSteps = [
           </div>
           
           <div class="stagger-group">
-            <span class="label" style="font-size:0.75rem; color:var(--dm-light-300);">Delay Negativo vs Positivo</span>
+            <span class="label" style="font-size:0.75rem; color:#9ca3af;">Delay Negativo vs Positivo</span>
             <div class="tracks-column">
               <div class="track-row">
                 <span class="track-label">Delay +1s (Espera)</span>
@@ -259,13 +259,13 @@ const practiceSteps = [
     width: 24px;
     height: 24px;
     border-radius: 50%;
-    background-color: var(--dm-purple, #a855f7);
+    background-color: #a855f7;
     animation: pulseScale 2s infinite ease-in-out;
   }
 
   .delay-0 { animation-delay: 0s; }
-  .delay-1 { animation-delay: 0.2s; background-color: var(--dm-blue, #3b82f6); }
-  .delay-2 { animation-delay: 0.4s; background-color: var(--dm-green, #22c55e); }
+  .delay-1 { animation-delay: 0.2s; background-color: #3b82f6; }
+  .delay-2 { animation-delay: 0.4s; background-color: #22c55e; }
 
   .tracks-column {
     display: flex;
@@ -281,7 +281,7 @@ const practiceSteps = [
 
   .track-label {
     font-size: 0.65rem;
-    color: var(--dm-light-300);
+    color: #9ca3af;
     width: 120px;
     flex-shrink: 0;
   }
@@ -307,12 +307,12 @@ const practiceSteps = [
 
   .pos-delay {
     animation-delay: 1s;
-    background-color: var(--dm-red, #ef4444);
+    background-color: #ef4444;
   }
 
   .neg-delay {
     animation-delay: -1s;
-    background-color: var(--dm-green, #22c55e);
+    background-color: #22c55e;
   }
 </style>
 
