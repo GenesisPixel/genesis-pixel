@@ -1,25 +1,212 @@
 ---
 import TransformLayout from '../../layouts/TransformLayout.astro';
 import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
 
+const htmlCode = `<div class="contenedor-botones">
+  <button class="btn-principal">Empezar ahora</button>
+  <button class="btn-icono">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+    </svg>
+  </button>
+</div>`;
+
+const cssCode = `.btn-principal {
+  background: #a855f7;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  padding: 14px 28px;
+  font-family: system-ui, sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  
+  /* Transición suave */
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+              box-shadow 0.25s ease;
+}
+
+/* Al hacer hover: el botón crece y se eleva */
+.btn-principal:hover {
+  transform: scale(1.06);
+  box-shadow: 0 8px 24px rgba(168, 85, 247, 0.4);
+}
+
+/* Al hacer clic: el botón se comprime (feedback táctil) */
+.btn-principal:active {
+  transform: scale(0.97);
+  box-shadow: none;
+}
+
+/* Botón de icono que crece de forma uniforme */
+.btn-icono {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 50%;
+  padding: 12px;
+  cursor: pointer;
+  color: white;
+  transition: transform 0.2s ease, color 0.2s ease;
+}
+
+.btn-icono:hover {
+  transform: scale(1.15);
+  color: #f43f5e;
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Crea un botón con fondo de color y padding generoso', color: 'dm-purple', rotate: '2deg' },
+  { number: 2, text: 'Añade transition: transform 0.2s ease en el botón', color: 'dm-green', rotate: '-3deg' },
+  { number: 3, text: 'En el :hover usa scale(1.05) y en el :active usa scale(0.97)', color: 'app-color-yellow400', rotate: '4deg' },
+  { number: 4, text: 'Prueba scaleX(1.2) o scaleY(0.8) por separado para efectos creativos', color: 'dm-blue', rotate: '-1deg' },
+];
 ---
 
 <TransformLayout
   title="Scale - Genesis Pixel"
   currentLesson="/transform/scale"
-  prevLesson={{ title: 'Lección Anterior', href: '/transform/translate' }}
-  nextLesson={{ title: 'Lección Siguiente', href: '/transform/rotate' }}
+  prevLesson={{ title: 'Translate', href: '/transform/translate' }}
+  nextLesson={{ title: 'Rotate', href: '/transform/rotate' }}
 >
   <ChapterHeader
     chapterNumber="02"
     chapterLabel="Capítulo 2 · Lección 6"
     title="Scale"
-    readingTime={5}
+    readingTime={7}
     difficulty="CSS Transform"
   />
 
   <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
-    <h3>Próximamente...</h3>
-    <p>Estamos redactando esta lección con historias reales y ejemplos visuales de calidad premium.</p>
+    <h3>El lenguaje del "haz clic en mí"</h3>
+    <p>
+      Hay un lenguaje visual que los diseñadores de interacción llevan décadas refinando. Es un código implícito que los usuarios aprenden sin darse cuenta, simplemente navegando por miles de aplicaciones. Uno de los vocabularios más poderosos de ese código es la escala: cuando algo crece, está disponible para interactuar. Cuando algo se encoge, está siendo presionado.
+    </p>
+    <p>
+      Stripe, Apple, Airbnb y Linear lo usan en cada uno de sus botones primarios. El efecto es tan sutil que el usuario no lo procesa conscientemente, pero lo siente: el botón respira. Está vivo. Quiere que hagas clic.
+    </p>
+
+    <h3>¿Qué es scale()?</h3>
+    <p>
+      <code>scale()</code> cambia el tamaño visual de un elemento sin alterar el espacio que ocupa en el layout. Piensa en él como una lupa que amplía o reduce la imagen del elemento en su pantalla de cristal, sin mover la lupa de su sitio.
+    </p>
+    <p>
+      Los valores funcionan como multiplicadores:
+    </p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>scale(1):</strong> Tamaño original. Es el punto de partida neutral.</li>
+      <li><strong>scale(1.1):</strong> 10% más grande. Un crecimiento sutil y elegante, perfecto para hovers.</li>
+      <li><strong>scale(1.5):</strong> 50% más grande. Llamativo, se usa en galerías y efectos de zoom.</li>
+      <li><strong>scale(0.95):</strong> 5% más pequeño. Ideal para el estado <code>:active</code> de botones, simulando que se presionan físicamente.</li>
+      <li><strong>scale(0):</strong> El elemento desaparece (tamaño cero). Útil para animaciones de aparición/desaparición.</li>
+    </ul>
+
+    <h3>Escalado uniforme vs independiente</h3>
+    <p>
+      <code>scale(valor)</code> con un solo valor escala el elemento de forma proporcional en ambos ejes. Pero también puedes controlar cada eje por separado:
+    </p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><code>scaleX(1.5)</code>: Solo ensancha el elemento horizontalmente.</li>
+      <li><code>scaleY(0.5)</code>: Solo aplana el elemento verticalmente.</li>
+      <li><code>scale(1.5, 0.8)</code>: Versión abreviada de ambas (ensancha y aplana al mismo tiempo).</li>
+    </ul>
+    <p>
+      El escalado independiente es una herramienta de diseño creativa. Puedes usar <code>scaleX()</code> para animar una barra de progreso que crece horizontalmente, o <code>scaleY()</code> para hacer que un accordion se "despliegue" verticalmente de forma orgánica.
+    </p>
+
+    <h3>El trío de estados: rest → hover → active</h3>
+    <p>
+      El patrón más efectivo en la industria para los botones de llamada a la acción (CTA) es el siguiente: el botón empieza en su tamaño normal (<code>scale(1)</code>), crece al hacer hover (<code>scale(1.05)</code>) y se comprime al hacer clic (<code>scale(0.97)</code>). Esta secuencia simula perfectamente la física de presionar un botón real y genera un feedback visual que satisface profundamente al usuario.
+    </p>
   </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Usa cubic-bezier(0.34, 1.56, 0.64, 1) como función de timing para scale. Este 'ease de muelle' (spring ease) genera un pequeño rebote que hace que el crecimiento se sienta orgánico y no mecánico. Es el mismo efecto que Apple y otras marcas premium usan en sus interfaces." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Escala viva
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="scale-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Pasa el ratón y haz clic en los botones. El botón principal crece en hover y se comprime en :active. El icono de corazón crece con spring ease.">
+      <div class="flex items-center justify-center gap-4 h-full w-full flex-wrap">
+        <button class="btn-demo-scale">Empezar ahora</button>
+        <button class="btn-icono-demo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+          </svg>
+        </button>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Escalar más allá de 1.2 en hover de botones', description: 'Un botón que crece demasiado al hacer hover parece que "huye" del cursor. El rango elegante es entre 1.03 y 1.08 para botones de texto, y hasta 1.15 para iconos o elementos pequeños.' },
+      { label: 'Escalar sin transition', description: 'Sin una transición definida, scale() saltará de un valor al otro bruscamente. Siempre incluye transition: transform en el estado base del elemento, no en el :hover, para que también funcione al salir.' },
+      { label: 'Escalar con width o height', description: 'Cambiar width o height animado causa layout reflow. Usa scale() para animar el tamaño visual, siempre.' },
+    ]} />
+
+    <PracticeCards
+      title="Botones que respiran"
+      description="Crea tres variantes de botón: uno que solo crece en hover, uno que crece y se comprime al hacer clic, y uno de icono que late (scale loop con animación keyframe)."
+      steps={practiceSteps}
+    />
+  </div>
 </TransformLayout>
+
+<style>
+  .btn-demo-scale {
+    background: #a855f7;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 14px 28px;
+    font-family: var(--font-afronaut, system-ui, sans-serif);
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.25s ease;
+  }
+
+  .btn-demo-scale:hover {
+    transform: scale(1.06);
+    box-shadow: 0 8px 24px rgba(168, 85, 247, 0.45);
+  }
+
+  .btn-demo-scale:active {
+    transform: scale(0.97);
+    box-shadow: none;
+  }
+
+  .btn-icono-demo {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease;
+  }
+
+  .btn-icono-demo:hover {
+    transform: scale(1.2);
+    color: #f43f5e;
+  }
+</style>
