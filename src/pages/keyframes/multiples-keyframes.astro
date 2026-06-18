@@ -1,0 +1,231 @@
+---
+import CourseLayout from '../../layouts/CourseLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="bounce-container">
+  <div class="bounce-ball"></div>
+  <div class="bounce-shadow"></div>
+</div>`;
+
+const cssCode = `@keyframes multiBounce {
+  0%, 100% {
+    transform: translateY(0) scaleY(1);
+    animation-timing-function: ease-out;
+  }
+  25% {
+    transform: translateY(-60px) scaleY(1.05);
+    animation-timing-function: ease-in;
+  }
+  50% {
+    transform: translateY(0) scaleY(0.85) scaleX(1.1);
+    animation-timing-function: ease-out;
+  }
+  75% {
+    transform: translateY(-25px) scaleY(1.02);
+    animation-timing-function: ease-in;
+  }
+}
+
+@keyframes shadowScale {
+  0%, 50%, 100% {
+    transform: scaleX(1);
+    opacity: 0.4;
+  }
+  25%, 75% {
+    transform: scaleX(0.5);
+    opacity: 0.15;
+  }
+}
+
+.bounce-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  position: relative;
+}
+
+.bounce-ball {
+  width: 40px;
+  height: 40px;
+  background-color: var(--dm-purple, #a855f7);
+  border-radius: 50%;
+  z-index: 2;
+  animation: multiBounce 2s infinite;
+}
+
+.bounce-shadow {
+  width: 36px;
+  height: 6px;
+  background-color: black;
+  border-radius: 50%;
+  margin-top: 8px;
+  z-index: 1;
+  animation: shadowScale 2s infinite;
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Define un keyframe al 0%, 25%, 50%, 75% y 100%', color: 'dm-purple', rotate: '3deg' },
+  { number: 2, text: 'Al 50% simula el impacto en el suelo encogiendo la escala en Y', color: 'dm-green', rotate: '-2deg' },
+  { number: 3, text: 'En los puntos altos (25% y 75%) estira levemente el elemento', color: 'app-color-yellow400', rotate: '4deg' },
+  { number: 4, text: 'Combina funciones de tiempo (ease-in / ease-out) por tramos para realismo', color: 'dm-blue', rotate: '-4deg' },
+];
+---
+
+<CourseLayout
+  title="Múltiples Keyframes - Genesis Pixel"
+  currentLesson="/keyframes/multiples-keyframes"
+  prevLesson={{ title: 'Propiedades animables', href: '/keyframes/propiedades-animables' }}
+  nextLesson={{ title: 'Animation Name', href: '/keyframes/animation-name' }}
+>
+  <ChapterHeader
+    chapterNumber="01"
+    chapterLabel="Capítulo 1 · Lección 5"
+    title="Múltiples Keyframes"
+    readingTime={8}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Animaciones complejas con múltiples estados</h3>
+    <p>
+      Para lograr que una animación se sienta orgánica y profesional, rara vez bastará con definir solo el inicio y el final. Mediante el uso de múltiples estados (o checkpoints intermedios), podemos controlar perfectamente el comportamiento del elemento en puntos específicos del tiempo, como rebotes, fluctuaciones y aceleraciones localizadas.
+    </p>
+
+    <h3>Efecto de rebote (Bounce)</h3>
+    <p>
+      El rebote clásico se basa en la gravedad: el objeto acelera hacia abajo, colisiona con una superficie (sufriendo una pequeña deformación física), rebota perdiendo energía hacia arriba, y vuelve a caer.
+    </p>
+    <p>
+      En CSS, esto se logra alternando propiedades de escala y traslación vertical con diferentes funciones de aceleración:
+    </p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Estiramiento (Stretch):</strong> Al subir o bajar, el elemento se estira verticalmente debido a la velocidad.</li>
+      <li><strong>Aplastamiento (Squash):</strong> Al impactar contra el suelo, el elemento se comprime verticalmente y se expande a los lados.</li>
+    </ul>
+
+    <h3>Efecto de ondas (Waves)</h3>
+    <p>
+      Los efectos de onda u oscilaciones constantes se logran combinando traslaciones u opacidades desfasadas. Por ejemplo, al animar 3 puntos suspensivos cargando en una interfaz (loading indicators), definimos una única animación de onda vertical y aplicamos un retraso (delay) incremental en cada elemento.
+    </p>
+
+    <h3>Casos reales de interfaces premium</h3>
+    <p>
+      Los múltiples keyframes se emplean frecuentemente en:
+    </p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Modales con rebote elástico:</strong> Una animación de entrada rápida que se pasa ligeramente del tamaño final y se asienta de manera suave.</li>
+      <li><strong>Notificaciones (Shake/Vibración):</strong> Múltiples keyframes en tramos cortos (ej. 10%, 20%, 30%...) que mueven el elemento a izquierda y derecha rápidamente para llamar la atención del usuario ante un error.</li>
+    </ul>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Para efectos elásticos o de rebote, la combinación de translate y scale en el mismo transform mantiene un código limpio y aprovecha al máximo la GPU." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="multi-keyframes"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Una esfera que rebota y se deforma al chocar contra el suelo virtual, acompañada por su sombra que simula la distancia relativa.">
+      <div class="flex items-center justify-center h-full w-full">
+        <div class="bounce-container">
+          <div class="bounce-ball"></div>
+          <div class="bounce-shadow"></div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Movimiento robotizado', description: 'Omitir las curvas de aceleración (ease-in/ease-out) por tramos hace que el rebote parezca artificial y carente de inercia.' },
+      { label: 'Excesivo número de fotogramas', description: 'Definir fotogramas para cada 1% de tiempo es innecesario y ralentiza el mantenimiento del código.' },
+      { label: 'No sincronizar elementos relacionados', description: 'Asegúrate de que las animaciones secundarias (como la sombra del ejemplo) compartan la misma duración para que no se desfase el rebote.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Diseña una animación de sacudida (shake) para simular un ingreso de contraseña incorrecto usando al menos 5 keyframes intermedios."
+      steps={practiceSteps}
+    />
+  </div>
+</CourseLayout>
+
+<style>
+  @keyframes multiBounce {
+    0%, 100% {
+      transform: translateY(0) scaleY(1);
+      animation-timing-function: ease-out;
+    }
+    25% {
+      transform: translateY(-60px) scaleY(1.05);
+      animation-timing-function: ease-in;
+    }
+    50% {
+      transform: translateY(0) scaleY(0.85) scaleX(1.1);
+      animation-timing-function: ease-out;
+    }
+    75% {
+      transform: translateY(-25px) scaleY(1.02);
+      animation-timing-function: ease-in;
+    }
+  }
+
+  @keyframes shadowScale {
+    0%, 50%, 100% {
+      transform: scaleX(1);
+      opacity: 0.4;
+    }
+    25%, 75% {
+      transform: scaleX(0.5);
+      opacity: 0.15;
+    }
+  }
+
+  .bounce-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 120px;
+    position: relative;
+  }
+
+  .bounce-ball {
+    width: 40px;
+    height: 40px;
+    background-color: var(--dm-purple, #a855f7);
+    border-radius: 50%;
+    z-index: 2;
+    animation: multiBounce 2s infinite;
+  }
+
+  .bounce-shadow {
+    width: 36px;
+    height: 6px;
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    margin-top: 8px;
+    z-index: 1;
+    animation: shadowScale 2s infinite;
+  }
+</style>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+</script>

@@ -1,0 +1,263 @@
+---
+import CourseLayout from '../../layouts/CourseLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="iteration-demo">
+  <div class="demo-card">
+    <span class="label">iteration-count: 1 (Por defecto)</span>
+    <div class="box-container"><div class="spin-box iter-1">1</div></div>
+  </div>
+  <div class="demo-card">
+    <span class="label">iteration-count: 3</span>
+    <div class="box-container"><div class="spin-box iter-3">3</div></div>
+  </div>
+  <div class="demo-card">
+    <span class="label">iteration-count: infinite</span>
+    <div class="box-container"><div class="spin-box iter-infinite">∞</div></div>
+  </div>
+</div>`;
+
+const cssCode = `@keyframes spinAround {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.iteration-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.demo-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(255, 255, 255, 0.02);
+  padding: 8px 16px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.label {
+  font-size: 0.75rem;
+  color: var(--dm-light-300);
+}
+
+.box-container {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.spin-box {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background-color: var(--dm-purple, #a855f7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.75rem;
+  animation: spinAround 1.5s ease-in-out;
+}
+
+.iter-1 {
+  animation-iteration-count: 1;
+}
+
+.iter-3 {
+  animation-iteration-count: 3;
+  background-color: var(--dm-blue, #3b82f6);
+}
+
+.iter-infinite {
+  animation-iteration-count: infinite;
+  background-color: var(--dm-green, #22c55e);
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Prueba a definir repeticiones finitas (ej. 2 o 4) en tus animaciones', color: 'dm-purple', rotate: '2deg' },
+  { number: 2, text: 'Usa infinite en elementos decorativos continuos como planetas rotando o loaders', color: 'dm-green', rotate: '-3deg' },
+  { number: 3, text: 'Aprende que puedes usar números decimales (ej. 1.5 para terminar a media animación)', color: 'app-color-yellow400', rotate: '5deg' },
+  { number: 4, text: 'Limita las animaciones llamativas a un máximo de 3 iteraciones para no sobrecargar visualmente', color: 'dm-blue', rotate: '-1deg' },
+];
+---
+
+<CourseLayout
+  title="Animation Iteration Count - Genesis Pixel"
+  currentLesson="/keyframes/animation-iteration-count"
+  prevLesson={{ title: 'Animation Delay', href: '/keyframes/animation-delay' }}
+  nextLesson={{ title: 'Animation Direction', href: '/keyframes/animation-direction' }}
+>
+  <ChapterHeader
+    chapterNumber="01"
+    chapterLabel="Capítulo 1 · Lección 10"
+    title="Animation Iteration Count"
+    readingTime={6}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es animation-iteration-count?</h3>
+    <p>
+      La propiedad <code>animation-iteration-count</code> determina cuántas veces se debe repetir el ciclo de una animación antes de detenerse de forma definitiva. Por defecto, su valor es <code>1</code>, lo que significa que la animación se reproduce exactamente una vez de inicio a fin.
+    </p>
+
+    <h3>Valores numéricos específicos</h3>
+    <p>
+      Puedes indicar cualquier número entero positivo (como <code>2</code>, <code>5</code>, <code>10</code>). Curiosamente, **también se permiten números fraccionarios o decimales**. Por ejemplo, un valor de <code>1.5</code> reproducirá la animación una vez completa y luego se detendrá exactamente a la mitad de su segundo recorrido.
+    </p>
+
+    <h3>Bucle infinito (infinite)</h3>
+    <p>
+      El valor especial <code>infinite</code> hace que la animación se repita indefinidamente en un loop sin fin. Esto es ideal para componentes web que deben estar en constante funcionamiento, como:
+    </p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li>Spinners o indicadores de carga (loaders).</li>
+      <li>Ilustraciones animadas de fondo.</li>
+      <li>Pequeños pulsos de estado (ej. un círculo verde que palpita para indicar que un servidor está online).</li>
+    </ul>
+
+    <h3>Cuándo usarlo: UX y buenas prácticas</h3>
+    <p>
+      Aunque las animaciones continuas son divertidas de crear, representan una gran amenaza para la usabilidad y el rendimiento:
+    </p>
+    <ul class="space-y-3 mt-4 mb-8 list-none pl-0">
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>Distracción visual:</strong> El ojo humano está biológicamente programado para detectar movimiento. Si hay un banner parpadeando indefinidamente al lado de un texto, el usuario tendrá dificultades para concentrarse en la lectura.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>Consumo de batería:</strong> Mantener la GPU o la CPU renderizando elementos a 60fps continuamente consume mucha energía en dispositivos móviles.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>Regla general:</strong> Las animaciones que busquen llamar la atención del usuario (ej. un sacudón en un botón de "¡Compra ahora!") no deben repetirse más de 3 veces.</span>
+      </li>
+    </ul>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Si deseas crear una animación de entrada que luego quede estática, déjala con el valor por defecto 1 y asegúrate de aplicar fill-mode: forwards." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="iteration-count-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Compara cómo se comporta el mismo giro en función de sus iteraciones: el morado se detiene al dar un giro, el azul da tres giros, y el verde gira indefinidamente.">
+      <div class="flex items-center justify-center h-full w-full px-4">
+        <div class="iteration-demo">
+          <div class="demo-card">
+            <span class="label" style="font-size: 0.75rem; color: var(--dm-light-300);">iteration-count: 1</span>
+            <div class="box-container"><div class="spin-box iter-1">1</div></div>
+          </div>
+          <div class="demo-card">
+            <span class="label" style="font-size: 0.75rem; color: var(--dm-light-300);">iteration-count: 3</span>
+            <div class="box-container"><div class="spin-box iter-3">3</div></div>
+          </div>
+          <div class="demo-card">
+            <span class="label" style="font-size: 0.75rem; color: var(--dm-light-300);">iteration-count: infinite</span>
+            <div class="box-container"><div class="spin-box iter-infinite">∞</div></div>
+          </div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Escribir "infinity" en lugar de "infinite"', description: 'Infinity es un concepto matemático, pero la propiedad CSS solo reconoce el término "infinite".' },
+      { label: 'Valores negativos', description: 'Definir iteraciones negativas es inválido y cancelará la animación por completo.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Experimenta aplicando iteraciones fraccionarias como 2.5 en tu animación para ver exactamente en qué punto se detiene."
+      steps={practiceSteps}
+    />
+  </div>
+</CourseLayout>
+
+<style>
+  @keyframes spinAround {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .iteration-demo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .demo-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: rgba(255, 255, 255, 0.02);
+    padding: 8px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .box-container {
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .spin-box {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background-color: var(--dm-purple, #a855f7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 0.75rem;
+    animation: spinAround 1.5s ease-in-out;
+  }
+
+  .iter-1 {
+    animation-iteration-count: 1;
+  }
+
+  .iter-3 {
+    animation-iteration-count: 3;
+    background-color: var(--dm-blue, #3b82f6);
+  }
+
+  .iter-infinite {
+    animation-iteration-count: infinite;
+    background-color: var(--dm-green, #22c55e);
+  }
+</style>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+</script>

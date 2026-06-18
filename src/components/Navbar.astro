@@ -2,7 +2,7 @@
 const navItems = [
   { href: '/', label: 'Inicio' },
   { href: '/aprender', label: 'Aprender' },
-  { href: '/css-animation', label: 'CSS Animation' },
+  { href: '/keyframes/que-son', label: 'Keyframes' },
   { href: '/ejemplos', label: 'Ejemplos' },
   { href: '/proyectos', label: 'Proyectos' },
   { href: '/recursos', label: 'Recursos' },
@@ -326,7 +326,8 @@ const navItems = [
     const currentPath = window.location.pathname;
     navLinks?.querySelectorAll('a[data-nav-item]').forEach((link) => {
       const href = link.getAttribute('href');
-      if (href === currentPath) {
+      const isActive = href === currentPath || (href === '/keyframes/que-son' && currentPath.startsWith('/keyframes/'));
+      if (isActive) {
         link.classList.add('active');
       } else {
         link.classList.remove('active');
@@ -334,7 +335,8 @@ const navItems = [
     });
     mobileMenu?.querySelectorAll('a').forEach((link) => {
       const href = link.getAttribute('href');
-      if (href === currentPath) {
+      const isActive = href === currentPath || (href === '/keyframes/que-son' && currentPath.startsWith('/keyframes/'));
+      if (isActive) {
         link.classList.add('active');
       } else {
         link.classList.remove('active');

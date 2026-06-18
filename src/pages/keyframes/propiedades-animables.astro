@@ -1,0 +1,230 @@
+---
+import CourseLayout from '../../layouts/CourseLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="performant-demo">
+  <div class="box box-gpu">GPU (Transform)</div>
+  <div class="box box-cpu">CPU (Left)</div>
+</div>`;
+
+const cssCode = `/* Animación optimizada con GPU */
+@keyframes gpuMove {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(80px);
+  }
+}
+
+/* Animación pesada con CPU (Layout changes) */
+@keyframes cpuMove {
+  0%, 100% {
+    left: 0px;
+  }
+  50% {
+    left: 80px;
+  }
+}
+
+.performant-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.box {
+  width: 140px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: bold;
+  border-radius: 8px;
+  color: white;
+  position: relative;
+}
+
+.box-gpu {
+  background-color: var(--dm-green, #22c55e);
+  animation: gpuMove 2s infinite ease-in-out;
+}
+
+.box-cpu {
+  background-color: var(--dm-red, #ef4444);
+  animation: cpuMove 2s infinite ease-in-out;
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Identifica una propiedad animable (numérica, color, posición)', color: 'dm-purple', rotate: '2deg' },
+  { number: 2, text: 'Compara el rendimiento usando DevTools > Rendering', color: 'dm-green', rotate: '-3deg' },
+  { number: 3, text: 'Sustituye animaciones de "left/top" por "transform: translate()"', color: 'app-color-yellow400', rotate: '4deg' },
+  { number: 4, text: 'Intenta cambiar el color o la opacidad para ver transiciones suaves', color: 'dm-blue', rotate: '1deg' },
+];
+---
+
+<CourseLayout
+  title="Propiedades animables - Genesis Pixel"
+  currentLesson="/keyframes/propiedades-animables"
+  prevLesson={{ title: 'Cómo funciona la línea de tiempo', href: '/keyframes/linea-tiempo' }}
+  nextLesson={{ title: 'Múltiples Keyframes', href: '/keyframes/multiples-keyframes' }}
+>
+  <ChapterHeader
+    chapterNumber="01"
+    chapterLabel="Capítulo 1 · Lección 4"
+    title="Propiedades animables"
+    readingTime={8}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué significa animable?</h3>
+    <p>
+      Una propiedad CSS es **animable** si el navegador puede interpolar de manera continua y fluida sus valores desde un punto inicial a uno final. Por lo general, esto incluye valores numéricos (como dimensiones en <code>px</code>, <code>em</code>, <code>rem</code>, <code>%</code>), colores (formatos <code>rgb</code>, <code>hsl</code>, <code>hex</code>) y valores geométricos.
+    </p>
+
+    <h3>Propiedades animables populares</h3>
+    <ul class="space-y-3 mt-4 mb-8 list-none pl-0">
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>opacity:</strong> Controla la opacidad del elemento (0 a 1) y es sumamente eficiente en rendimiento.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>transform:</strong> Permite escalar, rotar, trasladar o inclinar. Es la propiedad reina de la aceleración por hardware.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>color & background-color:</strong> Cambios de color interpolados mediante transiciones cromáticas en el canal RGB/HSL.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>width & height:</strong> Modifican las dimensiones físicas, pero tienen un costo de rendimiento alto.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>top, left, bottom, right:</strong> Modifican la posición física del elemento si está posicionado. Al igual que el ancho/alto, activan el ciclo de layout del navegador.</span>
+      </li>
+    </ul>
+
+    <h3>¿Cuáles NO son animables?</h3>
+    <p>
+      Propiedades cuyos valores cambian abruptamente de un estado discreto a otro no se pueden interpolar.
+    </p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><code>display</code>: No se puede animar entre <code>none</code> y <code>block</code>. Si quieres desvanecer un elemento, anima su <code>opacity</code> y luego usa JavaScript, u otras técnicas modernas como <code>@starting-style</code> (en navegadores compatibles).</li>
+      <li><code>font-family</code>: No hay término medio lógico entre Arial y Times New Roman.</li>
+    </ul>
+
+    <h3>Rendimiento y el pipeline de renderizado</h3>
+    <p>
+      El navegador pasa por tres etapas principales para renderizar un cambio en pantalla:
+    </p>
+    <ol class="space-y-2 list-decimal pl-6">
+      <li><strong>Layout (Reflow):</strong> Calcula el tamaño y posición de todos los elementos. Animar <code>width</code>, <code>height</code>, <code>top</code>, <code>left</code> o <code>margin</code> obliga al navegador a recalcular toda la página. ¡Evítalo!</li>
+      <li><strong>Paint:</strong> Dibuja los píxeles de los elementos en capas individuales. Animar <code>color</code>, <code>background-color</code> o <code>box-shadow</code> activa este paso.</li>
+      <li><strong>Composite:</strong> Combina las capas de la página. Animar <code>transform</code> u <code>opacity</code> solo activa la composición, que es ejecutada directamente por la tarjeta gráfica (GPU). ¡Es ultra rápido!</li>
+    </ol>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Usa la regla de oro: siempre que sea posible, reemplaza las animaciones de 'top/left' por 'transform: translate3d(x, y, 0)' para que la GPU procese la animación de manera fluida a 60fps." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Comparativa de Rendimiento
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="performance-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Ambos elementos hacen el mismo movimiento visual, pero el verde (GPU) no genera reflows, mientras que el rojo (CPU) fuerza al navegador a recalcular el Layout constantemente.">
+      <div class="flex items-center justify-center h-full w-full px-4">
+        <div class="performant-demo">
+          <div class="box box-gpu">GPU (Transform)</div>
+          <div class="box box-cpu">CPU (Left)</div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Animar la propiedad "display"', description: 'Cambiar a display: none ocurre instantáneamente al final o al inicio sin interpolarse. Usa opacity.' },
+      { label: 'Animar propiedades físicas en móviles', description: 'Animar width, height o margins en dispositivos de gama baja causará lag en el scroll.' },
+      { label: 'Olvidar la aceleración de hardware', description: 'Usa transformaciones 3D vacías como translateZ(0) o la propiedad will-change para indicarle al navegador que active la GPU.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Convierte una animación existente que use posiciones absolutas (top/left) a una versión optimizada que emplee transformaciones 2D/3D."
+      steps={practiceSteps}
+    />
+  </div>
+</CourseLayout>
+
+<style>
+  @keyframes gpuMove {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    50% {
+      transform: translateX(80px);
+    }
+  }
+
+  @keyframes cpuMove {
+    0%, 100% {
+      left: 0px;
+    }
+    50% {
+      left: 80px;
+    }
+  }
+
+  .performant-demo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .box {
+    width: 140px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: bold;
+    border-radius: 8px;
+    color: white;
+    position: relative;
+  }
+
+  .box-gpu {
+    background-color: var(--dm-green, #22c55e);
+    animation: gpuMove 2s infinite ease-in-out;
+  }
+
+  .box-cpu {
+    background-color: var(--dm-red, #ef4444);
+    animation: cpuMove 2s infinite ease-in-out;
+  }
+</style>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+</script>

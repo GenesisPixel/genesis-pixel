@@ -1,0 +1,314 @@
+---
+import CourseLayout from '../../layouts/CourseLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="delay-container">
+  <div class="stagger-group">
+    <span class="label">Efecto Secuencia (Staggered)</span>
+    <div class="circles-row">
+      <div class="circle delay-0"></div>
+      <div class="circle delay-1"></div>
+      <div class="circle delay-2"></div>
+    </div>
+  </div>
+  
+  <div class="stagger-group">
+    <span class="label">Delay Negativo vs Positivo</span>
+    <div class="tracks-column">
+      <div class="track-row">
+        <span class="track-label">Delay +1s (Espera)</span>
+        <div class="track"><div class="dot pos-delay"></div></div>
+      </div>
+      <div class="track-row">
+        <span class="track-label">Delay -1s (Inicia al 50%)</span>
+        <div class="track"><div class="dot neg-delay"></div></div>
+      </div>
+    </div>
+  </div>
+</div>`;
+
+const cssCode = `@keyframes pulseScale {
+  0%, 100% { transform: scale(1); opacity: 0.4; }
+  50% { transform: scale(1.4); opacity: 1; }
+}
+
+@keyframes slideDelay {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(calc(100% - 16px)); }
+}
+
+.delay-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+}
+
+.stagger-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.circles-row {
+  display: flex;
+  gap: 12px;
+}
+
+.circle {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--dm-purple, #a855f7);
+  animation: pulseScale 2s infinite ease-in-out;
+}
+
+/* Secuenciación (Staggering) */
+.delay-0 { animation-delay: 0s; }
+.delay-1 { animation-delay: 0.2s; background-color: var(--dm-blue, #3b82f6); }
+.delay-2 { animation-delay: 0.4s; background-color: var(--dm-green, #22c55e); }
+
+.tracks-column {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.track-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.track-label {
+  font-size: 0.65rem;
+  color: var(--dm-light-300);
+  width: 120px;
+  flex-shrink: 0;
+}
+
+.track {
+  flex-grow: 1;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+  padding: 2px;
+}
+
+.dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  animation: slideDelay 2s infinite ease-in-out;
+}
+
+.pos-delay {
+  animation-delay: 1s;
+  background-color: var(--dm-red, #ef4444);
+}
+
+.neg-delay {
+  animation-delay: -1s; /* Empieza al 50% inmediatamente */
+  background-color: var(--dm-green, #22c55e);
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Prueba a retrasar el inicio de múltiples elementos usando animation-delay positivo', color: 'dm-purple', rotate: '2deg' },
+  { number: 2, text: 'Crea un efecto de secuencia (stagger) sumando 100ms de delay en cada elemento sucesivo', color: 'dm-green', rotate: '-3deg' },
+  { number: 3, text: 'Prueba un delay negativo (ej. -0.5s) para ver cómo inicia la animación al instante pero adelantada', color: 'app-color-yellow400', rotate: '5deg' },
+];
+---
+
+<CourseLayout
+  title="Animation Delay - Genesis Pixel"
+  currentLesson="/keyframes/animation-delay"
+  prevLesson={{ title: 'Animation Timing Function', href: '/keyframes/animation-timing-function' }}
+  nextLesson={{ title: 'Animation Iteration Count', href: '/keyframes/animation-iteration-count' }}
+>
+  <ChapterHeader
+    chapterNumber="01"
+    chapterLabel="Capítulo 1 · Lección 9"
+    title="Animation Delay"
+    readingTime={6}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es animation-delay?</h3>
+    <p>
+      La propiedad <code>animation-delay</code> determina el tiempo de espera entre el momento en que se aplica la animación a un elemento y el momento en que realmente comienza a reproducirse su primer fotograma.
+    </p>
+
+    <h3>Delay Positivo (Espera activa)</h3>
+    <p>
+      Si definimos un delay positivo, como <code>animation-delay: 1s</code>, el elemento esperará exactamente un segundo antes de iniciar el movimiento. Durante esta espera, los estilos iniciales que adopta el elemento dependen de la propiedad <code>animation-fill-mode</code> (que estudiaremos en detalle más adelante).
+    </p>
+
+    <h3>Delay Negativo (El gran truco)</h3>
+    <p>
+      ¿Qué pasa si asignamos un valor negativo como <code>animation-delay: -1s</code>? ¡El navegador inicia la animación **instantáneamente**! Sin embargo, en lugar de comenzar desde el segundo 0 (0%), comenzará a reproducirse como si ya llevara un segundo en curso.
+    </p>
+    <p>
+      Esto es sumamente útil si quieres desfasar múltiples animaciones cíclicas (como ondas o loaders) de manera que todas estén en movimiento al cargar la página, en lugar de esperar a que pasen sus respectivos delays.
+    </p>
+
+    <h3>Secuencias de animación (Stagger)</h3>
+    <p>
+      El "staggering" o escalonamiento es una técnica UX premium. Consiste en animar la entrada de un grupo de elementos (como tarjetas de una lista o menús de navegación) aplicando un delay progresivo a cada elemento sucesivo (ej. el primero tiene delay 0s, el segundo 0.1s, el tercero 0.2s). Esto crea una fluidez visual exquisita que guía al ojo del usuario a través de la interfaz.
+    </p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Usa delays negativos para loops infinitos que deban mostrarse desfasados desde el primer instante. Evita usar delays positivos largos (más de 1s) en elementos interactivos inmediatos para que la UI no se sienta lenta." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="animation-delay-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="El grupo superior muestra una secuencia de pulsos desfasados. Abajo, el punto rojo espera 1s antes de arrancar, mientras que el verde arranca de inmediato a mitad de pista gracias a su delay negativo de -1s.">
+      <div class="flex items-center justify-center h-full w-full px-4">
+        <div class="delay-container">
+          <div class="stagger-group">
+            <span class="label" style="font-size:0.75rem; color:var(--dm-light-300);">Efecto Secuencia (Staggered)</span>
+            <div class="circles-row">
+              <div class="circle delay-0"></div>
+              <div class="circle delay-1"></div>
+              <div class="circle delay-2"></div>
+            </div>
+          </div>
+          
+          <div class="stagger-group">
+            <span class="label" style="font-size:0.75rem; color:var(--dm-light-300);">Delay Negativo vs Positivo</span>
+            <div class="tracks-column">
+              <div class="track-row">
+                <span class="track-label">Delay +1s (Espera)</span>
+                <div class="track"><div class="dot pos-delay"></div></div>
+              </div>
+              <div class="track-row">
+                <span class="track-label">Delay -1s (Inicia al 50%)</span>
+                <div class="track"><div class="dot neg-delay"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Retrasar elementos interactivos principales', description: 'Agregar delays a botones o campos de formulario confunde al usuario, haciéndole creer que el sitio no responde.' },
+      { label: 'Olvidar sincronizar el delay en CSS inline o dinámico', description: 'Si generas listas en frameworks, calcula el delay usando variables CSS personalizadas (inline custom properties) para mayor facilidad.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Experimenta modificando los delays en los tres círculos superiores para alterar el ritmo de la secuencia."
+      steps={practiceSteps}
+    />
+  </div>
+</CourseLayout>
+
+<style>
+  @keyframes pulseScale {
+    0%, 100% { transform: scale(1); opacity: 0.4; }
+    50% { transform: scale(1.4); opacity: 1; }
+  }
+
+  @keyframes slideDelay {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(calc(100% - 16px)); }
+  }
+
+  .delay-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 100%;
+  }
+
+  .stagger-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .circles-row {
+    display: flex;
+    gap: 12px;
+  }
+
+  .circle {
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background-color: var(--dm-purple, #a855f7);
+    animation: pulseScale 2s infinite ease-in-out;
+  }
+
+  .delay-0 { animation-delay: 0s; }
+  .delay-1 { animation-delay: 0.2s; background-color: var(--dm-blue, #3b82f6); }
+  .delay-2 { animation-delay: 0.4s; background-color: var(--dm-green, #22c55e); }
+
+  .tracks-column {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .track-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .track-label {
+    font-size: 0.65rem;
+    color: var(--dm-light-300);
+    width: 120px;
+    flex-shrink: 0;
+  }
+
+  .track {
+    flex-grow: 1;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 9999px;
+    padding: 2px;
+  }
+
+  .dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    animation: slideDelay 2s infinite ease-in-out;
+  }
+
+  .pos-delay {
+    animation-delay: 1s;
+    background-color: var(--dm-red, #ef4444);
+  }
+
+  .neg-delay {
+    animation-delay: -1s;
+    background-color: var(--dm-green, #22c55e);
+  }
+</style>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+</script>

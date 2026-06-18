@@ -1,0 +1,289 @@
+---
+import CourseLayout from '../../layouts/CourseLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="easing-tester">
+  <div class="test-row">
+    <span class="label">linear (Velocidad constante)</span>
+    <div class="track"><div class="dot ease-linear"></div></div>
+  </div>
+  <div class="test-row">
+    <span class="label">ease (Suave inicio y fin - Por defecto)</span>
+    <div class="track"><div class="dot ease-default"></div></div>
+  </div>
+  <div class="test-row">
+    <span class="label">ease-in (Entrada lenta, salida rápida)</span>
+    <div class="track"><div class="dot ease-in-class"></div></div>
+  </div>
+  <div class="test-row">
+    <span class="label">ease-out (Entrada rápida, salida lenta)</span>
+    <div class="track"><div class="dot ease-out-class"></div></div>
+  </div>
+  <div class="test-row">
+    <span class="label">ease-in-out (Inicio lento, medio rápido, fin lento)</span>
+    <div class="track"><div class="dot ease-in-out-class"></div></div>
+  </div>
+</div>`;
+
+const cssCode = `@keyframes moveAcross {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(calc(100% - 16px)); }
+}
+
+.easing-tester {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.test-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 0.75rem;
+  color: var(--dm-light-300);
+}
+
+.track {
+  width: 100%;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+  padding: 2px;
+}
+
+.dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--dm-purple, #a855f7);
+  animation: moveAcross 2.5s infinite;
+}
+
+.ease-linear {
+  animation-timing-function: linear;
+  background-color: var(--dm-blue, #3b82f6);
+}
+
+.ease-default {
+  animation-timing-function: ease;
+  background-color: var(--dm-green, #22c55e);
+}
+
+.ease-in-class {
+  animation-timing-function: ease-in;
+  background-color: var(--dm-red, #ef4444);
+}
+
+.ease-out-class {
+  animation-timing-function: ease-out;
+  background-color: var(--dm-yellow, #eab308);
+}
+
+.ease-in-out-class {
+  animation-timing-function: ease-in-out;
+  background-color: var(--dm-purple, #a855f7);
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Prueba a alternar las timing-functions y observa el movimiento de los puntos', color: 'dm-purple', rotate: '2deg' },
+  { number: 2, text: 'Usa ease-out para elementos que entran en la pantalla (se siente responsivo)', color: 'dm-green', rotate: '-3deg' },
+  { number: 3, text: 'Usa ease-in para elementos que salen de la pantalla (parece acelerar al irse)', color: 'app-color-yellow400', rotate: '4deg' },
+  { number: 4, text: 'Reserva linear para loaders, fondos giratorios o efectos continuos de looping', color: 'dm-blue', rotate: '-1deg' },
+];
+---
+
+<CourseLayout
+  title="Animation Timing Function - Genesis Pixel"
+  currentLesson="/keyframes/animation-timing-function"
+  prevLesson={{ title: 'Animation Duration', href: '/keyframes/animation-duration' }}
+  nextLesson={{ title: 'Animation Delay', href: '/keyframes/animation-delay' }}
+>
+  <ChapterHeader
+    chapterNumber="01"
+    chapterLabel="Capítulo 1 · Lección 8"
+    title="Animation Timing Function"
+    readingTime={7}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es el Easing?</h3>
+    <p>
+      La propiedad <code>animation-timing-function</code> define la curva de aceleración de la animación. Determina cómo se distribuye la velocidad del movimiento a lo largo de la duración establecida. Sin ella, los movimientos se sentirían rígidos y artificiales (como robots), mientras que con ella podemos imitar la inercia, la gravedad y la física del mundo real.
+    </p>
+
+    <h3>Curvas de aceleración estándar</h3>
+    <p>
+      CSS nos proporciona varios valores predefinidos listos para usar:
+    </p>
+    <ul class="space-y-3 mt-4 mb-8 list-none pl-0">
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>linear:</strong> Velocidad constante de principio a fin. Excelente para rotaciones continuas o loaders.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>ease:</strong> (Valor por defecto) Comienza despacio, acelera en el medio, y termina muy despacio. Produce transiciones bastante naturales.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>ease-in:</strong> Comienza muy despacio y acelera progresivamente hasta el final. Se asemeja a un objeto cayendo por gravedad.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>ease-out:</strong> Comienza a máxima velocidad y desacelera suavemente hacia el final. Ideal para elementos interactivos que entran en la pantalla.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>ease-in-out:</strong> Transición simétrica: inicio lento, aceleración intermedia y final lento. Útil para movimientos cíclicos recurrentes de vaivén.</span>
+      </li>
+    </ul>
+
+    <h3>Casos de uso en interfaces de usuario</h3>
+    <p>
+      Para lograr que una aplicación web se sienta premium, debes elegir el easing adecuado según la acción:
+    </p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Entrada de elementos (ej. Menús deslizantes, Modales):</strong> Usa <code>ease-out</code>. La entrada rápida da una sensación de inmediatez y respuesta veloz al clic del usuario.</li>
+      <li><strong>Salida de elementos:</strong> Usa <code>ease-in</code>. El elemento parece tomar impulso al salir, desapareciendo rápidamente de la pantalla sin retrasar la navegación.</li>
+      <li><strong>Elementos decorativos en bucle:</strong> Usa <code>ease-in-out</code> o <code>linear</code>.</li>
+    </ul>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="¿Sabías que puedes crear tus propios easings personalizados? Con cubic-bezier(x1, y1, x2, y2) puedes definir curvas elásticas avanzadas que simulan rebotes o retrocesos elásticos." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Comparación visual de Timing Functions
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="timing-functions-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Compara cómo se distribuye la velocidad del movimiento de izquierda a derecha en función del easing aplicado.">
+      <div class="flex items-center justify-center h-full w-full px-4">
+        <div class="easing-tester">
+          <div class="test-row">
+            <span class="label">linear (Velocidad constante)</span>
+            <div class="track"><div class="dot ease-linear"></div></div>
+          </div>
+          <div class="test-row">
+            <span class="label">ease (Suave inicio y fin)</span>
+            <div class="track"><div class="dot ease-default"></div></div>
+          </div>
+          <div class="test-row">
+            <span class="label">ease-in (Entrada lenta, salida rápida)</span>
+            <div class="track"><div class="dot ease-in-class"></div></div>
+          </div>
+          <div class="test-row">
+            <span class="label">ease-out (Entrada rápida, salida lenta)</span>
+            <div class="track"><div class="dot ease-out-class"></div></div>
+          </div>
+          <div class="test-row">
+            <span class="label">ease-in-out (Inicio/fin lento, medio rápido)</span>
+            <div class="track"><div class="dot ease-in-out-class"></div></div>
+          </div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Usar "linear" para todo', description: 'El movimiento lineal se siente frío, maquinal y poco natural en menús o modales. Evítalo en transiciones de UI principales.' },
+      { label: 'Escribir mal los valores predefinidos', description: 'Escribir easein o easeout sin el guion medio hará que el navegador ignore la propiedad e implante el valor ease por defecto.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Cambia el timing-function del código y experimenta con transiciones rápidas y lentas."
+      steps={practiceSteps}
+    />
+  </div>
+</CourseLayout>
+
+<style>
+  @keyframes moveAcross {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(calc(100% - 16px)); }
+  }
+
+  .easing-tester {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .test-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .label {
+    font-size: 0.75rem;
+    color: var(--dm-light-300);
+  }
+
+  .track {
+    width: 100%;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 9999px;
+    padding: 2px;
+  }
+
+  .dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--dm-purple, #a855f7);
+    animation: moveAcross 2.5s infinite;
+  }
+
+  .ease-linear {
+    animation-timing-function: linear;
+    background-color: var(--dm-blue, #3b82f6);
+  }
+
+  .ease-default {
+    animation-timing-function: ease;
+    background-color: var(--dm-green, #22c55e);
+  }
+
+  .ease-in-class {
+    animation-timing-function: ease-in;
+    background-color: var(--dm-red, #ef4444);
+  }
+
+  .ease-out-class {
+    animation-timing-function: ease-out;
+    background-color: var(--dm-yellow, #eab308);
+  }
+
+  .ease-in-out-class {
+    animation-timing-function: ease-in-out;
+    background-color: var(--dm-purple, #a855f7);
+  }
+</style>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+</script>

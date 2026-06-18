@@ -1,0 +1,187 @@
+---
+import CourseLayout from '../../layouts/CourseLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="box-container">
+  <div class="pulse-box"></div>
+</div>`;
+
+const cssCode = `/* Definición de la animación */
+@keyframes pulseColor {
+  0% {
+    transform: scale(1);
+    background-color: var(--dm-purple, #a855f7);
+    box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7);
+  }
+  50% {
+    transform: scale(1.15);
+    background-color: var(--dm-green, #22c55e);
+    box-shadow: 0 0 20px 10px rgba(34, 197, 94, 0);
+  }
+  100% {
+    transform: scale(1);
+    background-color: var(--dm-purple, #a855f7);
+    box-shadow: 0 0 0 0 rgba(168, 85, 247, 0);
+  }
+}
+
+/* Aplicación en el elemento */
+.pulse-box {
+  width: 80px;
+  height: 80px;
+  border-radius: 16px;
+  animation: pulseColor 2s infinite ease-in-out;
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Define un @keyframes con el nombre "cambioColor"', color: 'dm-purple', rotate: '5deg' },
+  { number: 2, text: 'Usa from para el color inicial y to para el color final', color: 'dm-green', rotate: '-2deg' },
+  { number: 3, text: 'Agrupa un porcentaje extra (como 50%) para un color intermedio', color: 'app-color-yellow400', rotate: '4deg' },
+  { number: 4, text: 'Asocia el nombre al selector CSS de tu clase', color: 'dm-blue', rotate: '-3deg' },
+  { number: 5, text: 'Usa nombres válidos evitando números al inicio o palabras clave CSS', color: 'dm-red', rotate: '2deg' },
+];
+
+const deslizarCode = `@keyframes deslizar {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100px);
+  }
+}`;
+
+const parpadeoCode = `@keyframes parpadeo {
+  0%, 100% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+}`;
+---
+
+<CourseLayout
+  title="Sintaxis de @keyframes - Genesis Pixel"
+  currentLesson="/keyframes/sintaxis"
+  prevLesson={{ title: '¿Qué son los Keyframes?', href: '/keyframes/que-son' }}
+  nextLesson={{ title: 'Cómo funciona la línea de tiempo', href: '/keyframes/linea-tiempo' }}
+>
+  <ChapterHeader
+    chapterNumber="01"
+    chapterLabel="Capítulo 1 · Lección 2"
+    title="Sintaxis de @keyframes"
+    readingTime={7}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es la sintaxis y por qué es importante?</h3>
+    <p>
+      La sintaxis es el conjunto de reglas que definen cómo se escribe el código para que el navegador lo entienda e interprete correctamente. En CSS Animations, una sintaxis limpia y estandarizada es fundamental para garantizar que las animaciones se ejecuten con suavidad en todos los navegadores modernos y que tu código sea escalable y fácil de mantener.
+    </p>
+
+    <h3>Estructura básica de @keyframes</h3>
+    <p>
+      La regla <code>@keyframes</code> se compone de la palabra clave con arroba, seguida del nombre asignado a la animación (identificador) y un bloque de declaraciones encerrado entre llaves <code>{ }</code>. Dentro de estas llaves definimos los selectores de fotogramas clave.
+    </p>
+
+    <h3>Uso de 'from' y 'to'</h3>
+    <p>
+      Para animaciones de dos estados (inicial y final), podemos usar las palabras clave <code>from</code> (equivalente a 0%) y <code>to</code> (equivalente a 100%):
+    </p>
+    <pre><code>{deslizarCode}</code></pre>
+
+    <h3>Uso de Porcentajes</h3>
+    <p>
+      Cuando requieres más de dos estados clave, los porcentajes te brindan control absoluto sobre la línea de tiempo. Puedes usar cualquier valor decimal o entero entre <code>0%</code> y <code>100%</code>.
+    </p>
+
+    <h3>Reglas para nombres (Identifiers)</h3>
+    <ul class="space-y-2 list-disc pl-6">
+      <li>Deben ser descriptivos (ej. <code>spin-loading</code>, <code>bounce-effect</code>).</li>
+      <li>Pueden contener letras, números, guiones medios (<code>-</code>) y guiones bajos (<code>_</code>).</li>
+      <li><strong>No</strong> pueden empezar con un número ni contener espacios.</li>
+      <li>Evita usar palabras reservadas de CSS como <code>none</code>, <code>initial</code>, <code>inherit</code> o <code>unset</code>.</li>
+    </ul>
+
+    <h3>Agrupar Porcentajes</h3>
+    <p>
+      Si quieres aplicar exactamente los mismos estilos en múltiples puntos de la animación, puedes agrupar los porcentajes separándolos con comas. Esto reduce la redundancia de código y optimiza el tamaño del archivo:
+    </p>
+    <pre><code>{parpadeoCode}</code></pre>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Agrupar porcentajes es una excelente manera de mantener animaciones cíclicas (como loops) limpias, asegurando que el inicio y el final compartan exactamente los mismos valores para evitar saltos bruscos." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="syntax-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Una caja que pulsa y cambia de tamaño y color cíclicamente de forma fluida.">
+      <div class="flex items-center justify-center h-full w-full">
+        <div class="pulse-box"></div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Escribir @keyframe en singular', description: 'La regla obligatoriamente termina en "s": @keyframes.' },
+      { label: 'Usar comillas en el nombre al declararlo', description: 'Escribir @keyframes "miAnimacion" es incorrecto. Debe ir sin comillas.' },
+      { label: 'Omitir los símbolos de porcentaje', description: 'Escribir 50 en lugar de 50% hará que el navegador ignore ese frame por completo.' },
+      { label: 'No igualar estados iniciales y finales en bucles', description: 'Si el estado en 0% difiere de 100% en animaciones infinitas, notarás un corte visual brusco.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Crea una animación que cambie el color de fondo usando un gradiente o colores planos a través de un estado intermedio al 50%."
+      steps={practiceSteps}
+    />
+  </div>
+</CourseLayout>
+
+<style>
+  @keyframes pulseColor {
+    0% {
+      transform: scale(1);
+      background-color: var(--dm-purple, #a855f7);
+      box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.7);
+    }
+    50% {
+      transform: scale(1.15);
+      background-color: var(--dm-green, #22c55e);
+      box-shadow: 0 0 20px 10px rgba(34, 197, 94, 0);
+    }
+    100% {
+      transform: scale(1);
+      background-color: var(--dm-purple, #a855f7);
+      box-shadow: 0 0 0 0 rgba(168, 85, 247, 0);
+    }
+  }
+
+  .pulse-box {
+    width: 80px;
+    height: 80px;
+    border-radius: 16px;
+    animation: pulseColor 2s infinite ease-in-out;
+  }
+</style>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+</script>

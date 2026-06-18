@@ -1,0 +1,272 @@
+---
+import CourseLayout from '../../layouts/CourseLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="speed-tester">
+  <div class="test-row">
+    <span class="label">200ms (Micro-interacción)</span>
+    <div class="track"><div class="dot speed-fast"></div></div>
+  </div>
+  <div class="test-row">
+    <span class="label">500ms (Estándar Web)</span>
+    <div class="track"><div class="dot speed-medium"></div></div>
+  </div>
+  <div class="test-row">
+    <span class="label">1000ms (1s - Transición Lenta)</span>
+    <div class="track"><div class="dot speed-slow"></div></div>
+  </div>
+  <div class="test-row">
+    <span class="label">3000ms (3s - Cinemática/Lenta)</span>
+    <div class="track"><div class="dot speed-superslow"></div></div>
+  </div>
+</div>`;
+
+const cssCode = `@keyframes slideAcross {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(calc(100% - 16px)); }
+}
+
+.speed-tester {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+}
+
+.test-row {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.label {
+  font-size: 0.75rem;
+  color: var(--dm-light-300);
+}
+
+.track {
+  width: 100%;
+  height: 20px;
+  background-color: rgba(255, 255, 255, 0.05);
+  border-radius: 9999px;
+  padding: 2px;
+  position: relative;
+}
+
+.dot {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background-color: var(--dm-purple, #a855f7);
+  animation: slideAcross infinite ease-in-out;
+}
+
+.speed-fast {
+  animation-duration: 200ms;
+}
+
+.speed-medium {
+  animation-duration: 500ms;
+  background-color: var(--dm-blue, #3b82f6);
+}
+
+.speed-slow {
+  animation-duration: 1s;
+  background-color: var(--dm-green, #22c55e);
+}
+
+.speed-superslow {
+  animation-duration: 3s;
+  background-color: var(--dm-yellow, #eab308);
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Prueba a cambiar los valores entre s (segundos) y ms (milisegundos)', color: 'dm-purple', rotate: '2deg' },
+  { number: 2, text: 'Aplica una duración corta (150ms - 300ms) para ver la inmediatez', color: 'dm-green', rotate: '-2deg' },
+  { number: 3, text: 'Experimenta con duraciones de más de 2 segundos y evalúa si se sienten pesadas', color: 'app-color-yellow400', rotate: '5deg' },
+  { number: 4, text: 'Mantén las duraciones cortas en elementos interactivos como botones o menús', color: 'dm-blue', rotate: '-3deg' },
+];
+---
+
+<CourseLayout
+  title="Animation Duration - Genesis Pixel"
+  currentLesson="/keyframes/animation-duration"
+  prevLesson={{ title: 'Animation Name', href: '/keyframes/animation-name' }}
+  nextLesson={{ title: 'Animation Timing Function', href: '/keyframes/animation-timing-function' }}
+>
+  <ChapterHeader
+    chapterNumber="01"
+    chapterLabel="Capítulo 1 · Lección 7"
+    title="Animation Duration"
+    readingTime={6}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es animation-duration?</h3>
+    <p>
+      La propiedad <code>animation-duration</code> define el tiempo total que tarda una animación en completar un ciclo (desde el 0% hasta el 100%). Es una propiedad indispensable: si no se especifica, su valor por defecto es <code>0s</code>, lo que significa que la animación no se ejecutará.
+    </p>
+
+    <h3>Segundos vs. Milisegundos</h3>
+    <p>
+      Puedes definir el tiempo de dos formas:
+    </p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Segundos (s):</strong> Usados comúnmente para tiempos largos (ej. <code>1s</code>, <code>2.5s</code>, <code>4s</code>).</li>
+      <li><strong>Milisegundos (ms):</strong> Ideales para micro-interacciones muy rápidas (ej. <code>200ms</code>, <code>350ms</code>, <code>500ms</code>). Recuerda que <code>1s = 1000ms</code>.</li>
+    </ul>
+
+    <h3>Duraciones recomendadas y UX</h3>
+    <p>
+      En el diseño de interfaces de usuario (UI), el tiempo es la clave de la percepción de fluidez:
+    </p>
+    <ul class="space-y-3 mt-4 mb-8 list-none pl-0">
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>100ms - 200ms (Inmediato):</strong> Perfecto para botones, hovers, y pequeños interruptores. El usuario percibe la acción al instante.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>200ms - 350ms (Fluido):</strong> Estándar de oro para transiciones de menús desplegables (drawers), modales, y cambios de página.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>350ms - 500ms (Pausado):</strong> Utilizado para componentes grandes que deben llamar la atención o recorrer una gran distancia en pantalla.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>> 1000ms (Cinemático):</strong> Úsalo exclusivamente para ilustraciones animadas de fondo, loaders, efectos decorativos o narrativas visuales. En la interfaz diaria se sentirá lento o "pesado".</span>
+      </li>
+    </ul>
+
+    <h3>Percepción visual</h3>
+    <p>
+      El cerebro humano procesa el movimiento a gran velocidad. Si una animación es demasiado lenta, rompe el flujo de interacción y frustra al usuario. Si es excesivamente rápida (menos de 80ms), el ojo no llega a registrar el movimiento y se percibe como un parpadeo o error visual.
+    </p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Como regla de diseño general, los elementos que entran a la pantalla deben durar ligeramente más (ej. 250ms) que los elementos que salen (ej. 200ms), ya que la salida requiere menos atención." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Comparativa visual de velocidades
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="animation-duration-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Compara visualmente cómo se desplazan los elementos en función de su duración.">
+      <div class="flex items-center justify-center h-full w-full px-4">
+        <div class="speed-tester">
+          <div class="test-row">
+            <span class="label">200ms (Micro-interacción)</span>
+            <div class="track"><div class="dot speed-fast"></div></div>
+          </div>
+          <div class="test-row">
+            <span class="label">500ms (Estándar Web)</span>
+            <div class="track"><div class="dot speed-medium"></div></div>
+          </div>
+          <div class="test-row">
+            <span class="label">1000ms (1s - Transición Lenta)</span>
+            <div class="track"><div class="dot speed-slow"></div></div>
+          </div>
+          <div class="test-row">
+            <span class="label">3000ms (3s - Cinemática)</span>
+            <div class="track"><div class="dot speed-superslow"></div></div>
+          </div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Omitir las unidades', description: 'Declarar animation-duration: 500 sin "ms" o 2 sin "s" hace que la animación sea inválida y no se ejecute.' },
+      { label: 'Animar loaders muy lento', description: 'Un spinner de carga que da una vuelta cada 4s parece trabado. Los loaders circulares deben dar una vuelta entre 600ms y 1s.' },
+      { label: 'Valores negativos', description: 'La duración de la animación no puede ser menor a cero.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Experimenta modificando los valores del código para comparar cómo cambia la inmediatez y fluidez de los elementos."
+      steps={practiceSteps}
+    />
+  </div>
+</CourseLayout>
+
+<style>
+  @keyframes slideAcross {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(calc(100% - 16px)); }
+  }
+
+  .speed-tester {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .test-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .label {
+    font-size: 0.75rem;
+    color: var(--dm-light-300);
+  }
+
+  .track {
+    width: 100%;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.05);
+    border-radius: 9999px;
+    padding: 2px;
+    position: relative;
+  }
+
+  .dot {
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background-color: var(--dm-purple, #a855f7);
+    animation: slideAcross infinite ease-in-out;
+  }
+
+  .speed-fast {
+    animation-duration: 200ms;
+  }
+
+  .speed-medium {
+    animation-duration: 500ms;
+    background-color: var(--dm-blue, #3b82f6);
+  }
+
+  .speed-slow {
+    animation-duration: 1s;
+    background-color: var(--dm-green, #22c55e);
+  }
+
+  .speed-superslow {
+    animation-duration: 3s;
+    background-color: var(--dm-yellow, #eab308);
+  }
+</style>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+</script>

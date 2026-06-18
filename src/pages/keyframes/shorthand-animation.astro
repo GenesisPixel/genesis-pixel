@@ -1,0 +1,180 @@
+---
+import CourseLayout from '../../layouts/CourseLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="shorthand-demo">
+  <div class="shorthand-box">Shorthand</div>
+</div>`;
+
+const cssCode = `/* Equivalente Longhand (8 líneas) */
+.longhand-box {
+  animation-name: slideGlow;
+  animation-duration: 2s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 0.5s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-fill-mode: both;
+  animation-play-state: running;
+}
+
+/* Equivalente Shorthand (1 línea) */
+.shorthand-box {
+  /* Estructura: name | duration | timing-function | delay | iteration-count | direction | fill-mode */
+  animation: slideGlow 2s ease-in-out 0.5s infinite alternate both;
+}
+
+@keyframes slideGlow {
+  from {
+    transform: translateX(-40px);
+    background-color: var(--dm-purple, #a855f7);
+    box-shadow: 0 0 5px rgba(168, 85, 247, 0.4);
+  }
+  to {
+    transform: translateX(40px);
+    background-color: var(--dm-green, #22c55e);
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.8);
+  }
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Condensa múltiples propiedades individuales de animación en la propiedad shorthand "animation"', color: 'dm-purple', rotate: '2deg' },
+  { number: 2, text: 'Recuerda escribir siempre la duración antes del delay en el orden de los valores', color: 'dm-green', rotate: '-3deg' },
+  { number: 3, text: 'Prueba a definir dos animaciones taquigráficas juntas separándolas con comas', color: 'app-color-yellow400', rotate: '5deg' },
+];
+
+const multipleShorthandCode = `.button-fancy {
+  animation: fadeIn 0.5s ease-out, bounceLight 2s infinite alternate;
+}`;
+---
+
+<CourseLayout
+  title="Shorthand Animation - Genesis Pixel"
+  currentLesson="/keyframes/shorthand-animation"
+  prevLesson={{ title: 'Animation Play State', href: '/keyframes/animation-play-state' }}
+  nextLesson={{ title: 'Proyecto Final de Keyframes', href: '/keyframes/proyecto-final' }}
+>
+  <ChapterHeader
+    chapterNumber="01"
+    chapterLabel="Capítulo 1 · Lección 14"
+    title="Shorthand Animation"
+    readingTime={5}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es el Shorthand (Taquigrafía) en CSS?</h3>
+    <p>
+      El **Shorthand** es una propiedad especial en CSS que te permite resumir múltiples propiedades individuales relacionadas en una sola línea de código. Esto reduce el tamaño de tus archivos CSS, limpia el formato visual y agiliza el flujo de desarrollo.
+    </p>
+
+    <h3>Estructura y orden recomendado</h3>
+    <p>
+      Aunque el navegador es muy inteligente organizando los valores del shorthand, hay una regla estricta: **el primer valor de tiempo que encuentre se asignará a <code>animation-duration</code>, y el segundo se asignará a <code>animation-delay</code>**.
+    </p>
+    <p>
+      El orden profesional estándar recomendado es el siguiente:
+    </p>
+    <div class="bg-white/5 border border-white/10 rounded-xl p-4 font-mono text-xs text-center text-white mb-6">
+      animation: [name] [duration] [timing-function] [delay] [iteration-count] [direction] [fill-mode] [play-state];
+    </div>
+
+    <h3>Lectura y ejemplo profesional</h3>
+    <p>
+      Considera esta declaración:
+    </p>
+    <pre><code>animation: slideGlow 2s ease-in-out 0.5s infinite alternate both;</code></pre>
+    <p>
+      Aquí, desglosamos:
+    </p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>slideGlow:</strong> Nombre de la animación.</li>
+      <li><strong>2s:</strong> Duración (2 segundos).</li>
+      <li><strong>ease-in-out:</strong> Timing function (Aceleración y desaceleración).</li>
+      <li><strong>0.5s:</strong> Delay (Espera de 0.5 segundos).</li>
+      <li><strong>infinite:</strong> Iteraciones (Repetirse indefinidamente).</li>
+      <li><strong>alternate:</strong> Dirección (Va y viene).</li>
+      <li><strong>both:</strong> Fill mode (Retiene estilos antes y después).</li>
+    </ul>
+
+    <h3>Definir múltiples animaciones taquigráficas</h3>
+    <p>
+      Si quieres aplicar varias animaciones independientes a un elemento, puedes separarlas completamente con comas, cada una con su propia configuración shorthand completa:
+    </p>
+    <pre><code>{multipleShorthandCode}</code></pre>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="No es obligatorio definir todos los campos del shorthand. Si los omites, el navegador asumirá sus valores por defecto (ej. ease para timing-function, 0s para delay, 1 para iteration-count)." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="shorthand-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Una tarjeta que se desplaza de lado a lado cambiando su resplandor y tonalidad, configurada con tan solo una línea de propiedad shorthand.">
+      <div class="flex items-center justify-center h-full w-full px-4">
+        <div class="shorthand-box">Shorthand</div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Confundir el orden de duración y delay', description: 'Si escribes "animation: fade 1s 2s", el delay será de 2s. Si escribes "animation: fade 2s 1s", el delay será de 1s.' },
+      { label: 'Olvidar el nombre de la animación', description: 'Si omites el nombre o lo escribes en la posición incorrecta de forma confusa, la declaración completa fallará silenciosamente.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Intenta resumir una animación compleja que posea delay, repeat y timing-functions en una sola propiedad shorthand."
+      steps={practiceSteps}
+    />
+  </div>
+</CourseLayout>
+
+<style>
+  @keyframes slideGlow {
+    from {
+      transform: translateX(-40px);
+      background-color: var(--dm-purple, #a855f7);
+      box-shadow: 0 0 5px rgba(168, 85, 247, 0.4);
+    }
+    to {
+      transform: translateX(40px);
+      background-color: var(--dm-green, #22c55e);
+      box-shadow: 0 0 20px rgba(34, 197, 94, 0.8);
+    }
+  }
+
+  .shorthand-box {
+    width: 100px;
+    height: 40px;
+    background-color: var(--dm-purple, #a855f7);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: white;
+    font-weight: bold;
+    animation: slideGlow 2s ease-in-out 0.5s infinite alternate both;
+  }
+</style>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+</script>

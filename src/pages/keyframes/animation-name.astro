@@ -1,0 +1,185 @@
+---
+import CourseLayout from '../../layouts/CourseLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="link-demo">
+  <div class="glow-box">Genesis Pixel</div>
+</div>`;
+
+const cssCode = `/* Vinculación explícita con el nombre de la animación */
+.glow-box {
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: white;
+  font-weight: 500;
+  text-align: center;
+  
+  /* Nombre descriptivo e intuitivo */
+  animation-name: textGlowEffect;
+  animation-duration: 3s;
+  animation-iteration-count: infinite;
+  animation-timing-function: ease-in-out;
+}
+
+@keyframes textGlowEffect {
+  0%, 100% {
+    box-shadow: 0 0 5px 0px rgba(168, 85, 247, 0.2);
+    border-color: rgba(168, 85, 247, 0.2);
+  }
+  50% {
+    box-shadow: 0 0 20px 2px rgba(168, 85, 247, 0.6);
+    border-color: rgba(168, 85, 247, 0.8);
+  }
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Elige un nombre claro y descriptivo para tu @keyframes', color: 'dm-purple', rotate: '2deg' },
+  { number: 2, text: 'Asigna el valor exacto a la propiedad animation-name de tu selector', color: 'dm-green', rotate: '-3deg' },
+  { number: 3, text: 'Asegúrate de respetar mayúsculas y minúsculas (es case-sensitive)', color: 'app-color-yellow400', rotate: '4deg' },
+  { number: 4, text: 'Evita colisiones con nombres reservados o repetidos', color: 'dm-blue', rotate: '-1deg' },
+];
+
+const vinculacionCode = `/* 1. Definimos la animación */
+@keyframes slideInRight {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+/* 2. La vinculamos al elemento */
+.toast-notification {
+  animation-name: slideInRight;
+  animation-duration: 0.4s;
+}`;
+
+const multiplesCode = `.hero-image {
+  animation-name: fadeIn, floatEffect;
+  animation-duration: 1s, 4s;
+}`;
+---
+
+<CourseLayout
+  title="Animation Name - Genesis Pixel"
+  currentLesson="/keyframes/animation-name"
+  prevLesson={{ title: 'Múltiples Keyframes', href: '/keyframes/multiples-keyframes' }}
+  nextLesson={{ title: 'Animation Duration', href: '/keyframes/animation-duration' }}
+>
+  <ChapterHeader
+    chapterNumber="01"
+    chapterLabel="Capítulo 1 · Lección 6"
+    title="Animation Name"
+    readingTime={5}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es animation-name y cómo funciona?</h3>
+    <p>
+      La propiedad <code>animation-name</code> es el puente de comunicación entre tus estilos y tus reglas de animación. Indica al navegador qué bloque específico de <code>@keyframes</code> debe aplicarse a un elemento HTML. Sin esta propiedad, la animación no sabrá qué fotogramas ejecutar, permaneciendo completamente estática.
+    </p>
+
+    <h3>Vinculación con @keyframes</h3>
+    <p>
+      La vinculación se realiza mediante una correspondencia exacta de nombres (incluyendo mayúsculas y minúsculas).
+    </p>
+    <pre><code>{vinculacionCode}</code></pre>
+
+    <h3>Nombres descriptivos y convenciones</h3>
+    <p>
+      A la hora de estructurar proyectos grandes, la claridad es crucial. Dos convenciones populares son:
+    </p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>kebab-case:</strong> Todo en minúsculas separado por guiones (ej. <code>fade-in-down</code>, <code>rotate-spinner</code>). Es el estándar preferido por muchos desarrolladores CSS.</li>
+      <li><strong>camelCase:</strong> Sin espacios, alternando mayúsculas (ej. <code>fadeInDown</code>, <code>rotateSpinner</code>).</li>
+    </ul>
+
+    <h3>Nombres y valores reservados</h3>
+    <p>
+      Evita utilizar palabras del sistema CSS o identificadores globales:
+    </p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><code>none</code>: Valor por defecto que desactiva cualquier animación vinculada.</li>
+      <li><code>initial</code>, <code>inherit</code>, <code>unset</code>, <code>default</code>: Palabras clave universales de CSS.</li>
+    </ul>
+
+    <h3>Vinculación múltiple</h3>
+    <p>
+      Puedes aplicar más de una animación a un elemento separando los nombres por comas. El navegador ejecutará todas las animaciones simultáneamente o según sus delays definidos:
+    </p>
+    <pre><code>{multiplesCode}</code></pre>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Mantener tus @keyframes agrupados al final del archivo CSS, o en un archivo exclusivo de utilidades de animación, ayuda a mantener el orden de tus proyectos." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="animation-name-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Una caja de texto que brilla gracias a la animación vinculada textGlowEffect.">
+      <div class="flex items-center justify-center h-full w-full px-4">
+        <div class="glow-box">Genesis Pixel</div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Errores tipográficos o de mayúsculas', description: 'Si defines @keyframes fadeIn y usas animation-name: fadein, la animación fallará de forma silenciosa.' },
+      { label: 'Nombres duplicados', description: 'Si declaras dos @keyframes con el mismo nombre en diferentes archivos cargados, prevalecerá la última regla leída.' },
+      { label: 'Intentar usar variables CSS directamente', description: 'Declarar animation-name: var(--mi-nombre) puede no funcionar correctamente en ciertos navegadores antiguos.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Crea una animación que haga rotar un elemento y vincúlala correctamente asegurándote de no usar términos reservados."
+      steps={practiceSteps}
+    />
+  </div>
+</CourseLayout>
+
+<style>
+  .glow-box {
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    color: white;
+    font-weight: 500;
+    text-align: center;
+    animation-name: textGlowEffect;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+  }
+
+  @keyframes textGlowEffect {
+    0%, 100% {
+      box-shadow: 0 0 5px 0px rgba(168, 85, 247, 0.2);
+      border-color: rgba(168, 85, 247, 0.2);
+    }
+    50% {
+      box-shadow: 0 0 20px 2px rgba(168, 85, 247, 0.6);
+      border-color: rgba(168, 85, 247, 0.8);
+    }
+  }
+</style>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+</script>

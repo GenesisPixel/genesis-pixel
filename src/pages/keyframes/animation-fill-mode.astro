@@ -1,0 +1,271 @@
+---
+import CourseLayout from '../../layouts/CourseLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="fill-mode-demo">
+  <p class="label">Las animaciones tienen 1s de delay. Observa antes de empezar y después de terminar.</p>
+  <div class="row">
+    <span class="row-label">none</span>
+    <div class="box fill-none">None</div>
+  </div>
+  <div class="row">
+    <span class="row-label">forwards</span>
+    <div class="box fill-forwards">Forwards</div>
+  </div>
+  <div class="row">
+    <span class="row-label">backwards</span>
+    <div class="box fill-backwards">Backwards</div>
+  </div>
+  <div class="row">
+    <span class="row-label">both</span>
+    <div class="box fill-both">Both</div>
+  </div>
+</div>`;
+
+const cssCode = `@keyframes slideFadeIn {
+  from {
+    transform: translateX(0);
+    background-color: var(--dm-red, #ef4444);
+    opacity: 0.2;
+  }
+  to {
+    transform: translateX(100px);
+    background-color: var(--dm-green, #22c55e);
+    opacity: 1;
+  }
+}
+
+.fill-mode-demo {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.row-label {
+  font-size: 0.75rem;
+  color: var(--dm-light-300);
+  width: 70px;
+  flex-shrink: 0;
+}
+
+.box {
+  width: 80px;
+  height: 32px;
+  background-color: var(--dm-purple, #a855f7);
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  color: white;
+  font-weight: bold;
+  
+  /* Retraso de 1s para ver el efecto de backwards/both */
+  animation: slideFadeIn 2.5s 1.5s 1 ease-in-out;
+}
+
+.fill-none {
+  animation-fill-mode: none;
+}
+
+.fill-forwards {
+  animation-fill-mode: forwards;
+}
+
+.fill-backwards {
+  animation-fill-mode: backwards;
+}
+
+.fill-both {
+  animation-fill-mode: both;
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Define una animación con un delay de al menos 1 segundo', color: 'dm-purple', rotate: '2deg' },
+  { number: 2, text: 'Prueba "forwards" para mantener los estilos finales (100%) permanentemente', color: 'dm-green', rotate: '-3deg' },
+  { number: 3, text: 'Prueba "backwards" para que el elemento adopte los estilos iniciales (0%) durante el delay', color: 'app-color-yellow400', rotate: '5deg' },
+  { number: 4, text: 'Usa "both" si necesitas aplicar tanto la regla de inicio durante el delay como la regla final al terminar', color: 'dm-blue', rotate: '-1deg' },
+];
+---
+
+<CourseLayout
+  title="Animation Fill Mode - Genesis Pixel"
+  currentLesson="/keyframes/animation-fill-mode"
+  prevLesson={{ title: 'Animation Direction', href: '/keyframes/animation-direction' }}
+  nextLesson={{ title: 'Animation Play State', href: '/keyframes/animation-play-state' }}
+>
+  <ChapterHeader
+    chapterNumber="01"
+    chapterLabel="Capítulo 1 · Lección 12"
+    title="Animation Fill Mode"
+    readingTime={7}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es animation-fill-mode?</h3>
+    <p>
+      La propiedad <code>animation-fill-mode</code> define los estilos que debe adoptar el elemento animado en los momentos en que la animación **no se está reproduciendo** (es decir, durante el <code>delay</code> antes de comenzar o tras completarse de forma definitiva).
+    </p>
+
+    <h3>Los cuatro modos</h3>
+    <ul class="space-y-3 mt-4 mb-8 list-none pl-0">
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>none:</strong> (Valor por defecto) La animación no aplica ningún estilo antes ni después. Durante el delay, el elemento muestra sus estilos base normales. Al finalizar, regresa instantáneamente a esos mismos estilos base.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>forwards:</strong> Tras terminar, el elemento retiene permanentemente los estilos definidos en el último fotograma clave de la animación (100% o <code>to</code>, o 0% si la dirección es <code>reverse</code>). Muy útil para desvanecimientos o entradas de tarjetas.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>backwards:</strong> Durante el tiempo de <code>delay</code> (antes de que empiece la animación), el elemento adopta instantáneamente los estilos del primer fotograma clave de la animación (0% o <code>from</code>). Sin esto, verías un destello brusco si el estilo base no coincide con el inicio de la animación.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>both:</strong> Combina el comportamiento de <code>forwards</code> y <code>backwards</code>. El elemento adopta los estilos de inicio durante el delay y retiene los estilos finales al concluir.</span>
+      </li>
+    </ul>
+
+    <h3>Casos reales de uso</h3>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Modales o popups de entrada:</strong> Queremos que se deslicen desde abajo y se queden fijos en el centro de la pantalla. Para esto usamos obligatoriamente <code>forwards</code>. Sin ella, el modal volvería a desaparecer.</li>
+      <li><strong>Entradas secuenciales con retraso (Stagger):</strong> Si las tarjetas cargan con retraso de 200ms, 400ms, etc., queremos que estén totalmente invisibles (opacidad 0) antes de animarse. Usamos <code>backwards</code> o <code>both</code> para pre-aplicar la opacidad 0 de su fotograma inicial durante ese retraso.</li>
+    </ul>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="En la mayoría de los flujos de trabajo profesionales, te encontrarás usando tanto forwards (para efectos interactivos de un solo disparo) como both (para entradas secuenciales estructuradas)." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="fill-mode-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Presta atención al delay inicial: backwards y both inician de color rojo tenue antes de moverse. Al terminar, forwards y both se quedan en su posición de destino de color verde brillante.">
+      <div class="flex items-center justify-center h-full w-full px-4">
+        <div class="fill-mode-demo">
+          <div class="row">
+            <span class="row-label" style="font-size: 0.75rem; color: var(--dm-light-300);">none</span>
+            <div class="box fill-none">None</div>
+          </div>
+          <div class="row">
+            <span class="row-label" style="font-size: 0.75rem; color: var(--dm-light-300);">forwards</span>
+            <div class="box fill-forwards">Forwards</div>
+          </div>
+          <div class="row">
+            <span class="row-label" style="font-size: 0.75rem; color: var(--dm-light-300);">backwards</span>
+            <div class="box fill-backwards">Backwards</div>
+          </div>
+          <div class="row">
+            <span class="row-label" style="font-size: 0.75rem; color: var(--dm-light-300);">both</span>
+            <div class="box fill-both">Both</div>
+          </div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Olvidar el fill-mode en botones interactivos', description: 'Si el botón cambia de escala en hover con una animación y no pones forwards, regresará abruptamente al estado original.' },
+      { label: 'Confundir forwards con loops', description: 'Forwards solo actúa cuando la animación finaliza. En animaciones infinitas, no tiene ningún efecto práctico.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Observa con atención cómo reaccionan las cajas moradas y rojas al terminar de moverse para entender la persistencia de estilos."
+      steps={practiceSteps}
+    />
+  </div>
+</CourseLayout>
+
+<style>
+  @keyframes slideFadeIn {
+    from {
+      transform: translateX(0);
+      background-color: var(--dm-red, #ef4444);
+      opacity: 0.2;
+    }
+    to {
+      transform: translateX(100px);
+      background-color: var(--dm-green, #22c55e);
+      opacity: 1;
+    }
+  }
+
+  .fill-mode-demo {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .row-label {
+    font-size: 0.75rem;
+    color: var(--dm-light-300);
+    width: 70px;
+    flex-shrink: 0;
+  }
+
+  .box {
+    width: 80px;
+    height: 32px;
+    background-color: var(--dm-purple, #a855f7);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    color: white;
+    font-weight: bold;
+    animation: slideFadeIn 2.5s 1.5s 1 ease-in-out;
+  }
+
+  .fill-none {
+    animation-fill-mode: none;
+  }
+
+  .fill-forwards {
+    animation-fill-mode: forwards;
+  }
+
+  .fill-backwards {
+    animation-fill-mode: backwards;
+  }
+
+  .fill-both {
+    animation-fill-mode: both;
+  }
+</style>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+</script>

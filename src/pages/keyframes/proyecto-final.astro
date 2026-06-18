@@ -1,0 +1,345 @@
+---
+import CourseLayout from '../../layouts/CourseLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="final-project-dashboard">
+  <!-- 1. Loader Animado -->
+  <div class="project-section">
+    <div class="custom-spinner"></div>
+    <span class="sec-lbl">Cargando...</span>
+  </div>
+  
+  <!-- 2. Card Animada -->
+  <div class="project-section">
+    <div class="glow-card">
+      <div class="card-glow-overlay"></div>
+      <div class="card-content-wrap">
+        <h3>Genesis Pixel</h3>
+        <p>Aprende animaciones CSS avanzadas de forma visual.</p>
+        
+        <!-- 3. Botón Interactivo -->
+        <button class="interactive-btn-final">
+          <span>Explorar Curso</span>
+          <div class="wave-ripple"></div>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>`;
+
+const cssCode = `/* 1. Loader Animado Circular */
+@keyframes doubleOrbit {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.custom-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(168, 85, 247, 0.1);
+  border-top-color: var(--dm-purple, #a855f7);
+  border-bottom-color: var(--dm-blue, #3b82f6);
+  border-radius: 50%;
+  animation: doubleOrbit 1s infinite linear;
+}
+
+/* 2. Card Animada con Glow */
+@keyframes cardFloat {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.glow-card {
+  width: 220px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  position: relative;
+  overflow: hidden;
+  padding: 16px;
+  animation: cardFloat 4s infinite ease-in-out;
+  transition: all 0.3s ease;
+}
+
+.glow-card:hover {
+  transform: translateY(-8px) scale(1.02);
+  border-color: rgba(168, 85, 247, 0.4);
+  box-shadow: 0 12px 30px rgba(168, 85, 247, 0.15);
+}
+
+.glow-card h3 {
+  margin: 0 0 6px 0;
+  font-size: 1rem;
+  color: white;
+}
+
+.glow-card p {
+  margin: 0 0 16px 0;
+  font-size: 0.75rem;
+  color: var(--dm-light-300);
+  line-height: 1.4;
+}
+
+/* 3. Botón Interactivo con Efecto Ripple */
+@keyframes buttonPulse {
+  0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(168, 85, 247, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
+}
+
+.interactive-btn-final {
+  width: 100%;
+  padding: 10px 16px;
+  background: linear-gradient(135deg, var(--dm-purple, #a855f7), var(--dm-blue, #3b82f6));
+  border: none;
+  border-radius: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 0.75rem;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  animation: buttonPulse 2s infinite;
+  transition: transform 0.2s ease;
+}
+
+.interactive-btn-final:active {
+  transform: scale(0.96);
+}
+
+.final-project-dashboard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  width: 100%;
+}
+
+.project-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.sec-lbl {
+  font-size: 0.65rem;
+  color: var(--dm-light-300);
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Integra los tres elementos (Loader, Card y Botón) en un diseño unificado', color: 'dm-purple', rotate: '2deg' },
+  { number: 2, text: 'Aplica secuenciación en la carga de los componentes usando animation-delay', color: 'dm-green', rotate: '-3deg' },
+  { number: 3, text: 'Optimiza el rendimiento asegurando que las animaciones cíclicas solo alteren transform y opacity', color: 'app-color-yellow400', rotate: '4deg' },
+  { number: 4, text: 'Supera el desafío final añadiendo un efecto de brillo que recorra la tarjeta de izquierda a derecha', color: 'dm-blue', rotate: '-1deg' },
+];
+---
+
+<CourseLayout
+  title="Proyecto Final de Keyframes - Genesis Pixel"
+  currentLesson="/keyframes/proyecto-final"
+  prevLesson={{ title: 'Shorthand Animation', href: '/keyframes/shorthand-animation' }}
+>
+  <ChapterHeader
+    chapterNumber="01"
+    chapterLabel="Capítulo 1 · Lección 15"
+    title="Proyecto Final de Keyframes"
+    readingTime={10}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Integración y Orquestación</h3>
+    <p>
+      ¡Felicidades! Has recorrido todo el Capítulo 1 sobre Keyframes. En este proyecto final, consolidaremos todos los conceptos aprendidos (líneas de tiempo, propiedades animables, delays negativos, fill-modes, timing-functions y sintaxis shorthand) creando un panel de control interactivo con tres elementos clave.
+    </p>
+
+    <h3>1. El Loader de doble órbita</h3>
+    <p>
+      El loader utiliza una rotación infinita en 2D (<code>transform: rotate</code>) combinando dos bordes coloreados independientes en su gradiente circular. Al ser un loop infinito lineal, es extremadamente ligero para la GPU.
+    </p>
+
+    <h3>2. La Tarjeta flotante (Floating Glow Card)</h3>
+    <p>
+      Aplica una animación continua de flotación vertical (vaivén) usando <code>alternate</code> en su dirección para que el movimiento sea fluido. Además, incluye micro-interacciones de hover que modifican su escalado e iluminan sus bordes suavemente.
+    </p>
+
+    <h3>3. El Botón con pulso expansivo</h3>
+    <p>
+      Utiliza un efecto de sombra expansiva en bucle (<code>box-shadow</code>) que simula ondas de energía irradiando del botón. Esto llama la atención del usuario sin interrumpir su lectura o interrumpir el layout de la página.
+    </p>
+
+    <h3>Optimización y buenas prácticas para producción</h3>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Composición por GPU:</strong> Asegúrate de que las animaciones repetitivas y fluidas (como la flotación de la tarjeta y el giro del loader) solo hagan uso de <code>transform</code> u <code>opacity</code>.</li>
+      <li><strong>will-change:</strong> Si notas parpadeos visuales al iniciar una animación en pantallas móviles, puedes indicarle al navegador que prepare el renderizado usando la propiedad <code>will-change: transform, opacity;</code>.</li>
+    </ul>
+
+    <h3>Desafío de Graduación</h3>
+    <p>
+      Como reto final antes de pasar al Capítulo 2, modifica el código para añadir un haz de luz resplandeciente (shimmer) que recorra diagonalmente la tarjeta de izquierda a derecha en un bucle de 3 segundos. ¡Pon a prueba todo lo que has aprendido!
+    </p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="¡Has dominado el primer pilar de las animaciones CSS! La base de los @keyframes te servirá en cualquier framework o plataforma en la que desarrolles en el futuro." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Panel de Proyecto Final
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="final-project"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Una vista del Loader de doble órbita y la Tarjeta interactiva con un botón que palpita continuamente.">
+      <div class="flex items-center justify-center h-full w-full px-4">
+        <div class="final-project-dashboard">
+          <div class="project-section">
+            <div class="custom-spinner"></div>
+            <span class="sec-lbl">Cargando...</span>
+          </div>
+          
+          <div class="project-section">
+            <div class="glow-card">
+              <div class="card-content-wrap">
+                <h3>Genesis Pixel</h3>
+                <p>Aprende animaciones CSS avanzadas de forma visual.</p>
+                <button class="interactive-btn-final">
+                  <span>Explorar Curso</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Abuso de box-shadow animado', description: 'Animar box-shadow puede ser costoso para navegadores móviles. Limita su tamaño de onda o utilízalo de forma selectiva.' },
+      { label: 'Omitir transiciones de hover al salir', description: 'Asegúrate de colocar transiciones normales de CSS en los selectores base para que, cuando el usuario quite el ratón, los elementos vuelvan suavemente a su estado original.' },
+    ]} />
+
+    <PracticeCards
+      title="Completa el Desafío"
+      description="Consolida tu aprendizaje construyendo y refinando el panel interactivo completo."
+      steps={practiceSteps}
+    />
+  </div>
+</CourseLayout>
+
+<style>
+  @keyframes doubleOrbit {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+
+  .custom-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(168, 85, 247, 0.1);
+    border-top-color: var(--dm-purple, #a855f7);
+    border-bottom-color: var(--dm-blue, #3b82f6);
+    border-radius: 50%;
+    animation: doubleOrbit 1s infinite linear;
+  }
+
+  @keyframes cardFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
+  .glow-card {
+    width: 220px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 16px;
+    position: relative;
+    overflow: hidden;
+    padding: 16px;
+    animation: cardFloat 4s infinite ease-in-out;
+    transition: all 0.3s ease;
+  }
+
+  .glow-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(168, 85, 247, 0.4);
+    box-shadow: 0 12px 30px rgba(168, 85, 247, 0.15);
+  }
+
+  .glow-card h3 {
+    margin: 0 0 6px 0;
+    font-size: 1rem;
+    color: white;
+    font-weight: 600;
+  }
+
+  .glow-card p {
+    margin: 0 0 16px 0;
+    font-size: 0.75rem;
+    color: var(--dm-light-300);
+    line-height: 1.4;
+  }
+
+  @keyframes buttonPulse {
+    0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(168, 85, 247, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
+  }
+
+  .interactive-btn-final {
+    width: 100%;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, var(--dm-purple, #a855f7), var(--dm-blue, #3b82f6));
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.75rem;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    animation: buttonPulse 2s infinite;
+    transition: transform 0.2s ease;
+  }
+
+  .interactive-btn-final:active {
+    transform: scale(0.96);
+  }
+
+  .final-project-dashboard {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 32px;
+    width: 100%;
+  }
+
+  .project-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sec-lbl {
+    font-size: 0.65rem;
+    color: var(--dm-light-300);
+  }
+</style>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+</script>

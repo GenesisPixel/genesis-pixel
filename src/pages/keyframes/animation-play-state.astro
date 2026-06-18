@@ -1,0 +1,227 @@
+---
+import CourseLayout from '../../layouts/CourseLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="interactive-control">
+  <div class="control-box animate-box">Genesis</div>
+  <button id="toggle-play-btn" class="control-btn">Pausar</button>
+</div>`;
+
+const cssCode = `@keyframes orbitSpin {
+  0% { transform: rotate(0deg) translateX(40px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
+}
+
+.interactive-control {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+}
+
+.control-box {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: var(--dm-purple, #a855f7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 0.75rem;
+  
+  /* Animación */
+  animation: orbitSpin 6s infinite linear;
+  animation-play-state: running; /* Estado por defecto */
+}
+
+/* Al pausar */
+.control-box.paused {
+  animation-play-state: paused;
+  background-color: var(--dm-red, #ef4444);
+}
+
+.control-btn {
+  padding: 8px 16px;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  color: white;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.control-btn:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Usa animation-play-state: paused para congelar una animación en su punto actual', color: 'dm-purple', rotate: '2deg' },
+  { number: 2, text: 'Prueba a cambiar a paused al hacer hover (:hover) sobre el elemento', color: 'dm-green', rotate: '-3deg' },
+  { number: 3, text: 'Implementa un interruptor por JavaScript alternando la clase con animation-play-state', color: 'app-color-yellow400', rotate: '5deg' },
+];
+
+const hoverPauseCode = `.marquee-container:hover .marquee-track {
+  animation-play-state: paused;
+}`;
+---
+
+<CourseLayout
+  title="Animation Play State - Genesis Pixel"
+  currentLesson="/keyframes/animation-play-state"
+  prevLesson={{ title: 'Animation Fill Mode', href: '/keyframes/animation-fill-mode' }}
+  nextLesson={{ title: 'Shorthand Animation', href: '/keyframes/shorthand-animation' }}
+>
+  <ChapterHeader
+    chapterNumber="01"
+    chapterLabel="Capítulo 1 · Lección 13"
+    title="Animation Play State"
+    readingTime={6}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es animation-play-state?</h3>
+    <p>
+      La propiedad <code>animation-play-state</code> te permite pausar y reanudar el flujo de una animación CSS en cualquier momento de su ciclo de vida.
+    </p>
+
+    <h3>Los dos estados principales</h3>
+    <ul class="space-y-3 mt-4 mb-8 list-none pl-0">
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>running:</strong> (Valor por defecto) La animación se ejecuta normalmente.</span>
+      </li>
+      <li class="flex gap-3">
+        <span class="text-[var(--dm-green)]">✦</span>
+        <span><strong>paused:</strong> La animación se congela inmediatamente en el fotograma e instante exacto de tiempo en el que se encontraba. Al volver a <code>running</code>, se reanuda desde ese mismo punto sin volver a empezar de cero.</span>
+      </li>
+    </ul>
+
+    <h3>Control de animaciones con Hover (:hover)</h3>
+    <p>
+      Una aplicación directa en CSS sin usar JavaScript es pausar animaciones en respuesta al puntero del ratón del usuario. Por ejemplo, en un carrusel continuo de imágenes o logos (marquee), es excelente práctica de UX pausar el scroll cuando el usuario posiciona su puntero encima (usando <code>:hover</code>) para que pueda leer o hacer clic con tranquilidad:
+    </p>
+    <pre><code>{hoverPauseCode}</code></pre>
+
+    <h3>Controles interactivos avanzados</h3>
+    <p>
+      Mediante JavaScript, podemos alterar dinámicamente el valor de esta propiedad añadiendo o quitando una clase (como <code>.paused</code>). Esto abre un abanico de posibilidades, como botones de reproducción multimedia interactivos, loaders controlables o animaciones pausadas de acuerdo con la visibilidad del scroll de la página.
+    </p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Pausar animaciones pesadas cuando no están visibles en pantalla (por ejemplo, fuera del viewport mediante un IntersectionObserver) es una técnica excelente para reducir drásticamente el consumo de batería en smartphones." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="play-state-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Haz clic en el botón de abajo para pausar o reanudar el movimiento orbital del círculo en su posición exacta actual.">
+      <div class="flex items-center justify-center h-full w-full px-4">
+        <div class="interactive-control">
+          <div id="play-state-target" class="control-box">Genesis</div>
+          <button id="toggle-play-btn" class="control-btn">Pausar</button>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Re-declarar la animación al pausar', description: 'No re-escribas la propiedad "animation" completa al pausar, ya que esto reiniciará la animación. Solo altera "animation-play-state".' },
+      { label: 'Olvidar la accesibilidad en loops continuos', description: 'Los usuarios propensos a mareos por movimiento aprecian la posibilidad de detener animaciones en constante movimiento. Un play/pause es un gran detalle de A11y.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Utiliza el botón interactivo para alternar el estado de ejecución y observa cómo se detiene instantáneamente."
+      steps={practiceSteps}
+    />
+  </div>
+</CourseLayout>
+
+<style>
+  @keyframes orbitSpin {
+    0% { transform: rotate(0deg) translateX(40px) rotate(0deg); }
+    100% { transform: rotate(360deg) translateX(40px) rotate(-360deg); }
+  }
+
+  .interactive-control {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  .control-box {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--dm-purple, #a855f7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: bold;
+    font-size: 0.75rem;
+    animation: orbitSpin 6s infinite linear;
+    animation-play-state: running;
+    transition: background-color 0.3s ease;
+  }
+
+  .control-box.paused {
+    animation-play-state: paused;
+    background-color: var(--dm-red, #ef4444);
+  }
+
+  .control-btn {
+    padding: 8px 16px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .control-btn:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+  }
+</style>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => {
+    initCodeInteractions();
+    
+    // Configuración del botón de Play/Pause interactivo
+    const btn = document.getElementById('toggle-play-btn');
+    const target = document.getElementById('play-state-target');
+    
+    if (btn && target) {
+      btn.addEventListener('click', () => {
+        const isPaused = target.classList.toggle('paused');
+        btn.textContent = isPaused ? 'Reanudar' : 'Pausar';
+      });
+    }
+  });
+</script>
