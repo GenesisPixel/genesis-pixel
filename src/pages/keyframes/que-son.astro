@@ -7,12 +7,20 @@ import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const htmlCode = `<div class="card">
-  <h2>Título de la Tarjeta</h2>
-  <p>Contenido de ejemplo que se animará.</p>
-</div>`;
+const htmlCode = `<button class="btn">
+  Enviar
+</button>`;
 
-const cssCode = `.card {
+const cssCode = `.btn {
+  background-color: var(--dm-purple, #a855f7);
+  color: var(--color-bg);
+  font-family: var(--font-afronaut, system-ui, sans-serif);
+  font-weight: bold;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 0;
+  cursor: pointer;
+  
   opacity: 0;
   transform: translateY(20px);
   animation: fadeIn 0.5s ease-out forwards;
@@ -108,11 +116,10 @@ const practiceSteps = [
         { id: 'css', label: 'CSS', code: cssCode },
       ]}
     />
-    <ResultPreview description="La tarjeta aparece suavemente deslizándose desde abajo hacia arriba con la animación fadeIn.">
-      <div class="card">
-        <h2>Título de la Tarjeta</h2>
-        <p>Contenido de ejemplo que se animará.</p>
-      </div>
+    <ResultPreview description="El botón de enviar aparece suavemente deslizándose desde abajo hacia arriba con la animación fadeIn.">
+      <button class="btn">
+        Enviar
+      </button>
     </ResultPreview>
   </div>
 
@@ -148,34 +155,21 @@ const practiceSteps = [
     }
   }
 
-  .card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 12px;
-    padding: 24px;
-    max-width: 280px;
-    text-align: center;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  .btn {
+    background-color: var(--dm-purple, #a855f7);
+    color: var(--color-bg);
+    font-family: var(--font-afronaut, system-ui, sans-serif);
+    font-weight: bold;
+    font-size: 0.8125rem;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 0;
+    cursor: pointer;
     
     /* Animación */
     opacity: 0;
     transform: translateY(20px);
     animation: fadeIn 0.5s ease-out forwards;
-  }
-
-  .card h2 {
-    color: var(--dm-purple, #a855f7);
-    font-size: 1.1rem;
-    margin: 0 0 8px 0;
-    font-weight: bold;
-    font-family: var(--font-afronaut, system-ui, sans-serif);
-  }
-
-  .card p {
-    color: var(--dm-light-300);
-    font-size: 0.8rem;
-    margin: 0;
-    line-height: 1.4;
   }
 </style>
 
