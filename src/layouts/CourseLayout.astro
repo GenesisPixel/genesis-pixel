@@ -143,14 +143,6 @@ const chapters = [
     z-index: 1;
   }
 
-  .lesson-link:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.1);
-    border-left: 2px solid var(--color-text);
-    text-decoration: underline;
-    text-underline-offset: 4px;
-  }
-
   .lesson-link.active {
     color: white;
     background: transparent;
@@ -512,6 +504,35 @@ const chapters = [
       // Cerrar sidebar al hacer click en un enlace
       sidebar.querySelectorAll('a').forEach((link) => {
         link.addEventListener('click', closeSidebar);
+      });
+
+      // Mover indicador en hover
+      const indicator = document.getElementById('sidebar-indicator');
+      const lessonLinks = sidebar.querySelectorAll('.lesson-link');
+
+      function moveIndicatorToLink(link) {
+        if (!indicator) return;
+        const list = link.closest('.lesson-list');
+        if (!list) return;
+        const listRect = list.getBoundingClientRect();
+        const linkRect = link.getBoundingClientRect();
+        indicator.style.top = `${linkRect.top - listRect.top}px`;
+        indicator.style.height = `${linkRect.height}px`;
+      }
+
+      function resetIndicatorToActive() {
+        const activeLink = sidebar.querySelector('.lesson-link.active');
+        if (activeLink) {
+          moveIndicatorToLink(activeLink);
+        } else if (indicator) {
+          indicator.style.top = '0px';
+          indicator.style.height = '0px';
+        }
+      }
+
+      lessonLinks.forEach((link) => {
+        link.addEventListener('mouseenter', () => moveIndicatorToLink(link));
+        link.addEventListener('mouseleave', () => resetIndicatorToActive());
       });
     }
   });
