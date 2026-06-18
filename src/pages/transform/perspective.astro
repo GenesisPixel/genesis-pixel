@@ -1,25 +1,194 @@
 ---
 import TransformLayout from '../../layouts/TransformLayout.astro';
 import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
 
+const htmlCode = `<!-- La perspectiva va en el padre -->
+<div class="escena-perspectiva">
+  <!-- El elemento que se transforma va aquí -->
+  <div class="tarjeta-perspectiva">
+    <div class="p-6 text-white text-center">
+      <h4>Perspectiva: 400px</h4>
+      <p>Dramática y cercana</p>
+    </div>
+  </div>
+</div>
+
+<!-- Comparación con perspectiva distante -->
+<div class="escena-perspectiva-lejana">
+  <div class="tarjeta-perspectiva">
+    <div class="p-6 text-white text-center">
+      <h4>Perspectiva: 2000px</h4>
+      <p>Sutil y ortogonal</p>
+    </div>
+  </div>
+</div>`;
+
+const cssCode = `/* Perspectiva cercana y dramática */
+.escena-perspectiva {
+  perspective: 400px;
+}
+
+/* Perspectiva lejana y sutil */
+.escena-perspectiva-lejana {
+  perspective: 2000px;
+}
+
+/* El mismo elemento con el mismo rotate */
+.tarjeta-perspectiva {
+  background: linear-gradient(135deg, #a855f7, #3b82f6);
+  border-radius: 12px;
+  
+  /* La misma rotación en ambos casos */
+  transform: rotateY(25deg);
+  transition: transform 0.4s ease;
+}
+
+.escena-perspectiva:hover .tarjeta-perspectiva,
+.escena-perspectiva-lejana:hover .tarjeta-perspectiva {
+  transform: rotateY(0deg);
+}
+
+/* perspective-origin: controla desde dónde "miras" */
+.escena-con-origen {
+  perspective: 600px;
+  
+  /* El punto de vista está arriba a la derecha */
+  perspective-origin: 80% 20%;
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Crea dos escenas con perspective: 300px y perspective: 1500px', color: 'dm-purple', rotate: '2deg' },
+  { number: 2, text: 'Aplica el mismo rotateY(30deg) a un elemento dentro de cada escena', color: 'dm-green', rotate: '-3deg' },
+  { number: 3, text: 'Observa la diferencia dramática de distorsión entre ambas perspectivas', color: 'app-color-yellow400', rotate: '4deg' },
+  { number: 4, text: 'Experimenta cambiando perspective-origin a diferentes coordenadas', color: 'dm-blue', rotate: '-1deg' },
+];
 ---
 
 <TransformLayout
   title="Perspective - Genesis Pixel"
   currentLesson="/transform/perspective"
-  prevLesson={{ title: 'Lección Anterior', href: '/transform/translate-z' }}
-  nextLesson={{ title: 'Lección Siguiente', href: '/transform/proyecto-final' }}
+  prevLesson={{ title: 'TranslateZ y Scale3D', href: '/transform/translate-z' }}
+  nextLesson={{ title: 'Proyecto Final de Transform', href: '/transform/proyecto-final' }}
 >
   <ChapterHeader
     chapterNumber="02"
     chapterLabel="Capítulo 2 · Lección 14"
     title="Perspective"
-    readingTime={5}
+    readingTime={7}
     difficulty="CSS Transform"
   />
 
   <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
-    <h3>Próximamente...</h3>
-    <p>Estamos redactando esta lección con historias reales y ejemplos visuales de calidad premium.</p>
+    <h3>El ojo que todo lo ve</h3>
+    <p>
+      Piensa en cómo funciona una cámara fotográfica. Usando un gran angular (lente de distancia focal corta), los objetos cercanos parecen enormes y los lejanos se ven diminutos: la perspectiva es exagerada. Con un teleobjetivo (distancia focal larga), la diferencia de tamaño entre objetos cercanos y lejanos se comprime: todo parece estar casi en el mismo plano.
+    </p>
+    <p>
+      <code>perspective</code> en CSS funciona exactamente igual. Define la distancia desde la que el "ojo virtual del navegador" observa el espacio 3D. Y esa distancia cambia completamente cómo se perciben todas las transformaciones 3D dentro de esa escena.
+    </p>
+
+    <h3>Valores y su impacto visual</h3>
+    <p>
+      Los valores de <code>perspective</code> se expresan en píxeles y representan la distancia imaginaria del espectador al plano de la pantalla:
+    </p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>200px – 500px:</strong> Perspectiva muy cercana y dramática. Las rotaciones parecen muy exageradas, como una lente gran angular. Ideal para efectos de impacto visual fuerte.</li>
+      <li><strong>600px – 1000px:</strong> El rango más usado en interfaces premium. Perspectiva natural y realista. Suficiente distorsión para transmitir 3D sin parecer exagerado.</li>
+      <li><strong>1500px – 3000px:</strong> Perspectiva distante, casi plana. Las rotaciones se ven sutiles. Útil cuando quieres un toque de 3D sin que parezca demasiado dramático.</li>
+      <li><strong>none:</strong> Sin perspectiva. Todo se aplana, las rotaciones solo parecen escalados.</li>
+    </ul>
+
+    <h3>perspective-origin: cambiando el punto de vista</h3>
+    <p>
+      Así como puedes mover <code>transform-origin</code> para cambiar desde dónde gira un elemento, puedes usar <code>perspective-origin</code> para cambiar desde dónde miras la escena 3D entera.
+    </p>
+    <p>
+      Por defecto es <code>50% 50%</code> (el centro). Pero si lo cambias a <code>0% 0%</code> verás la escena desde la esquina superior izquierda, creando una perspectiva isométrica. Si lo pones en <code>80% 20%</code>, el punto de fuga se mueve hacia la derecha y arriba.
+    </p>
+    <p>
+      Esta propiedad es especialmente útil para crear composiciones 3D con un estilo específico, como las ilustraciones isométricas que están muy de moda en las landing pages de productos SaaS.
+    </p>
+
+    <h3>Perspectiva en transform() vs en el padre</h3>
+    <p>
+      Hay dos formas de aplicar perspectiva: <code>perspective</code> como propiedad en el padre (lo que hemos aprendido) y <code>perspective()</code> como función dentro de <code>transform</code>. La diferencia es sutil pero importante: cuando la perspectiva está en el padre, todos los hijos comparten el mismo punto de fuga, creando una escena cohesionada. Cuando se usa en el transform del elemento, cada elemento tiene su propio punto de fuga independiente.
+    </p>
   </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Como regla práctica: perspective entre 600px y 900px es el rango que produce los efectos de tarjeta flip y rotación más naturales y usables en interfaces reales. Valores menores de 400px empiezan a verse como un efecto de ojo de pez que puede marear a los usuarios. Reserva las perspectivas dramáticas para elementos decorativos, no para contenido funcional." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    El impacto del valor de Perspective
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="perspective-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Dos tarjetas con la misma rotateY(25deg) pero perspectivas diferentes. Observa cómo la misma transformación se ve completamente diferente con perspective: 300px vs 1500px.">
+      <div class="flex flex-col items-center justify-center gap-6 h-full w-full py-4">
+        <div class="escena-p1">
+          <div class="tarj-p">
+            <p class="m-0 text-xs font-semibold text-white">300px</p>
+            <p class="m-0 text-[10px] text-white/60">Dramática</p>
+          </div>
+        </div>
+        <div class="escena-p2">
+          <div class="tarj-p">
+            <p class="m-0 text-xs font-semibold text-white">1500px</p>
+            <p class="m-0 text-[10px] text-white/60">Sutil</p>
+          </div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Poner perspective en el elemento que se transforma', description: 'La propiedad CSS perspective debe ir en el padre del elemento que se transforma. Si la pones en el mismo elemento, necesitarás la función perspective() dentro de transform, que tiene un comportamiento diferente (punto de fuga independiente).' },
+      { label: 'Valores de perspectiva extremos en interfaces funcionales', description: 'perspective: 100px crea distorsiones tan dramáticas que el contenido se vuelve difícil de leer y da una sensación de mareo. Guarda los valores extremos para efectos decorativos o ilustraciones.' },
+    ]} />
+
+    <PracticeCards
+      title="Calibra tu escena"
+      description="Crea un slider de valores de perspective y experimenta en tiempo real con JavaScript cómo el mismo elemento 3D se ve completamente diferente al cambiar de 200px a 2000px."
+      steps={practiceSteps}
+    />
+  </div>
 </TransformLayout>
+
+<style>
+  .escena-p1 {
+    perspective: 300px;
+  }
+
+  .escena-p2 {
+    perspective: 1500px;
+  }
+
+  .tarj-p {
+    background: linear-gradient(135deg, #a855f7, #3b82f6);
+    border-radius: 8px;
+    padding: 12px 24px;
+    text-align: center;
+    transform: rotateY(25deg);
+    transition: transform 0.4s ease;
+    cursor: pointer;
+    min-width: 120px;
+  }
+
+  :global(.preview-container:hover) .tarj-p {
+    transform: rotateY(0deg);
+  }
+</style>
