@@ -1,25 +1,191 @@
 ---
 import TransformLayout from '../../layouts/TransformLayout.astro';
 import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
 
+const htmlCode = `<div class="icono-contenedor">
+  <div class="icono-cta">
+    <svg class="icono-flecha" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="5" y1="12" x2="19" y2="12"/>
+      <polyline points="12 5 19 12 12 19"/>
+    </svg>
+    Descubrir más
+  </div>
+</div>`;
+
+const cssCode = `.icono-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  background: rgba(168, 85, 247, 0.15);
+  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 10px;
+  color: #a855f7;
+  font-family: system-ui, sans-serif;
+  cursor: pointer;
+  
+  /* Transición en el contenedor entero */
+  transition: transform 0.3s ease, background 0.3s ease;
+}
+
+.icono-flecha {
+  /* La flecha se mueve con su propia transición */
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Al hover: el contenedor se eleva Y la flecha se dispara */
+.icono-cta:hover {
+  transform: translateY(-4px);
+  background: rgba(168, 85, 247, 0.25);
+}
+
+.icono-cta:hover .icono-flecha {
+  /* La flecha se mueve a la derecha */
+  transform: translateX(6px);
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Crea un botón con un icono SVG de flecha dentro', color: 'dm-purple', rotate: '2deg' },
+  { number: 2, text: 'Pon una transición en el botón (translateY) y otra en la flecha (translateX)', color: 'dm-green', rotate: '-3deg' },
+  { number: 3, text: 'Activa ambas transformaciones en el :hover del botón padre', color: 'app-color-yellow400', rotate: '4deg' },
+  { number: 4, text: 'Experimenta con diferentes timing functions en cada elemento', color: 'dm-blue', rotate: '-1deg' },
+];
 ---
 
 <TransformLayout
   title="Múltiples Transformaciones - Genesis Pixel"
   currentLesson="/transform/multiples-transformaciones"
-  prevLesson={{ title: 'Lección Anterior', href: '/transform/transform-origin' }}
-  nextLesson={{ title: 'Lección Siguiente', href: '/transform/transform-3d' }}
+  prevLesson={{ title: 'Transform Origin', href: '/transform/transform-origin' }}
+  nextLesson={{ title: 'Transform 3D', href: '/transform/transform-3d' }}
 >
   <ChapterHeader
     chapterNumber="02"
     chapterLabel="Capítulo 2 · Lección 10"
     title="Múltiples Transformaciones"
-    readingTime={5}
+    readingTime={8}
     difficulty="CSS Transform"
   />
 
   <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
-    <h3>Próximamente...</h3>
-    <p>Estamos redactando esta lección con historias reales y ejemplos visuales de calidad premium.</p>
+    <h3>Cuando una sola transformación no es suficiente</h3>
+    <p>
+      Los diseñadores de interacción que trabajan en productos como Figma, Linear o Vercel saben que la diferencia entre una interfaz que se siente "bien" y una que se siente "premium" está en los detalles compuestos. No es solo que el botón crezca, sino que mientras crece también se eleva y su sombra se profundiza. No es solo que la tarjeta se eleve, sino que también rota levemente revelando un ángulo, como si la sostuvieras en la mano.
+    </p>
+    <p>
+      Para lograr esas sensaciones complejas necesitas combinar múltiples transformaciones en una sola propiedad. Y hay dos estrategias: combinarlas en el mismo elemento, o coordinarlas entre elementos diferentes.
+    </p>
+
+    <h3>Combinando en el mismo elemento</h3>
+    <p>
+      Como aprendimos en la lección de Sintaxis, encadenar múltiples funciones en una sola línea <code>transform</code> es tan sencillo como separarlas por espacios. El desafío es el orden.
+    </p>
+    <p>
+      El orden matemático en el que CSS aplica las transformaciones es de derecha a izquierda (aunque visualmente se lean de izquierda a derecha). Esto significa que en:
+    </p>
+    <div class="p-4 bg-white/5 rounded-lg border border-white/10 my-4 font-mono text-sm text-[var(--dm-light-200)]">
+      transform: translateX(50px) rotate(45deg);
+    </div>
+    <p>
+      Primero se aplica el <code>rotate(45deg)</code> y luego el <code>translateX(50px)</code>. Pero como el elemento ya fue rotado, su eje X ya no apunta a la derecha original de la pantalla, sino a la dirección en la que apunta el elemento rotado. Esto puede resultar en movimientos inesperados.
+    </p>
+    <p>
+      La convención estándar (la más predecible) es: <strong>primero traslaciones, luego rotaciones, luego escalas</strong>.
+    </p>
+
+    <h3>Coordinando múltiples elementos</h3>
+    <p>
+      La técnica que más eleva la calidad percibida de una interfaz es usar el hover de un elemento padre para activar transformaciones en múltiples elementos hijos, cada uno con su propia velocidad y movimiento. Un ejemplo perfecto son los botones de CTA (Call To Action) con ícono de flecha:
+    </p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li>El <strong>contenedor del botón</strong> se eleva ligeramente: <code>translateY(-4px)</code>.</li>
+      <li>La <strong>flecha interior</strong> se dispara hacia la derecha: <code>translateX(6px)</code>.</li>
+      <li>Cada elemento tiene su propio <code>transition-timing-function</code>, haciendo que el movimiento compuesto se sienta coreografiado, no mecánico.</li>
+    </ul>
+
+    <h3>Resultados distintos según el orden</h3>
+    <p>
+      Para ilustrar la importancia del orden, imagina que quieres mover un elemento 100px y luego rotarlo 90 grados. El resultado de <code>translateX(100px) rotate(90deg)</code> es diferente al de <code>rotate(90deg) translateX(100px)</code>. En el segundo caso, el elemento termina 100px más abajo (porque sus ejes fueron rotados antes de trasladarse).
+    </p>
+    <p>
+      No hay un "correcto" absoluto: hay el que produce el resultado que tú quieres. La práctica y la experimentación son la única forma de dominar esto.
+    </p>
   </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Para transformaciones compuestas en múltiples hijos, un truco profesional es definir tiempos escalonados (stagger). El botón padre reacciona en 0.3s y la flecha interior reacciona en 0.25s pero con un delay de 0.05s. Este pequeño desfase hace que el movimiento se sienta 'vivo' y coreografiado en lugar de mecánico." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    El botón CTA con flecha animada
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="multiple-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Pasa el ratón sobre el botón. Dos transformaciones ocurren coordinadas: el contenedor sube y la flecha se dispara hacia adelante. Cada elemento tiene su propia curva de timing.">
+      <div class="flex items-center justify-center h-full w-full">
+        <div class="cta-demo">
+          <svg class="flecha-demo" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
+          Descubrir más
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Definir dos propiedades transform en el mismo elemento', description: 'Si escribes transform: translateX(50px) en una línea y transform: rotate(45deg) en otra, el segundo sobreescribe al primero. Todas las funciones deben estar en una sola declaración transform.' },
+      { label: 'Ignorar el impacto del orden', description: 'Combinar funciones sin pensar en el orden puede producir animaciones con destinos inesperados. Si algo se mueve en una dirección extraña, prueba cambiando el orden de las funciones.' },
+    ]} />
+
+    <PracticeCards
+      title="Coreografía de Movimiento"
+      description="Crea una tarjeta de perfil donde al hacer hover el avatar haga scale(1.1) y la información de texto se desplace ligeramente hacia la derecha con translateX(8px), dando sensación de expansión."
+      steps={practiceSteps}
+    />
+  </div>
 </TransformLayout>
+
+<style>
+  .cta-demo {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: rgba(168, 85, 247, 0.1);
+    border: 1px solid rgba(168, 85, 247, 0.25);
+    border-radius: 10px;
+    color: #a855f7;
+    font-family: var(--font-afronaut, system-ui, sans-serif);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .flecha-demo {
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  :global(.preview-container:hover) .cta-demo {
+    transform: translateY(-4px);
+    background: rgba(168, 85, 247, 0.2);
+    box-shadow: 0 8px 20px rgba(168, 85, 247, 0.2);
+  }
+
+  :global(.preview-container:hover) .flecha-demo {
+    transform: translateX(6px);
+  }
+</style>
