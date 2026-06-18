@@ -252,12 +252,12 @@ const chapters = [
       top: 0;
       left: 0;
       bottom: 0;
-      width: 280px;
+      width: 65%;
       height: 100vh;
       background: rgba(10, 15, 12, 0.95);
       backdrop-filter: blur(10px);
       z-index: 50;
-      padding: 24px;
+      padding: 24px 10px;
       padding-top: 64px;
       transform: translateX(-100%);
       transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -476,6 +476,11 @@ const chapters = [
       sidebarToggle.addEventListener('click', openSidebar);
       sidebarClose.addEventListener('click', closeSidebar);
       sidebarOverlay.addEventListener('click', closeSidebar);
+
+      // Cerrar sidebar al hacer click en un enlace
+      sidebar.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', closeSidebar);
+      });
     }
   });
 </script>
