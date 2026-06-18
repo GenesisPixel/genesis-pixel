@@ -84,7 +84,7 @@ const chapters = [
     font-family: var(--font-afronaut);
     font-size: 0.8125rem;
     font-weight: 500;
-    color: var(--dm-light-200);
+    color: var(--color-text);
     padding: 8px 12px;
     display: flex;
     align-items: center;
@@ -92,14 +92,15 @@ const chapters = [
     cursor: pointer;
     border-radius: 8px;
     transition: all 0.2s ease;
+    opacity: 1;
   }
 
   .chapter-title:hover {
     background: rgba(255, 255, 255, 0.04);
+    opacity: 1;
   }
 
   .chapter-title.active {
-    color: var(--color-text);
     background: rgba(255, 255, 255, 0.06);
   }
 
