@@ -1,14 +1,68 @@
 ---
 import TransformLayout from '../../layouts/TransformLayout.astro';
 import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
 
+const htmlCode = `<div class="galeria">
+  <div class="imagen-skew">
+    <div class="imagen-contenido">
+      <h4>Colección 2025</h4>
+      <p>Nueva temporada</p>
+    </div>
+  </div>
+</div>`;
+
+const cssCode = `.galeria {
+  overflow: hidden;
+  padding: 20px;
+}
+
+.imagen-skew {
+  background: linear-gradient(135deg, #a855f7, #ec4899);
+  padding: 40px;
+  color: white;
+  font-family: system-ui, sans-serif;
+  position: relative;
+  
+  /* El efecto de inclinación diagonal */
+  transform: skewX(-10deg);
+  transition: transform 0.4s ease;
+}
+
+/* Compensamos el skew en el contenido interior */
+.imagen-contenido {
+  transform: skewX(10deg);
+}
+
+.imagen-skew:hover {
+  transform: skewX(0deg);
+}
+
+/* Separadores de sección con inclinación */
+.separador-diagonal {
+  background: #a855f7;
+  height: 80px;
+  transform: skewY(-3deg);
+  margin: 0 -20px;
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Crea un div con fondo de color y aplica skewX(-15deg)', color: 'dm-purple', rotate: '2deg' },
+  { number: 2, text: 'Observa cómo el contenido interno también se inclina', color: 'dm-green', rotate: '-3deg' },
+  { number: 3, text: 'Añade un hijo con skewX(15deg) para compensar la inclinación', color: 'app-color-yellow400', rotate: '4deg' },
+  { number: 4, text: 'Prueba skewY(-3deg) en una sección completa para crear un corte diagonal', color: 'dm-blue', rotate: '-1deg' },
+];
 ---
 
 <TransformLayout
   title="Skew - Genesis Pixel"
   currentLesson="/transform/skew"
-  prevLesson={{ title: 'Lección Anterior', href: '/transform/rotate' }}
-  nextLesson={{ title: 'Lección Siguiente', href: '/transform/transform-origin' }}
+  prevLesson={{ title: 'Rotate', href: '/transform/rotate' }}
+  nextLesson={{ title: 'Transform Origin', href: '/transform/transform-origin' }}
 >
   <ChapterHeader
     chapterNumber="02"
@@ -19,7 +73,107 @@ import ChapterHeader from '../../components/ChapterHeader.astro';
   />
 
   <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
-    <h3>Próximamente...</h3>
-    <p>Estamos redactando esta lección con historias reales y ejemplos visuales de calidad premium.</p>
+    <h3>La geometría del movimiento y la energía visual</h3>
+    <p>
+      Las líneas horizontales y verticales transmiten estabilidad y orden. Son las líneas de la arquitectura, de las tablas de datos, de los formularios. Pero hay marcas y productos digitales que necesitan transmitir algo diferente: velocidad, energía, dinamismo, ruptura. Para ellos, la diagonal es el lenguaje visual de elección.
+    </p>
+    <p>
+      ¿Has visto cómo las páginas de Nike, Adidas o cualquier marca de deportes tienen secciones que cortan en diagonal? ¿O cómo ciertos botones tienen una silueta cortada en ángulo? Eso es <code>skew</code> en acción.
+    </p>
+
+    <h3>¿Qué es skew()?</h3>
+    <p>
+      <code>skew()</code> inclina o "cizalla" un elemento a lo largo de uno o ambos ejes. A diferencia de <code>rotate()</code> que gira el elemento como una rueda, <code>skew</code> lo distorsiona como si lo empujaras desde la parte superior mientras lo anclas desde abajo.
+    </p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><code>skewX(15deg):</code> Inclina el elemento sobre el eje horizontal. La parte superior se mueve a la derecha, la inferior a la izquierda (o viceversa con negativos).</li>
+      <li><code>skewY(10deg):</code> Inclina el elemento sobre el eje vertical. La parte izquierda sube, la derecha baja (o al revés).</li>
+      <li><code>skew(15deg, 10deg):</code> Aplica ambos ejes simultáneamente.</li>
+    </ul>
+
+    <h3>El truco del contenido compensado</h3>
+    <p>
+      Cuando aplicas <code>skewX(-10deg)</code> a un div, todo su contenido también se inclina: el texto, las imágenes, los botones. Si quieres que el "marco" esté inclinado pero el contenido interior se vea recto (como en los banners de las tiendas de moda), necesitas aplicar la transformación inversa al contenedor del contenido:
+    </p>
+    <div class="p-4 bg-white/5 rounded-lg border border-white/10 my-4 font-mono text-sm text-[var(--dm-light-200)]">
+      .seccion-inclinada {"{"}
+      <br/>&nbsp;&nbsp;transform: skewX(-10deg);<br/>
+      {"}"}<br/><br/>
+      .seccion-inclinada .contenido {"{"}
+      <br/>&nbsp;&nbsp;<span class="text-green-400">/* El valor opuesto cancela el skew del padre */</span><br/>
+      &nbsp;&nbsp;transform: skewX(10deg);<br/>
+      {"}"}
+    </div>
+
+    <h3>Separadores de sección: el uso más frecuente</h3>
+    <p>
+      Una de las aplicaciones más populares de <code>skewY()</code> en landing pages modernas es crear separadores de sección con cortes diagonales. En lugar de un borde recto horizontal entre sección y sección, usas un bloque con <code>skewY(-3deg)</code> que crea una transición diagonal dinámica. Es un recurso visual poderoso que da movimiento y dirección a la composición de la página.
+    </p>
   </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Para separadores de sección con skewY, el rango ideal es entre -4deg y 4deg. Más allá de ese rango el efecto se vuelve excesivo y distrae del contenido. Combina el skew con overflow: hidden en el contenedor padre para evitar que los bordes inclinados sobresalgan de su sección." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Geometría en movimiento
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="skew-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Una tarjeta con skewX(-10deg) que al hacer hover recupera su forma original. El contenido interno está compensado con skewX(10deg) para mantenerse legible.">
+      <div class="flex items-center justify-center h-full w-full overflow-hidden p-8">
+        <div class="skew-card-demo">
+          <div class="skew-card-inner">
+            <h4 class="m-0 text-sm font-bold text-white">Colección 2025</h4>
+            <p class="m-0 mt-1 text-xs text-white/70">Nueva temporada</p>
+          </div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Olvidar compensar el skew en el contenido interior', description: 'Si aplicas skewX(-10deg) a un contenedor sin compensar el contenido, el texto dentro también se inclinará, haciéndolo difícil de leer.' },
+      { label: 'Usar skewY extremo sin overflow: hidden', description: 'Un skewY intenso hará que las esquinas del elemento sobresalgan del flujo normal. Asegúrate de que el padre tenga overflow: hidden para contenerlas.' },
+      { label: 'Combinar skew con border-radius', description: 'border-radius y skew no se llevan bien visualmente. El resultado es esquinas distorsionadas de forma inesperada. Es mejor usar clip-path para crear formas irregulares.' },
+    ]} />
+
+    <PracticeCards
+      title="Construye con Diagonal"
+      description="Crea una sección hero con su fondo inclinado usando skewY. Asegúrate de compensar el texto interior para que se vea perfectamente horizontal."
+      steps={practiceSteps}
+    />
+  </div>
 </TransformLayout>
+
+<style>
+  .skew-card-demo {
+    background: linear-gradient(135deg, #a855f7, #ec4899);
+    padding: 32px 40px;
+    border-radius: 4px;
+    transform: skewX(-10deg);
+    transition: transform 0.4s ease;
+    cursor: pointer;
+  }
+
+  :global(.preview-container:hover) .skew-card-demo {
+    transform: skewX(0deg);
+  }
+
+  .skew-card-inner {
+    transform: skewX(10deg);
+    transition: transform 0.4s ease;
+  }
+
+  :global(.preview-container:hover) .skew-card-inner {
+    transform: skewX(0deg);
+  }
+</style>
