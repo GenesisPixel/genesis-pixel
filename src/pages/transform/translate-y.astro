@@ -16,19 +16,17 @@ const htmlCode = `<div class="contenedor-cards">
 </div>`;
 
 const cssCode = `.card-producto {
-  background: var(--dm-purple);
+  background-color: #9FA6FF;
   border: none;
   border-radius: 0;
-  padding: 20px;
-  color: white;
+  padding: 12px;
+  color: var(--color-bg);
   font-family: system-ui, sans-serif;
   cursor: pointer;
   
-  /* Preparamos la transición */
   transition: transform 0.35s ease, box-shadow 0.35s ease;
 }
 
-/* La tarjeta se eleva al pasar el ratón */
 .card-producto:hover {
   transform: translateY(-12px);
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
@@ -119,8 +117,8 @@ const practiceSteps = [
       <div class="flex items-center justify-center h-full w-full p-4">
         <div class="card-demo">
           <div class="card-img-demo"></div>
-          <h4 class="my-2 text-sm font-semibold text-white">Producto Premium</h4>
-          <p class="my-0 text-xs text-white/50">Calidad superior garantizada</p>
+          <h4 class="my-2 text-sm font-semibold" style="color: var(--color-bg);">Producto Premium</h4>
+          <p class="my-0 text-xs" style="color: var(--color-bg); opacity: 0.7;">Calidad superior garantizada</p>
         </div>
       </div>
     </ResultPreview>
@@ -143,10 +141,10 @@ const practiceSteps = [
 
 <style>
   .card-demo {
-    background: var(--dm-purple);
+    background-color: #9FA6FF;
     border: none;
     border-radius: 0;
-    padding: 16px;
+    padding: 12px;
     width: 100%;
     max-width: 170px;
     cursor: pointer;
