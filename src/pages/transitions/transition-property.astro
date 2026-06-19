@@ -1,0 +1,144 @@
+---
+import TransitionsLayout from '../../layouts/TransitionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="container">
+  <button class="btn all">transition: all</button>
+  <button class="btn specific">transition: transform</button>
+</div>`;
+
+const cssCode = `.container {
+  display: flex;
+  gap: 16px;
+}
+
+.btn {
+  background-color: #3b82f6;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+/* Transiciona TODO lo que cambie */
+.all {
+  transition-property: all;
+  transition-duration: 0.5s;
+}
+
+/* Solo transiciona el transform, el color cambia brusco */
+.specific {
+  transition-property: transform;
+  transition-duration: 0.5s;
+}
+
+.btn:hover {
+  background-color: #1d4ed8;
+  transform: translateY(-8px);
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Crea un div que cambie de ancho (width) y color de fondo al hacer hover.', color: 'dm-purple', rotate: '10deg' },
+  { number: 2, text: 'Aplica transition-property: background-color.', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'Observa cómo el color es suave, pero el ancho cambia de golpe.', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Cambia a transition-property: all.', color: 'dm-blue', rotate: '2deg' },
+  { number: 5, text: 'Mejor práctica: usa transition-property: width, background-color.', color: 'dm-red', rotate: '-5deg' },
+];
+---
+
+<TransitionsLayout
+  title="transition-property - Genesis Pixel"
+  currentLesson="/transitions/transition-property"
+  prevLesson={{ title: '¿Qué son las Transitions?', href: '/transitions/que-son' }}
+  nextLesson={{ title: 'transition-duration', href: '/transitions/transition-duration' }}
+>
+  <ChapterHeader
+    chapterNumber="03"
+    chapterLabel="Capítulo 3 · Lección 2"
+    title="transition-property"
+    readingTime={5}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué quieres animar exactamente?</h3>
+    <p>
+      Imagina que le dices a un director de orquesta: "Toca música". Probablemente te preguntará: "¿Qué instrumentos quieres que toquen?". En CSS, <code>transition-property</code> es exactamente eso. Le dice al navegador <strong>cuáles propiedades</strong> específicas deben cambiar suavemente y cuáles deben cambiar de golpe.
+    </p>
+
+    <h3>Valores principales</h3>
+    <p>
+      Tienes tres opciones principales al definir esta propiedad:
+    </p>
+    <ul class="space-y-3 mt-4 mb-8 list-none pl-0">
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>all (Por defecto):</strong> Le dice al navegador que <em>cualquier</em> propiedad que cambie de valor debe transicionarse. Es fácil, pero puede causar problemas de rendimiento si cambian muchas cosas a la vez.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>Una propiedad específica:</strong> Como <code>transform</code>, <code>opacity</code> o <code>background-color</code>. Solo esa propiedad tendrá una transición.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>Múltiples propiedades:</strong> Puedes separar propiedades por comas, por ejemplo: <code>transform, opacity</code>. Esta es la forma más recomendada y profesional.</span>
+      </li>
+    </ul>
+
+    <h3>¿Por qué no usar simplemente "all"?</h3>
+    <p>
+      Es muy tentador escribir <code>transition: all 0.3s</code> y olvidarse del asunto. El problema es que el navegador intentará interpolar propiedades que quizás no querías animar, o peor aún, propiedades que son muy costosas para el procesador (como `box-shadow` o `margin`). Especificar exactamente qué propiedades van a cambiar hace que tu código sea predecible y mucho más rápido.
+    </p>
+  </article>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="example"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="El primer botón transiciona 'all' (color y posición cambian suavemente). El segundo solo transiciona 'transform' (se mueve suave, pero el color cambia de golpe).">
+      <div style="display: flex; gap: 16px; justify-content: center; align-items: center; height: 100%;">
+        <style>
+          .t-btn { background-color: #3b82f6; color: white; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: system-ui, sans-serif; }
+          .t-all { transition-property: all; transition-duration: 0.5s; }
+          .t-spec { transition-property: transform; transition-duration: 0.5s; }
+          .t-all:hover, .t-spec:hover { background-color: #1d4ed8; transform: translateY(-8px); }
+        </style>
+        <button class="t-btn t-all">transition: all</button>
+        <button class="t-btn t-spec">transition: transform</button>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Intentar transicionar propiedades no animables', description: 'Propiedades como display (de none a block) o font-family no pueden transicionarse y cambiarán de golpe.' },
+      { label: 'Olvidar prefijos en producción', description: 'Aunque hoy en día no es tan común, algunas propiedades experimentales requieren definir su versión con prefijo en transition-property.' }
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Domina el control de qué propiedades responden a la interacción del usuario."
+      steps={practiceSteps}
+    />
+  </div>
+</TransitionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+  document.addEventListener('astro:after-swap', () => initCodeInteractions());
+</script>

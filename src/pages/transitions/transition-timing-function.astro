@@ -1,0 +1,151 @@
+---
+import TransitionsLayout from '../../layouts/TransitionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="race">
+  <div class="box linear">linear</div>
+  <div class="box ease">ease</div>
+  <div class="box ease-in">ease-in</div>
+  <div class="box ease-out">ease-out</div>
+  <div class="box bouncy">cubic-bezier</div>
+</div>`;
+
+const cssCode = `.race:hover .box {
+  transform: translateX(300px);
+}
+
+.box {
+  width: 100px;
+  height: 40px;
+  background: #10b981;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  /* Todos duran exactamente 1 segundo */
+  transition: transform 1s;
+}
+
+.linear { transition-timing-function: linear; }
+.ease { transition-timing-function: ease; }
+.ease-in { transition-timing-function: ease-in; }
+.ease-out { transition-timing-function: ease-out; }
+.bouncy { transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55); }`;
+
+const practiceSteps = [
+  { number: 1, text: 'Prueba la diferencia entre ease-in (acelerar) y ease-out (desacelerar).', color: 'dm-purple', rotate: '10deg' },
+  { number: 2, text: 'Visita cubic-bezier.com para crear tu propia curva personalizada.', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'Usa una curva con rebote para un modal que se abre.', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Usa linear solo para cosas mecánicas (como un spinner de carga girando).', color: 'dm-blue', rotate: '2deg' },
+  { number: 5, text: 'Notarás que ease-out es el mejor amigo de la UI moderna.', color: 'dm-red', rotate: '-5deg' },
+];
+---
+
+<TransitionsLayout
+  title="transition-timing-function - Genesis Pixel"
+  currentLesson="/transitions/transition-timing-function"
+  prevLesson={{ title: 'transition-duration', href: '/transitions/transition-duration' }}
+  nextLesson={{ title: 'transition-delay', href: '/transitions/transition-delay' }}
+>
+  <ChapterHeader
+    chapterNumber="03"
+    chapterLabel="Capítulo 3 · Lección 4"
+    title="transition-timing-function"
+    readingTime={6}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>La personalidad del movimiento</h3>
+    <p>
+      Dos elementos pueden moverse de A hacia B en exactamente 1 segundo, pero pueden sentirse completamente distintos. Uno puede sentirse como un robot, y el otro como un objeto real impulsado por la física. Esa diferencia es el <strong>easing</strong> o <code>transition-timing-function</code>.
+    </p>
+
+    <h3>Los valores principales (Curvas de Bézier)</h3>
+    <p>
+      El navegador calcula la velocidad de la transición usando matemáticas (Curvas de Bézier cúbicas). Tienes a tu disposición palabras clave predefinidas:
+    </p>
+    <ul class="space-y-3 mt-4 mb-8 list-none pl-0">
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>linear:</strong> Velocidad constante. Sin aceleración ni frenado. Se siente mecánico, ideal para barras de progreso continuas.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>ease (por defecto):</strong> Comienza lento, acelera rápido, y frena lentamente al final. Es muy orgánico y funciona bien en casi todo.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>ease-in:</strong> Comienza lento y termina rápido. Es como dejar caer un objeto por la gravedad.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>ease-out:</strong> Comienza rápido y desacelera hasta detenerse. Es <strong>perfecto para la UI</strong> porque el elemento responde inmediatamente a la interacción del usuario y luego "frena" suavemente.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>cubic-bezier(n,n,n,n):</strong> Crea tu propia curva matemática. ¡Incluso puedes hacer que los elementos reboten sobrepasando su destino final!</span>
+      </li>
+    </ul>
+  </article>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="example"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Pasa el cursor por el contenedor. ¡Todos llegan al mismo tiempo exacto (1s), pero mira cómo el viaje es totalmente diferente!">
+      <div style="width: 100%; padding: 20px;">
+        <style>
+          .t-race:hover .t-box { transform: translateX(min(300px, 60vw)); }
+          .t-box { width: 100px; height: 40px; background: #10b981; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-family: system-ui, sans-serif; font-size: 12px; transition: transform 1s; }
+          .t-linear { transition-timing-function: linear; }
+          .t-ease { transition-timing-function: ease; }
+          .t-ease-in { transition-timing-function: ease-in; }
+          .t-ease-out { transition-timing-function: ease-out; }
+          .t-bouncy { transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55); background: #f59e0b; }
+        </style>
+        <div class="t-race">
+          <div class="t-box t-linear">linear</div>
+          <div class="t-box t-ease">ease</div>
+          <div class="t-box t-ease-in">ease-in</div>
+          <div class="t-box t-ease-out">ease-out</div>
+          <div class="t-box t-bouncy">cubic-bezier</div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ConsejoProfesional>
+      <strong>Regla de oro de UX:</strong> Cuando un elemento <em>entra</em> en pantalla o responde al hover, usa <code>ease-out</code> (responde rápido, frena suave). Cuando un elemento <em>sale</em> de la pantalla, usa <code>ease-in</code> (empieza lento y se "escapa" rápido).
+    </ConsejoProfesional>
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Controla la curva de velocidad para crear interacciones orgánicas y naturales."
+      steps={practiceSteps}
+    />
+  </div>
+</TransitionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+  document.addEventListener('astro:after-swap', () => initCodeInteractions());
+</script>

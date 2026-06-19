@@ -1,0 +1,152 @@
+---
+import TransitionsLayout from '../../layouts/TransitionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="menu">
+  Pasa el cursor
+  <div class="dropdown">
+    <div class="item">Opción 1</div>
+    <div class="item">Opción 2</div>
+    <div class="item">Opción 3</div>
+  </div>
+</div>`;
+
+const cssCode = `.menu {
+  position: relative;
+  padding: 12px 24px;
+  background: #27272a;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  margin-top: 8px;
+  background: #18181b;
+  border-radius: 8px;
+  padding: 8px;
+  opacity: 0;
+  transform: translateY(-10px);
+  visibility: hidden;
+  /* Retrasamos la salida para que no se cierre accidentalmente */
+  transition: all 0.3s ease;
+  transition-delay: 0.5s; 
+}
+
+.menu:hover .dropdown {
+  opacity: 1;
+  transform: translateY(0);
+  visibility: visible;
+  /* Al entrar, el delay es 0 para que abra rápido */
+  transition-delay: 0s; 
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Aprende que el delay puede usarse para crear secuencias.', color: 'dm-purple', rotate: '10deg' },
+  { number: 2, text: 'Aplica delay distinto al entrar que al salir de un :hover.', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'Usa delay para dar a los usuarios "margen de error" al mover el mouse en menús.', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Si pones delays muy largos (más de 0.5s), la UI parecerá rota o lenta.', color: 'dm-blue', rotate: '2deg' },
+  { number: 5, text: 'Puedes aplicar delays negativos (-0.2s) para saltarte el inicio de la transición.', color: 'dm-red', rotate: '-5deg' },
+];
+---
+
+<TransitionsLayout
+  title="transition-delay - Genesis Pixel"
+  currentLesson="/transitions/transition-delay"
+  prevLesson={{ title: 'transition-timing-function', href: '/transitions/transition-timing-function' }}
+  nextLesson={{ title: 'Shorthand transition', href: '/transitions/shorthand-transition' }}
+>
+  <ChapterHeader
+    chapterNumber="03"
+    chapterLabel="Capítulo 3 · Lección 5"
+    title="transition-delay"
+    readingTime={4}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Esperando el momento adecuado</h3>
+    <p>
+      <code>transition-delay</code> te permite poner "en pausa" la transición antes de que comience. Define cuánto tiempo debe esperar el navegador desde que ocurre el cambio de estado (como hacer hover) hasta que empieza a animarse.
+    </p>
+
+    <h3>¿Para qué queremos que la UI espere?</h3>
+    <p>
+      Podría parecer contraproducente hacer que el usuario espere. Sin embargo, el delay es una de las herramientas más potentes para crear <strong>Coreografía en UI</strong> y resolver problemas reales de usabilidad.
+    </p>
+
+    <ul class="space-y-3 mt-4 mb-8 list-none pl-0">
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>Menús tolerantes:</strong> Cuando el usuario mueve el mouse accidentalmente fuera de un dropdown por un milisegundo, no queremos que se cierre de golpe. Un pequeño delay al salir evita la frustración.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>Secuencias:</strong> Puedes animar 3 elementos distintos aplicando un delay de 0.1s, 0.2s y 0.3s. Aparecerán en cascada de manera hermosa.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>Prevenir parpadeos:</strong> A veces, si el hover ocurre muy rápido al pasar el cursor de largo, se dispara una transición a medias. Un delay de <code>0.05s</code> exige que el cursor se detenga intencionalmente sobre el elemento.</span>
+      </li>
+    </ul>
+  </article>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico (Menú tolerante)
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="example"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Pasa el cursor. El menú se abre al instante (delay 0s). Al quitar el cursor, espera medio segundo antes de cerrarse (delay 0.5s). ¡Esto perdona errores de puntería del usuario!">
+      <div style="display: flex; justify-content: center; height: 100%; align-items: start; padding-top: 30px;">
+        <style>
+          .t-menu { position: relative; padding: 12px 24px; background: #27272a; border-radius: 8px; color: white; cursor: pointer; font-weight: bold; font-family: system-ui, sans-serif; }
+          .t-dropdown { position: absolute; top: 100%; left: 0; margin-top: 8px; background: #18181b; border-radius: 8px; padding: 8px; width: 150px; opacity: 0; transform: translateY(-10px); visibility: hidden; transition: all 0.3s ease; transition-delay: 0.5s; border: 1px solid rgba(255,255,255,0.1); }
+          .t-item { padding: 8px; color: #a1a1aa; font-size: 14px; }
+          .t-item:hover { color: white; background: rgba(255,255,255,0.05); border-radius: 4px; }
+          .t-menu:hover .t-dropdown { opacity: 1; transform: translateY(0); visibility: visible; transition-delay: 0s; }
+        </style>
+        <div class="t-menu">
+          Pasa el cursor
+          <div class="t-dropdown">
+            <div class="t-item">Opción 1</div>
+            <div class="t-item">Opción 2</div>
+            <div class="t-item">Opción 3</div>
+          </div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Delays iniciales demasiado largos', description: 'Si un botón tarda medio segundo en reaccionar cuando le haces hover, el usuario pensará que la página web está colgada.' }
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Comprende cómo el tiempo de espera puede mejorar la tolerancia a errores de la UI."
+      steps={practiceSteps}
+    />
+  </div>
+</TransitionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+  document.addEventListener('astro:after-swap', () => initCodeInteractions());
+</script>

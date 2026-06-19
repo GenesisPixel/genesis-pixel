@@ -1,0 +1,121 @@
+---
+import TransitionsLayout from '../../layouts/TransitionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="bad-example">
+  Este es un error común
+</div>`;
+
+const cssCode = `.bad-example {
+  width: 200px;
+  height: 50px;
+  background: #f43f5e;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+}
+
+/* ERROR: La transición solo se definió en el :hover */
+.bad-example:hover {
+  transform: scale(1.1);
+  background: #e11d48;
+  transition: all 0.5s ease;
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'No transiciones width, height, margin o top/left si es posible.', color: 'dm-purple', rotate: '10deg' },
+  { number: 2, text: 'Usa transform y opacity en su lugar (son procesados por la GPU).', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'Evita aplicar transition en pseudo-estados (:hover, :focus). Aplícalo a la clase base.', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Nunca uses transition: all en selectores globales como * { }.', color: 'dm-blue', rotate: '2deg' },
+  { number: 5, text: 'No intentes animar desde un valor height: 0 hasta height: auto (no funciona).', color: 'dm-red', rotate: '-5deg' },
+];
+---
+
+<TransitionsLayout
+  title="Errores comunes - Genesis Pixel"
+  currentLesson="/transitions/errores-comunes"
+  prevLesson={{ title: 'Componentes reales', href: '/transitions/componentes-reales' }}
+  nextLesson={{ title: 'Performance en transitions', href: '/transitions/performance' }}
+>
+  <ChapterHeader
+    chapterNumber="03"
+    chapterLabel="Capítulo 3 · Lección 10"
+    title="Errores Comunes en Transitions"
+    readingTime={4}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Lo que no debes hacer</h3>
+    <p>
+      Escribir transiciones es muy fácil, pero escribir transiciones libres de bugs, con buen rendimiento y que se sientan profesionales requiere evitar algunas trampas clásicas. A continuación, exploraremos los errores más comunes.
+    </p>
+
+    <h3>1. Definir la transición en el pseudo-estado</h3>
+    <p>
+      Este es el error número uno. Si escribes tu regla <code>transition: all 0.3s</code> dentro del bloque <code>:hover</code>, la animación solo existirá <em>mientras el cursor esté encima</em>. Cuando retiras el cursor, la regla desaparece y el elemento vuelve a su estado normal bruscamente.
+      <strong>Solución:</strong> Define siempre la transición en la clase original del elemento.
+    </p>
+
+    <h3>2. Animar de display: none a display: block</h3>
+    <p>
+      Como explicamos en la lección anterior, <code>display</code> no puede interpolarse matemáticamente.
+      <strong>Solución:</strong> Usa <code>opacity</code> y <code>visibility</code>, o si usas frameworks de JS, usa librerías de montaje/desmontaje.
+    </p>
+
+    <h3>3. Animar hacia o desde "auto"</h3>
+    <p>
+      Si tienes un menú desplegable (accordion) con <code>height: 0</code> y al hacer hover le pones <code>height: auto</code>, la transición <strong>no funcionará</strong>. El navegador necesita números exactos para calcular los fotogramas.
+      <strong>Solución:</strong> Usa <code>max-height</code> (por ejemplo, transiciona de 0 a 1000px) o usa la moderna propiedad <code>grid-template-rows: 0fr</code> a <code>1fr</code>.
+    </p>
+  </article>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    El error de la transición a medias
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="example"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Pasa el cursor por el botón rojo. Entrará suavemente (0.5s). Pero al retirar el cursor... ¡Regresará de golpe! La transición solo existía en el hover.">
+      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+        <style>
+          .t-bad { width: 200px; height: 50px; background: #f43f5e; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-family: system-ui, sans-serif; cursor: pointer; }
+          .t-bad:hover { transform: scale(1.1); background: #e11d48; transition: all 0.5s ease; }
+        </style>
+        <div class="t-bad">Hover Me!</div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Transicionar box-shadow complejo en móviles', description: 'Animar sombras muy difuminadas en dispositivos móviles de gama baja puede hacer que toda la página baje a 15fps.' },
+      { label: 'Cambiar font-weight', description: 'Si cambias el font-weight en hover, no solo no se animará, sino que reacomodará todo el texto de tu página causando un salto molesto.' }
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Corrige errores comunes antes de que lleguen a producción."
+      steps={practiceSteps}
+    />
+  </div>
+</TransitionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+  document.addEventListener('astro:after-swap', () => initCodeInteractions());
+</script>

@@ -1,0 +1,136 @@
+---
+import TransitionsLayout from '../../layouts/TransitionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="system-demo">
+  <button class="btn">Botón Principal</button>
+  <input type="text" class="input" placeholder="Campo de texto" />
+  <div class="tag">Etiqueta</div>
+</div>`;
+
+const cssCode = `:root {
+  /* Motion Design Tokens */
+  --dur-fast: 0.15s;
+  --dur-base: 0.3s;
+  --dur-slow: 0.5s;
+  
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.btn {
+  /* Usando nuestros tokens */
+  transition: transform var(--dur-fast) var(--ease-bounce),
+              background var(--dur-fast) var(--ease-out);
+}
+
+.input {
+  transition: border-color var(--dur-base) var(--ease-out),
+              box-shadow var(--dur-base) var(--ease-out);
+}
+
+.tag {
+  transition: all var(--dur-fast) var(--ease-in-out);
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Extrae tus duraciones comunes (150ms, 300ms) a variables CSS.', color: 'dm-purple', rotate: '10deg' },
+  { number: 2, text: 'Extrae tus curvas de Bezier favoritas a variables.', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'Usa estas variables en todos los componentes de tu proyecto.', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Si un día quieres que la app se sienta "más rápida", solo cambias las variables base.', color: 'dm-blue', rotate: '2deg' },
+  { number: 5, text: 'A esto se le llama un "Motion Design System".', color: 'dm-red', rotate: '-5deg' },
+];
+---
+
+<TransitionsLayout
+  title="Sistema consistente de UI - Genesis Pixel"
+  currentLesson="/transitions/sistema-consistente"
+  prevLesson={{ title: 'Transiciones combinadas', href: '/transitions/transiciones-combinadas' }}
+  nextLesson={{ title: 'Proyecto final', href: '/transitions/proyecto-final' }}
+>
+  <ChapterHeader
+    chapterNumber="03"
+    chapterLabel="Capítulo 3 · Lección 14"
+    title="Sistema Consistente de UI"
+    readingTime={5}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>El problema de los números mágicos</h3>
+    <p>
+      A medida que tu proyecto web crece, tendrás docenas de botones, tarjetas, inputs y modales. Si en cada uno de ellos te pones a escribir duraciones aleatorias (<code>0.2s</code> aquí, <code>0.35s</code> allá, <code>ease</code> acá, <code>linear</code> en otro lado), tu web terminará pareciendo un parque de diversiones caótico.
+      No habrá consistencia. Tu marca no tendrá una "identidad de movimiento".
+    </p>
+
+    <h3>Motion Tokens</h3>
+    <p>
+      Al igual que guardamos nuestra paleta de colores en Variables CSS (Design Tokens), debemos hacer lo mismo con nuestras reglas de animación (Motion Tokens).
+      Definiremos una escala de duraciones y una paleta de curvas (easing).
+    </p>
+
+    <div class="bg-black/30 p-4 rounded-lg my-6 border border-white/10">
+      <h4 class="text-white mt-0">Ejemplo de una escala profesional</h4>
+      <ul class="text-sm text-gray-300 mb-0 space-y-2">
+        <li><code>--duration-fast: 150ms;</code> (Microinteracciones, hovers simples)</li>
+        <li><code>--duration-normal: 300ms;</code> (Desplegables, menús, estados focales)</li>
+        <li><code>--duration-slow: 500ms;</code> (Transiciones de página, modales grandes)</li>
+      </ul>
+    </div>
+  </article>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="example"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Todos los elementos de este contenedor están sincronizados usando variables. Si hiciéramos un cambio global, todos responderían al unísono manteniendo la armonía en toda la página.">
+      <div style="display: flex; gap: 16px; justify-content: center; align-items: center; height: 100%; flex-wrap: wrap; padding: 20px;">
+        <style>
+          .t-sys { --d-fast: 0.15s; --d-base: 0.3s; --e-out: cubic-bezier(0, 0, 0.2, 1); --e-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55); font-family: system-ui, sans-serif; }
+          .t-sys-btn { padding: 10px 20px; background: #06b6d4; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: transform var(--d-fast) var(--e-bounce), background var(--d-fast) var(--e-out); }
+          .t-sys-btn:hover { background: #0891b2; transform: scale(1.05); }
+          .t-sys-input { padding: 10px; background: #18181b; border: 1px solid #3f3f46; border-radius: 6px; color: white; transition: border-color var(--d-base) var(--e-out), box-shadow var(--d-base) var(--e-out); outline: none; }
+          .t-sys-input:focus { border-color: #06b6d4; box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2); }
+          .t-sys-tag { padding: 6px 12px; background: #27272a; color: #a1a1aa; border-radius: 99px; font-size: 14px; cursor: pointer; transition: all var(--d-fast) var(--e-out); }
+          .t-sys-tag:hover { background: white; color: black; }
+        </style>
+        <div class="t-sys" style="display: flex; gap: 16px; align-items: center;">
+          <button class="t-sys-btn">Botón Principal</button>
+          <input type="text" class="t-sys-input" placeholder="Campo de texto" />
+          <div class="t-sys-tag">Etiqueta</div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ConsejoProfesional>
+      Frameworks modernos como Tailwind CSS incluyen este sistema por defecto (clases como <code>duration-300</code> o <code>ease-in-out</code>). Usa esos tokens de diseño predefinidos para no reinventar la rueda y mantener tu código limpio.
+    </ConsejoProfesional>
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Audita tu código actual y reemplaza todos los tiempos estáticos por variables CSS."
+      steps={practiceSteps}
+    />
+  </div>
+</TransitionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+  document.addEventListener('astro:after-swap', () => initCodeInteractions());
+</script>

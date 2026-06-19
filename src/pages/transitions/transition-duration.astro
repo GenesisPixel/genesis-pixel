@@ -1,0 +1,139 @@
+---
+import TransitionsLayout from '../../layouts/TransitionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="track">
+  <div class="car fast">0.2s</div>
+  <div class="car medium">0.8s</div>
+  <div class="car slow">2.5s</div>
+</div>`;
+
+const cssCode = `.track:hover .car {
+  transform: translateX(300px);
+}
+
+.car {
+  width: 60px;
+  height: 40px;
+  background: #f43f5e;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-weight: bold;
+  font-size: 12px;
+  transition-property: transform;
+}
+
+.fast { transition-duration: 0.2s; }
+.medium { transition-duration: 0.8s; }
+.slow { transition-duration: 2.5s; }`;
+
+const practiceSteps = [
+  { number: 1, text: 'Experimenta con valores en milisegundos (ms) y segundos (s).', color: 'dm-purple', rotate: '10deg' },
+  { number: 2, text: 'Crea un botón con transition-duration: 0.15s.', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'Nota cómo 0.15s se siente instantáneo pero no brusco (ideal para botones).', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Aplica 0.4s a un menú desplegable (ideal para paneles grandes).', color: 'dm-blue', rotate: '2deg' },
+  { number: 5, text: 'Evita duraciones de más de 1 segundo en interfaces reales.', color: 'dm-red', rotate: '-5deg' },
+];
+---
+
+<TransitionsLayout
+  title="transition-duration - Genesis Pixel"
+  currentLesson="/transitions/transition-duration"
+  prevLesson={{ title: 'transition-property', href: '/transitions/transition-property' }}
+  nextLesson={{ title: 'transition-timing-function', href: '/transitions/transition-timing-function' }}
+>
+  <ChapterHeader
+    chapterNumber="03"
+    chapterLabel="Capítulo 3 · Lección 3"
+    title="transition-duration"
+    readingTime={4}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>El ritmo de la interfaz</h3>
+    <p>
+      Si <code>transition-property</code> le dice al navegador <em>qué</em> cambiar, <code>transition-duration</code> le dice <em>cuánto tiempo</em> tiene para hacerlo. Es el cronómetro que define si una acción se siente ágil y responsiva, o pesada y aburrida.
+    </p>
+
+    <h3>Segundos vs Milisegundos</h3>
+    <p>
+      Puedes definir la duración de dos maneras:
+    </p>
+    <ul class="space-y-3 mt-4 mb-8 list-none pl-0">
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>Segundos (s):</strong> Ejemplos: <code>0.3s</code>, <code>1.5s</code>. Es el formato más legible para duraciones cortas.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>Milisegundos (ms):</strong> Ejemplos: <code>300ms</code>, <code>1500ms</code>. A muchos desarrolladores les gusta porque elimina el punto decimal. (<code>0.3s</code> es exactamente igual a <code>300ms</code>).</span>
+      </li>
+    </ul>
+
+    <h3>Psicología del tiempo en UX</h3>
+    <p>
+      En diseño de interfaces, el tiempo es relativo. Lo que parece un instante para el ojo humano puede sentirse como una eternidad en una aplicación web.
+    </p>
+    <p>
+      <strong>Regla de oro:</strong> Las microinteracciones (hover de botones, links, checkboxes) deben durar entre <strong>0.15s y 0.25s</strong>. Las animaciones más grandes (abrir un modal, desplegar un menú) deben durar entre <strong>0.3s y 0.5s</strong>.
+    </p>
+  </article>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="example"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Pasa el cursor sobre la pista. Observa cómo la duración cambia completamente la 'personalidad' de cada cuadrado.">
+      <div style="width: 100%; padding: 20px;">
+        <style>
+          .t-track:hover .t-car { transform: translateX(min(300px, 60vw)); }
+          .t-car { width: 60px; height: 40px; background: #f43f5e; border-radius: 8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-family: system-ui, sans-serif; font-size: 12px; transition-property: transform; }
+          .t-fast { transition-duration: 0.2s; }
+          .t-medium { transition-duration: 0.8s; }
+          .t-slow { transition-duration: 2.5s; }
+        </style>
+        <div class="t-track">
+          <div class="t-car t-fast">0.2s</div>
+          <div class="t-car t-medium">0.8s</div>
+          <div class="t-car t-slow">2.5s</div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Duraciones mayores a 1 segundo', description: 'Hacer que un usuario espere 1 segundo o más para que un botón termine de reaccionar arruina la percepción de rendimiento de la página.' },
+      { label: 'Valor sin unidad', description: 'Si escribes transition-duration: 3; sin la "s" o "ms", el navegador lo ignorará por completo.' }
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Encuentra el punto dulce de la velocidad para diferentes elementos UI."
+      steps={practiceSteps}
+    />
+  </div>
+</TransitionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+  document.addEventListener('astro:after-swap', () => initCodeInteractions());
+</script>

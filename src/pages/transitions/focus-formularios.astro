@@ -1,0 +1,145 @@
+---
+import TransitionsLayout from '../../layouts/TransitionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="input-group">
+  <input type="text" class="input" placeholder=" ">
+  <label class="label">Correo Electrónico</label>
+</div>`;
+
+const cssCode = `.input-group {
+  position: relative;
+  width: 260px;
+}
+
+.input {
+  width: 100%;
+  padding: 16px 12px 8px;
+  background: #18181b;
+  border: 1px solid #3f3f46;
+  border-radius: 8px;
+  color: white;
+  font-size: 16px;
+  outline: none;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.label {
+  position: absolute;
+  left: 12px;
+  top: 12px;
+  color: #a1a1aa;
+  font-size: 16px;
+  pointer-events: none;
+  transition: all 0.3s ease-out;
+}
+
+/* Estado de focus en el input */
+.input:focus {
+  border-color: #06b6d4;
+  box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2);
+}
+
+/* Anima la etiqueta si el input tiene focus o no está vacío */
+.input:focus ~ .label,
+.input:not(:placeholder-shown) ~ .label {
+  top: 4px;
+  font-size: 11px;
+  color: #06b6d4;
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Entiende que el focus indica dónde está escribiendo el usuario.', color: 'dm-purple', rotate: '10deg' },
+  { number: 2, text: 'Usa box-shadow para crear "anillos de enfoque" (focus rings) suaves.', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'No quites el outline de los inputs sin reemplazarlo por un estado visible.', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Aprovecha :placeholder-shown para animar etiquetas flotantes.', color: 'dm-blue', rotate: '2deg' },
+  { number: 5, text: 'Mantén el contraste alto para accesibilidad.', color: 'dm-red', rotate: '-5deg' },
+];
+---
+
+<TransitionsLayout
+  title="Focus y Formularios - Genesis Pixel"
+  currentLesson="/transitions/focus-formularios"
+  prevLesson={{ title: 'Hover interactions', href: '/transitions/hover-interactions' }}
+  nextLesson={{ title: 'Componentes reales', href: '/transitions/componentes-reales' }}
+>
+  <ChapterHeader
+    chapterNumber="03"
+    chapterLabel="Capítulo 3 · Lección 8"
+    title="Focus y Formularios"
+    readingTime={5}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Más allá del ratón</h3>
+    <p>
+      El hover es genial para los usuarios con ratón, pero ¿qué pasa cuando interactuamos con teclados o tocamos un campo en el móvil? El estado <code>:focus</code> es crucial para la accesibilidad y la experiencia del usuario en la entrada de datos. Un formulario sin un buen estado de focus es como escribir en una habitación a oscuras.
+    </p>
+
+    <h3>Transiciones en Inputs</h3>
+    <p>
+      Cuando un usuario hace clic en un campo de texto, espera una confirmación visual. En lugar de un cambio brusco del borde, una transición suave transmite confianza y modernidad.
+    </p>
+    <p>
+      Además, los patrones modernos de UI, como los <strong>Floating Labels</strong> (Etiquetas Flotantes), dependen de animaciones precisas. Cuando el usuario hace clic, la etiqueta no desaparece, sino que se desliza hacia arriba, dejando espacio para escribir.
+    </p>
+
+    <h3>Focus Ring</h3>
+    <p>
+      Un error de novato es usar <code>outline: none</code> para ocultar el borde feo predeterminado del navegador, y no poner nada en su lugar. La forma profesional de hacerlo es ocultarlo, pero añadir un anillo suave usando <code>box-shadow</code> y transicionarlo.
+    </p>
+  </article>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico (Floating Label)
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="example"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Haz clic dentro del input para escribir. Observa cómo el borde se ilumina y la etiqueta se desliza suavemente hacia arriba para dejarte espacio.">
+      <div style="display: flex; justify-content: center; align-items: center; padding: 40px 0;">
+        <style>
+          .t-input-group { position: relative; width: 260px; font-family: system-ui, sans-serif; }
+          .t-input { width: 100%; padding: 22px 12px 8px; background: #18181b; border: 1px solid #3f3f46; border-radius: 8px; color: white; font-size: 16px; outline: none; transition: border-color 0.3s ease, box-shadow 0.3s ease; box-sizing: border-box; }
+          .t-label { position: absolute; left: 12px; top: 16px; color: #a1a1aa; font-size: 16px; pointer-events: none; transition: all 0.3s ease-out; margin: 0; }
+          .t-input:focus { border-color: #06b6d4; box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2); }
+          .t-input:focus ~ .t-label, .t-input:not(:placeholder-shown) ~ .t-label { top: 6px; font-size: 11px; color: #06b6d4; }
+        </style>
+        <div class="t-input-group">
+          <input type="text" class="t-input" placeholder=" " />
+          <label class="t-label">Correo Electrónico</label>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Usar display: none en etiquetas', description: 'Ocultar las etiquetas (labels) afecta seriamente a los lectores de pantalla y a la accesibilidad. Usa floating labels o déjalas fijas.' },
+      { label: 'Focus sin contraste', description: 'Si el color de focus es casi idéntico al color normal, el usuario no sabrá dónde está escribiendo.' }
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Construye formularios accesibles y con una gran respuesta táctil/visual."
+      steps={practiceSteps}
+    />
+  </div>
+</TransitionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+  document.addEventListener('astro:after-swap', () => initCodeInteractions());
+</script>

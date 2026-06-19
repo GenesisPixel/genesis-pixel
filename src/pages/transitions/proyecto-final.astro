@@ -1,0 +1,77 @@
+---
+import TransitionsLayout from '../../layouts/TransitionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+
+const htmlCode = `<div class="app-container">
+  <!-- Construye aquí tu interfaz interactiva -->
+</div>`;
+
+const cssCode = `/* Usa todo lo que has aprendido:
+1. Variables CSS para tiempos
+2. Coreografía con hover y padre-hijos
+3. Optimización con transform y opacity
+4. Microinteracciones de entrada y salida */`;
+---
+
+<TransitionsLayout
+  title="Proyecto final - Genesis Pixel"
+  currentLesson="/transitions/proyecto-final"
+  prevLesson={{ title: 'Sistema consistente de UI', href: '/transitions/sistema-consistente' }}
+>
+  <ChapterHeader
+    chapterNumber="03"
+    chapterLabel="Capítulo 3 · Proyecto Final"
+    title="La Interfaz Premium"
+    readingTime={15}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Tu momento de brillar</h3>
+    <p>
+      Has completado el capítulo de <strong>CSS Transitions</strong>. Ahora sabes que el movimiento no trata solo de hacer que las cosas vuelen por la pantalla, sino de generar feedback visual rápido, construir confianza en el usuario y crear interfaces que se sientan <em>vivas y físicas</em>.
+    </p>
+
+    <div class="bg-[#27272a] rounded-xl p-8 my-8 border border-white/5 relative overflow-hidden">
+      <div class="absolute inset-0 bg-gradient-to-br from-[#a855f7]/20 to-transparent opacity-50"></div>
+      <h4 class="text-white mt-0 text-xl font-bold font-afronaut relative z-10">Requerimientos del Proyecto Final</h4>
+      <p class="text-[#a1a1aa] mb-6 relative z-10">Construye una "Product Card" interactiva que cumpla estrictamente las siguientes reglas:</p>
+      
+      <ul class="space-y-4 list-none pl-0 relative z-10">
+        <li class="flex items-start gap-3">
+          <div class="mt-1 w-6 h-6 rounded-full bg-[#a855f7]/20 text-[#a855f7] flex items-center justify-center shrink-0">1</div>
+          <span class="text-gray-300"><strong>Variables:</strong> Declara al menos 3 variables CSS de tiempo y 2 de easing en el <code>:root</code> y úsalas en todos los elementos.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <div class="mt-1 w-6 h-6 rounded-full bg-[#a855f7]/20 text-[#a855f7] flex items-center justify-center shrink-0">2</div>
+          <span class="text-gray-300"><strong>Elevación Suave:</strong> Al hacer hover en la tarjeta principal, ésta debe escalar a 1.02 y ganar una sombra pronunciada. Todo procesado en GPU.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <div class="mt-1 w-6 h-6 rounded-full bg-[#a855f7]/20 text-[#a855f7] flex items-center justify-center shrink-0">3</div>
+          <span class="text-gray-300"><strong>Revelación coreografiada:</strong> Muestra un botón de "Comprar" dentro de la tarjeta usando opacidad y transform, aplicándole un <em>delay</em> para que aparezca una fracción de segundo después del hover principal.</span>
+        </li>
+        <li class="flex items-start gap-3">
+          <div class="mt-1 w-6 h-6 rounded-full bg-[#a855f7]/20 text-[#a855f7] flex items-center justify-center shrink-0">4</div>
+          <span class="text-gray-300"><strong>Microinteracción (Favorito):</strong> Incluye un botón o ícono de "Corazón" que al hacerle clic o hover aplique una curva de Bézier tipo rebote.</span>
+        </li>
+      </ul>
+    </div>
+
+    <h3>Siguiente paso en tu carrera</h3>
+    <p>
+      Las transiciones son la herramienta más pragmática del diseño web interactivo, y te felicito por haber dominado sus fundamentos. ¡Comparte tus resultados en el foro de la comunidad Genesis Pixel y prepárate para los próximos módulos donde uniremos Keyframes, Transforms y Transitions para dominar el arte completo del Motion Design!
+    </p>
+
+    <div class="flex justify-center mt-12 mb-8">
+      <a href="/" class="inline-flex items-center gap-2 px-8 py-4 bg-white text-black rounded-full font-bold font-afronaut hover:scale-105 hover:shadow-[0_0_40px_rgba(255,255,255,0.4)] transition-all duration-300">
+        Volver al Inicio ✨
+      </a>
+    </div>
+
+  </article>
+</TransitionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+  document.addEventListener('astro:after-swap', () => initCodeInteractions());
+</script>

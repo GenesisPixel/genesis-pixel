@@ -1,0 +1,130 @@
+---
+import TransitionsLayout from '../../layouts/TransitionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="card-gpu">GPU (Rápido)</div>
+<div class="card-cpu">CPU (Lento)</div>`;
+
+const cssCode = `/* 🔥 OPTIMIZADO - Usa la Tarjeta Gráfica (GPU) */
+.card-gpu {
+  background: #10b981;
+  transition: transform 0.3s ease;
+}
+
+.card-gpu:hover {
+  transform: translateX(50px);
+}
+
+/* 🐢 NO OPTIMIZADO - Forza recálculo del layout (CPU) */
+.card-cpu {
+  background: #f59e0b;
+  position: relative;
+  transition: left 0.3s ease;
+  left: 0;
+}
+
+.card-cpu:hover {
+  left: 50px;
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Usa "transform" en lugar de mover con top, left, margin o padding.', color: 'dm-purple', rotate: '10deg' },
+  { number: 2, text: 'Usa "opacity" en lugar de "color" o "background" para desvanecimientos extremos en móviles.', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'No animes "width" o "height" de contenedores grandes, recorta el layout completo.', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Usa "will-change: transform" si notas tartamudeo, pero no lo uses en todos lados.', color: 'dm-blue', rotate: '2deg' },
+  { number: 5, text: 'Apunta siempre a alcanzar los 60 fotogramas por segundo (fps).', color: 'dm-red', rotate: '-5deg' },
+];
+---
+
+<TransitionsLayout
+  title="Performance - Genesis Pixel"
+  currentLesson="/transitions/performance"
+  prevLesson={{ title: 'Errores comunes', href: '/transitions/errores-comunes' }}
+  nextLesson={{ title: 'Microinteracciones', href: '/transitions/microinteracciones' }}
+>
+  <ChapterHeader
+    chapterNumber="03"
+    chapterLabel="Capítulo 3 · Lección 11"
+    title="Performance en Transitions"
+    readingTime={5}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Por qué mi web se siente lenta al hacer hover?</h3>
+    <p>
+      El navegador dibuja la web en pasos: primero calcula la estructura (Layout), luego la pinta (Paint), y por último combina las capas visuales (Composite).
+      Cada vez que transicionas una propiedad, fuerzas al navegador a hacer algunos de estos pasos repetidamente (a 60 fotogramas por segundo).
+    </p>
+
+    <h3>Propiedades Costosas (El cuello de botella)</h3>
+    <p>
+      Si animas el <code>width</code>, el <code>margin</code> o la posición (<code>left</code>/<code>top</code>), estás alterando la geometría de la página. El navegador tiene que recalcular la posición no solo de ese elemento, sino de <em>todos los elementos de la página</em> en cada fotograma. Esto exige la CPU y puede causar tirones (jank).
+    </p>
+
+    <h3>Las 2 Propiedades de Oro (Hardware Acceleration)</h3>
+    <p>
+      La solución es usar propiedades que se procesan directamente en la tarjeta de video del dispositivo (GPU), sin alterar la geometría de la página:
+    </p>
+    <ul class="space-y-3 mt-4 mb-8 list-none pl-0">
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>transform:</strong> Mover (translate), escalar (scale), rotar (rotate). Al navegador le cuesta cero esfuerzo.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>opacity:</strong> Desvanecer cosas es instantáneo en la GPU.</span>
+      </li>
+    </ul>
+    <p>Siempre que sea posible, debes fingir movimientos y tamaños usando transform en lugar de manipular la estructura del layout.</p>
+  </article>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    GPU vs CPU
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="example"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Aunque el resultado visual parece idéntico, por debajo ocurren cosas distintas. El primero se procesa en la tarjeta de video. El segundo hace trabajar a la CPU del dispositivo.">
+      <div style="display: flex; flex-direction: column; gap: 16px; justify-content: center; height: 100%; padding: 20px;">
+        <style>
+          .t-perf-card { width: 150px; padding: 12px; border-radius: 8px; color: white; font-weight: bold; text-align: center; font-family: system-ui, sans-serif; cursor: pointer; }
+          .t-gpu { background: #10b981; transition: transform 0.3s ease; }
+          .t-gpu:hover { transform: translateX(50px); }
+          .t-cpu { background: #f59e0b; position: relative; transition: left 0.3s ease; left: 0; }
+          .t-cpu:hover { left: 50px; }
+        </style>
+        <div class="t-perf-card t-gpu">GPU (Rápido)</div>
+        <div class="t-perf-card t-cpu">CPU (Lento)</div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ConsejoProfesional>
+      Si tienes una animación compleja con <code>transform</code> que tartamudea levemente, puedes aplicar <code>will-change: transform;</code> al elemento original. Esto le avisa al navegador con antelación que mueva el elemento a una capa de la GPU.
+    </ConsejoProfesional>
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Optimiza tus animaciones para que funcionen fluidas hasta en móviles antiguos."
+      steps={practiceSteps}
+    />
+  </div>
+</TransitionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+  document.addEventListener('astro:after-swap', () => initCodeInteractions());
+</script>

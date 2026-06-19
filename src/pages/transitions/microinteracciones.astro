@@ -1,0 +1,158 @@
+---
+import TransitionsLayout from '../../layouts/TransitionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<label class="toggle">
+  <input type="checkbox" class="toggle-input">
+  <div class="toggle-bg">
+    <div class="toggle-knob"></div>
+  </div>
+  <span class="toggle-text">Modo Oscuro</span>
+</label>`;
+
+const cssCode = `.toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  cursor: pointer;
+}
+
+.toggle-input {
+  display: none;
+}
+
+.toggle-bg {
+  width: 48px;
+  height: 24px;
+  background: #3f3f46;
+  border-radius: 12px;
+  position: relative;
+  transition: background 0.3s ease;
+}
+
+.toggle-knob {
+  width: 20px;
+  height: 20px;
+  background: white;
+  border-radius: 50%;
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+/* El truco: Cuando el input oculto está activado, transicionamos el hermano (.toggle-bg) */
+.toggle-input:checked + .toggle-bg {
+  background: #06b6d4;
+}
+
+.toggle-input:checked + .toggle-bg .toggle-knob {
+  transform: translateX(24px);
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Oculta el checkbox nativo y construye tu propio control visual.', color: 'dm-purple', rotate: '10deg' },
+  { number: 2, text: 'Usa el selector hermano adyacente (+) para leer el estado :checked.', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'Aplica transiciones de color al fondo y de posición (transform) a la perilla.', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Una microinteracción debe ser rápida y satisfactoria.', color: 'dm-blue', rotate: '2deg' },
+  { number: 5, text: 'Añade una curva con rebote para que la perilla se sienta física.', color: 'dm-red', rotate: '-5deg' },
+];
+---
+
+<TransitionsLayout
+  title="Microinteracciones - Genesis Pixel"
+  currentLesson="/transitions/microinteracciones"
+  prevLesson={{ title: 'Performance en transitions', href: '/transitions/performance' }}
+  nextLesson={{ title: 'Transiciones combinadas avanzadas', href: '/transitions/transiciones-combinadas' }}
+>
+  <ChapterHeader
+    chapterNumber="03"
+    chapterLabel="Capítulo 3 · Lección 12"
+    title="Microinteracciones"
+    readingTime={5}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Los detalles importan</h3>
+    <p>
+      El cofundador de Apple, Charles Eames, solía decir: <em>"Los detalles no son los detalles. Ellos hacen el diseño."</em> En el desarrollo de interfaces, a esos detalles los llamamos <strong>Microinteracciones</strong>.
+    </p>
+
+    <h3>¿Qué es una Microinteracción?</h3>
+    <p>
+      Es una animación pequeña, casi imperceptible, que comunica el resultado de una acción del usuario. Piensa en el botón de "Me gusta" de Twitter (X) que estalla en confeti, o el switch de Wi-Fi de tu teléfono deslizándose con suavidad. No son esenciales para el funcionamiento de la app, pero son esenciales para que la app se sienta <em>humana</em>.
+    </p>
+
+    <h3>Elementos ideales para Microinteracciones</h3>
+    <ul class="space-y-3 mt-4 mb-8 list-none pl-0">
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>Botones de Estado (Toggles/Switches):</strong> Como cambiar a modo oscuro o activar notificaciones.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>Checkboxes y Radio Buttons:</strong> Animando el checkmark dibujándose o haciendo un pequeño rebote.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>Iconos dinámicos:</strong> Un ícono de menú de hamburguesa transformándose suavemente en una 'X' para cerrar.</span>
+      </li>
+    </ul>
+  </article>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico (Toggle Switch)
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="example"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Haz clic en el control. Al usar una curva de Bezier con rebote y animar el color de fondo simultáneamente, un aburrido checkbox se transforma en una microinteracción premium.">
+      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+        <style>
+          .t-toggle { display: flex; align-items: center; gap: 12px; cursor: pointer; font-family: system-ui, sans-serif; font-weight: bold; color: white; }
+          .t-toggle-input { display: none; }
+          .t-toggle-bg { width: 48px; height: 24px; background: #3f3f46; border-radius: 12px; position: relative; transition: background 0.3s ease; }
+          .t-toggle-knob { width: 20px; height: 20px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
+          .t-toggle-input:checked + .t-toggle-bg { background: #06b6d4; }
+          .t-toggle-input:checked + .t-toggle-bg .t-toggle-knob { transform: translateX(24px); }
+        </style>
+        <label class="t-toggle">
+          <input type="checkbox" class="t-toggle-input" />
+          <div class="t-toggle-bg">
+            <div class="t-toggle-knob"></div>
+          </div>
+          <span class="t-toggle-text">Modo Oscuro</span>
+        </label>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Excederse en la duración', description: 'Una microinteracción pesada frustra al usuario. Mantén las duraciones entre 0.15s y 0.3s como máximo.' }
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Convierte los elementos de formulario aburridos en componentes premium."
+      steps={practiceSteps}
+    />
+  </div>
+</TransitionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+  document.addEventListener('astro:after-swap', () => initCodeInteractions());
+</script>

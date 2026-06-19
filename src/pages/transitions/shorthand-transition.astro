@@ -1,0 +1,132 @@
+---
+import TransitionsLayout from '../../layouts/TransitionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<button class="btn">
+  Botón Optimizado
+</button>`;
+
+const cssCode = `.btn {
+  background-color: #06b6d4;
+  color: white;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  
+  /* En lugar de 4 líneas... */
+  /* transition-property: transform; */
+  /* transition-duration: 0.3s; */
+  /* transition-timing-function: ease-out; */
+  /* transition-delay: 0.1s; */
+  
+  /* Usamos el Shorthand (1 línea) */
+  transition: transform 0.3s ease-out 0.1s;
+}
+
+.btn:hover {
+  transform: translateY(-5px) scale(1.05);
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Memoriza el orden: property | duration | timing-function | delay', color: 'dm-purple', rotate: '10deg' },
+  { number: 2, text: 'El único orden estricto es que la duración debe ir antes que el delay.', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'Para animar varias propiedades, sepáralas por comas.', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Ej: transition: transform 0.3s, opacity 0.5s ease-in;', color: 'dm-blue', rotate: '2deg' },
+  { number: 5, text: 'Escribir menos código te hace más productivo y tu CSS más limpio.', color: 'dm-red', rotate: '-5deg' },
+];
+---
+
+<TransitionsLayout
+  title="Shorthand transition - Genesis Pixel"
+  currentLesson="/transitions/shorthand-transition"
+  prevLesson={{ title: 'transition-delay', href: '/transitions/transition-delay' }}
+  nextLesson={{ title: 'Hover interactions', href: '/transitions/hover-interactions' }}
+>
+  <ChapterHeader
+    chapterNumber="03"
+    chapterLabel="Capítulo 3 · Lección 6"
+    title="Shorthand transition"
+    readingTime={3}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Escribe menos, haz más</h3>
+    <p>
+      Escribir cuatro propiedades distintas de <code>transition-*</code> cada vez que quieres animar un botón no es nada eficiente. Para resolver esto, CSS nos ofrece el <strong>shorthand</strong> (atajo): la propiedad unificada <code>transition</code>.
+    </p>
+
+    <h3>El orden mágico</h3>
+    <p>
+      Aunque el navegador es bastante flexible interpretando el shorthand, existe un orden estándar y recomendado que la comunidad adopta:
+    </p>
+    <div class="bg-black/30 p-4 rounded-lg my-6 font-mono text-center text-sm border border-white/10">
+      transition: [propiedad] [duración] [curva] [retraso];
+    </div>
+
+    <p>Ejemplo: <code>transition: background-color 0.3s ease-out 0.1s;</code></p>
+
+    <h3>La regla de oro del tiempo</h3>
+    <p>
+      Dado que el shorthand acepta dos valores de tiempo (duración y delay), ¿cómo sabe el navegador cuál es cuál?
+      <strong>El primer valor de tiempo que encuentre siempre será la duración.</strong> El segundo (si existe) será el delay.
+    </p>
+
+    <h3>Múltiples transiciones</h3>
+    <p>
+      ¿Qué pasa si quieres animar el color en 0.2s pero la posición en 0.5s? Usas una coma. Es como escribir múltiples shorthands en una sola línea:
+    </p>
+    <div class="bg-black/30 p-4 rounded-lg my-4 font-mono text-sm border border-white/10">
+      transition: transform 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55), opacity 0.2s ease-in;
+    </div>
+  </article>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="example"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Este botón usa la notación simplificada en una sola línea, produciendo el mismo resultado hermoso pero con un código más mantenible.">
+      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+        <style>
+          .t-shbtn { background-color: #06b6d4; color: white; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; font-family: system-ui, sans-serif; transition: transform 0.3s ease-out 0.1s; }
+          .t-shbtn:hover { transform: translateY(-5px) scale(1.05); }
+        </style>
+        <button class="t-shbtn">
+          Botón Optimizado
+        </button>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ConsejoProfesional>
+      Al usar múltiples transiciones con comas, mantén cada transición en una línea separada dentro de tu CSS para facilitar la lectura. ¡Es una gran práctica de código limpio!
+    </ConsejoProfesional>
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="A partir de ahora, utiliza el shorthand en todos tus proyectos."
+      steps={practiceSteps}
+    />
+  </div>
+</TransitionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+  document.addEventListener('astro:after-swap', () => initCodeInteractions());
+</script>

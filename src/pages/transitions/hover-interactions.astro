@@ -1,0 +1,188 @@
+---
+import TransitionsLayout from '../../layouts/TransitionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<div class="card">
+  <div class="card-image"></div>
+  <div class="card-content">
+    <h3 class="card-title">Motion Design</h3>
+    <p class="card-desc">Eleva el nivel de tus interfaces con animaciones fluidas.</p>
+    <button class="card-btn">Leer más</button>
+  </div>
+</div>`;
+
+const cssCode = `.card {
+  width: 280px;
+  background: #27272a;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.card-image {
+  height: 140px;
+  background: linear-gradient(45deg, #f43f5e, #8b5cf6);
+  transition: transform 0.6s ease;
+}
+
+.card-content {
+  padding: 20px;
+}
+
+.card-desc {
+  color: #a1a1aa;
+  font-size: 14px;
+  opacity: 0.8;
+  transition: opacity 0.3s ease;
+}
+
+.card-btn {
+  margin-top: 16px;
+  padding: 8px 16px;
+  background: transparent;
+  color: #8b5cf6;
+  border: 1px solid #8b5cf6;
+  border-radius: 6px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s ease;
+}
+
+/* La magia ocurre al hacer hover sobre el contenedor principal */
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.card:hover .card-image {
+  transform: scale(1.05);
+}
+
+.card:hover .card-desc {
+  opacity: 1;
+}
+
+.card:hover .card-btn {
+  opacity: 1;
+  transform: translateY(0);
+  background: #8b5cf6;
+  color: white;
+  transition-delay: 0.1s; /* Un toque de coreografía */
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Aplica el hover al contenedor padre, no a los hijos.', color: 'dm-purple', rotate: '10deg' },
+  { number: 2, text: 'Usa transform: scale() en las imágenes para un efecto inmersivo.', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'Usa delays sutiles para revelar contenido secundario.', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Nunca transiciones propiedades pesadas (width, margin) en un hover.', color: 'dm-blue', rotate: '2deg' },
+  { number: 5, text: 'Añade una sombra profunda (box-shadow) para crear elevación.', color: 'dm-red', rotate: '-5deg' },
+];
+---
+
+<TransitionsLayout
+  title="Hover Interactions - Genesis Pixel"
+  currentLesson="/transitions/hover-interactions"
+  prevLesson={{ title: 'Shorthand transition', href: '/transitions/shorthand-transition' }}
+  nextLesson={{ title: 'Focus y formularios', href: '/transitions/focus-formularios' }}
+>
+  <ChapterHeader
+    chapterNumber="03"
+    chapterLabel="Capítulo 3 · Lección 7"
+    title="Hover Interactions"
+    readingTime={5}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Dando vida a las interfaces estáticas</h3>
+    <p>
+      El estado <code>:hover</code> es probablemente la primera pseudo-clase que aprendiste en CSS. Es el puente principal entre el usuario y la computadora antes del clic. Una interacción de hover bien diseñada comunica tres cosas fundamentales: <strong>"Soy interactivo", "Te estoy escuchando" y "Esto es lo que haré si haces clic"</strong>.
+    </p>
+
+    <h3>La técnica del Padre-Hijo</h3>
+    <p>
+      El error más común en diseño moderno es animar solo el elemento padre. En interfaces premium, cuando el usuario hace hover sobre una tarjeta (Card) o un contenedor, <strong>múltiples elementos hijos reaccionan simultáneamente</strong> de forma coreografiada.
+    </p>
+    <p>
+      Al aplicar el selector <code>.card:hover .child</code>, podemos controlar el comportamiento de la imagen, el texto y los botones basándonos en la interacción con el contenedor principal, creando una experiencia inmersiva.
+    </p>
+
+    <h3>Las 3 reglas del Hover Premium</h3>
+    <ul class="space-y-3 mt-4 mb-8 list-none pl-0">
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>Regla de Elevación:</strong> Un elemento clickeable debe sentirse físico. Al hacer hover, usa <code>transform: translateY()</code> para moverlo hacia el usuario y <code>box-shadow</code> para simular que se ha despegado del fondo.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>Regla de Revelación:</strong> No muestres toda la información de golpe. Usa el hover para revelar sutilmente botones de acción o cambiar la opacidad de descripciones secundarias.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>Regla de Contención:</strong> Mantén las duraciones cortas. Un hover debe reaccionar en menos de <code>0.3s</code> para sentirse conectado al mouse.</span>
+      </li>
+    </ul>
+  </article>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="example"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Pasa el cursor sobre la tarjeta. Nota cómo 4 cosas ocurren a la vez: la tarjeta se eleva, la imagen crece, el texto se aclara y el botón aparece con un ligero retraso.">
+      <div style="display: flex; justify-content: center; align-items: center; padding: 30px 0;">
+        <style>
+          .t-card { width: 280px; background: #27272a; border-radius: 16px; overflow: hidden; cursor: pointer; font-family: system-ui, sans-serif; transition: transform 0.4s ease, box-shadow 0.4s ease; text-align: left; }
+          .t-card-image { height: 140px; background: linear-gradient(45deg, #f43f5e, #8b5cf6); transition: transform 0.6s ease; }
+          .t-card-content { padding: 20px; }
+          .t-card-title { margin: 0 0 8px 0; color: white; font-size: 18px; font-weight: bold; }
+          .t-card-desc { color: #a1a1aa; font-size: 14px; opacity: 0.8; transition: opacity 0.3s ease; margin: 0; line-height: 1.4; }
+          .t-card-btn { margin-top: 16px; padding: 8px 16px; background: transparent; color: #8b5cf6; border: 1px solid #8b5cf6; border-radius: 6px; font-weight: bold; cursor: pointer; opacity: 0; transform: translateY(10px); transition: all 0.3s ease; font-size: 13px; }
+          
+          .t-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }
+          .t-card:hover .t-card-image { transform: scale(1.05); }
+          .t-card:hover .t-card-desc { opacity: 1; }
+          .t-card:hover .t-card-btn { opacity: 1; transform: translateY(0); background: #8b5cf6; color: white; transition-delay: 0.1s; }
+        </style>
+        <div class="t-card">
+          <div class="t-card-image"></div>
+          <div class="t-card-content">
+            <h3 class="t-card-title">Motion Design</h3>
+            <p class="t-card-desc">Eleva el nivel de tus interfaces con animaciones fluidas.</p>
+            <button class="t-card-btn">Leer más</button>
+          </div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ConsejoProfesional>
+      Al escalar imágenes en hover (<code>transform: scale(1.05)</code>), asegúrate de que el contenedor padre tenga <code>overflow: hidden</code>. Esto crea un efecto de "zoom de lente" muy profesional.
+    </ConsejoProfesional>
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Combina múltiples transiciones en un solo contenedor."
+      steps={practiceSteps}
+    />
+  </div>
+</TransitionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+  document.addEventListener('astro:after-swap', () => initCodeInteractions());
+</script>

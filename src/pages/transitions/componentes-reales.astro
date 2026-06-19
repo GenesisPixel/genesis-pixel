@@ -1,0 +1,169 @@
+---
+import TransitionsLayout from '../../layouts/TransitionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<button class="toggle-btn" onclick="document.getElementById('modal').classList.toggle('active')">
+  Abrir Modal
+</button>
+
+<!-- El modal existe en el DOM, pero está oculto visualmente -->
+<div class="modal-overlay" id="modal">
+  <div class="modal-content">
+    <h3>¡Hola! Soy un Modal</h3>
+    <p>He entrado a escena suavemente escalando desde el centro.</p>
+    <button class="close-btn" onclick="document.getElementById('modal').classList.remove('active')">Cerrar</button>
+  </div>
+</div>`;
+
+const cssCode = `/* El Overlay oscurece el fondo */
+.modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Estados iniciales para la transición */
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s ease;
+}
+
+/* La ventana del modal */
+.modal-content {
+  background: #27272a;
+  padding: 24px;
+  border-radius: 12px;
+  width: 300px;
+  
+  /* Empieza pequeño y un poco más abajo */
+  transform: scale(0.9) translateY(20px);
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* El estado Activo (agregado por JS) */
+.modal-overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.modal-overlay.active .modal-content {
+  transform: scale(1) translateY(0);
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Recuerda que no puedes transicionar display: none.', color: 'dm-purple', rotate: '10deg' },
+  { number: 2, text: 'Usa visibility: hidden y opacity: 0 en su lugar.', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'Anima el overlay (fondo) solo con opacidad.', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Añade un movimiento (transform) al modal para hacerlo más dinámico.', color: 'dm-blue', rotate: '2deg' },
+  { number: 5, text: 'Aplica una curva de rebote (cubic-bezier) para que el modal "salte" al abrir.', color: 'dm-red', rotate: '-5deg' },
+];
+---
+
+<TransitionsLayout
+  title="Componentes reales - Genesis Pixel"
+  currentLesson="/transitions/componentes-reales"
+  prevLesson={{ title: 'Focus y formularios', href: '/transitions/focus-formularios' }}
+  nextLesson={{ title: 'Errores comunes', href: '/transitions/errores-comunes' }}
+>
+  <ChapterHeader
+    chapterNumber="03"
+    chapterLabel="Capítulo 3 · Lección 9"
+    title="Componentes Reales (Modales)"
+    readingTime={6}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>El arte de aparecer y desaparecer</h3>
+    <p>
+      Hasta ahora hemos visto cómo animar cosas cuando pasamos el cursor o damos focus. Pero el uso más poderoso de las transiciones en el mundo real es gestionar la <strong>entrada y salida de componentes</strong> como Modales, Tooltips, Dropdowns y Menús Laterales (Sidebars).
+    </p>
+
+    <h3>El problema de display: none</h3>
+    <p>
+      La intuición inicial de cualquier desarrollador es usar <code>display: none</code> para ocultar un modal y cambiarlo a <code>display: block</code> cuando quiere abrirlo. <strong>El problema es que la propiedad display NO es animable.</strong> Si la cambias, el navegador ignorará la transición y el elemento aparecerá o desaparecerá de golpe.
+    </p>
+
+    <h3>La solución profesional: Opacity + Visibility + Transform</h3>
+    <p>
+      Para lograr que un componente aparezca suavemente y no intercepte clics cuando está oculto, usamos este trío dinámico:
+    </p>
+    <ul class="space-y-3 mt-4 mb-8 list-none pl-0">
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>opacity: 0 / 1:</strong> Controla el desvanecimiento visual.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>visibility: hidden / visible:</strong> Evita que el elemento oculto pueda ser clickeado o enfocado por el teclado, sin sacarlo del flujo del renderizado.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>transform:</strong> Controla de dónde proviene el componente (por ejemplo, desde abajo o más pequeño).</span>
+      </li>
+    </ul>
+
+  </article>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="example"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Haz clic en el botón para alternar el estado del modal. Observa la coreografía: el fondo se oscurece y la tarjeta salta un poco (gracias al cubic-bezier) para llamar tu atención.">
+      <div style="position: relative; width: 100%; height: 350px; display: flex; justify-content: center; align-items: center; background: #18181b; overflow: hidden; border-radius: 8px;">
+        <style>
+          .t-open-btn { background: #3b82f6; color: white; padding: 10px 20px; border-radius: 6px; border: none; cursor: pointer; font-weight: bold; font-family: system-ui, sans-serif; }
+          .t-close-btn { background: transparent; color: #a1a1aa; border: 1px solid #52525b; padding: 6px 12px; border-radius: 6px; cursor: pointer; margin-top: 16px; }
+          .t-close-btn:hover { color: white; border-color: white; }
+          
+          .t-overlay { position: absolute; inset: 0; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.4s ease; z-index: 10; font-family: system-ui, sans-serif; }
+          .t-modal-content { background: #27272a; padding: 24px; border-radius: 12px; width: 80%; max-width: 300px; color: white; transform: scale(0.9) translateY(20px); transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+          
+          .t-overlay.active { opacity: 1; visibility: visible; }
+          .t-overlay.active .t-modal-content { transform: scale(1) translateY(0); }
+        </style>
+        <button class="t-open-btn" onclick="document.getElementById('demo-modal').classList.add('active')">Abrir Modal</button>
+        
+        <div class="t-overlay" id="demo-modal">
+          <div class="t-modal-content">
+            <h3 style="margin-top:0; font-size:18px;">¡Hola! Soy un Modal</h3>
+            <p style="color: #a1a1aa; font-size: 14px; line-height: 1.5;">He entrado a escena suavemente escalando desde el centro.</p>
+            <button class="t-close-btn" onclick="document.getElementById('demo-modal').classList.remove('active')">Cerrar Modal</button>
+          </div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ConsejoProfesional>
+      Al cerrar un modal, asegúrate de que la transición tenga tiempo suficiente para completarse antes de que cualquier script JS remueva el elemento del DOM. Si usas React o Vue, esto requiere librerías adicionales como Framer Motion.
+    </ConsejoProfesional>
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Crea componentes robustos que no desaparezcan de la nada."
+      steps={practiceSteps}
+    />
+  </div>
+</TransitionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+  document.addEventListener('astro:after-swap', () => initCodeInteractions());
+</script>
