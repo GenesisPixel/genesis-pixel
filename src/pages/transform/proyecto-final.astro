@@ -155,7 +155,7 @@ const practiceSteps = [
 
   <!-- Proyecto 1: Tarjeta 3D con tilt interactivo -->
   <div class="mt-16 mb-4">
-    <h4 class="text-2xl font-medium mb-2 text-center">Proyecto 1 — Tarjeta Tilt Interactiva</h4>
+    <h4 class="text-2xl font-medium mb-2">Proyecto 1 — Tarjeta Tilt Interactiva</h4>
     <p class="text-sm mb-6" style="color: white; opacity: 0.8;">
       Una tarjeta que sigue al ratón en 3D usando <code>rotateX</code> y <code>rotateY</code> calculados con JavaScript. El efecto de brillo (highlight) se mueve con la posición del cursor usando una variable CSS dinámica.
     </p>
@@ -188,7 +188,7 @@ const practiceSteps = [
 
   <!-- Proyecto 2: Loader avanzado -->
   <div class="mt-16 mb-4">
-    <h4 class="text-2xl font-medium mb-2 text-center">Proyecto 2 — Loader de Tres Anillos</h4>
+    <h4 class="text-2xl font-medium mb-2">Proyecto 2 — Loader de Tres Anillos</h4>
     <p class="text-sm mb-6" style="color: white; opacity: 0.8;">
       Tres anillos concéntricos, cada uno rotando a velocidad y dirección distinta, creando un spinner premium que transmite procesamiento activo con distintas capas de actividad.
     </p>
@@ -222,9 +222,11 @@ const practiceSteps = [
   </div>
 
   <!-- Resumen del capítulo -->
-  <div class="mt-16 p-8 rounded-2xl border border-white/10 bg-white/[0.02]">
-    <h3 class="text-lg font-medium text-white mb-6">Lo que aprendiste en este capítulo</h3>
-    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+  <div class="py-6">
+    <h3 class="mb-8 text-center font-medium text-[var(--color-text)]">
+      Lo que aprendiste en este capítulo
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
       {[
         { prop: 'translateX / translateY', desc: 'Mover elementos en ejes horizontales y verticales sin afectar el layout' },
         { prop: 'translate(x, y)', desc: 'Centrado perfecto con translate(-50%, -50%) en absoluto' },
@@ -238,12 +240,18 @@ const practiceSteps = [
         { prop: 'translateZ + scale3d', desc: 'Profundidad y paralaje de capas en el eje Z' },
         { prop: 'perspective-origin', desc: 'Punto de vista configurable para composiciones isométricas' },
         { prop: 'GPU compositing', desc: 'Por qué transform es siempre preferible a top/left/width para animaciones' },
-      ].map((item) => (
-        <div class="flex gap-3 p-3 rounded-lg bg-white/[0.03] border border-white/[0.06]">
-          <span class="text-[var(--dm-purple)] font-mono text-xs shrink-0 mt-0.5">✓</span>
-          <div>
-            <p class="text-xs font-semibold text-white m-0">{item.prop}</p>
-            <p class="text-xs text-white/40 m-0 mt-0.5">{item.desc}</p>
+      ].map((item, index) => (
+        <div class="flex gap-4">
+          <span class="mt-0.5 shrink-0 font-afronaut text-[13px] text-[var(--color-text)]" style="opacity: 0.4 !important;">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <div class="flex flex-col gap-1">
+            <span class="text-[14px] font-semibold" style="color: white; opacity: 1 !important;">
+              {item.prop}
+            </span>
+            <span class="text-[13px] leading-relaxed text-[var(--dm-light-200)]">
+              {item.desc}
+            </span>
           </div>
         </div>
       ))}
