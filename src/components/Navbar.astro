@@ -388,6 +388,82 @@ const navItems = [
     background: rgba(255,255,255,0.1);
   }
 
+
+  .nav-dropdown-wrapper {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  .nav-dropdown-btn {
+    position: relative;
+    padding: 6px 14px;
+    padding-left: 31px;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--dm-light-300);
+    text-decoration: none;
+    border-radius: 9999px;
+    transition: color 0.3s ease;
+    white-space: nowrap;
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    font-family: inherit;
+  }
+
+  .nav-dropdown-btn:hover,
+  .nav-dropdown-btn.active {
+    color: white;
+  }
+
+  .nav-dropdown-menu {
+    position: absolute;
+    top: calc(100% + 12px);
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px) scale(0.95);
+    background: rgba(28, 28, 30, 0.95);
+    backdrop-filter: blur(40px) saturate(180%);
+    -webkit-backdrop-filter: blur(40px) saturate(180%);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 16px;
+    padding: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    min-width: 140px;
+    z-index: 50;
+    transform-origin: top center;
+  }
+
+  .nav-dropdown-wrapper:hover .nav-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0) scale(1);
+  }
+
+  .nav-dropdown-menu a {
+    padding: 10px 16px !important;
+    font-size: 0.85rem !important;
+    border-radius: 8px !important;
+    white-space: nowrap;
+    justify-content: flex-start;
+  }
+  .nav-dropdown-menu a.active {
+    background: rgba(255,255,255,0.1);
+  }
+  .nav-dropdown-menu a:hover {
+    background: rgba(255,255,255,0.1);
+  }
 </style>
 
 <header class="nav-island" id="nav-island" transition:persist transition:animate="none">
