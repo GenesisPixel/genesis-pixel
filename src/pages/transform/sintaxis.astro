@@ -66,9 +66,6 @@ const practiceSteps = [
     <p>
       La estructura siempre es la misma: la palabra <code>transform</code>, seguida de dos puntos, el nombre de la función (como <code>translate</code>, <code>scale</code> o <code>rotate</code>), y paréntesis que encierran los valores que esa función necesita.
     </p>
-    <div class="p-4 bg-white/5 rounded-lg border border-white/10 my-4 font-mono text-sm text-[var(--dm-light-200)]">
-      transform: funcion(valor);
-    </div>
 
     <h3>Múltiples transformaciones: El arte del espacio</h3>
     <p>
@@ -77,16 +74,21 @@ const practiceSteps = [
     <p>
       La sintaxis correcta requiere que pongas todas las funciones en <strong>una sola línea, separadas únicamente por espacios</strong>.
     </p>
-    <div class="p-4 bg-white/5 rounded-lg border border-white/10 my-4 font-mono text-sm text-[var(--dm-light-200)]">
-      <span class="text-red-400">/* INCORRECTO: Sobreescribe la anterior */</span><br/>
-      transform: translateY(-20px);<br/>
-      transform: scale(1.2);<br/><br/>
-      
-      <span class="text-red-400">/* INCORRECTO: Las comas rompen el código */</span><br/>
-      transform: translateY(-20px)<span class="text-white">,</span> scale(1.2);<br/><br/>
+    <div class="my-6">
+      <TabbedCodeBlock
+        group="sintaxis-ejemplos"
+        tabs={[
+          { id: 'css', label: 'CSS', code: `/* INCORRECTO: Sobreescribe la anterior */
+transform: translateY(-20px);
+transform: scale(1.2);
 
-      <span class="text-green-400">/* CORRECTO: Separado por espacios */</span><br/>
-      transform: translateY(-20px) scale(1.2);
+/* INCORRECTO: Las comas rompen el código */
+transform: translateY(-20px), scale(1.2);
+
+/* CORRECTO: Separado por espacios */
+transform: translateY(-20px) scale(1.2);` },
+        ]}
+      />
     </div>
 
     <h3>El orden es fundamental</h3>
@@ -100,25 +102,6 @@ const practiceSteps = [
 
   <div class="my-8 not-prose">
     <ConsejoProfesional tip="Cuando uses múltiples transformaciones, acostúmbrate a este orden: Primero traslaciones (translate), luego rotaciones (rotate), y por último escalas (scale). Esto previene comportamientos inesperados causados por mover elementos cuyos ejes o tamaños ya han sido alterados." />
-  </div>
-
-  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
-    Sintaxis en acción
-  </h3>
-
-  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock
-      group="sintaxis-demo"
-      tabs={[
-        { id: 'html', label: 'HTML', code: htmlCode },
-        { id: 'css', label: 'CSS', code: cssCode },
-      ]}
-    />
-    <ResultPreview description="Pasa el ratón sobre el cuadro. Observa cómo se combinan translate, scale y rotate separados por espacios en una sola propiedad transform.">
-      <div class="flex items-center justify-center h-full w-full">
-        <div class="caja-transform">transform</div>
-      </div>
-    </ResultPreview>
   </div>
 
   <div class="my-8 flex flex-col gap-6">
