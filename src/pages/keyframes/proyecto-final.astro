@@ -84,30 +84,13 @@ const cardCss = `@keyframes flotar {
 }
 
 .tarjeta-animada p {
-  margin: 0 0 16px 0;
+  margin: 0;
+  padding-top: 70px;
   font-size: 0.75rem;
   color: var(--color-bg);
-  opacity: 0.7;
+  opacity: 0.8;
   line-height: 1.4;
-}
-
-.btn-pulso {
-  width: 100%;
-  padding: 10px 16px;
-  background: var(--color-bg);
-  border: none;
-  border-radius: 0;
-  color: #9FA6FF;
   font-family: var(--font-afronaut, system-ui, sans-serif);
-  font-weight: bold;
-  font-size: 0.75rem;
-  cursor: pointer;
-  animation: pulso 2s infinite;
-  transition: transform 0.2s ease;
-}
-
-.btn-pulso:active {
-  transform: scale(0.96);
 }`;
 
 const practiceSteps = [
@@ -146,11 +129,6 @@ const practiceSteps = [
       La tarjeta respira. Ese movimiento de vaivén suave no está hecho a mano calculando decenas de porcentajes; es el resultado de combinar <code>animation-direction: alternate</code> con un timing function como <code>ease-in-out</code>. La tarjeta sube suavemente, pierde inercia, y vuelve a bajar sin saltos bruscos. Es física simulada en dos líneas de código.
     </p>
 
-    <h3>3. El Botón: llamar la atención sin molestar</h3>
-    <p>
-      El pulso expansivo del botón es un patrón clásico de UI para indicar "haz clic aquí". Se logra animando el <code>box-shadow</code> de forma infinita. Nota cómo no vibra ni cambia de tamaño abruptamente: usa una duración larga (2s+) para que sea una invitación gentil, no una alarma de emergencia.
-    </p>
-
     <h3>El verdadero secreto: el ritmo (Staggering)</h3>
     <p>
       El sello final de calidad en cualquier interfaz premium es que los elementos no aparecen a la vez como un bloque sólido. Entran en cascada, como en una obra de teatro. Puedes orquestar esto aplicando a todos tus componentes una misma animación de entrada (fade + slide up), pero dándoles a cada uno un <code>animation-delay</code> incremental, y usando <code>animation-fill-mode: both</code> para que se mantengan invisibles mientras esperan su turno en el escenario.
@@ -187,11 +165,11 @@ const practiceSteps = [
     </ResultPreview>
   </div>
 
-  <!-- Proyecto 2: Tarjeta Animada con Pulso -->
+  <!-- Proyecto 2: Tarjeta Animada -->
   <div class="mt-16 mb-4 text-center">
-    <h3 class="font-medium mb-2">Proyecto 2 — Tarjeta Animada con Pulso</h3>
+    <h3 class="font-medium mb-2">Proyecto 2 — Tarjeta Animada</h3>
     <p class="text-sm mb-6" style="color: white; opacity: 0.7;">
-      Una tarjeta que flota suavemente con un botón que palpita continuamente invitando al usuario a interactuar. El efecto de brillo sigue la posición del cursor.
+      Una tarjeta que flota suavemente de arriba a abajo con ease-in-out. El efecto de brillo sigue la posición del cursor.
     </p>
   </div>
 
@@ -203,7 +181,7 @@ const practiceSteps = [
         { id: 'css', label: 'CSS', code: cardCss },
       ]}
     />
-    <ResultPreview description="Una tarjeta que flota con ease-in-out y un botón con pulso expansivo de box-shadow. Al hacer hover aparece un efecto de brillo.">
+    <ResultPreview description="Una tarjeta que flota suavemente de arriba a abajo con ease-in-out. Al hacer hover aparece un efecto de brillo.">
       <div class="flex items-center justify-center h-full w-full">
         <div class="tarjeta-animada">
           <div class="brillo-card"></div>
@@ -329,7 +307,7 @@ const practiceSteps = [
     padding-top: 70px;
     font-size: 0.75rem;
     color: var(--color-bg);
-    opacity: 0.7;
+    opacity: 0.8;
     line-height: 1.4;
     font-family: var(--font-afronaut, system-ui, sans-serif);
   }
