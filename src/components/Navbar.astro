@@ -3,6 +3,7 @@ const navItems = [
   { href: '/', label: 'Inicio' },
   { href: '/aprender', label: 'Aprender' },
   { href: '/keyframes/que-son', label: 'Keyframes' },
+  { href: '/transitions/que-son', label: 'Transitions' },
   { href: '/transform/que-es', label: 'Transform' },
   { href: '/threejs', label: 'three.js' },
   { href: '/proyectos', label: 'Proyectos' },
@@ -332,6 +333,9 @@ const navItems = [
           {item.label === 'Keyframes' && (
             <span style="position: absolute; top: -5px; right: -8px; background: #9FA6FF; color: var(--color-bg); font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; margin-left: 4px; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif);">Principiante</span>
           )}
+          {item.label === 'Transitions' && (
+            <span style="position: absolute; top: -5px; right: -8px; background: #a855f7; color: white; font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; margin-left: 4px; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif);">Intermedio</span>
+          )}
           {item.label === 'Transform' && (
             <span style="position: absolute; top: -5px; right: -8px; background: #57B0FB; color: var(--color-bg); font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; margin-left: 4px; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif);">Avanzado</span>
           )}
@@ -363,6 +367,9 @@ const navItems = [
           {item.label === 'Keyframes' && (
             <span style="position: absolute; top: -5px; right: -8px; background: #9FA6FF; color: var(--color-bg); font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif);">Principiante</span>
           )}
+          {item.label === 'Transitions' && (
+            <span style="position: absolute; top: -5px; right: -8px; background: #a855f7; color: white; font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif);">Intermedio</span>
+          )}
           {item.label === 'Transform' && (
             <span style="position: absolute; top: -5px; right: -8px; background: #57B0FB; color: var(--color-bg); font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif);">Avanzado</span>
           )}
@@ -391,6 +398,7 @@ const navItems = [
       const isActive =
         href === currentPath ||
         (href === '/keyframes/que-son' && currentPath.startsWith('/keyframes/')) ||
+        (href === '/transitions/que-son' && currentPath.startsWith('/transitions/')) ||
         (href === '/transform/que-es' && currentPath.startsWith('/transform/'));
       if (isActive) {
         link.classList.add('active');
@@ -403,6 +411,7 @@ const navItems = [
       const isActive =
         href === currentPath ||
         (href === '/keyframes/que-son' && currentPath.startsWith('/keyframes/')) ||
+        (href === '/transitions/que-son' && currentPath.startsWith('/transitions/')) ||
         (href === '/transform/que-es' && currentPath.startsWith('/transform/'));
       if (isActive) {
         link.classList.add('active');

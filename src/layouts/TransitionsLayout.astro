@@ -1,0 +1,532 @@
+---
+import Layout from './Layout.astro';
+import Footer from '../components/Footer.astro';
+import Container from '../components/Container.astro';
+
+interface Props {
+  title: string;
+  currentLesson?: string;
+  prevLesson?: { title: string; href: string };
+  nextLesson?: { title: string; href: string };
+}
+
+const { title, currentLesson, prevLesson, nextLesson } = Astro.props;
+
+const chapters = [
+  {
+    number: '03',
+    title: 'CSS Transitions',
+    href: '/transitions/que-son',
+    lessons: [
+      { title: '¿Qué son las Transitions?', href: '/transitions/que-son' },
+      { title: 'transition-property', href: '/transitions/transition-property' },
+      { title: 'transition-duration', href: '/transitions/transition-duration' },
+      { title: 'transition-timing-function', href: '/transitions/transition-timing-function' },
+      { title: 'transition-delay', href: '/transitions/transition-delay' },
+      { title: 'Shorthand transition', href: '/transitions/shorthand-transition' },
+      { title: 'Hover interactions', href: '/transitions/hover-interactions' },
+      { title: 'Focus y formularios', href: '/transitions/focus-formularios' },
+      { title: 'Componentes reales', href: '/transitions/componentes-reales' },
+      { title: 'Errores comunes', href: '/transitions/errores-comunes' },
+      { title: 'Performance en transitions', href: '/transitions/performance' },
+      { title: 'Microinteracciones', href: '/transitions/microinteracciones' },
+      { title: 'Transiciones combinadas avanzadas', href: '/transitions/transiciones-combinadas' },
+      { title: 'Sistema consistente de UI', href: '/transitions/sistema-consistente' },
+      { title: 'Proyecto final', href: '/transitions/proyecto-final' },
+    ],
+  },
+];
+---
+
+<style>
+  .course-layout {
+    display: flex;
+    gap: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .sidebar {
+    width: 280px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 100px;
+    height: calc(100vh - 120px);
+    overflow-y: auto;
+    padding-right: 16px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.25) transparent;
+  }
+
+  .sidebar::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  .sidebar::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .sidebar::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.25);
+    border-radius: 6px;
+  }
+
+  .sidebar::-webkit-scrollbar-thumb:hover {
+    background: rgba(255, 255, 255, 0.4);
+  }
+
+  .chapter-group {
+    margin-bottom: 24px;
+  }
+
+  .chapter-title {
+    font-family: var(--font-afronaut);
+    font-size: 0.8125rem;
+    font-weight: 500;
+    color: var(--color-text);
+    padding: 8px 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    opacity: 1;
+  }
+
+  .chapter-title:hover {
+    background: rgba(255, 255, 255, 0.04);
+    opacity: 1;
+  }
+
+  .chapter-title.active {
+    background: transparent;
+  }
+
+  .chapter-number {
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
+    background: var(--color-text);
+    color: var(--dm-dark-500);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.6875rem;
+    font-weight: 600;
+    flex-shrink: 0;
+  }
+
+  .lesson-list {
+    margin-left: 36px;
+    border-left: 1px dashed rgba(255, 255, 255, 0.06);
+    padding-left: 12px;
+  }
+
+  .lesson-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    padding-left: 20px;
+    font-size: 0.8125rem;
+    color: var(--dm-light-300);
+    text-decoration: none;
+    border-radius: 0 5px 5px 0;
+    transition: opacity 0.2s ease;
+    margin-bottom: 2px;
+    opacity: 0.7;
+    position: relative;
+    z-index: 1;
+  }
+
+  .lesson-link:hover,
+  .lesson-link.active {
+    opacity: 1;
+    color: white;
+  }
+
+  .sidebar-indicator {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.1);
+    border-left: 2px solid var(--color-text);
+    border-radius: 0 5px 5px 0;
+    transition: top 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    pointer-events: none;
+    z-index: 0;
+    display: flex;
+    align-items: center;
+    padding-left: 8px;
+  }
+
+  .indicator-icon {
+    width: 12px;
+    height: 12px;
+    margin-left: 4px;
+  }
+
+  .main-content {
+    flex: 1;
+    min-width: 0;
+    padding: 32px 0;
+    view-transition-name: main-content;
+  }
+
+  .lesson-nav {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-top: 64px;
+    padding-top: 32px;
+    border-top: 1px dashed rgba(255, 255, 255, 0.06);
+  }
+
+  .nav-btn {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: 12px 16px;
+    border-radius: 0;
+    border: none;
+    background: transparent;
+    color: var(--color-text);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    flex: 1;
+    max-width: 300px;
+    opacity: 1 !important;
+  }
+
+  .nav-btn:hover {
+    background: transparent;
+  }
+
+  .nav-btn.prev {
+    align-items: flex-start;
+  }
+
+  .nav-btn.next {
+    align-items: flex-end;
+    text-align: end;
+    margin-left: auto;
+  }
+
+  .nav-btn-label {
+    font-size: 0.625rem;
+    color: var(--dm-light-300);
+    opacity: 1;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .nav-btn-title {
+    font-family: var(--font-afronaut);
+    font-weight: 300;
+    line-height: 1.15;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    margin: 0;
+    transition: all 0.1s ease;
+  }
+
+  .nav-btn:hover .nav-btn-title {
+    color: var(--dm-green-500);
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .nav-btn-title-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  @media (max-width: 1024px) {
+    .course-layout {
+      flex-direction: column;
+    }
+
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 65%;
+      height: 100vh;
+      background: rgba(10, 15, 12, 0.95);
+      backdrop-filter: blur(10px);
+      z-index: 50;
+      padding: 24px 10px;
+      padding-top: 64px;
+      transform: translateX(-100%);
+      transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border-bottom: none;
+      margin-bottom: 0;
+      box-shadow: 4px 0 24px rgba(0,0,0,0.5);
+    }
+
+    .sidebar.open {
+      transform: translateX(0);
+    }
+  }
+</style>
+
+<Layout title={title}>
+  <main class="pt-24 pb-24">
+    <div class="course-layout">
+      <!-- Botón Menú Móvil -->
+      <button id="sidebar-toggle" class="lg:hidden fixed bottom-6 left-1/2 -translate-x-1/2 z-30 flex items-center gap-2 text-[var(--color-bg)] px-6 py-3 rounded-full shadow-[0_8px_32px_rgba(0,0,0,0.6)] hover:scale-105 active:scale-95 transition-transform" style="background: var(--color-text); font-family: var(--font-afronaut); font-weight: 400;">
+        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+        Menú del Curso
+      </button>
+
+      <!-- Overlay Móvil -->
+      <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-40 hidden lg:hidden opacity-0 transition-opacity duration-300 backdrop-blur-sm"></div>
+
+      <aside id="sidebar" class="sidebar" transition:persist transition:animate="none">
+        <!-- Botón Cerrar Móvil -->
+        <button id="sidebar-close" class="lg:hidden absolute top-4 right-4 p-2 text-[var(--dm-light-300)] hover:text-white bg-white/5 rounded-md hover:bg-white/10 transition-colors">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        </button>
+
+        <div class="mb-6">
+          <a href="/css-animation" class="font-afronaut text-lg font-light text-[var(--color-text)] hover:opacity-80 transition-opacity">
+            Navegación
+          </a>
+        </div>
+
+        {chapters.map((chapter) => (
+          <div class="chapter-group">
+            <a
+              href={chapter.href}
+              class:list={['chapter-title', { active: currentLesson?.startsWith(chapter.href) }]}
+            >
+              <span class="chapter-number">{chapter.number}</span>
+              {chapter.title}
+            </a>
+            <div class="lesson-list" style="position: relative;">
+              <div class="sidebar-indicator" id="sidebar-indicator">
+        <svg class="indicator-icon" fill="none" viewBox="0 0 180 180" xmlns="http://www.w3.org/2000/svg">
+          <path d="m30.5729 109.394c3.0469 3.046 9.1992 3.808 13.9453-.469 1.582-1.406 4.8633-4.922 11.1328-11.1916 29.9414-30.3516 49.688-50.2735 53.906-46.4649 3.399 2.9883-6.972 17.6367-16.8162 31.2305-18.457 25.723-33.164 43.535-22.2656 54.434 8.7305 8.73 22.3242-.059 43.2418-18.399 11.778-10.371 20.625-18.7498 23.204-16.113 1.933 1.875-1.055 6.855-5.45 14.473-5.683 9.726-12.773 20.156-5.976 26.953 4.687 4.629 13.769 2.636 24.961-8.321 1.992-1.992 2.461-4.218.879-5.8-1.524-1.465-3.633-1.231-5.215.234-8.145 7.969-13.477 10.488-14.824 9.082-1.582-1.523 1.289-6.738 7.265-17.227 7.559-13.242 11.602-21.562 5.215-27.773-8.555-8.3203-18.691.5859-37.441 17.051-17.6371 15.527-22.7934 18.047-25.0199 15.879-2.9883-3.047 1.582-8.438 21.3279-36.0355 18.457-25.8398 29.18-41.9531 19.16-51.6211-13.652-13.3008-31.2301-2.8125-79.3942 44.8242-6.3867 6.3281-9.9023 9.668-11.3086 11.1914-4.5117 4.98-3.5742 11.016-.5273 14.063z" fill="white"/>
+        </svg>
+      </div>
+              {chapter.lessons.map((lesson) => (
+                <a
+                  href={lesson.href}
+                  class:list={['lesson-link', { active: currentLesson === lesson.href }]}
+                >
+                  {lesson.title}
+                </a>
+              ))}
+            </div>
+          </div>
+        ))}
+      </aside>
+
+      <article class="main-content">
+        <slot />
+
+        {(prevLesson || nextLesson) && (
+          <nav class="lesson-nav">
+            {prevLesson ? (
+              <a href={prevLesson.href} class="nav-btn prev">
+                <span class="nav-btn-title-row">
+                  <span class="nav-btn-icon" style="transform: rotate(180deg);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 47 47" fill="none"><g clip-path="url(#clip0_323_1808_prev)"><path d="M34.3487 34.6279C34.1433 34.9876 34.2684 35.4457 34.628 35.6511C34.9877 35.8566 35.4458 35.7315 35.6513 35.3718L34.3487 34.6279ZM46 23.4999L46.4029 24.1325C46.6126 23.9989 46.7425 23.7701 46.7497 23.5216C46.7569 23.2732 46.6405 23.0372 46.439 22.8917L46 23.4999ZM35.6365 11.6032C35.4174 11.2516 34.9548 11.1443 34.6033 11.3634C34.2518 11.5825 34.1444 12.0451 34.3635 12.3966L35.6365 11.6032ZM35.6513 35.3718C37.6132 31.9366 40.2994 29.1236 42.5104 27.1624C43.6133 26.184 44.5918 25.423 45.2927 24.9079C45.643 24.6504 45.9235 24.4547 46.115 24.3242C46.2108 24.259 46.2843 24.2101 46.3331 24.178C46.3575 24.1619 46.3757 24.15 46.3874 24.1424C46.3933 24.1386 46.3975 24.1359 46.4001 24.1342C46.4014 24.1334 46.4023 24.1328 46.4028 24.1325C46.403 24.1324 46.4032 24.1323 46.4032 24.1323C46.4032 24.1323 46.4031 24.1323 46.4031 24.1323C46.403 24.1324 46.4029 24.1325 46 23.4999C45.5971 22.8673 45.5969 22.8674 45.5967 22.8675C45.5966 22.8676 45.5964 22.8677 45.5962 22.8679C45.5958 22.8681 45.5953 22.8684 45.5947 22.8688C45.5934 22.8696 45.5918 22.8707 45.5897 22.872C45.5856 22.8747 45.5798 22.8784 45.5724 22.8832C45.5575 22.8928 45.5361 22.9067 45.5085 22.9249C45.4533 22.9613 45.3732 23.0146 45.2705 23.0845C45.0654 23.2243 44.7701 23.4303 44.4043 23.6992C43.673 24.2368 42.6578 25.0265 41.515 26.0403C39.2343 28.0633 36.4205 31.0004 34.3487 34.6279L35.6513 35.3718ZM46 23.4999C46.439 22.8917 46.439 22.8918 46.4391 22.8918C46.4391 22.8918 46.4391 22.8918 46.439 22.8918C46.439 22.8918 46.4388 22.8916 46.4385 22.8914C46.4379 22.891 46.4369 22.8903 46.4355 22.8892C46.4327 22.8872 46.4282 22.8839 46.4221 22.8795C46.4099 22.8706 46.3912 22.8569 46.3663 22.8385C46.3166 22.8018 46.2422 22.7464 46.1454 22.6732C45.9519 22.5267 45.6693 22.3091 45.3168 22.0273C44.6117 21.4635 43.6284 20.6441 42.5205 19.6248C40.2984 17.5806 37.6029 14.758 35.6365 11.6032L34.3635 12.3966C36.4309 15.7135 39.2354 18.6409 41.5049 20.7287C42.6428 21.7755 43.6531 22.6176 44.3802 23.1989C44.7438 23.4896 45.037 23.7154 45.2402 23.8692C45.3418 23.9461 45.4209 24.005 45.4752 24.0451C45.5024 24.0652 45.5233 24.0805 45.5377 24.091C45.5449 24.0963 45.5505 24.1003 45.5544 24.1032C45.5563 24.1046 45.5579 24.1057 45.559 24.1065C45.5595 24.1069 45.56 24.1072 45.5603 24.1075C45.5605 24.1076 45.5607 24.1077 45.5608 24.1078C45.5609 24.1079 45.561 24.108 46 23.4999Z" fill="currentColor"/><path d="M46 23.5C28.5194 23.5 2.26486 23.5 2 23.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></g><defs><clipPath id="clip0_323_1808_prev"><rect width="47" height="47" fill="white" transform="translate(0 47) rotate(-90)"/></clipPath></defs></svg>
+                  </span>
+                  <h4 class="nav-btn-title">{prevLesson.title}</h4>
+                </span>
+              </a>
+            ) : <div />}
+            {nextLesson ? (
+              <a href={nextLesson.href} class="nav-btn next">
+                <span class="nav-btn-title-row">
+                  <h4 class="nav-btn-title">{nextLesson.title}</h4>
+                  <span class="nav-btn-icon" style="transform: rotate(0deg);">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 47 47" fill="none"><g clip-path="url(#clip0_323_1808_next)"><path d="M34.3487 34.6279C34.1433 34.9876 34.2684 35.4457 34.628 35.6511C34.9877 35.8566 35.4458 35.7315 35.6513 35.3718L34.3487 34.6279ZM46 23.4999L46.4029 24.1325C46.6126 23.9989 46.7425 23.7701 46.7497 23.5216C46.7569 23.2732 46.6405 23.0372 46.439 22.8917L46 23.4999ZM35.6365 11.6032C35.4174 11.2516 34.9548 11.1443 34.6033 11.3634C34.2518 11.5825 34.1444 12.0451 34.3635 12.3966L35.6365 11.6032ZM35.6513 35.3718C37.6132 31.9366 40.2994 29.1236 42.5104 27.1624C43.6133 26.184 44.5918 25.423 45.2927 24.9079C45.643 24.6504 45.9235 24.4547 46.115 24.3242C46.2108 24.259 46.2843 24.2101 46.3331 24.178C46.3575 24.1619 46.3757 24.15 46.3874 24.1424C46.3933 24.1386 46.3975 24.1359 46.4001 24.1342C46.4014 24.1334 46.4023 24.1328 46.4028 24.1325C46.403 24.1324 46.4032 24.1323 46.4032 24.1323C46.4032 24.1323 46.4031 24.1323 46.4031 24.1323C46.403 24.1324 46.4029 24.1325 46 23.4999C45.5971 22.8673 45.5969 22.8674 45.5967 22.8675C45.5966 22.8676 45.5964 22.8677 45.5962 22.8679C45.5958 22.8681 45.5953 22.8684 45.5947 22.8688C45.5934 22.8696 45.5918 22.8707 45.5897 22.872C45.5856 22.8747 45.5798 22.8784 45.5724 22.8832C45.5575 22.8928 45.5361 22.9067 45.5085 22.9249C45.4533 22.9613 45.3732 23.0146 45.2705 23.0845C45.0654 23.2243 44.7701 23.4303 44.4043 23.6992C43.673 24.2368 42.6578 25.0265 41.515 26.0403C39.2343 28.0633 36.4205 31.0004 34.3487 34.6279L35.6513 35.3718ZM46 23.4999C46.439 22.8917 46.439 22.8918 46.4391 22.8918C46.4391 22.8918 46.4391 22.8918 46.439 22.8918C46.439 22.8918 46.4388 22.8916 46.4385 22.8914C46.4379 22.891 46.4369 22.8903 46.4355 22.8892C46.4327 22.8872 46.4282 22.8839 46.4221 22.8795C46.4099 22.8706 46.3912 22.8569 46.3663 22.8385C46.3166 22.8018 46.2422 22.7464 46.1454 22.6732C45.9519 22.5267 45.6693 22.3091 45.3168 22.0273C44.6117 21.4635 43.6284 20.6441 42.5205 19.6248C40.2984 17.5806 37.6029 14.758 35.6365 11.6032L34.3635 12.3966C36.4309 15.7135 39.2354 18.6409 41.5049 20.7287C42.6428 21.7755 43.6531 22.6176 44.3802 23.1989C44.7438 23.4896 45.037 23.7154 45.2402 23.8692C45.3418 23.9461 45.4209 24.005 45.4752 24.0451C45.5024 24.0652 45.5233 24.0805 45.5377 24.091C45.5449 24.0963 45.5505 24.1003 45.5544 24.1032C45.5563 24.1046 45.5579 24.1057 45.559 24.1065C45.5595 24.1069 45.56 24.1072 45.5603 24.1075C45.5605 24.1076 45.5607 24.1077 45.5608 24.1078C45.5609 24.1079 45.561 24.108 46 23.4999Z" fill="currentColor"/><path d="M46 23.5C28.5194 23.5 2.26486 23.5 2 23.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></g><defs><clipPath id="clip0_323_1808_next"><rect width="47" height="47" fill="white" transform="translate(0 47) rotate(-90)"/></clipPath></defs></svg>
+                  </span>
+                </span>
+              </a>
+            ) : <div />}
+          </nav>
+        )}
+      </article>
+    </div>
+  </main>
+
+  <Footer />
+</Layout>
+
+<script>
+  import gsap from 'gsap';
+
+  document.addEventListener('astro:page-load', () => {
+    const h1 = document.querySelector('.main-content h1');
+    
+    if (h1) {
+      const text = h1.textContent || '';
+      const computedStyle = window.getComputedStyle(h1);
+      const fontFamily = computedStyle.fontFamily;
+      const fontWeight = computedStyle.fontWeight;
+      const fontSize = computedStyle.fontSize;
+      const lineHeight = computedStyle.lineHeight;
+      const letterSpacing = computedStyle.letterSpacing;
+      
+      h1.innerHTML = '';
+      h1.style.fontFamily = fontFamily;
+      h1.style.fontWeight = fontWeight;
+      h1.style.fontSize = fontSize;
+      h1.style.lineHeight = lineHeight;
+      h1.style.letterSpacing = letterSpacing;
+      
+      const words = text.split(' ');
+      
+      words.forEach((word, index) => {
+        const wordSpan = document.createElement('span');
+        wordSpan.style.display = 'inline-block';
+        wordSpan.style.whiteSpace = 'nowrap';
+        
+        [...word].forEach((char) => {
+          const span = document.createElement('span');
+          span.className = 'h1-char';
+          span.style.display = 'inline-block';
+          span.style.opacity = '0';
+          span.style.fontFamily = fontFamily;
+          span.textContent = char;
+          wordSpan.appendChild(span);
+        });
+        
+        h1.appendChild(wordSpan);
+        
+        if (index < words.length - 1) {
+          h1.appendChild(document.createTextNode(' '));
+        }
+      });
+      
+      const chars = h1.querySelectorAll('.h1-char');
+      
+      gsap.set(chars, { 
+        opacity: 0, 
+        y: 60, 
+        rotateX: -40,
+        scale: 0.9,
+        filter: 'blur(10px)' 
+      });
+      
+      gsap.to(chars, {
+        opacity: 1,
+        y: 0,
+        rotateX: 0,
+        scale: 1,
+        filter: 'blur(0px)',
+        duration: 0.9,
+        stagger: {
+          each: 0.025,
+          from: 'start'
+        },
+        ease: 'power3.out',
+        delay: 0.2
+      });
+    }
+
+    // Lógica para el sidebar responsive
+    const sidebar = document.getElementById('sidebar');
+    const sidebarToggle = document.getElementById('sidebar-toggle');
+    const sidebarClose = document.getElementById('sidebar-close');
+    const sidebarOverlay = document.getElementById('sidebar-overlay');
+
+    // Actualizar enlaces activos en el sidebar persistido
+    if (sidebar) {
+      const currentPath = window.location.pathname;
+      const sidebarLinks = sidebar.querySelectorAll('.lesson-link');
+      sidebarLinks.forEach((link) => {
+        const href = link.getAttribute('href');
+        if (href === currentPath) {
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      });
+
+      const chapterTitles = sidebar.querySelectorAll('.chapter-title');
+      chapterTitles.forEach((title) => {
+        const href = title.getAttribute('href');
+        if (href && currentPath.startsWith(href)) {
+          title.classList.add('active');
+        } else {
+          title.classList.remove('active');
+        }
+      });
+
+      // Posicionar el indicador en el link activo
+      const indicator = document.getElementById('sidebar-indicator');
+      const activeLink = sidebar.querySelector('.lesson-link.active');
+      if (indicator && activeLink) {
+        const list = activeLink.closest('.lesson-list');
+        const listRect = list.getBoundingClientRect();
+        const linkRect = activeLink.getBoundingClientRect();
+        indicator.style.top = `${linkRect.top - listRect.top}px`;
+        indicator.style.height = `${linkRect.height}px`;
+      }
+    }
+
+    if (sidebar && sidebarToggle && sidebarClose && sidebarOverlay) {
+      const openSidebar = () => {
+        sidebar.classList.add('open');
+        sidebarOverlay.classList.remove('hidden');
+        setTimeout(() => sidebarOverlay.classList.remove('opacity-0'), 10);
+        document.body.style.overflow = 'hidden';
+      };
+
+      const closeSidebar = () => {
+        sidebar.classList.remove('open');
+        sidebarOverlay.classList.add('opacity-0');
+        setTimeout(() => sidebarOverlay.classList.add('hidden'), 300);
+        document.body.style.overflow = '';
+      };
+
+      sidebarToggle.addEventListener('click', openSidebar);
+      sidebarClose.addEventListener('click', closeSidebar);
+      sidebarOverlay.addEventListener('click', closeSidebar);
+
+      // Cerrar sidebar al hacer click en un enlace
+      sidebar.querySelectorAll('a').forEach((link) => {
+        link.addEventListener('click', closeSidebar);
+      });
+
+      // Mover indicador en hover
+      const indicator = document.getElementById('sidebar-indicator');
+      const lessonLinks = sidebar.querySelectorAll('.lesson-link');
+
+      function moveIndicatorToLink(link) {
+        if (!indicator) return;
+        const list = link.closest('.lesson-list');
+        if (!list) return;
+        const listRect = list.getBoundingClientRect();
+        const linkRect = link.getBoundingClientRect();
+        indicator.style.top = `${linkRect.top - listRect.top}px`;
+        indicator.style.height = `${linkRect.height}px`;
+      }
+
+      function resetIndicatorToActive() {
+        const activeLink = sidebar.querySelector('.lesson-link.active');
+        if (activeLink) {
+          moveIndicatorToLink(activeLink);
+        } else if (indicator) {
+          indicator.style.top = '0px';
+          indicator.style.height = '0px';
+        }
+      }
+
+      lessonLinks.forEach((link) => {
+        link.addEventListener('mouseenter', () => moveIndicatorToLink(link));
+        link.addEventListener('mouseleave', () => resetIndicatorToActive());
+      });
+    }
+  });
+</script>

@@ -1,0 +1,157 @@
+---
+import TransitionsLayout from '../../layouts/TransitionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const htmlCode = `<button class="btn">
+  Pasa el cursor
+</button>`;
+
+const cssCode = `.btn {
+  background-color: #a855f7;
+  color: #121212;
+  font-family: system-ui, sans-serif;
+  font-weight: bold;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  
+  /* Estado inicial y transición */
+  transform: translateY(0);
+  box-shadow: 0 4px 10px rgba(168, 85, 247, 0.2);
+  transition: all 0.3s ease;
+}
+
+.btn:hover {
+  /* Estado interactivo */
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(168, 85, 247, 0.4);
+  background-color: #c084fc;
+}`;
+
+const practiceSteps = [
+  { number: 1, text: 'Crea un div cuadrado con color de fondo sólido.', color: 'dm-purple', rotate: '10deg' },
+  { number: 2, text: 'Agrega una pseudo-clase :hover para cambiar su color.', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'Prueba pasar el cursor sin transition. ¿Ves el salto brusco?', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Agrega transition: background-color 0.4s ease al div principal.', color: 'dm-blue', rotate: '2deg' },
+  { number: 5, text: 'Vuelve a probar el hover. Disfruta la suavidad.', color: 'dm-red', rotate: '-5deg' },
+];
+---
+
+<TransitionsLayout
+  title="¿Qué son las Transitions? - Genesis Pixel"
+  currentLesson="/transitions/que-son"
+  nextLesson={{ title: 'transition-property', href: '/transitions/transition-property' }}
+>
+  <ChapterHeader
+    chapterNumber="03"
+    chapterLabel="Capítulo 3 · Lección 1"
+    title="¿Qué son las Transitions?"
+    readingTime={4}
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>El problema de los cambios bruscos</h3>
+    <p>
+      Imagina que vas conduciendo un auto a 60 km/h y de repente, en un milisegundo, la velocidad cambia a 0. Tu cuerpo no lo agradecería, ¿verdad? En la vida real, las cosas no cambian de estado instantáneamente; existe aceleración, desaceleración y un tiempo de reacción natural.
+    </p>
+    <p>
+      Sin embargo, en el mundo web, cuando cambias el estilo de un elemento (por ejemplo, el color de fondo de un botón al pasar el cursor), el navegador aplica el nuevo estilo de inmediato. Esto crea un "salto brusco" que puede sentirse mecánico, robótico y poco amigable.
+    </p>
+
+    <h3>Aquí es donde entran las Transitions</h3>
+    <p>
+      Las <strong>CSS Transitions</strong> (Transiciones) existen para solucionar este problema. Te permiten cambiar los valores de las propiedades CSS de manera suave a lo largo de una duración determinada. No crean animaciones complejas e independientes como <code>@keyframes</code>, sino que actúan como un "puente" visual entre un estado A (normal) y un estado B (hover, focus, etc.).
+    </p>
+    <p>
+      El objetivo principal de una transición es mejorar la <strong>Experiencia de Usuario (UX)</strong>. Una interfaz que reacciona suavemente a nuestras acciones nos transmite la sensación de calidad, atención al detalle y naturalidad.
+    </p>
+
+    <h3>Diferencia entre Animación y Transición</h3>
+    <p>
+      Es común confundir ambas, pero tienen propósitos distintos:
+    </p>
+    <ul class="space-y-3 mt-4 mb-8 list-none pl-0">
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>Transitions:</strong> Conectan dos estados definidos (por ejemplo, estado normal y <code>:hover</code>). Responden a la interacción y solo ocurren cuando una propiedad CSS cambia de valor.</span>
+      </li>
+      <li class="flex gap-3">
+        <span>✦</span>
+        <span><strong>Animations (Keyframes):</strong> Pueden ejecutarse solas, sin interacción del usuario, pueden tener múltiples pasos intermedios y repetirse infinitamente.</span>
+      </li>
+    </ul>
+
+  </article>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Ejemplo práctico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="example"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Pasa el cursor sobre el botón. Nota cómo se eleva, cambia de color y la sombra se expande de manera suave, no abrupta.">
+      <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+        <button class="btn">
+          Pasa el cursor
+        </button>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Aplicar la transición en el estado final (:hover)', description: 'La transición debe ir en el selector principal, no en el pseudo-estado. Si la pones en el :hover, el elemento cambiará suave al entrar, pero volverá brusco al salir.' },
+      { label: 'Transiciones en todo (* { transition: all })', description: 'Esto arruinará el rendimiento de tu sitio y creará comportamientos inesperados, como transiciones no deseadas al redimensionar la ventana.' },
+      { label: 'Tiempos excesivamente largos', description: 'Una interacción UI debe sentirse rápida y responsiva. Duraciones mayores a 0.5s suelen sentirse pesadas y letárgicas.' }
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Crea tu primer botón interactivo aplicando el concepto de interpolación suave entre el estado normal y hover."
+      steps={practiceSteps}
+    />
+  </div>
+</TransitionsLayout>
+
+<style>
+  .btn {
+    background-color: #a855f7;
+    color: #121212;
+    font-family: var(--font-afronaut, system-ui, sans-serif);
+    font-weight: bold;
+    font-size: 0.8125rem;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    
+    /* Transición */
+    transform: translateY(0);
+    box-shadow: 0 4px 10px rgba(168, 85, 247, 0.2);
+    transition: all 0.3s ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(168, 85, 247, 0.4);
+    background-color: #c084fc;
+  }
+</style>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+  document.addEventListener('astro:after-swap', () => initCodeInteractions());
+</script>
