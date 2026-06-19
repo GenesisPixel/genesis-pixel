@@ -9,21 +9,18 @@ import PracticeCards from '../../components/PracticeCards.astro';
 
 const htmlCode = `<!-- La perspectiva va en el padre -->
 <div class="escena-perspectiva">
-  <!-- El elemento que se transforma va aquí -->
   <div class="tarjeta-perspectiva">
     <div class="p-6 text-center">
-      <h4 style="color: var(--color-bg)">Perspectiva: 400px</h4>
-      <p style="color: var(--color-bg); opacity: 0.7">Dramática y cercana</p>
+      <h4 style="color: var(--color-bg)">Perspectiva: 400px - Dramática y cercana</h4>
     </div>
   </div>
 </div>
 
 <!-- Comparación con perspectiva distante -->
 <div class="escena-perspectiva-lejana">
-  <div class="tarjeta-perspectiva">
+  <div class="tarjeta-perspectiva azul">
     <div class="p-6 text-center">
-      <h4 style="color: var(--color-bg)">Perspectiva: 2000px</h4>
-      <p style="color: var(--color-bg); opacity: 0.7">Sutil y ortogonal</p>
+      <h4 style="color: var(--color-bg)">Perspectiva: 2000px - Sutil y ortogonal</h4>
     </div>
   </div>
 </div>`;
@@ -42,13 +39,17 @@ const cssCode = `/* Perspectiva cercana y dramática */
 .tarjeta-perspectiva {
   background: #9FA6FF;
   border-radius: 0;
-  padding: 8px 16px;
+  padding: 12px 24px;
   font-family: var(--font-afronaut, system-ui, sans-serif);
   font-size: 0.8125rem;
   font-weight: bold;
   color: var(--color-bg);
   transform: rotateY(25deg);
   transition: transform 0.4s ease;
+}
+
+.tarjeta-perspectiva.azul {
+  background: #57B0FB;
 }
 
 .escena-perspectiva:hover .tarjeta-perspectiva,
@@ -135,14 +136,12 @@ const practiceSteps = [
       <div class="flex flex-col items-center justify-center gap-6 h-full w-full py-4">
         <div class="escena-p1">
           <div class="tarj-p">
-            <p class="m-0 text-xs font-semibold" style="color: var(--color-bg)">300px</p>
-            <p class="m-0 text-[10px] opacity-70" style="color: var(--color-bg)">Dramática</p>
+            <h4 class="m-0 text-xs font-semibold">300px - Dramática</h4>
           </div>
         </div>
         <div class="escena-p2">
-          <div class="tarj-p">
-            <p class="m-0 text-xs font-semibold" style="color: var(--color-bg)">1500px</p>
-            <p class="m-0 text-[10px] opacity-70" style="color: var(--color-bg)">Sutil</p>
+          <div class="tarj-p tarj-p-azul">
+            <h4 class="m-0 text-xs font-semibold">1500px - Sutil</h4>
           </div>
         </div>
       </div>
@@ -175,7 +174,7 @@ const practiceSteps = [
   .tarj-p {
     background: #9FA6FF;
     border-radius: 0;
-    padding: 8px 16px;
+    padding: 12px 24px;
     text-align: center;
     transform: rotateY(25deg);
     transition: transform 0.4s ease;
@@ -185,6 +184,10 @@ const practiceSteps = [
     font-size: 0.8125rem;
     font-weight: bold;
     color: var(--color-bg);
+  }
+
+  .tarj-p-azul {
+    background: #57B0FB;
   }
 
   .escena-p1:hover .tarj-p,

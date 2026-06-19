@@ -11,8 +11,8 @@ const cardHtml = `<div class="escena-tarjeta-3d">
     <div class="brillo"></div>
     <div class="contenido-tarjeta">
       <span class="badge">Premium</span>
-      <h3>Genesis Pixel</h3>
-      <p>Mueve el ratón sobre la tarjeta</p>
+      <h3 style="color: var(--color-bg)">Genesis Pixel</h3>
+      <p style="color: var(--color-bg); opacity: 0.7; font-weight: 600">Mueve el ratón sobre la tarjeta</p>
     </div>
   </div>
 </div>`;
@@ -27,9 +27,9 @@ const cardCss = `.escena-tarjeta-3d {
   width: 100%;
   height: 100%;
   position: relative;
-  border-radius: 16px;
-  background: linear-gradient(135deg, #1a0533, #0a0e1a);
-  border: 1px solid rgba(168, 85, 247, 0.3);
+  border-radius: 0;
+  background: #9FA6FF;
+  border: 1px solid rgba(159, 166, 255, 0.25);
   overflow: hidden;
   transform-style: preserve-3d;
   transition: transform 0.1s ease-out;
@@ -41,7 +41,7 @@ const cardCss = `.escena-tarjeta-3d {
   inset: 0;
   background: radial-gradient(
     circle at var(--mx, 50%) var(--my, 50%),
-    rgba(168, 85, 247, 0.2) 0%,
+    rgba(255, 255, 255, 0.3) 0%,
     transparent 60%
   );
   transition: opacity 0.3s ease;
@@ -151,8 +151,8 @@ const practiceSteps = [
 
   <!-- Proyecto 1: Tarjeta 3D con tilt interactivo -->
   <div class="mt-16 mb-4">
-    <h3 class="text-lg font-medium text-white mb-2">Proyecto 1 — Tarjeta Tilt Interactiva</h3>
-    <p class="text-sm text-[var(--dm-light-300)] mb-6">
+    <h4 class="text-base font-medium mb-2">Proyecto 1 — Tarjeta Tilt Interactiva</h4>
+    <p class="text-sm text-white/80 mb-6">
       Una tarjeta que sigue al ratón en 3D usando <code>rotateX</code> y <code>rotateY</code> calculados con JavaScript. El efecto de brillo (highlight) se mueve con la posición del cursor usando una variable CSS dinámica.
     </p>
   </div>
@@ -173,8 +173,8 @@ const practiceSteps = [
             <div class="brillo-final" id="brillo-final"></div>
             <div class="contenido-tarjeta-final">
               <span class="badge-final">PREMIUM</span>
-              <h3 class="text-base font-semibold text-white m-0 mt-2">Genesis Pixel</h3>
-              <p class="text-xs text-white/50 m-0 mt-1">Mueve el ratón</p>
+              <h3 class="text-base font-semibold m-0 mt-2" style="color: var(--color-bg)">Genesis Pixel</h3>
+              <p class="text-xs font-semibold m-0 mt-1" style="color: var(--color-bg); opacity: 0.7">Mueve el ratón</p>
             </div>
           </div>
         </div>
@@ -184,8 +184,8 @@ const practiceSteps = [
 
   <!-- Proyecto 2: Loader avanzado -->
   <div class="mt-16 mb-4">
-    <h3 class="text-lg font-medium text-white mb-2">Proyecto 2 — Loader de Tres Anillos</h3>
-    <p class="text-sm text-[var(--dm-light-300)] mb-6">
+    <h4 class="text-base font-medium mb-2">Proyecto 2 — Loader de Tres Anillos</h4>
+    <p class="text-sm text-white/80 mb-6">
       Tres anillos concéntricos, cada uno rotando a velocidad y dirección distinta, creando un spinner premium que transmite procesamiento activo con distintas capas de actividad.
     </p>
   </div>
@@ -264,9 +264,9 @@ const practiceSteps = [
     width: 100%;
     height: 100%;
     position: relative;
-    border-radius: 14px;
-    background: linear-gradient(135deg, #1a0533, #0a0e1a);
-    border: 1px solid rgba(168, 85, 247, 0.25);
+    border-radius: 0;
+    background: #9FA6FF;
+    border: 1px solid rgba(159, 166, 255, 0.25);
     overflow: hidden;
     transform-style: preserve-3d;
     transition: transform 0.1s ease-out;
@@ -277,7 +277,7 @@ const practiceSteps = [
     inset: 0;
     background: radial-gradient(
       circle at var(--mx, 50%) var(--my, 50%),
-      rgba(168, 85, 247, 0.2) 0%,
+      rgba(255, 255, 255, 0.3) 0%,
       transparent 60%
     );
     opacity: 0;
@@ -298,11 +298,11 @@ const practiceSteps = [
   .badge-final {
     font-size: 9px;
     font-family: var(--font-afronaut, system-ui, sans-serif);
-    color: #a855f7;
-    background: rgba(168, 85, 247, 0.15);
-    border: 1px solid rgba(168, 85, 247, 0.3);
+    color: var(--color-bg);
+    background: var(--color-bg);
+    color: #9FA6FF;
     padding: 3px 8px;
-    border-radius: 4px;
+    border-radius: 0;
     letter-spacing: 0.1em;
   }
 
