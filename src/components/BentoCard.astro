@@ -7,8 +7,6 @@ interface Props {
   title: string;
   imageSrc?: string;
   imageAlt?: string;
-  badge?: string;
-  badgeColor?: string;
 }
 
 const {
@@ -18,16 +16,11 @@ const {
   subtitle,
   title,
   imageSrc = '/img/card.png',
-  imageAlt = 'Card Mockup',
-  badge = '',
-  badgeColor = '#9FA6FF'
+  imageAlt = 'Card Mockup'
 } = Astro.props;
 ---
 
 <a href={href} class:list={['relative flex flex-col justify-between overflow-hidden rounded-[50px] pt-10 pb-0 h-full w-full', className]}>
-  {badge && (
-    <span style={`position: absolute; top: 12px; right: 12px; background: ${badgeColor}; color: var(--color-bg); font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif); z-index: 30;`}>{badge}</span>
-  )}
   <!-- Text -->
   <div class="relative z-10 flex flex-col items-end text-right mb-8">
     <span class:list={['text-[10px] font-bold tracking-[0.2em] uppercase mb-1', textColor]}>{subtitle}</span>
