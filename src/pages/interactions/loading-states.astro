@@ -1,0 +1,164 @@
+---
+import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const codeFiles = [
+  {
+    name: "index.html",
+    language: "html",
+    icon: "html",
+    content: `<button class="submit-btn" id="submitBtn">
+  <span class="btn-text">Guardar cambios</span>
+  <span class="btn-loader"></span>
+</button>
+
+<script>
+  const btn = document.getElementById('submitBtn');
+  btn.addEventListener('click', () => {
+    // Simulamos carga
+    btn.classList.add('loading');
+    setTimeout(() => {
+      btn.classList.remove('loading');
+    }, 3000);
+  });
+</script>`
+  },
+  {
+    name: "styles.css",
+    language: "css",
+    icon: "css",
+    content: `.submit-btn {
+  position: relative;
+  padding: 14px 28px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  min-width: 160px;
+}
+
+.btn-text {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+}
+
+/* El loader oculto al inicio */
+.btn-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+/* --- ESTADO DE CARGA --- */
+.submit-btn.loading {
+  background: #059669;
+  cursor: wait;
+}
+
+.submit-btn.loading .btn-text {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.submit-btn.loading .btn-loader {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  to { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+}`
+  }
+];
+
+const practiceSteps = [
+      {
+        title: "Cambia el Loader",
+        description: "Modifica CSS para que el .btn-loader no sea un spinner circular, sino tres pequeños puntos que saltan secuencialmente (pista: usa box-shadow o varios spans en HTML)."
+      },
+      {
+        title: "Evita el reflow",
+        description: "Asegúrate de definir un min-width en el botón para que al cambiar el texto largo por un loader pequeño, el tamaño del botón no colapse bruscamente."
+      }
+    ];
+---
+
+<InteractionsLayout
+  title="Loading States - Genesis Pixel"
+  currentLesson="/interactions/loading-states"
+  nextLesson={{ title: 'Success y Error Feedback', href: '/interactions/success-error' }}
+>
+  <div class="mb-12">
+    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      Interactions
+    </div>
+    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
+      Loading States
+    </h1>
+    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
+      Descubre cómo dar vida a tus interfaces.
+    </p>
+  </div>
+
+  <article class="prose prose-invert max-w-none">
+    
+      <h2>Reduciendo la ansiedad del usuario</h2>
+      <p>Cuando el usuario pide información (hace login, busca un producto, guarda un documento), el servidor tarda en responder. Si la interfaz se queda congelada, el usuario piensa: <em>"¿Ha funcionado? ¿Hago clic otra vez?"</em>.</p>
+      <p>Los <strong>Loading States</strong> o estados de carga son interacciones visuales que dicen: "Tranquilo, estoy trabajando en ello". Los más modernos evitan la sensación de lentitud usando animaciones dinámicas, Skeletons o microinteracciones directamente en los botones de acción.</p>
+    
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Para cargas muy cortas (menos de 500ms) es mejor no mostrar un loader. Si el loader parpadea demasiado rápido, la pantalla se sentirá inestable (jitter). Usa delays sutiles antes de mostrar el loader." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Botón con estado de carga integrado (Inline Loader)
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock files={codeFiles} />
+    <ResultPreview />
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      {
+        title: "Bloquear toda la pantalla",
+        description: "Mostrar un spinner gigante que cubre toda la pantalla por tareas pequeñas, frustrando la navegación y asustando al usuario."
+      },
+      {
+        title: "Dejar el botón activo",
+        description: "Olvidar cambiar el cursor o deshabilitar clicks múltiples mientras se carga, resultando en peticiones duplicadas al servidor."
+      }
+    ]} />
+    <PracticeCards steps={practiceSteps} />
+  </div>
+</InteractionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions';
+  document.addEventListener('astro:page-load', () => {
+    initCodeInteractions();
+  });
+</script>

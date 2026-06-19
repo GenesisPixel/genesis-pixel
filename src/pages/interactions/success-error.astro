@@ -1,0 +1,181 @@
+---
+import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const codeFiles = [
+  {
+    name: "index.html",
+    language: "html",
+    icon: "html",
+    content: `<div class="feedback-container">
+  <button class="action-btn success-trigger">Probar Éxito</button>
+  <button class="action-btn error-trigger">Probar Error</button>
+</div>
+
+<!-- Notificación animada -->
+<div class="toast" id="toastBox">
+  <span class="icon"></span>
+  <span class="message" id="toastMsg">Mensaje</span>
+</div>
+
+<script>
+  const toast = document.getElementById('toastBox');
+  const msg = document.getElementById('toastMsg');
+
+  document.querySelector('.success-trigger').addEventListener('click', () => {
+    toast.className = 'toast show success';
+    msg.textContent = '¡Guardado correctamente!';
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  });
+
+  document.querySelector('.error-trigger').addEventListener('click', () => {
+    toast.className = 'toast show error';
+    msg.textContent = 'Credenciales inválidas.';
+    setTimeout(() => toast.classList.remove('show'), 2500);
+  });
+</script>`
+  },
+  {
+    name: "styles.css",
+    language: "css",
+    icon: "css",
+    content: `.feedback-container {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 30px;
+}
+
+.action-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  border: 1px solid #444;
+  background: #222;
+  color: white;
+  cursor: pointer;
+}
+
+/* TOAST STYLES */
+.toast {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 24px;
+  border-radius: 12px;
+  background: #1e293b;
+  color: white;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  font-weight: 500;
+  
+  /* Estado inicial oculto y desplazado */
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+}
+
+/* Transición de aparición suave con rebote */
+.toast.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Modificadores de color y animaciones de iconos */
+.toast.success { border-left: 6px solid #10b981; }
+.toast.error { 
+  border-left: 6px solid #ef4444; 
+  /* Si el error entra, le damos un shake extra opcional a nivel app */
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  50% { transform: translateX(8px); }
+  75% { transform: translateX(-8px); }
+}`
+  }
+];
+
+const practiceSteps = [
+      {
+        title: "Mejora el mensaje",
+        description: "Añade un icono de 'X' rojo o un 'Check' verde en HTML usando SVGs y controla su aparición en CSS dependiendo del estado .success o .error."
+      },
+      {
+        title: "Anima la salida",
+        description: "La transición funciona bien de entrada, pero al remover la clase .show se esconde rápido. Ajusta la transición para que se desvanezca suavemente hacia la derecha o hacia arriba."
+      }
+    ];
+---
+
+<InteractionsLayout
+  title="Success y Error Feedback - Genesis Pixel"
+  currentLesson="/interactions/success-error"
+  nextLesson={{ title: 'Botones interactivos', href: '/interactions/botones' }}
+>
+  <div class="mb-12">
+    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      Interactions
+    </div>
+    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
+      Success y Error Feedback
+    </h1>
+    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
+      Descubre cómo dar vida a tus interfaces.
+    </p>
+  </div>
+
+  <article class="prose prose-invert max-w-none">
+    
+      <h2>Comunicación visual resolutiva</h2>
+      <p>Después de que un estado de carga termina, el usuario necesita saber si tuvo éxito o si hubo un problema. No dejes que la interfaz simplemente vuelva a su estado normal. Dale un cierre claro y visual.</p>
+      <ul>
+        <li><strong>Success (Éxito):</strong> Colores verdes/azules vibrantes, iconos de check, animaciones ascendentes que transmiten logro.</li>
+        <li><strong>Error:</strong> Colores rojos, vibraciones, sacudidas horizontales (como decir "no" con la cabeza). Esto atrae el ojo inmediatamente para corregir el fallo.</li>
+      </ul>
+      <p>Integrar estos estados directamente en los componentes (como botones o inputs) mejora increíblemente la usabilidad comparado con mostrar una aburrida alerta del navegador.</p>
+    
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Usa la animación clásica de "shake" (sacudida) para los errores. Es un patrón universal inspirado en el mundo físico. Si metes la llave equivocada, la puerta no se abre y "vibra" la cerradura." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Estados visuales de éxito y error con Keyframes integrados
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock files={codeFiles} />
+    <ResultPreview />
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      {
+        title: "Ocultar el feedback muy rápido",
+        description: "Darle al usuario menos de 2 segundos para leer el mensaje de éxito o error antes de animarlo hacia afuera."
+      },
+      {
+        title: "Depender solo del color",
+        description: "No añadas solo color rojo o verde. Añade un icono descriptivo o una animación de 'shake' para usuarios con daltonismo."
+      }
+    ]} />
+    <PracticeCards steps={practiceSteps} />
+  </div>
+</InteractionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions';
+  document.addEventListener('astro:page-load', () => {
+    initCodeInteractions();
+  });
+</script>

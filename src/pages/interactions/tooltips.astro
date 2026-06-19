@@ -1,0 +1,170 @@
+---
+import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const codeFiles = [
+  {
+    name: "index.html",
+    language: "html",
+    icon: "html",
+    content: `<div class="tooltip-container">
+  <button class="icon-btn">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="10" />
+      <line x1="12" y1="16" x2="12" y2="12" />
+      <line x1="12" y1="8" x2="12.01" y2="8" />
+    </svg>
+  </button>
+  
+  <div class="tooltip-box">
+    Información sobre este sistema avanzado.
+  </div>
+</div>`
+  },
+  {
+    name: "styles.css",
+    language: "css",
+    icon: "css",
+    content: `.tooltip-container {
+  position: relative;
+  display: inline-block;
+  margin: 50px;
+}
+
+.icon-btn {
+  background: #334155;
+  border: none;
+  color: #94a3b8;
+  padding: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.icon-btn:hover {
+  background: #475569;
+  color: white;
+}
+
+/* LA CAJA DEL TOOLTIP */
+.tooltip-box {
+  position: absolute;
+  bottom: calc(100% + 12px); /* Por encima del botón */
+  left: 50%;
+  transform: translateX(-50%) translateY(8px);
+  background: #0f172a;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  white-space: nowrap;
+  pointer-events: none; /* Evita parpadeos */
+  
+  /* ESTADO INICIAL */
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease;
+  /* Al salir, sin delay */
+}
+
+/* La flecha inferior hecha con CSS border */
+.tooltip-box::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #0f172a transparent transparent transparent;
+}
+
+/* HOVER ACTIVO */
+.tooltip-container:hover .tooltip-box {
+  opacity: 1;
+  visibility: visible;
+  transform: translateX(-50%) translateY(0);
+  /* Entra con 400ms de delay para evitar ruido visual */
+  transition-delay: 0.4s;
+}`
+  }
+];
+
+const practiceSteps = [
+      {
+        title: "Quita el delay",
+        description: "Quita o pon en 0s el transition-delay de entrada para ver cuán agresiva se siente la aparición inmediata."
+      },
+      {
+        title: "Tooltip Inferior",
+        description: "Modifica el CSS (top en vez de bottom) y los bordes de la flecha para que el tooltip aparezca por debajo del botón en lugar de por encima."
+      }
+    ];
+---
+
+<InteractionsLayout
+  title="Tooltips y ayudas contextuales - Genesis Pixel"
+  currentLesson="/interactions/tooltips"
+  nextLesson={{ title: 'Feedback visual en formularios', href: '/interactions/feedback-formularios' }}
+>
+  <div class="mb-12">
+    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      Interactions
+    </div>
+    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
+      Tooltips y ayudas contextuales
+    </h1>
+    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
+      Descubre cómo dar vida a tus interfaces.
+    </p>
+  </div>
+
+  <article class="prose prose-invert max-w-none">
+    
+      <h2>Micro-información on demand</h2>
+      <p>Los tooltips son globos de información pequeños que aparecen al hacer hover o enfocar un elemento (especialmente botones con iconos). Son críticos para la usabilidad, ya que un icono no siempre es obvio para todos.</p>
+      <p>La interacción debe ser extremadamente sutil y, algo muy importante: <strong>no debe ser inmediata</strong>. Si los tooltips aparecen instantáneamente, la pantalla parecerá un caos lleno de ruido mientras el usuario mueve el ratón. Un pequeño delay de entrada limpia la interfaz.</p>
+    
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Aplica un "transition-delay: 0.4s" en el estado :hover de tu tooltip. Así solo aparecerá si el usuario deja su cursor intencionalmente sobre el elemento." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Tooltip con delay intencional y flecha CSS
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock files={codeFiles} />
+    <ResultPreview />
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      {
+        title: "Aparición instantánea",
+        description: "Hacer que todos los tooltips aparezcan inmediatamente en hover. Mover el ratón por la página causará flashes molestos de información en todas partes."
+      },
+      {
+        title: "Problema en móviles",
+        description: "Diseñar tooltips esenciales sin pensar que en iOS/Android no existe el 'hover'. Necesitas manejar clicks u ofrecer la información de forma nativa en pantallas pequeñas."
+      }
+    ]} />
+    <PracticeCards steps={practiceSteps} />
+  </div>
+</InteractionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions';
+  document.addEventListener('astro:page-load', () => {
+    initCodeInteractions();
+  });
+</script>

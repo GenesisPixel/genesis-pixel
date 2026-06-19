@@ -1,0 +1,181 @@
+---
+import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const codeFiles = [
+  {
+    name: "index.html",
+    language: "html",
+    icon: "html",
+    content: `<div class="interactive-card">
+  <div class="card-image-wrapper">
+    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400&h=250&fit=crop" alt="Abstract">
+  </div>
+  <div class="card-content">
+    <span class="card-tag">Design</span>
+    <h4>Construyendo con Motion</h4>
+    <p>Aprende a transformar interfaces aburridas en experiencias memorables.</p>
+    <a href="#" class="card-link">Leer artículo &rarr;</a>
+  </div>
+</div>`
+  },
+  {
+    name: "styles.css",
+    language: "css",
+    icon: "css",
+    content: `.interactive-card {
+  width: 320px;
+  background: #1e293b;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  cursor: pointer;
+  
+  /* Estado base de la sombra y posición */
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              box-shadow 0.4s ease;
+}
+
+.card-image-wrapper {
+  height: 180px;
+  overflow: hidden;
+}
+
+.card-image-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s ease;
+}
+
+.card-content {
+  padding: 24px;
+}
+
+.card-tag {
+  color: #a855f7;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.card-content h4 {
+  margin: 8px 0;
+  color: #fff;
+  font-size: 1.25rem;
+}
+
+.card-content p {
+  color: #94a3b8;
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+.card-link {
+  display: inline-block;
+  margin-top: 16px;
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateX(-10px);
+  transition: all 0.3s ease;
+}
+
+/* --- INTERACCIONES HOVER --- */
+.interactive-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.interactive-card:hover .card-image-wrapper img {
+  transform: scale(1.08);
+}
+
+.interactive-card:hover .card-link {
+  opacity: 1;
+  transform: translateX(0);
+}`
+  }
+];
+
+const practiceSteps = [
+      {
+        title: "Cambia la curva",
+        description: "El contenedor tiene un rebote leve usando cubic-bezier. Cambia a un ease-out prolongado y nota la diferencia."
+      },
+      {
+        title: "Oculta el texto",
+        description: "Haz que el texto del párrafo (<p>) también esté oculto y aparezca solo cuando hagas hover sobre la card, igual que el enlace."
+      }
+    ];
+---
+
+<InteractionsLayout
+  title="Cards interactivas - Genesis Pixel"
+  currentLesson="/interactions/cards"
+  nextLesson={{ title: 'Modales y overlays', href: '/interactions/modales-overlays' }}
+>
+  <div class="mb-12">
+    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      Interactions
+    </div>
+    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
+      Cards interactivas
+    </h1>
+    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
+      Descubre cómo dar vida a tus interfaces.
+    </p>
+  </div>
+
+  <article class="prose prose-invert max-w-none">
+    
+      <h2>Ventanas de contenido vivo</h2>
+      <p>Las tarjetas (Cards) son los contenedores de contenido más populares en dashboards, e-commerce y blogs. Una card estática es aburrida; una card interactiva invita a explorarla. La interacción clásica consiste en levantar la card (con sombra y movimiento en el eje Y) para indicar "puedes hacerme clic".</p>
+      <p>Pero podemos ir más allá: aplicar zoom sutil a la imagen interior, revelar un botón que estaba oculto, o mostrar texto secundario suavemente al pasar el cursor.</p>
+    
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Para crear profundidad (3D real), puedes usar la propiedad CSS "perspective" en un contenedor padre y aplicar una pequeñísima rotación (rotateX/rotateY) en hover basándote en la posición del ratón. Le dará una calidad Apple-like impresionante." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Card interactiva con hover de profundidad e imagen
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock files={codeFiles} />
+    <ResultPreview />
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      {
+        title: "Demasiado movimiento",
+        description: "Hacer que la tarjeta se levante 30px, causando un salto visual excesivo. Mantén el translate entre -4px y -10px máximo."
+      },
+      {
+        title: "Cortar bordes redondeados",
+        description: "Si escalas una imagen dentro de la tarjeta y olvidas poner overflow: hidden en el contenedor padre, la imagen sobresaldrá de las esquinas redondas."
+      }
+    ]} />
+    <PracticeCards steps={practiceSteps} />
+  </div>
+</InteractionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions';
+  document.addEventListener('astro:page-load', () => {
+    initCodeInteractions();
+  });
+</script>

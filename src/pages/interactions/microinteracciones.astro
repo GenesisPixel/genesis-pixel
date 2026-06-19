@@ -1,0 +1,153 @@
+---
+import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const codeFiles = [
+  {
+    name: "index.html",
+    language: "html",
+    icon: "html",
+    content: `<button class="like-btn" id="likeBtn">
+  <svg viewBox="0 0 24 24" width="24" height="24">
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+  </svg>
+</button>
+
+<script>
+  const btn = document.getElementById('likeBtn');
+  btn.addEventListener('click', () => {
+    btn.classList.toggle('active');
+  });
+</script>`
+  },
+  {
+    name: "styles.css",
+    language: "css",
+    icon: "css",
+    content: `.like-btn {
+  background: transparent;
+  border: 2px solid #555;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.like-btn svg {
+  fill: transparent;
+  stroke: #555;
+  stroke-width: 2;
+  transition: all 0.3s ease;
+}
+
+.like-btn:hover {
+  border-color: #ff2d55;
+}
+
+.like-btn:hover svg {
+  stroke: #ff2d55;
+}
+
+/* Estado activo: Animación de microinteracción */
+.like-btn.active {
+  border-color: #ff2d55;
+  background: rgba(255, 45, 85, 0.1);
+  transform: scale(1.1);
+}
+
+.like-btn.active svg {
+  fill: #ff2d55;
+  stroke: #ff2d55;
+  transform: scale(1.2);
+}`
+  }
+];
+
+const practiceSteps = [
+      {
+        title: "Modifica el rebote",
+        description: "Cambia la curva cubic-bezier en transition para hacer que el botón rebote de forma más dramática al hacer hover o clic."
+      },
+      {
+        title: "Agrega Keyframes",
+        description: "Combínalo con una animación @keyframes que haga latir (pulse) el corazón infinitamente una vez que está en estado .active."
+      }
+    ];
+---
+
+<InteractionsLayout
+  title="Microinteracciones - Genesis Pixel"
+  currentLesson="/interactions/microinteracciones"
+  nextLesson={{ title: 'Estados de la interfaz', href: '/interactions/estados-interfaz' }}
+>
+  <div class="mb-12">
+    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      Interactions
+    </div>
+    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
+      Microinteracciones
+    </h1>
+    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
+      Descubre cómo dar vida a tus interfaces.
+    </p>
+  </div>
+
+  <article class="prose prose-invert max-w-none">
+    
+      <h2>Los pequeños detalles importan</h2>
+      <p>Las <strong>microinteracciones</strong> son eventos sutiles que cumplen una única tarea dentro de la interfaz. Su objetivo principal es dar feedback inmediato, comunicar el resultado de una acción y mejorar el sentimiento de manipulación directa.</p>
+      <p>Piénsalo así: el <em>"Like"</em> de Twitter es una microinteracción. Cuando haces clic, no solo cambia el color a rojo, sino que explota con confeti y hace un pequeño rebote. Esto genera una respuesta emocional positiva en el usuario.</p>
+      <h3>Cómo mejoran la experiencia</h3>
+      <ul>
+        <li><strong>Informan el estado:</strong> "Sí, tu configuración se guardó".</li>
+        <li><strong>Previenen errores:</strong> Una animación de sacudida (shake) al fallar una contraseña.</li>
+        <li><strong>Añaden deleite:</strong> Hacen que la app no parezca robótica, sino humana y premium.</li>
+      </ul>
+    
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Usa las microinteracciones como "recompensa". Un botón de "Añadir al carrito" que muestra un pequeño tick de confirmación genera mucha más confianza que un simple texto que cambia." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Microinteracción de un botón de Like (Favorito)
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock files={codeFiles} />
+    <ResultPreview />
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      {
+        title: "Hacerlas demasiado lentas",
+        description: "Una microinteracción debe durar idealmente entre 200ms y 400ms. Si es muy larga, frustrará al usuario al retrasar su flujo."
+      },
+      {
+        title: "Sobreuso",
+        description: "Añadir confeti y rebotes a cada pequeño botón de la pantalla. Resérvalas para acciones significativas (Likes, Checkouts, Éxitos)."
+      }
+    ]} />
+    <PracticeCards steps={practiceSteps} />
+  </div>
+</InteractionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions';
+  document.addEventListener('astro:page-load', () => {
+    initCodeInteractions();
+  });
+</script>

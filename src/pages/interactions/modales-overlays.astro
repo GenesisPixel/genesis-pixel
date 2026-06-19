@@ -1,0 +1,192 @@
+---
+import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+
+const codeFiles = [
+  {
+    name: "index.html",
+    language: "html",
+    icon: "html",
+    content: `<button class="open-modal-btn">Abrir Modal</button>
+
+<div class="overlay" id="demoOverlay">
+  <div class="modal-box">
+    <h3>Configuración</h3>
+    <p>¿Seguro que deseas guardar estos cambios?</p>
+    <div class="modal-actions">
+      <button class="btn-cancel" id="closeBtn">Cancelar</button>
+      <button class="btn-confirm">Guardar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const openBtn = document.querySelector('.open-modal-btn');
+  const closeBtn = document.getElementById('closeBtn');
+  const overlay = document.getElementById('demoOverlay');
+
+  openBtn.addEventListener('click', () => {
+    overlay.classList.add('active');
+  });
+
+  closeBtn.addEventListener('click', () => {
+    overlay.classList.remove('active');
+  });
+  
+  // Cerrar al hacer clic fuera
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) {
+      overlay.classList.remove('active');
+    }
+  });
+</script>`
+  },
+  {
+    name: "styles.css",
+    language: "css",
+    icon: "css",
+    content: `.open-modal-btn, .btn-confirm, .btn-cancel {
+  padding: 10px 20px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  color: white;
+}
+.open-modal-btn, .btn-confirm { background: #3b82f6; }
+.btn-cancel { background: transparent; border: 1px solid #444; }
+
+/* OVERLAY (Fondo oscuro) */
+.overlay {
+  position: fixed;
+  inset: 0; /* top: 0, left: 0, right: 0, bottom: 0 */
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  
+  /* Estado oculto */
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.4s ease;
+}
+
+/* CAJA DEL MODAL */
+.modal-box {
+  background: #1e293b;
+  padding: 32px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: white;
+  
+  /* Estado oculto (escalado hacia abajo y empujado) */
+  transform: scale(0.9) translateY(20px);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+/* --- ESTADO ACTIVO --- */
+.overlay.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+.overlay.active .modal-box {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  /* Añadimos un pequeño delay para que entre después del overlay */
+  transition-delay: 0.05s;
+}`
+  }
+];
+
+const practiceSteps = [
+      {
+        title: "Drop from top",
+        description: "Cambia la animación del modal. En lugar de venir de abajo (.modal-box transform: scale(0.9) translateY(20px)), haz que caiga desde arriba de la pantalla (translateY(-100px))."
+      },
+      {
+        title: "Efecto de desenfoque",
+        description: "Aumenta el backdrop-filter: blur() a 10px en el overlay activo para ver cómo el fondo se difumina y concentra más la atención."
+      }
+    ];
+---
+
+<InteractionsLayout
+  title="Modales y overlays - Genesis Pixel"
+  currentLesson="/interactions/modales-overlays"
+  nextLesson={{ title: 'Dropdowns y menús', href: '/interactions/dropdowns-menus' }}
+>
+  <div class="mb-12">
+    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
+      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      Interactions
+    </div>
+    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
+      Modales y overlays
+    </h1>
+    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
+      Descubre cómo dar vida a tus interfaces.
+    </p>
+  </div>
+
+  <article class="prose prose-invert max-w-none">
+    
+      <h2>Interrumpiendo con elegancia</h2>
+      <p>Un modal es probablemente el componente más agresivo de la UI. Obliga al usuario a detener lo que está haciendo, oscurece la pantalla (overlay) y exige atención. Por tanto, su aparición debe ser <strong>suave e intencional</strong>.</p>
+      <p>Aparecer instantáneamente genera ceguera e interrupción mental. Una entrada animada (por ejemplo, escalar desde un tamaño más pequeño y difuminarse) guía el ojo hacia el centro y avisa al cerebro que el contexto ha cambiado pero la pantalla detrás sigue ahí.</p>
+    
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Anima siempre el fondo (overlay) con opacidad para oscurecer la pantalla, y el modal en sí usando "transform: scale" u "transform: translateY". Las salidas (cuando se cierra) deben ser un 30% más rápidas que las entradas." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Modal suave y natural
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock files={codeFiles} />
+    <ResultPreview />
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      {
+        title: "Ignorar la accesibilidad",
+        description: "Crear modales impresionantes pero olvidar capturar el foco (Focus Trap). Un usuario con teclado podría tabular por los links ocultos bajo el modal."
+      },
+      {
+        title: "Display: none inmediato",
+        description: "En React/Vue, desmontar el modal del DOM antes de dejar que termine la animación de salida de CSS, haciéndolo desaparecer bruscamente."
+      }
+    ]} />
+    <PracticeCards steps={practiceSteps} />
+  </div>
+</InteractionsLayout>
+
+<script>
+  import { initCodeInteractions } from '../../scripts/code-interactions';
+  document.addEventListener('astro:page-load', () => {
+    initCodeInteractions();
+  });
+</script>
