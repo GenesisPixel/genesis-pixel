@@ -1,67 +1,21 @@
 ---
 import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
 import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
 import ResultPreview from '../../components/ResultPreview.astro';
 import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const tabs = [
-  {
-    id: "index-html",
-    label: "index.html",
-    code: `<div class="feedback-container">
-  <button class="action-btn success-trigger">Probar Éxito</button>
-  <button class="action-btn error-trigger">Probar Error</button>
-</div>
+const htmlCode = `<button class="action-btn success-trigger">Éxito</button>
+<button class="action-btn error-trigger">Error</button>
 
-<!-- Notificación animada -->
 <div class="toast" id="toastBox">
-  <span class="icon"></span>
   <span class="message" id="toastMsg">Mensaje</span>
-</div>
+</div>`;
 
-<script>
-  const toast = document.getElementById('toastBox');
-  const msg = document.getElementById('toastMsg');
-
-  document.querySelector('.success-trigger').addEventListener('click', () => {
-    toast.className = 'toast show success';
-    msg.textContent = '¡Guardado correctamente!';
-    setTimeout(() => toast.classList.remove('show'), 2500);
-  });
-
-  document.querySelector('.error-trigger').addEventListener('click', () => {
-    toast.className = 'toast show error';
-    msg.textContent = 'Credenciales inválidas.';
-    setTimeout(() => toast.classList.remove('show'), 2500);
-  });
-</script>`
-  },
-  {
-    id: "styles-css",
-    label: "styles.css",
-    code: `.feedback-container {
-  display: flex;
-  gap: 16px;
-  margin-bottom: 30px;
-}
-
-.action-btn {
-  padding: 10px 20px;
-  border-radius: 6px;
-  border: 1px solid #444;
-  background: #222;
-  color: white;
-  cursor: pointer;
-}
-
-/* TOAST STYLES */
-.toast {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+const cssCode = `.toast {
+  position: absolute;
   padding: 16px 24px;
   border-radius: 12px;
   background: #1e293b;
@@ -69,24 +23,20 @@ const tabs = [
   box-shadow: 0 10px 25px rgba(0,0,0,0.4);
   font-weight: 500;
   
-  /* Estado inicial oculto y desplazado */
   opacity: 0;
   transform: translateY(20px) scale(0.95);
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   pointer-events: none;
 }
 
-/* Transición de aparición suave con rebote */
 .toast.show {
   opacity: 1;
   transform: translateY(0) scale(1);
 }
 
-/* Modificadores de color y animaciones de iconos */
 .toast.success { border-left: 6px solid #10b981; }
 .toast.error { 
   border-left: 6px solid #ef4444; 
-  /* Si el error entra, le damos un shake extra opcional a nivel app */
   animation: shake 0.4s ease-in-out;
 }
 
@@ -95,85 +45,194 @@ const tabs = [
   25% { transform: translateX(-8px); }
   50% { transform: translateX(8px); }
   75% { transform: translateX(-8px); }
-}`
-  }
-];
+}`;
 
 const practiceSteps = [
-      {
-        title: "Mejora el mensaje",
-        description: "Añade un icono de 'X' rojo o un 'Check' verde en HTML usando SVGs y controla su aparición en CSS dependiendo del estado .success o .error."
-      },
-      {
-        title: "Anima la salida",
-        description: "La transición funciona bien de entrada, pero al remover la clase .show se esconde rápido. Ajusta la transición para que se desvanezca suavemente hacia la derecha o hacia arriba."
-      }
-    ];
+  {
+    number: 1,
+    text: 'Crea una caja .toast oculta con opacity: 0.',
+    color: 'dm-purple',
+    rotate: '-4deg'
+  },
+  {
+    number: 2,
+    text: 'Defínele transition para que aparezca con scale y opacity.',
+    color: 'dm-green',
+    rotate: '2deg'
+  },
+  {
+    number: 3,
+    text: 'Crea modificadores .success y .error con border-left de color.',
+    color: 'app-color-yellow400',
+    rotate: '-2deg'
+  },
+  {
+    number: 4,
+    text: 'Con JS, añade la clase .show según la acción.',
+    color: 'dm-blue',
+    rotate: '4deg'
+  },
+  {
+    number: 5,
+    text: 'Elimina la clase .show después de 2500ms.',
+    color: 'dm-purple',
+    rotate: '-3deg'
+  }
+];
 ---
 
 <InteractionsLayout
   title="Success y Error Feedback - Genesis Pixel"
   currentLesson="/interactions/success-error"
+  prevLesson={{ title: 'Loading States', href: '/interactions/loading-states' }}
   nextLesson={{ title: 'Botones interactivos', href: '/interactions/botones' }}
 >
-  <div class="mb-12">
-    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
-      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-      Interactions
-    </div>
-    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
-      Success y Error Feedback
-    </h1>
-    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
-      Descubre cómo dar vida a tus interfaces.
-    </p>
-  </div>
+  <ChapterHeader
+    chapterNumber="04"
+    chapterLabel="Capítulo 4 · Lección 5"
+    title="Success y Error Feedback"
+    readingTime={7}
+    difficulty="Interactions"
+  />
 
-  <article class="prose prose-invert max-w-none">
-    
-      <h2>Comunicación visual resolutiva</h2>
-      <p>Después de que un estado de carga termina, el usuario necesita saber si tuvo éxito o si hubo un problema. No dejes que la interfaz simplemente vuelva a su estado normal. Dale un cierre claro y visual.</p>
-      <ul>
-        <li><strong>Success (Éxito):</strong> Colores verdes/azules vibrantes, iconos de check, animaciones ascendentes que transmiten logro.</li>
-        <li><strong>Error:</strong> Colores rojos, vibraciones, sacudidas horizontales (como decir "no" con la cabeza). Esto atrae el ojo inmediatamente para corregir el fallo.</li>
-      </ul>
-      <p>Integrar estos estados directamente en los componentes (como botones o inputs) mejora increíblemente la usabilidad comparado con mostrar una aburrida alerta del navegador.</p>
-    
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es el Feedback Visual (Success/Error)?</h3>
+    <p>Es la resolución visual de una transacción. Tras un estado de carga, la interfaz debe comunicar explícitamente si la operación fue un éxito absoluto (Success) o si falló por alguna razón (Error). Es el cierre del ciclo de interacción.</p>
+
+    <h3>¿Para qué sirve?</h3>
+    <p>El usuario de hoy en día confía en la tecnología pero requiere comprobantes. Mostrar una pantalla que vuelve a la normalidad sin decir nada genera la temible pregunta: "¿Se habrá enviado?".</p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Success:</strong> Da tranquilidad. Usa colores de confirmación (verde, azul), iconos de checkmark y animaciones ascendentes que transmiten logro o finalización positiva.</li>
+      <li><strong>Error:</strong> Llama la atención urgentemente para corregir un fallo. Usa colores de alerta (rojo), iconos de cruz y animaciones sísmicas horizontales (shake) que imitan el movimiento de negar con la cabeza.</li>
+    </ul>
+
+    <h3>¿Cómo se usan?</h3>
+    <p>Generalmente se implementan mediante un contenedor de notificaciones absoluto (Toasts) o cambiando el color y el icono del propio botón. Es esencial que estos estados vengan acompañados de transiciones fluidas de <code>opacity</code> y <code>transform</code> para que no aparezcan como errores abruptos del sistema, sino como mensajes de la interfaz.</p>
   </article>
 
   <div class="my-8 not-prose">
-    <ConsejoProfesional tip="Usa la animación clásica de &quot;shake&quot; (sacudida) para los errores. Es un patrón universal inspirado en el mundo físico. Si metes la llave equivocada, la puerta no se abre y &quot;vibra&quot; la cerradura." />
+    <ConsejoProfesional tip="Usa la animación de "shake" (sacudida) para los errores. Es un patrón universal inspirado en el mundo físico. Si metes la llave equivocada, la puerta no se abre y vibra la cerradura." />
   </div>
 
   <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
-    Estados visuales de éxito y error con Keyframes integrados
+    Notificaciones animadas (Toasts)
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock tabs={tabs} />
-    <ResultPreview />
+    <TabbedCodeBlock
+      group="success-error"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Haz clic en los botones para disparar el feedback.">
+      <div class="flex items-center justify-center h-full w-full">
+        <div style="display:flex; gap:16px; position:relative; width:100%; height:100%; justify-content:center; align-items:flex-start; padding-top: 20px;">
+  <button class="action-btn-p success-trigger-p" style="padding:10px 20px; border-radius:6px; border:1px solid #444; background:#222; color:white; cursor:pointer;">Éxito</button>
+  <button class="action-btn-p error-trigger-p" style="padding:10px 20px; border-radius:6px; border:1px solid #444; background:#222; color:white; cursor:pointer;">Error</button>
+  <div class="toast-p" id="toastBoxP" style="position:absolute; top: 80px;">
+    <span class="message" id="toastMsgP">Mensaje</span>
+  </div>
+</div>
+      </div>
+    </ResultPreview>
   </div>
 
   <div class="my-8 flex flex-col gap-6">
     <ErroresComunesV3 errors={[
-      {
-        title: "Ocultar el feedback muy rápido",
-        description: "Darle al usuario menos de 2 segundos para leer el mensaje de éxito o error antes de animarlo hacia afuera."
-      },
-      {
-        title: "Depender solo del color",
-        description: "No añadas solo color rojo o verde. Añade un icono descriptivo o una animación de 'shake' para usuarios con daltonismo."
-      }
-    ]} />
-    <PracticeCards steps={practiceSteps} />
+  {
+    label: 'Ocultar rápido',
+    description: 'Darle al usuario menos de 2 segundos para leer el mensaje de éxito o error antes de animarlo hacia afuera.'
+  },
+  {
+    label: 'Depender del color',
+    description: 'Añade un icono descriptivo o una animación de shake para ayudar a usuarios con daltonismo.'
+  }
+]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Crea un sistema de toast animado que diferencie visualmente éxito y error."
+      steps={practiceSteps}
+    />
   </div>
 </InteractionsLayout>
 
+<style>
+.toast-p {
+  position: absolute;
+  padding: 16px 24px;
+  border-radius: 12px;
+  background: #1e293b;
+  color: white;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+  font-weight: 500;
+  
+  opacity: 0;
+  transform: translateY(20px) scale(0.95);
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  pointer-events: none;
+}
+
+.toast-p.show {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+.toast-p.success { border-left: 6px solid #10b981; }
+.toast-p.error { 
+  border-left: 6px solid #ef4444; 
+  animation: shake 0.4s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  50% { transform: translateX(8px); }
+  75% { transform: translateX(-8px); }
+}
+</style>
+
 <script>
-  import { initCodeInteractions } from '../../scripts/code-interactions';
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  
   document.addEventListener('astro:page-load', () => {
     initCodeInteractions();
+    const toast = document.getElementById('toastBoxP');
+    const msg = document.getElementById('toastMsgP');
+    const sBtn = document.querySelector('.success-trigger-p');
+    const eBtn = document.querySelector('.error-trigger-p');
+    if(toast && sBtn && eBtn) {
+      sBtn.addEventListener('click', () => {
+        toast.className = 'toast-p show success';
+        msg.textContent = '¡Guardado correctamente!';
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      });
+      eBtn.addEventListener('click', () => {
+        toast.className = 'toast-p show error';
+        msg.textContent = 'Credenciales inválidas.';
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      });
+    }
+  });
+  document.addEventListener('astro:after-swap', () => {
+    initCodeInteractions();
+    const toast = document.getElementById('toastBoxP');
+    const msg = document.getElementById('toastMsgP');
+    const sBtn = document.querySelector('.success-trigger-p');
+    const eBtn = document.querySelector('.error-trigger-p');
+    if(toast && sBtn && eBtn) {
+      sBtn.addEventListener('click', () => {
+        toast.className = 'toast-p show success';
+        msg.textContent = '¡Guardado correctamente!';
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      });
+      eBtn.addEventListener('click', () => {
+        toast.className = 'toast-p show error';
+        msg.textContent = 'Credenciales inválidas.';
+        setTimeout(() => toast.classList.remove('show'), 2500);
+      });
+    }
   });
 </script>

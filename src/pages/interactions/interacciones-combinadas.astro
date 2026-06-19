@@ -1,16 +1,13 @@
 ---
 import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
 import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
 import ResultPreview from '../../components/ResultPreview.astro';
 import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const tabs = [
-  {
-    id: "index-html",
-    label: "index.html",
-    code: `<div class="magic-card">
+const htmlCode = `<div class="magic-card">
   <div class="card-glow"></div>
   <div class="magic-icon">
     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -18,51 +15,11 @@ const tabs = [
     </svg>
   </div>
   <h3>Interacción Total</h3>
-</div>`
-  },
-  {
-    id: "styles-css",
-    label: "styles.css",
-    code: `.magic-card {
-  position: relative;
-  width: 250px;
-  height: 280px;
-  background: #0f172a;
-  border-radius: 16px;
-  border: 1px solid rgba(255,255,255,0.1);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  cursor: pointer;
-  
+</div>`;
+
+const cssCode = `.magic-card {
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
               box-shadow 0.4s ease;
-}
-
-/* El resplandor oculto de fondo */
-.card-glow {
-  position: absolute;
-  width: 150px;
-  height: 150px;
-  background: #8b5cf6;
-  border-radius: 50%;
-  filter: blur(50px);
-  opacity: 0;
-  transition: opacity 0.5s ease;
-}
-
-.magic-icon {
-  z-index: 1;
-  color: #8b5cf6;
-  transition: transform 0.4s ease, color 0.4s ease;
-}
-
-.magic-card h3 {
-  z-index: 1;
-  color: white;
-  margin-top: 20px;
 }
 
 /* HOVER INTERACTIONS */
@@ -74,14 +31,14 @@ const tabs = [
 
 .magic-card:hover .card-glow {
   opacity: 0.4;
-  /* Animación de keyframe se dispara solo en hover */
+  /* Keyframe 1: Glow animado al hacer hover */
   animation: pulseGlow 2s infinite alternate ease-in-out;
 }
 
 .magic-card:hover .magic-icon {
   color: white;
   transform: translateY(-5px);
-  /* Segunda animación de keyframe en el hijo */
+  /* Keyframe 2: Icono flotando al hacer hover */
   animation: float 3s infinite ease-in-out;
 }
 
@@ -94,52 +51,74 @@ const tabs = [
 @keyframes float {
   0%, 100% { transform: translateY(-5px); }
   50% { transform: translateY(-15px); }
-}`
-  }
-];
+}`;
 
 const practiceSteps = [
-      {
-        title: "Rotate en Hover",
-        description: "Añade un giro sutil en el eje Z al hover de la card: transform: translateY(-10px) scale(1.02) rotateZ(2deg);"
-      },
-      {
-        title: "Mejora el Float",
-        description: "Haz que la animación 'float' del icono también rote levemente de izquierda a derecha (rotate(-5deg) a rotate(5deg)) mientras sube y baja."
-      }
-    ];
+  {
+    number: 1,
+    text: 'Crea la card con un elemento de fondo (glow) oculto.',
+    color: 'dm-purple',
+    rotate: '-3deg'
+  },
+  {
+    number: 2,
+    text: 'En :hover, eleva la card con translateY y escala box-shadow.',
+    color: 'dm-green',
+    rotate: '4deg'
+  },
+  {
+    number: 3,
+    text: 'Activa el @keyframes pulso del glow solo en :hover.',
+    color: 'app-color-yellow400',
+    rotate: '-2deg'
+  },
+  {
+    number: 4,
+    text: 'Anima el ícono interior con un float independiente.',
+    color: 'dm-blue',
+    rotate: '3deg'
+  },
+  {
+    number: 5,
+    text: 'Asegúrate de no mezclar transforms en el mismo nivel.',
+    color: 'dm-purple',
+    rotate: '-4deg'
+  }
+];
 ---
 
 <InteractionsLayout
   title="Interacciones combinadas - Genesis Pixel"
   currentLesson="/interactions/interacciones-combinadas"
+  prevLesson={{ title: 'Sistemas consistentes', href: '/interactions/sistemas-consistentes' }}
   nextLesson={{ title: 'Performance', href: '/interactions/performance' }}
 >
-  <div class="mb-12">
-    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
-      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-      Interactions
-    </div>
-    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
-      Interacciones combinadas
-    </h1>
-    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
-      Descubre cómo dar vida a tus interfaces.
-    </p>
-  </div>
+  <ChapterHeader
+    chapterNumber="04"
+    chapterLabel="Capítulo 4 · Lección 13"
+    title="Interacciones combinadas"
+    readingTime={8}
+    difficulty="Interactions"
+  />
 
-  <article class="prose prose-invert max-w-none">
-    
-      <h2>La sinfonía del movimiento</h2>
-      <p>Llegamos a la cumbre. Las interacciones de alta gama rara vez utilizan una sola propiedad. Combinan el <strong>Keyframes</strong> (para el movimiento autónomo infinito o de entrada compleja), <strong>Transform</strong> (para la física 2D/3D) y <strong>Transitions</strong> (para la respuesta del usuario).</p>
-      <p>Una interacción combinada sucede, por ejemplo, cuando haces hover en una tarjeta: el contenedor se eleva (Transition en TranslateY), su sombra crece (Transition Opacity/BoxShadow), un icono interior comienza a latir (Keyframe) y el fondo interior gira sutilmente (Transform Rotate).</p>
-    
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué son las Interacciones Combinadas?</h3>
+    <p>Una interacción combinada es la orquestación simultánea de múltiples técnicas de animación de CSS en un solo componente o evento para crear una experiencia profundamente inmersiva. Es la frontera donde el diseño web deja de ser un documento y se convierte en una aplicación interactiva.</p>
+
+    <h3>¿Para qué sirven?</h3>
+    <p>Las animaciones simples cumplen su función utilitaria, pero las combinadas generan la categoría de "Wow Factor". Son ideales para Landing Pages (páginas de aterrizaje), componentes clave (hero headers) y acciones de gamificación.</p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Riqueza espacial:</strong> Un contenedor se eleva en 2D mientras el contenido interior gira en 3D o emite pulsos de luz infinitos.</li>
+      <li><strong>Storytelling de UI:</strong> El hover no solo resalta el elemento, sino que desencadena una narrativa paralela (como un ícono estático que de pronto comienza a levitar).</li>
+      <li><strong>Foco absoluto:</strong> Una tarjeta tan rica visualmente que el usuario inevitablemente centrará su atención en ella sobre otros elementos estáticos.</li>
+    </ul>
+
+    <h3>¿Cómo se usan?</h3>
+    <p>Combina <strong>Transitions</strong> (para responder a la acción instantánea del hover con suavidad), <strong>Transforms</strong> (para las matemáticas físicas del componente base) y <strong>Keyframes</strong> (para efectos secundarios infinitos, como brillos palpitantes, que solo viven mientras el cursor esté encima). El arte consiste en no animar todo a la vez para no causar caos.</p>
   </article>
 
   <div class="my-8 not-prose">
-    <ConsejoProfesional tip="No transiciones la misma propiedad que un @keyframe está animando en el mismo elemento, porque causará conflicto. Si el keyframe anima &quot;transform: rotate&quot;, usa la &quot;transition&quot; para el background o el boxShadow, o aplica el rotate en un contenedor hijo diferente." />
+    <ConsejoProfesional tip='Evita animar la misma propiedad (ej. transform) con un keyframe y una transición simultáneamente en el mismo nodo HTML. Esto causará sobreescrituras (glitches) severos. Divide las capas: el contenedor usa la transición, el SVG hijo usa el keyframe infinito.' />
   </div>
 
   <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
@@ -147,28 +126,95 @@ const practiceSteps = [
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock tabs={tabs} />
-    <ResultPreview />
+    <TabbedCodeBlock
+      group="interacciones-combinadas"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Pasa el cursor sobre la card. Observa la transición principal combinada con los 2 keyframes en el glow y el icono.">
+      <div class="flex items-center justify-center h-full w-full">
+        <div class="magic-card-p" style="position:relative; width:200px; height:220px; background:#0f172a; border-radius:16px; border:1px solid rgba(255,255,255,0.1); display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; cursor:pointer;">
+  <div class="card-glow" style="position:absolute; width:120px; height:120px; background:#8b5cf6; border-radius:50%; filter:blur(40px); opacity:0; transition:opacity 0.5s ease;"></div>
+  <div class="magic-icon" style="z-index:1; color:#8b5cf6; transition:transform 0.4s ease, color 0.4s ease;">
+    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <path d="M12 2L2 22h20L12 2z"/>
+    </svg>
+  </div>
+  <h3 style="z-index:1; color:white; margin-top:20px;">Interacción Total</h3>
+</div>
+      </div>
+    </ResultPreview>
   </div>
 
   <div class="my-8 flex flex-col gap-6">
     <ErroresComunesV3 errors={[
-      {
-        title: "Fatiga visual",
-        description: "Combinar 6 animaciones diferentes en un botón. Escala, rota, cambia de color, pulsa, emite sombras... Termina pareciendo un anuncio pop-up de los 2000s."
-      },
-      {
-        title: "Conflicto de Transforms",
-        description: "Tener un :hover que hace 'transform: scale(1.1)' sobre un elemento que ya tenía un '@keyframes' ejecutando 'transform: translateY(10px)'. Una regla sobreescribirá a la otra bruscamente."
-      }
-    ]} />
-    <PracticeCards steps={practiceSteps} />
+  {
+    label: 'Fatiga visual',
+    description: 'Combinar 6 animaciones diferentes en un botón que escala, rota, pulsa y emite sombras parece un anuncio pop-up.'
+  },
+  {
+    label: 'Conflicto de Transforms',
+    description: 'Tener un :hover con transform y un keyframe con transform en el mismo elemento sobreescribe las reglas bruscamente.'
+  }
+]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Combina Keyframes, Transform y Transitions en una sola card orquestada."
+      steps={practiceSteps}
+    />
   </div>
 </InteractionsLayout>
 
+<style>
+.magic-card-p {
+  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              box-shadow 0.4s ease;
+}
+
+/* HOVER INTERACTIONS */
+.magic-card-p:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
+  border-color: rgba(139, 92, 246, 0.5);
+}
+
+.magic-card-p:hover .card-glow {
+  opacity: 0.4;
+  /* Keyframe 1: Glow animado al hacer hover */
+  animation: pulseGlow 2s infinite alternate ease-in-out;
+}
+
+.magic-card-p:hover .magic-icon {
+  color: white;
+  transform: translateY(-5px);
+  /* Keyframe 2: Icono flotando al hacer hover */
+  animation: float 3s infinite ease-in-out;
+}
+
+/* KEYFRAMES */
+@keyframes pulseGlow {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.5); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(-5px); }
+  50% { transform: translateY(-15px); }
+}
+</style>
+
 <script>
-  import { initCodeInteractions } from '../../scripts/code-interactions';
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  
   document.addEventListener('astro:page-load', () => {
     initCodeInteractions();
+    
+  });
+  document.addEventListener('astro:after-swap', () => {
+    initCodeInteractions();
+    
   });
 </script>

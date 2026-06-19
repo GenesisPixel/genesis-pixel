@@ -1,22 +1,16 @@
 ---
 import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
 import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
 import ResultPreview from '../../components/ResultPreview.astro';
 import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const tabs = [
-  {
-    id: "index-html",
-    label: "index.html",
-    code: `<button class="state-btn">Estado Normal</button>
-<button class="state-btn" disabled>Estado Disabled</button>`
-  },
-  {
-    id: "styles-css",
-    label: "styles.css",
-    code: `.state-btn {
+const htmlCode = `<button class="state-btn">Estado Normal</button>
+<button class="state-btn" disabled>Estado Disabled</button>`;
+
+const cssCode = `.state-btn {
   padding: 12px 28px;
   background: #2563eb;
   color: white;
@@ -27,85 +21,97 @@ const tabs = [
   transition: all 0.2s ease;
 }
 
-/* HOVER: Indicar que es clickeable */
 .state-btn:hover:not(:disabled) {
   background: #1d4ed8;
   transform: translateY(-2px);
   box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
 }
 
-/* ACTIVE: Respuesta física al presionar */
 .state-btn:active:not(:disabled) {
   transform: translateY(1px);
   box-shadow: 0 5px 5px -3px rgba(37, 99, 235, 0.4);
 }
 
-/* FOCUS: Accesibilidad para teclado */
 .state-btn:focus-visible {
   outline: none;
   border-color: #93c5fd;
   box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3);
 }
 
-/* DISABLED: Sin interacción permitida */
 .state-btn:disabled {
   background: #475569;
   color: #94a3b8;
   cursor: not-allowed;
   opacity: 0.7;
-}`
-  }
-];
+}`;
 
 const practiceSteps = [
-      {
-        title: "Comprueba el Focus",
-        description: "Haz clic en la ventana de preview de la derecha y pulsa la tecla TAB para ver cómo funciona el estado :focus-visible que acabamos de crear."
-      },
-      {
-        title: "Diseña un nuevo estado",
-        description: "Añade una clase .loading al botón normal y modifícalo para que se vea diferente (por ejemplo, opaco y sin eventos de cursor) cuando está procesando algo."
-      }
-    ];
+  {
+    number: 1,
+    text: 'Crea tu botón base con color primario sólido.',
+    color: 'dm-purple',
+    rotate: '-2deg'
+  },
+  {
+    number: 2,
+    text: 'Diseña :hover con elevación (translateY y box-shadow).',
+    color: 'dm-green',
+    rotate: '4deg'
+  },
+  {
+    number: 3,
+    text: 'Diseña :active con transform: scale(0.96) y transición de 0.1s.',
+    color: 'app-color-yellow400',
+    rotate: '-4deg'
+  },
+  {
+    number: 4,
+    text: 'Diseña :focus-visible con un anillo de color visible.',
+    color: 'dm-blue',
+    rotate: '2deg'
+  },
+  {
+    number: 5,
+    text: 'Diseña :disabled con opacidad 0.5 y cursor: not-allowed.',
+    color: 'dm-purple',
+    rotate: '-3deg'
+  }
+];
 ---
 
 <InteractionsLayout
   title="Estados de la interfaz - Genesis Pixel"
   currentLesson="/interactions/estados-interfaz"
+  prevLesson={{ title: 'Microinteracciones', href: '/interactions/microinteracciones' }}
   nextLesson={{ title: 'Loading States', href: '/interactions/loading-states' }}
 >
-  <div class="mb-12">
-    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
-      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-      Interactions
-    </div>
-    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
-      Estados de la interfaz
-    </h1>
-    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
-      Descubre cómo dar vida a tus interfaces.
-    </p>
-  </div>
+  <ChapterHeader
+    chapterNumber="04"
+    chapterLabel="Capítulo 4 · Lección 3"
+    title="Estados de la interfaz"
+    readingTime={6}
+    difficulty="Interactions"
+  />
 
-  <article class="prose prose-invert max-w-none">
-    
-      <h2>Los 5 pilares interactivos</h2>
-      <p>Para construir componentes consistentes, siempre debes considerar cómo se ven y cómo transicionan entre sus estados básicos. Un elemento interactivo en la web no existe de una sola forma.</p>
-      <ul>
-        <li><strong>Default:</strong> El estado base, en reposo.</li>
-        <li><strong>Hover:</strong> Cuando el cursor está sobre él (descubrimiento).</li>
-        <li><strong>Active:</strong> El instante en que el usuario hace clic o lo presiona.</li>
-        <li><strong>Focus:</strong> Cuando el usuario navega con el teclado y llega al elemento (accesibilidad crucial).</li>
-        <li><strong>Disabled:</strong> Cuando la acción no está disponible, visualmente apagado.</li>
-      </ul>
-      <p>Diseñar todos estos estados y la <em>transición visual</em> entre ellos es lo que diferencia a una plantilla básica de un producto digital premium.</p>
-    
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué son los Estados de Interfaz?</h3>
+    <p>Los estados de interfaz son las diferentes formas visuales que un componente interactivo puede adoptar dependiendo de la situación, del dispositivo o de la interacción directa del usuario. En la web moderna, los elementos nunca tienen un solo diseño estático.</p>
+
+    <h3>¿Para qué sirven?</h3>
+    <p>Sirven para dar contexto absoluto al usuario sobre qué se puede hacer, qué se está haciendo y qué no se puede hacer. Es el lenguaje visual universal de la usabilidad.</p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Hover (Exploración):</strong> Indica "Puedes interactuar conmigo" al levantar un elemento o iluminarlo sutilmente.</li>
+      <li><strong>Active (Acción):</strong> Confirma que el clic fue físico y registrado (generalmente hundiendo el botón).</li>
+      <li><strong>Focus (Accesibilidad):</strong> Guía al usuario que navega sin ratón, indicando en qué elemento exacto se encuentra.</li>
+      <li><strong>Disabled (Restricción):</strong> Muestra qué acciones están bloqueadas temporalmente sin tener que borrarlas de la pantalla.</li>
+    </ul>
+
+    <h3>¿Cómo se usan?</h3>
+    <p>Se implementan utilizando pseudo-clases en un orden muy específico dictado por la especificidad de CSS. Debes diseñar desde lo general hasta lo particular. Asegúrate de declarar el estado <code>:focus-visible</code> explícitamente para no penalizar visualmente a los usuarios de ratón mientras proteges a los de teclado.</p>
   </article>
 
   <div class="my-8 not-prose">
-    <ConsejoProfesional tip="El estado :focus es el más olvidado pero el más importante para la accesibilidad. Nunca uses &quot;outline: none;&quot; sin proporcionar un estilo alternativo evidente para los usuarios que navegan por teclado." />
+    <ConsejoProfesional tip='El estado :focus es crítico. Nunca uses outline: none; globalmente a menos que proveas un anillo de sombra alternativo usando box-shadow para que los usuarios de teclado no se pierdan ciegos en tu página.' />
   </div>
 
   <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
@@ -113,28 +119,89 @@ const practiceSteps = [
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock tabs={tabs} />
-    <ResultPreview />
+    <TabbedCodeBlock
+      group="estados-interfaz"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Interactúa con los botones (hover, click, y navega con Tab) para ver sus estados.">
+      <div class="flex items-center justify-center h-full w-full">
+        <div style="display:flex; gap:16px;">
+  <button class="state-btn-p">Estado Normal</button>
+  <button class="state-btn-p" disabled>Estado Disabled</button>
+</div>
+      </div>
+    </ResultPreview>
   </div>
 
   <div class="my-8 flex flex-col gap-6">
     <ErroresComunesV3 errors={[
-      {
-        title: "Ignorar el estado Focus",
-        description: "Quitar el anillo de focus nativo sin reemplazarlo. Esto hace que sea imposible para alguien sin ratón saber en qué botón están parados."
-      },
-      {
-        title: "Efectos en elementos disabled",
-        description: "Olvidar añadir :not(:disabled) a tus reglas de hover/active, provocando que un botón deshabilitado se mueva o parezca clickeable."
-      }
-    ]} />
-    <PracticeCards steps={practiceSteps} />
+  {
+    label: 'Ignorar el estado Focus',
+    description: 'Quitar el anillo de focus nativo sin reemplazarlo. Esto hace imposible para alguien sin ratón saber dónde está.'
+  },
+  {
+    label: 'Efectos en elements disabled',
+    description: 'Olvidar añadir :not(:disabled) a tus reglas de hover, haciendo que un botón deshabilitado parezca interactivo.'
+  }
+]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Construye un botón que implemente los 5 estados de forma visual y clara."
+      steps={practiceSteps}
+    />
   </div>
 </InteractionsLayout>
 
+<style>
+.state-btn-p {
+  padding: 12px 28px;
+  background: #2563eb;
+  color: white;
+  font-weight: 600;
+  border: 2px solid transparent;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.state-btn-p:hover:not(:disabled) {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(37, 99, 235, 0.4);
+}
+
+.state-btn-p:active:not(:disabled) {
+  transform: translateY(1px);
+  box-shadow: 0 5px 5px -3px rgba(37, 99, 235, 0.4);
+}
+
+.state-btn-p:focus-visible {
+  outline: none;
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.3);
+}
+
+.state-btn-p:disabled {
+  background: #475569;
+  color: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+</style>
+
 <script>
-  import { initCodeInteractions } from '../../scripts/code-interactions';
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  
   document.addEventListener('astro:page-load', () => {
     initCodeInteractions();
+    
+  });
+  document.addEventListener('astro:after-swap', () => {
+    initCodeInteractions();
+    
   });
 </script>

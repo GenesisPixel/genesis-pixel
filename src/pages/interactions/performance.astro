@@ -1,16 +1,13 @@
 ---
 import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
 import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
 import ResultPreview from '../../components/ResultPreview.astro';
 import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const tabs = [
-  {
-    id: "index-html",
-    label: "index.html",
-    code: `<div class="perf-container">
+const htmlCode = `<div class="perf-container">
   <!-- MAL: Anima layout properties -->
   <div class="perf-box bad-box">
     CPU (Width/Margin)
@@ -20,97 +17,98 @@ const tabs = [
   <div class="perf-box good-box">
     GPU (Transform)
   </div>
-</div>`
-  },
-  {
-    id: "styles-css",
-    label: "styles.css",
-    code: `.perf-container {
-  display: flex;
-  flex-direction: column;
-  gap: 30px;
-}
+</div>`;
 
-.perf-box {
-  background: #334155;
-  color: white;
-  padding: 16px;
-  border-radius: 8px;
-  font-weight: bold;
-  text-align: center;
-  cursor: pointer;
-  width: 250px;
-}
-
-/* --- MAL: CPU Reflow (Layout) --- */
+const cssCode = `/* --- MAL: CPU Reflow (Layout) --- */
 .bad-box {
   transition: all 0.4s ease;
 }
 
 .bad-box:hover {
-  /* ESTO ES TERRIBLE PARA EL RENDIMIENTO */
-  width: 300px;
+  /* TERRIBLE RENDIMIENTO */
+  width: 250px;
   margin-left: 20px;
   background: #ef4444;
 }
 
 /* --- BIEN: GPU Compositing --- */
 .good-box {
-  /* Optimizamos la GPU si sabemos que se va a mover mucho */
   will-change: transform, background-color;
   transition: transform 0.4s ease, background-color 0.4s ease;
 }
 
 .good-box:hover {
-  /* PERFECTO PARA EL RENDIMIENTO */
-  transform: translateX(20px) scaleX(1.2);
+  /* PERFECTO RENDIMIENTO */
+  transform: translateX(20px) scaleX(1.25);
   background: #10b981;
-}`
-  }
-];
+}`;
 
 const practiceSteps = [
-      {
-        title: "Inspecciona el daño",
-        description: "Abre las DevTools de tu navegador, ve a Rendering y activa 'Paint flashing'. Pasa el ratón por la caja mala y verás cómo toda la pantalla verdea repintándose."
-      },
-      {
-        title: "El fix del acordeón",
-        description: "Investiga cómo usar grid-template-rows: 0fr a 1fr para hacer dropdowns y acordeones con el mejor rendimiento nativo moderno posible."
-      }
-    ];
+  {
+    number: 1,
+    text: 'Crea dos versiones del mismo hover: una con width, otra con scaleX.',
+    color: 'dm-purple',
+    rotate: '2deg'
+  },
+  {
+    number: 2,
+    text: 'Abre Chrome DevTools > Rendering > Paint Flashing.',
+    color: 'dm-green',
+    rotate: '-4deg'
+  },
+  {
+    number: 3,
+    text: 'Pasa el ratón y observa cuál destella más (costoso).',
+    color: 'app-color-yellow400',
+    rotate: '3deg'
+  },
+  {
+    number: 4,
+    text: 'Añade will-change: transform al scaleX y mide diferencia.',
+    color: 'dm-blue',
+    rotate: '-2deg'
+  },
+  {
+    number: 5,
+    text: 'Comprueba: ¿tiene sentido usar will-change en todo?',
+    color: 'dm-purple',
+    rotate: '4deg'
+  }
+];
 ---
 
 <InteractionsLayout
   title="Performance en Interactions - Genesis Pixel"
   currentLesson="/interactions/performance"
+  prevLesson={{ title: 'Interacciones combinadas', href: '/interactions/interacciones-combinadas' }}
   nextLesson={{ title: 'Proyecto Final', href: '/interactions/proyecto-final' }}
 >
-  <div class="mb-12">
-    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
-      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-      Interactions
-    </div>
-    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
-      Performance en Interactions
-    </h1>
-    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
-      Descubre cómo dar vida a tus interfaces.
-    </p>
-  </div>
+  <ChapterHeader
+    chapterNumber="04"
+    chapterLabel="Capítulo 4 · Lección 14"
+    title="Performance en Interactions"
+    readingTime={6}
+    difficulty="Interactions"
+  />
 
-  <article class="prose prose-invert max-w-none">
-    
-      <h2>Interacciones a 60 FPS</h2>
-      <p>Una gran interacción pierde todo su impacto si ocurre a trompicones (jank). Para garantizar que tus estados hover, delays y animaciones de entrada corran a 60 frames por segundo en móviles y ordenadores viejos, debes respetar las reglas de renderizado del navegador.</p>
-      <p><strong>Solo debes animar Transforms y Opacity.</strong> Si en un hover cambias el "width" de un botón, el navegador tiene que recalcular la geometría de toda la página (Reflow). Si cambias el "background-color" (Repaint), es aceptable, pero no para áreas masivas. Si animas "transform" o "opacity", el navegador se lo entrega a la Tarjeta Gráfica (GPU) logrando máxima suavidad.</p>
-    
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es el Performance en Interactions?</h3>
+    <p>El Performance (Rendimiento) en animaciones es la capacidad técnica de tu página web de ejecutar todos los cambios visuales y matemáticos a una tasa de refresco inquebrantable de <strong>60 Frames Per Second (FPS)</strong>. Significa que el navegador tiene solo 16 milisegundos para calcular y pintar cada fotograma en la pantalla.</p>
+
+    <h3>¿Para qué sirve?</h3>
+    <p>De nada sirve crear la interacción más bella de la historia si corre a trompicones (Jank). En móviles o en computadoras menos potentes, las animaciones mal estructuradas causarán que la interfaz se congele, drene la batería rápidamente y dispare los ventiladores de la máquina.</p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Fluidez profesional:</strong> Una animación a 60 FPS se siente pesada, natural y bien programada.</li>
+      <li><strong>Retención de usuarios:</strong> Los cuellos de botella visuales (lag) generan frustración instantánea en el usuario.</li>
+      <li><strong>Ahorro de recursos computacionales:</strong> Optimizar significa descargar de trabajo al CPU principal de la máquina del usuario.</li>
+    </ul>
+
+    <h3>¿Cómo se usan las propiedades seguras?</h3>
+    <p>El secreto definitivo de las interacciones CSS: <strong>Animar el layout (width, height, margin, top/left) es terriblemente costoso (Reflow).</strong> El navegador debe recalcular toda la geometría de la página. Por el contrario, debes animar exclusivamente propiedades de Composición (Composite): <code>transform</code> y <code>opacity</code>. Estas propiedades son delegadas por el navegador directamente a la Tarjeta Gráfica (GPU), asegurando un rendimiento matemáticamente perfecto.</p>
   </article>
 
   <div class="my-8 not-prose">
-    <ConsejoProfesional tip="Para interacciones complejas que vayan a transformarse al hacer click o hover, puedes preparar a la GPU por adelantado añadiendo &quot;will-change: transform;&quot; al estado base del componente. Usa esto con mucha moderación, solo en componentes críticos." />
+    <ConsejoProfesional tip="Para interacciones complejas, puedes preparar a la GPU por adelantado añadiendo "will-change: transform;" al estado base del componente. Usa esto con moderación." />
   </div>
 
   <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
@@ -118,28 +116,78 @@ const practiceSteps = [
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock tabs={tabs} />
-    <ResultPreview />
+    <TabbedCodeBlock
+      group="performance"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Haz hover en ambas cajas. La GPU es matemáticamente perfecta; la CPU hace reflow.">
+      <div class="flex items-center justify-center h-full w-full">
+        <div style="display:flex; flex-direction:column; gap:30px;">
+  <div class="perf-box-p bad-box-p" style="background:#334155; color:white; padding:16px; border-radius:8px; width:200px; text-align:center;">CPU (Width/Margin)</div>
+  <div class="perf-box-p good-box-p" style="background:#334155; color:white; padding:16px; border-radius:8px; width:200px; text-align:center;">GPU (Transform)</div>
+</div>
+      </div>
+    </ResultPreview>
   </div>
 
   <div class="my-8 flex flex-col gap-6">
     <ErroresComunesV3 errors={[
-      {
-        title: "Animar height: auto",
-        description: "Es el clásico problema de los acordeones. CSS no puede interpolar desde 0px a auto. Usualmente se recurre a max-height (que sigue siendo Reflow) o Grid template-rows (mejor, pero aún layout)."
-      },
-      {
-        title: "Abuso de will-change",
-        description: "Poner 'will-change: all' en el body o en todos los botones para que vayan 'más rápido'. Esto agotará la memoria de la tarjeta gráfica y la página crasheará."
-      }
-    ]} />
-    <PracticeCards steps={practiceSteps} />
+  {
+    label: 'Animar height: auto',
+    description: 'Es el clásico problema de los acordeones. CSS no puede interpolar a auto, lo que fuerza el uso de max-height (que sigue siendo Reflow).'
+  },
+  {
+    label: 'Abuso de will-change',
+    description: 'Poner will-change: all en todos los botones para que vayan más rápido agotará la memoria de la tarjeta gráfica.'
+  }
+]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Identifica qué propiedades activan Reflow o Repaint y optimiza tus animaciones."
+      steps={practiceSteps}
+    />
   </div>
 </InteractionsLayout>
 
+<style>
+/* --- MAL: CPU Reflow (Layout) --- */
+.bad-box-p {
+  transition: all 0.4s ease;
+}
+
+.bad-box-p:hover {
+  /* TERRIBLE RENDIMIENTO */
+  width: 250px;
+  margin-left: 20px;
+  background: #ef4444;
+}
+
+/* --- BIEN: GPU Compositing --- */
+.good-box-p {
+  will-change: transform, background-color;
+  transition: transform 0.4s ease, background-color 0.4s ease;
+}
+
+.good-box-p:hover {
+  /* PERFECTO RENDIMIENTO */
+  transform: translateX(20px) scaleX(1.25);
+  background: #10b981;
+}
+</style>
+
 <script>
-  import { initCodeInteractions } from '../../scripts/code-interactions';
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  
   document.addEventListener('astro:page-load', () => {
     initCodeInteractions();
+    
+  });
+  document.addEventListener('astro:after-swap', () => {
+    initCodeInteractions();
+    
   });
 </script>

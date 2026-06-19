@@ -1,16 +1,13 @@
 ---
 import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
 import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
 import ResultPreview from '../../components/ResultPreview.astro';
 import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const tabs = [
-  {
-    id: "index-html",
-    label: "index.html",
-    code: `<div class="dropdown-wrapper">
+const htmlCode = `<div class="dropdown-wrapper">
   <button class="dropdown-btn">
     Opciones 
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -21,78 +18,31 @@ const tabs = [
   <ul class="dropdown-menu">
     <li><a href="#">Perfil de usuario</a></li>
     <li><a href="#">Configuración</a></li>
-    <li><a href="#">Facturación</a></li>
     <li class="divider"></li>
     <li><a href="#" class="text-danger">Cerrar sesión</a></li>
   </ul>
-</div>`
-  },
-  {
-    id: "styles-css",
-    label: "styles.css",
-    code: `.dropdown-wrapper {
+</div>`;
+
+const cssCode = `.dropdown-wrapper {
   position: relative;
   display: inline-block;
-  /* Centrado visual en la pantalla de preview */
-  margin: 50px; 
 }
 
-.dropdown-btn {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  background: #334155;
-  color: white;
-  border: 1px solid #475569;
-  border-radius: 8px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
+.dropdown-btn svg { transition: transform 0.2s; }
 
 .dropdown-menu {
   position: absolute;
-  top: calc(100% + 8px); /* 8px de separación */
+  top: calc(100% + 8px);
   left: 0;
-  min-width: 200px;
-  background: #1e293b;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 12px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-  list-style: none;
-  padding: 8px 0;
-  margin: 0;
   
   /* ESTADO OCULTO */
   opacity: 0;
   visibility: hidden;
-  /* Origen de la animación en la esquina superior izquierda */
+  /* Origen en la esquina superior izquierda */
   transform-origin: top left;
   transform: scale(0.95) translateY(-10px);
   transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
-
-.dropdown-menu li a {
-  display: block;
-  padding: 10px 20px;
-  color: #cbd5e1;
-  text-decoration: none;
-  font-size: 0.95rem;
-  transition: background 0.2s, color 0.2s;
-}
-
-.dropdown-menu li a:hover {
-  background: #334155;
-  color: white;
-}
-
-.divider {
-  height: 1px;
-  background: rgba(255,255,255,0.1);
-  margin: 8px 0;
-}
-
-.text-danger { color: #f87171 !important; }
 
 /* HOVER: Muestra el menú */
 .dropdown-wrapper:hover .dropdown-menu {
@@ -103,52 +53,74 @@ const tabs = [
 
 .dropdown-wrapper:hover .dropdown-btn svg {
   transform: rotate(180deg);
-}`
-  }
-];
+}`;
 
 const practiceSteps = [
-      {
-        title: "Menú tolerante",
-        description: "Añade transition-delay: 0.3s a .dropdown-menu (no al hover). Esto hará que al quitar el cursor, el menú tarde 300ms en desaparecer, permitiendo errores de ratón."
-      },
-      {
-        title: "Cambia el origen",
-        description: "Modifica transform-origin: top left a top center, y observa cómo la animación cambia la forma en que se expande el menú."
-      }
-    ];
+  {
+    number: 1,
+    text: 'Crea el botón y el .menu con position: absolute abajo del botón.',
+    color: 'dm-purple',
+    rotate: '-3deg'
+  },
+  {
+    number: 2,
+    text: 'Pon el menú en opacity: 0 y visibility: hidden inicialmente.',
+    color: 'dm-green',
+    rotate: '4deg'
+  },
+  {
+    number: 3,
+    text: 'Añade transform-origin: top center y transform: scale(0.95).',
+    color: 'app-color-yellow400',
+    rotate: '-2deg'
+  },
+  {
+    number: 4,
+    text: 'En :hover del wrapper, lleva opacity a 1 y scale a 1.',
+    color: 'dm-blue',
+    rotate: '3deg'
+  },
+  {
+    number: 5,
+    text: 'Prueba cambiando transform-origin para ver el cambio de dirección.',
+    color: 'dm-purple',
+    rotate: '-4deg'
+  }
+];
 ---
 
 <InteractionsLayout
   title="Dropdowns y menús - Genesis Pixel"
   currentLesson="/interactions/dropdowns-menus"
+  prevLesson={{ title: 'Modales y overlays', href: '/interactions/modales-overlays' }}
   nextLesson={{ title: 'Tooltips y ayudas contextuales', href: '/interactions/tooltips' }}
 >
-  <div class="mb-12">
-    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
-      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-      Interactions
-    </div>
-    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
-      Dropdowns y menús
-    </h1>
-    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
-      Descubre cómo dar vida a tus interfaces.
-    </p>
-  </div>
+  <ChapterHeader
+    chapterNumber="04"
+    chapterLabel="Capítulo 4 · Lección 9"
+    title="Dropdowns y menús"
+    readingTime={6}
+    difficulty="Interactions"
+  />
 
-  <article class="prose prose-invert max-w-none">
-    
-      <h2>Desplegables que se sienten mágicos</h2>
-      <p>Un menú dropdown clásico, que aparece con "display: block" en hover, no se siente como algo del año actual. La interacción de abrir un menú debería sentirse como desenrollar un papel o revelar una caja: orgánica y direccional.</p>
-      <p>Uno de los mejores trucos es usar el <strong>transform-origin</strong> para controlar desde dónde "crece" o "aparece" el menú. Si el botón está arriba a la derecha, el menú debe originarse desde la esquina superior derecha.</p>
-    
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué son los Dropdowns y Menús?</h3>
+    <p>Un dropdown es un menú oculto que se despliega o revela opciones secundarias cuando el usuario interactúa (hace clic o hover) con un botón disparador. Es el patrón de diseño por excelencia para la navegación compacta y las acciones de usuario.</p>
+
+    <h3>¿Para qué sirven?</h3>
+    <p>Sirven para conservar el preciado espacio en pantalla (real estate). Si tienes 10 acciones disponibles pero solo 2 son principales, las otras 8 van dentro de un menú de "Opciones".</p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Navegación limpia:</strong> Agrupan enlaces categorizados sin saturar el encabezado de tu sitio web.</li>
+      <li><strong>Jerarquía de acciones:</strong> Esconden opciones peligrosas (Cerrar sesión, Eliminar cuenta) bajo un clic intencional.</li>
+      <li><strong>Revelación progresiva:</strong> Muestran información solo cuando el usuario activamente la requiere.</li>
+    </ul>
+
+    <h3>¿Cómo se usan?</h3>
+    <p>El error más común es hacer que aparezcan de la nada cambiando <code>display: none</code> a <code>display: block</code>. Una interacción mágica utiliza el <strong>transform-origin</strong> para controlar desde dónde "crece" o "nace" el menú. Si el botón está arriba a la derecha, el menú debe originarse de forma orgánica desde esa esquina (<code>transform-origin: top right</code>) junto con un <code>scale</code> desde 0.95 a 1.</p>
   </article>
 
   <div class="my-8 not-prose">
-    <ConsejoProfesional tip="Para evitar el clásico problema donde el cursor se sale del botón un píxel y el menú colapsa (frustrante), usa un pequeño retraso en la salida (transition-delay) o crea un padding transparente invisible entre el botón y el menú para que el hover no se rompa." />
+    <ConsejoProfesional tip='Para evitar el clásico problema donde el cursor se sale del botón un píxel y el menú colapsa (súper frustrante), añade padding transparente al menú o usa un pequeño retraso (transition-delay) al desaparecer.' />
   </div>
 
   <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
@@ -156,28 +128,96 @@ const practiceSteps = [
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock tabs={tabs} />
-    <ResultPreview />
+    <TabbedCodeBlock
+      group="dropdowns-menus"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Pasa el cursor sobre el botón para ver cómo el menú se despliega desde la esquina.">
+      <div class="flex items-center justify-center h-full w-full">
+        <div class="dropdown-wrapper-p" style="position:relative; display:inline-block; margin-bottom: 120px;">
+  <button class="dropdown-btn-p" style="display:flex; align-items:center; gap:8px; padding:10px 20px; background:#334155; color:white; border:1px solid #475569; border-radius:8px; cursor:pointer;">
+    Opciones 
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+    </svg>
+  </button>
+  <ul class="dropdown-menu-p" style="position:absolute; top:calc(100% + 8px); left:0; min-width:200px; background:#1e293b; border:1px solid rgba(255,255,255,0.1); border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.5); list-style:none; padding:8px 0; margin:0;">
+    <li><a href="#" style="display:block; padding:10px 20px; color:#cbd5e1; text-decoration:none; font-size:0.95rem;">Perfil de usuario</a></li>
+    <li><a href="#" style="display:block; padding:10px 20px; color:#cbd5e1; text-decoration:none; font-size:0.95rem;">Configuración</a></li>
+    <li style="height:1px; background:rgba(255,255,255,0.1); margin:8px 0;"></li>
+    <li><a href="#" style="display:block; padding:10px 20px; color:#f87171; text-decoration:none; font-size:0.95rem;">Cerrar sesión</a></li>
+  </ul>
+</div>
+      </div>
+    </ResultPreview>
   </div>
 
   <div class="my-8 flex flex-col gap-6">
     <ErroresComunesV3 errors={[
-      {
-        title: "Problema del salto (Hover gap)",
-        description: "Dejar demasiado espacio entre el botón y el menú, lo que hace que el hover se pierda a mitad de camino y el menú desaparezca inesperadamente."
-      },
-      {
-        title: "Animaciones súper complejas",
-        description: "Animar cada elemento de la lista cayendo en cascada. Es bonito visualmente, pero si el menú se usa frecuentemente, una cascada lenta irritará a los usuarios."
-      }
-    ]} />
-    <PracticeCards steps={practiceSteps} />
+  {
+    label: 'Problema del salto (Hover gap)',
+    description: 'Dejar demasiado espacio entre el botón y el menú, lo que hace que el hover se pierda a mitad de camino y desaparezca.'
+  },
+  {
+    label: 'Animaciones súper complejas',
+    description: 'Animar cada elemento de la lista cayendo en cascada puede ser bonito visualmente, pero si el menú se usa frecuentemente, irritará a los usuarios.'
+  }
+]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Crea un menú dropdown con transform-origin que parezca desplegarse naturalmente."
+      steps={practiceSteps}
+    />
   </div>
 </InteractionsLayout>
 
+<style>
+.dropdown-wrapper-p {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-btn-p svg { transition: transform 0.2s; }
+
+.dropdown-menu-p {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  
+  /* ESTADO OCULTO */
+  opacity: 0;
+  visibility: hidden;
+  /* Origen en la esquina superior izquierda */
+  transform-origin: top left;
+  transform: scale(0.95) translateY(-10px);
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* HOVER: Muestra el menú */
+.dropdown-wrapper-p:hover .dropdown-menu-p {
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1) translateY(0);
+}
+
+.dropdown-wrapper-p:hover .dropdown-btn-p svg {
+  transform: rotate(180deg);
+}
+</style>
+
 <script>
-  import { initCodeInteractions } from '../../scripts/code-interactions';
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  
   document.addEventListener('astro:page-load', () => {
     initCodeInteractions();
+    
+  });
+  document.addEventListener('astro:after-swap', () => {
+    initCodeInteractions();
+    
   });
 </script>

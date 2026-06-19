@@ -1,26 +1,20 @@
 ---
 import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
 import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
 import ResultPreview from '../../components/ResultPreview.astro';
 import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const tabs = [
-  {
-    id: "index-html",
-    label: "index.html",
-    code: `<button class="premium-btn">
+const htmlCode = `<button class="premium-btn">
   Comenzar Aventura
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
     <path d="M5 12h14M12 5l7 7-7 7"/>
   </svg>
-</button>`
-  },
-  {
-    id: "styles-css",
-    label: "styles.css",
-    code: `.premium-btn {
+</button>`;
+
+const cssCode = `.premium-btn {
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -33,10 +27,7 @@ const tabs = [
   font-size: 1.1rem;
   cursor: pointer;
   
-  /* Sombra base suave */
   box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
-  
-  /* Transición fluida para transform y shadow */
   transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
 }
 
@@ -44,7 +35,6 @@ const tabs = [
   transition: transform 0.3s ease;
 }
 
-/* Hover: El botón se levanta y la flecha se mueve */
 .premium-btn:hover {
   transform: translateY(-3px);
   box-shadow: 0 12px 25px rgba(59, 130, 246, 0.5);
@@ -54,58 +44,77 @@ const tabs = [
   transform: translateX(4px);
 }
 
-/* Active: Sensación de pulsación física */
 .premium-btn:active {
   transform: translateY(1px);
   box-shadow: 0 2px 5px rgba(59, 130, 246, 0.4);
-  /* Reduce la duración para una respuesta más rápida */
   transition-duration: 0.1s;
-}`
-  }
-];
+}`;
 
 const practiceSteps = [
-      {
-        title: "Efecto resplandor",
-        description: "Añade un '::before' absoluto al botón con un gradiente. Anima la opacidad de este pseudo-elemento en el hover para crear un resplandor superior."
-      },
-      {
-        title: "Mejora el active",
-        description: "Cambia el transform: translateY(1px) por un transform: scale(0.96) para que todo el botón se encoja ligeramente, como un resorte."
-      }
-    ];
+  {
+    number: 1,
+    text: 'Diseña un botón con gradiente y border-radius de 12px.',
+    color: 'dm-purple',
+    rotate: '2deg'
+  },
+  {
+    number: 2,
+    text: 'En :hover, aplica translateY(-3px) y aumenta el box-shadow.',
+    color: 'dm-green',
+    rotate: '-4deg'
+  },
+  {
+    number: 3,
+    text: 'Agrega un ícono SVG de flecha con transition: transform.',
+    color: 'app-color-yellow400',
+    rotate: '3deg'
+  },
+  {
+    number: 4,
+    text: 'En :hover, mueve la flecha con translateX(4px).',
+    color: 'dm-blue',
+    rotate: '-2deg'
+  },
+  {
+    number: 5,
+    text: 'Añade :active que reduzca el shadow y baje el botón 1px.',
+    color: 'dm-purple',
+    rotate: '4deg'
+  }
+];
 ---
 
 <InteractionsLayout
   title="Botones interactivos - Genesis Pixel"
   currentLesson="/interactions/botones"
+  prevLesson={{ title: 'Success y Error Feedback', href: '/interactions/success-error' }}
   nextLesson={{ title: 'Cards interactivas', href: '/interactions/cards' }}
 >
-  <div class="mb-12">
-    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
-      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-      Interactions
-    </div>
-    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
-      Botones interactivos
-    </h1>
-    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
-      Descubre cómo dar vida a tus interfaces.
-    </p>
-  </div>
+  <ChapterHeader
+    chapterNumber="04"
+    chapterLabel="Capítulo 4 · Lección 6"
+    title="Botones interactivos"
+    readingTime={8}
+    difficulty="Interactions"
+  />
 
-  <article class="prose prose-invert max-w-none">
-    
-      <h2>Los elementos más clickeados de la web</h2>
-      <p>Un botón no es solo un rectángulo con texto. En diseño moderno, es un componente vivo que invita a la acción y responde a ella. Hemos visto estados aislados (hover, active, focus), ahora vamos a construir el botón perfecto combinando transformaciones, transiciones y un diseño premium.</p>
-      <p>Un buen botón debe tener peso visual en reposo, sentirse ligero y clicable al pasar el cursor (hover = profundidad, resplandor) y sentirse pesado/físico al ser presionado (active = hundimiento).</p>
-    
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué son los Botones Interactivos?</h3>
+    <p>Son los actores principales de cualquier interfaz. Un botón es un componente call-to-action (CTA) diseñado específicamente para ser pulsado. No son simples bloques de color; en diseño moderno son contenedores físicos que responden a la ley de la gravedad digital.</p>
+
+    <h3>¿Para qué sirven?</h3>
+    <p>Un botón bien diseñado atrae el ojo, invita al usuario a realizar la acción crítica (comprar, registrarse, guardar) y le da retroalimentación física inmediata.</p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Jerarquía visual:</strong> Distinguen acciones primarias de secundarias. Un botón premium grita "haz clic aquí".</li>
+      <li><strong>Retroalimentación táctil:</strong> Cuando el cursor pasa por encima, el botón debe levantarse, proyectando sombra para indicar "soy pulsable". Al hacer clic, debe hundirse como un botón mecánico de teclado.</li>
+    </ul>
+
+    <h3>¿Cómo se usan?</h3>
+    <p>La combinación perfecta se logra usando <code>box-shadow</code> para la profundidad lumínica y <code>transform: translateY()</code> para la física. Además, puedes añadir sutiles íconos SVG dentro del botón que se desplacen independientemente al hacer hover, creando un efecto de paralaje en 2D que se siente extremadamente elegante.</p>
   </article>
 
   <div class="my-8 not-prose">
-    <ConsejoProfesional tip="Evita animar el padding o margin del botón en hover. Esto causará un recálculo (reflow) costoso. Usa &quot;transform: translateY()&quot; o &quot;transform: scale()&quot; para cambiar su tamaño aparente o posición sin romper el layout." />
+    <ConsejoProfesional tip='Jamás animes el margin o el width/height de un botón en hover. Esto causará un recálculo costoso (reflow) que empujará a los demás elementos de la página. Usa siempre transform para simular cambios de tamaño.' />
   </div>
 
   <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
@@ -113,28 +122,92 @@ const practiceSteps = [
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock tabs={tabs} />
-    <ResultPreview />
+    <TabbedCodeBlock
+      group="botones"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Prueba el hover y haz clic sostenido (active) para sentir el hundimiento físico.">
+      <div class="flex items-center justify-center h-full w-full">
+        <button class="premium-btn-p">
+  Comenzar Aventura
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+    <path d="M5 12h14M12 5l7 7-7 7"/>
+  </svg>
+</button>
+      </div>
+    </ResultPreview>
   </div>
 
   <div class="my-8 flex flex-col gap-6">
     <ErroresComunesV3 errors={[
-      {
-        title: "Botones fantasma sin contraste",
-        description: "Crear botones 'outline' o transparentes que apenas cambian de color en hover, haciendo dudar al usuario de si están habilitados."
-      },
-      {
-        title: "Animar 'width' o 'height'",
-        description: "Cambiar el ancho o alto real del botón empujará el contenido a su alrededor, creando un diseño ruidoso."
-      }
-    ]} />
-    <PracticeCards steps={practiceSteps} />
+  {
+    label: 'Botones sin contraste',
+    description: 'Crear botones transparentes que apenas cambian de color en hover, haciendo dudar al usuario.'
+  },
+  {
+    label: 'Animar width',
+    description: 'Cambiar el ancho o alto real del botón empujará el contenido a su alrededor, creando un diseño ruidoso.'
+  }
+]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Crea un botón premium que combine transform, box-shadow y un ícono animado."
+      steps={practiceSteps}
+    />
   </div>
 </InteractionsLayout>
 
+<style>
+.premium-btn-p {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  background: linear-gradient(135deg, #8b5cf6, #3b82f6);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  cursor: pointer;
+  
+  box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.premium-btn-p svg {
+  transition: transform 0.3s ease;
+}
+
+.premium-btn-p:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 25px rgba(59, 130, 246, 0.5);
+}
+
+.premium-btn-p:hover svg {
+  transform: translateX(4px);
+}
+
+.premium-btn-p:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 5px rgba(59, 130, 246, 0.4);
+  transition-duration: 0.1s;
+}
+</style>
+
 <script>
-  import { initCodeInteractions } from '../../scripts/code-interactions';
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  
   document.addEventListener('astro:page-load', () => {
     initCodeInteractions();
+    
+  });
+  document.addEventListener('astro:after-swap', () => {
+    initCodeInteractions();
+    
   });
 </script>

@@ -1,49 +1,30 @@
 ---
 import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
 import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
 import ResultPreview from '../../components/ResultPreview.astro';
 import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const tabs = [
-  {
-    id: "index-html",
-    label: "index.html",
-    code: `<div class="input-group">
+const htmlCode = `<div class="input-group">
   <input type="text" id="username" class="modern-input" placeholder=" ">
   <label for="username" class="floating-label">Nombre de usuario</label>
   <div class="focus-border"></div>
-</div>`
-  },
-  {
-    id: "styles-css",
-    label: "styles.css",
-    code: `.input-group {
-  position: relative;
-  margin: 50px auto;
-  max-width: 300px;
-}
+</div>`;
 
-.modern-input {
-  width: 100%;
-  padding: 20px 12px 8px 12px;
-  background: #1e293b;
-  border: 1px solid rgba(255,255,255,0.1);
-  border-radius: 8px;
-  color: white;
-  font-size: 1rem;
-  outline: none;
+const cssCode = `.modern-input {
+  width: 100%; padding: 20px 12px 8px 12px;
+  background: #1e293b; color: white;
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+  font-size: 1rem; outline: none;
   transition: background 0.3s ease;
 }
 
 /* El label actúa como placeholder inicial */
 .floating-label {
-  position: absolute;
-  top: 14px;
-  left: 12px;
-  color: #94a3b8;
-  font-size: 1rem;
+  position: absolute; top: 14px; left: 12px;
+  color: #94a3b8; font-size: 1rem;
   pointer-events: none;
   transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
   transform-origin: left top;
@@ -51,76 +32,91 @@ const tabs = [
 
 /* Borde animado inferior */
 .focus-border {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  width: 0;
-  height: 2px;
+  position: absolute; bottom: 0; left: 50%;
+  width: 0; height: 2px;
   background: #3b82f6;
   transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
   transform: translateX(-50%);
 }
 
 /* INTERACCIONES */
-.modern-input:focus {
-  background: #0f172a;
-}
+.modern-input:focus { background: #0f172a; }
 
-.modern-input:focus ~ .focus-border {
-  width: 100%;
-}
+.modern-input:focus ~ .focus-border { width: 100%; }
 
-/* Cuando el input tiene foco, o NO está vacío (placeholder-shown es falso) */
+/* Sube el label si hay foco o no está vacío */
 .modern-input:focus ~ .floating-label,
 .modern-input:not(:placeholder-shown) ~ .floating-label {
   transform: translateY(-8px) scale(0.75);
   color: #3b82f6;
-}`
-  }
-];
+}`;
 
 const practiceSteps = [
-      {
-        title: "Cambia el color de error",
-        description: "Añade una clase .error al input y haz que el borde animado (.focus-border) y el .floating-label cambien a color rojo (#ef4444)."
-      },
-      {
-        title: "Icono de validación",
-        description: "Agrega un check verde al costado derecho del input que aparezca suavemente (opacity y scale) usando la pseudoclase :valid de HTML."
-      }
-    ];
+  {
+    number: 1,
+    text: 'Crea el input con placeholder=\' \' (un espacio, no vacío).',
+    color: 'dm-purple',
+    rotate: '-4deg'
+  },
+  {
+    number: 2,
+    text: 'Coloca el label sobre el input con position: absolute.',
+    color: 'dm-green',
+    rotate: '2deg'
+  },
+  {
+    number: 3,
+    text: 'Usa :placeholder-shown para saber si el input está vacío.',
+    color: 'app-color-yellow400',
+    rotate: '-3deg'
+  },
+  {
+    number: 4,
+    text: 'En :focus y :not(:placeholder-shown), sube el label con scale y translateY.',
+    color: 'dm-blue',
+    rotate: '4deg'
+  },
+  {
+    number: 5,
+    text: 'Añade un borde inferior animado que crece desde el centro.',
+    color: 'dm-purple',
+    rotate: '-2deg'
+  }
+];
 ---
 
 <InteractionsLayout
   title="Feedback visual en formularios - Genesis Pixel"
   currentLesson="/interactions/feedback-formularios"
+  prevLesson={{ title: 'Tooltips y ayudas contextuales', href: '/interactions/tooltips' }}
   nextLesson={{ title: 'Sistemas consistentes', href: '/interactions/sistemas-consistentes' }}
 >
-  <div class="mb-12">
-    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
-      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-      Interactions
-    </div>
-    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
-      Feedback visual en formularios
-    </h1>
-    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
-      Descubre cómo dar vida a tus interfaces.
-    </p>
-  </div>
+  <ChapterHeader
+    chapterNumber="04"
+    chapterLabel="Capítulo 4 · Lección 11"
+    title="Feedback visual en formularios"
+    readingTime={6}
+    difficulty="Interactions"
+  />
 
-  <article class="prose prose-invert max-w-none">
-    
-      <h2>Los inputs son conversaciones</h2>
-      <p>Llenar un formulario es la tarea más tediosa de la web. Para hacerla menos dolorosa, los inputs deben ser altamente interactivos. Deben responder cuando el usuario los enfoca (focus), reaccionar cuando escribe, y validar en tiempo real dando feedback de éxito o error.</p>
-      <p>Una interacción moderna de formulario eleva el "placeholder" fuera del camino en lugar de borrarlo (el famoso patrón Floating Label), y cambia el borde/sombra usando transiciones suaves para guiar la atención del usuario.</p>
-    
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es el Feedback en Formularios?</h3>
+    <p>Llenar un formulario web es intrínsecamente aburrido y propenso a errores. El feedback de formularios es la capa de interactividad que guía al usuario campo por campo, informándole en tiempo real dónde está, qué debe escribir y si lo que escribió es correcto o incorrecto.</p>
+
+    <h3>¿Para qué sirve?</h3>
+    <p>Sin feedback visual, los inputs parecen cajas inertes. Al reaccionar visualmente (cambiando bordes, levantando textos), el usuario nunca se pierde.</p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Ubicación visual (Focus):</strong> Resaltar el borde inferior fuertemente ayuda a saber dónde va a aparecer el texto.</li>
+      <li><strong>Retención de contexto (Floating Label):</strong> El patrón donde el placeholder se mueve arriba pero no desaparece, permite al usuario saber qué dato está llenando incluso si se distrae.</li>
+      <li><strong>Validación instantánea:</strong> Bordes verdes o rojos que evitan la frustración de llenar 10 campos y que el servidor los rechace al final.</li>
+    </ul>
+
+    <h3>¿Cómo se usa?</h3>
+    <p>El patrón moderno CSS-only (Floating Label) se logra usando el orden del DOM y pseudo-clases astutas. Colocas el <code>&lt;label&gt;</code> después del <code>&lt;input&gt;</code>, y usas el selector <code>input:focus ~ label</code> o <code>input:not(:placeholder-shown) ~ label</code> para disparar un <code>translateY</code> y achicar el texto, empujándolo fuera del camino elegantemente sin tocar JavaScript.</p>
   </article>
 
   <div class="my-8 not-prose">
-    <ConsejoProfesional tip="Aprovecha las pseudo-clases :focus-within en el contenedor o :placeholder-shown en el input para desencadenar animaciones CSS puras sin necesidad de usar JavaScript para los estados básicos." />
+    <ConsejoProfesional tip='Aprovecha las pseudo-clases nativas :placeholder-shown y :focus-within. Con ellas puedes crear validaciones y animaciones complejas en contenedores padres de forma puramente declarativa y fluida.' />
   </div>
 
   <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
@@ -128,28 +124,93 @@ const practiceSteps = [
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock tabs={tabs} />
-    <ResultPreview />
+    <TabbedCodeBlock
+      group="feedback-formularios"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Haz clic dentro del input y escribe para ver cómo el label interactúa y flota.">
+      <div class="flex items-center justify-center h-full w-full">
+        <div class="input-group-p" style="position:relative; margin:auto; width:250px;">
+  <input type="text" id="usernameP" class="modern-input-p" placeholder=" ">
+  <label for="usernameP" class="floating-label-p">Nombre de usuario</label>
+  <div class="focus-border-p"></div>
+</div>
+      </div>
+    </ResultPreview>
   </div>
 
   <div class="my-8 flex flex-col gap-6">
     <ErroresComunesV3 errors={[
-      {
-        title: "Perder el placeholder",
-        description: "Borrar el placeholder nativo inmediatamente al enfocar. Si el usuario se distrae, olvida qué le estaban pidiendo. El label flotante resuelve esto."
-      },
-      {
-        title: "Transiciones ruidosas en cada letra",
-        description: "Validar e inyectar animaciones de error agitadas (shake) en tiempo real por cada pulsación de tecla asusta al usuario."
-      }
-    ]} />
-    <PracticeCards steps={practiceSteps} />
+  {
+    label: 'Perder el placeholder',
+    description: 'Borrar el placeholder nativo inmediatamente al enfocar. Si el usuario se distrae, olvida qué le estaban pidiendo.'
+  },
+  {
+    label: 'Transiciones ruidosas en tiempo real',
+    description: 'Inyectar animaciones de error agitadas (shake) por cada pulsación de tecla asusta al usuario.'
+  }
+]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Implementa el patrón floating label con transición suave en tus inputs."
+      steps={practiceSteps}
+    />
   </div>
 </InteractionsLayout>
 
+<style>
+.modern-input-p {
+  width: 100%; padding: 20px 12px 8px 12px;
+  background: #1e293b; color: white;
+  border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+  font-size: 1rem; outline: none;
+  transition: background 0.3s ease;
+}
+
+/* El label actúa como placeholder inicial */
+.floating-label-p {
+  position: absolute; top: 14px; left: 12px;
+  color: #94a3b8; font-size: 1rem;
+  pointer-events: none;
+  transition: all 0.25s cubic-bezier(0.2, 0, 0, 1);
+  transform-origin: left top;
+}
+
+/* Borde animado inferior */
+.focus-border-p {
+  position: absolute; bottom: 0; left: 50%;
+  width: 0; height: 2px;
+  background: #3b82f6;
+  transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+  transform: translateX(-50%);
+}
+
+/* INTERACCIONES */
+.modern-input-p:focus { background: #0f172a; }
+
+.modern-input-p:focus ~ .focus-border-p { width: 100%; }
+
+/* Sube el label si hay foco o no está vacío */
+.modern-input-p:focus ~ .floating-label-p,
+.modern-input-p:not(:placeholder-shown) ~ .floating-label-p {
+  transform: translateY(-8px) scale(0.75);
+  color: #3b82f6;
+}
+</style>
+
 <script>
-  import { initCodeInteractions } from '../../scripts/code-interactions';
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  
   document.addEventListener('astro:page-load', () => {
     initCodeInteractions();
+    
+  });
+  document.addEventListener('astro:after-swap', () => {
+    initCodeInteractions();
+    
   });
 </script>

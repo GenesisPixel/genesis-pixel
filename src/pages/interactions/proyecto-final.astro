@@ -1,369 +1,355 @@
 ---
 import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
 import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
 import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
 
-const uiCodeFiles = [
-  {
-    name: "index.html",
-    language: "html",
-    icon: "html",
-    content: `<div class="dashboard-preview">
-  <header class="dash-header">
-    <div class="user-profile">
-      <img src="https://i.pravatar.cc/100?img=11" alt="Avatar">
-      <span class="status-indicator"></span>
-    </div>
-    
-    <button class="action-btn" id="openUploadModal">
-      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
-      </svg>
-      Subir Archivo
-    </button>
-  </header>
+const btnHtml = `<button class="btn-guardar" id="btnGuardar">
+  <span class="btn-texto">Guardar Cambios</span>
+  <span class="btn-cargando"></span>
+  <svg class="btn-exito" viewBox="0 0 24 24" width="20" height="20">
+    <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+</button>
 
-  <div class="dash-grid">
-    <div class="dash-card interactive">
-      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg></div>
-      <h3>Ingresos</h3>
-      <p class="value">$24,500</p>
-      <div class="hover-action">Ver reporte &rarr;</div>
-    </div>
-    
-    <div class="dash-card interactive">
-      <div class="card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-      <h3>Usuarios Nuevos</h3>
-      <p class="value">1,240</p>
-      <div class="hover-action">Ver detalles &rarr;</div>
-    </div>
-  </div>
+<script>
+  const btn = document.getElementById('btnGuardar');
+  btn.addEventListener('click', () => {
+    btn.classList.add('loading');
+    setTimeout(() => {
+      btn.classList.remove('loading');
+      btn.classList.add('success');
+      setTimeout(() => btn.classList.remove('success'), 2000);
+    }, 2000);
+  });
+<\/script>`;
 
-  <!-- Modal Overlay -->
-  <div class="modal-overlay" id="uploadModal">
-    <div class="modal-content">
-      <h3>Subir documento</h3>
-      <div class="input-group">
-        <input type="text" id="filename" class="modern-input" placeholder=" ">
-        <label for="filename" class="floating-label">Nombre del archivo</label>
-        <div class="focus-border"></div>
-      </div>
-      
-      <div class="modal-actions">
-        <button class="btn-cancel" id="closeUploadModal">Cancelar</button>
-        <button class="btn-primary loading-capable" id="submitUpload">
-          <span class="btn-text">Subir ahora</span>
-          <span class="btn-loader"></span>
-        </button>
-      </div>
-    </div>
+const btnCss = `.btn-guardar {
+  position: relative; padding: 14px 28px; background: #3b82f6; color: white;
+  border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
+  overflow: hidden; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  display: flex; justify-content: center; align-items: center; min-width: 180px;
+}
+
+.btn-guardar:hover {
+  transform: translateY(-2px); box-shadow: 0 8px 16px rgba(59,130,246,0.4);
+}
+
+.btn-guardar:active {
+  transform: scale(0.95); box-shadow: 0 2px 4px rgba(59,130,246,0.3);
+}
+
+.btn-texto { transition: all 0.3s ease; }
+.btn-cargando {
+  position: absolute; width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%;
+  opacity: 0; transform: scale(0.5); transition: all 0.3s ease;
+}
+.btn-exito {
+  position: absolute; opacity: 0; transform: scale(0.5); transition: all 0.3s ease;
+}
+
+/* Estado Loading */
+.btn-guardar.loading { background: #2563eb; pointer-events: none; }
+.btn-guardar.loading .btn-texto { opacity: 0; transform: translateY(-20px); }
+.btn-guardar.loading .btn-cargando { opacity: 1; transform: scale(1); animation: girar 1s linear infinite; }
+
+/* Estado Success */
+.btn-guardar.success { background: #10b981; pointer-events: none; }
+.btn-guardar.success .btn-texto { opacity: 0; transform: translateY(-20px); }
+.btn-guardar.success .btn-exito { opacity: 1; transform: scale(1); }
+
+@keyframes girar { to { transform: rotate(360deg); } }`;
+
+const modalHtml = `<button class="abrir-modal" id="abrirModal">Ver Detalles</button>
+
+<div class="modal-overlay" id="modalOverlay">
+  <div class="modal-caja">
+    <h3>Detalles del Componente</h3>
+    <p>Este modal se anima de forma independiente al overlay para dar una sensación física real.</p>
+    <button class="cerrar-modal" id="cerrarModal">Entendido</button>
   </div>
 </div>
 
 <script>
-  const modal = document.getElementById('uploadModal');
-  const openBtn = document.getElementById('openUploadModal');
-  const closeBtn = document.getElementById('closeUploadModal');
-  const submitBtn = document.getElementById('submitUpload');
+  const abrir = document.getElementById('abrirModal');
+  const cerrar = document.getElementById('cerrarModal');
+  const overlay = document.getElementById('modalOverlay');
 
-  // Interacción del Modal
-  openBtn.addEventListener('click', () => modal.classList.add('active'));
-  closeBtn.addEventListener('click', () => modal.classList.remove('active'));
-  
-  modal.addEventListener('click', (e) => {
-    if (e.target === modal) modal.classList.remove('active');
+  abrir.addEventListener('click', () => overlay.classList.add('visible'));
+  cerrar.addEventListener('click', () => overlay.classList.remove('visible'));
+  overlay.addEventListener('click', (e) => {
+    if(e.target === overlay) overlay.classList.remove('visible');
   });
+<\/script>`;
 
-  // Interacción de Carga en Botón
-  submitBtn.addEventListener('click', () => {
-    submitBtn.classList.add('loading');
-    setTimeout(() => {
-      submitBtn.classList.remove('loading');
-      submitBtn.classList.add('success');
-      submitBtn.querySelector('.btn-text').textContent = "¡Completado!";
-      
-      setTimeout(() => {
-        modal.classList.remove('active');
-        // Reset state after close
-        setTimeout(() => {
-          submitBtn.classList.remove('success');
-          submitBtn.querySelector('.btn-text').textContent = "Subir ahora";
-        }, 500);
-      }, 1500);
-    }, 2000);
-  });
-</script>`
-  },
-  {
-    name: "styles.css",
-    language: "css",
-    icon: "css",
-    content: `:root {
-  --bg-dark: #0f172a;
-  --bg-card: #1e293b;
-  --primary: #3b82f6;
-  --primary-hover: #2563eb;
-  --success: #10b981;
-  --text-main: #f8fafc;
-  --text-muted: #94a3b8;
-  
-  /* Motion Tokens */
-  --t-fast: 0.15s;
-  --t-base: 0.3s;
-  --ease-out: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+const modalCss = `.abrir-modal, .cerrar-modal {
+  padding: 10px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer;
+  background: #a855f7; color: white; transition: transform 0.2s;
 }
+.abrir-modal:hover, .cerrar-modal:hover { transform: scale(1.05); }
 
-.dashboard-preview {
-  padding: 20px;
-  background: var(--bg-dark);
-  border-radius: 16px;
-  color: var(--text-main);
-  font-family: system-ui, sans-serif;
-  min-height: 400px;
-  position: relative;
-  overflow: hidden;
-}
-
-/* HEADER & PROFILE */
-.dash-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-}
-
-.user-profile {
-  position: relative;
-  cursor: pointer;
-  transition: transform var(--t-fast) ease;
-}
-
-.user-profile:hover { transform: scale(1.05); }
-
-.user-profile img {
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-  border: 2px solid var(--bg-card);
-}
-
-.status-indicator {
-  position: absolute;
-  bottom: 2px;
-  right: 2px;
-  width: 12px;
-  height: 12px;
-  background: var(--success);
-  border-radius: 50%;
-  border: 2px solid var(--bg-dark);
-}
-
-/* BUTTONS */
-.action-btn, .btn-primary, .btn-cancel {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: none;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all var(--t-base) var(--ease-out);
-}
-
-.action-btn { background: var(--bg-card); color: var(--text-main); border: 1px solid rgba(255,255,255,0.1); }
-.action-btn:hover { background: #334155; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
-.action-btn:active { transform: translateY(1px); }
-
-.btn-primary { background: var(--primary); color: white; }
-.btn-primary:hover { background: var(--primary-hover); transform: translateY(-2px); box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3); }
-
-.btn-cancel { background: transparent; color: var(--text-muted); border: 1px solid rgba(255,255,255,0.1); }
-.btn-cancel:hover { background: rgba(255,255,255,0.05); color: white; }
-
-/* CARDS INTERACTIVAS */
-.dash-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.dash-card {
-  background: var(--bg-card);
-  padding: 24px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,255,255,0.05);
-  position: relative;
-  overflow: hidden;
-  transition: all var(--t-base) var(--ease-out);
-}
-
-.card-icon { width: 32px; height: 32px; color: var(--primary); margin-bottom: 16px; transition: transform var(--t-base) ease; }
-.dash-card h3 { margin: 0 0 8px 0; font-size: 1rem; color: var(--text-muted); font-weight: 500; }
-.dash-card .value { margin: 0; font-size: 2rem; font-weight: 700; color: white; }
-
-.hover-action {
-  position: absolute;
-  bottom: 24px;
-  right: 24px;
-  color: var(--primary);
-  font-size: 0.85rem;
-  font-weight: 600;
-  opacity: 0;
-  transform: translateX(-10px);
-  transition: all var(--t-base) ease;
-}
-
-.dash-card.interactive:hover { transform: translateY(-6px); box-shadow: 0 12px 24px rgba(0,0,0,0.4); border-color: rgba(255,255,255,0.1); }
-.dash-card.interactive:hover .card-icon { transform: scale(1.1) rotate(-5deg); }
-.dash-card.interactive:hover .hover-action { opacity: 1; transform: translateX(0); }
-
-/* MODAL OVERLAY */
+/* Overlay */
 .modal-overlay {
-  position: absolute;
-  inset: 0;
-  background: rgba(0,0,0,0.6);
-  backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 50;
-  opacity: 0;
-  visibility: hidden;
-  transition: all var(--t-base) ease;
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+  display: flex; justify-content: center; align-items: center; z-index: 100;
+  opacity: 0; visibility: hidden; transition: all 0.4s ease;
 }
 
-.modal-content {
-  background: var(--bg-card);
-  padding: 32px;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 350px;
-  transform: scale(0.95) translateY(10px);
-  opacity: 0;
-  transition: all var(--t-base) var(--ease-out);
+/* Caja Modal */
+.modal-caja {
+  background: #1e293b; padding: 32px; border-radius: 16px; width: 300px;
+  text-align: center; color: white; border: 1px solid rgba(255,255,255,0.1);
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+  transform: scale(0.9) translateY(20px); opacity: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.modal-overlay.active { opacity: 1; visibility: visible; }
-.modal-overlay.active .modal-content { transform: scale(1) translateY(0); opacity: 1; transition-delay: 0.05s; }
+/* Animación de entrada secuencial */
+.modal-overlay.visible { opacity: 1; visibility: visible; }
+.modal-overlay.visible .modal-caja {
+  transform: scale(1) translateY(0); opacity: 1; transition-delay: 0.1s;
+}`;
 
-.modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 32px; }
-
-/* INPUT FLOTANTE */
-.input-group { position: relative; margin-top: 24px; }
-.modern-input { width: 100%; padding: 16px 12px 8px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1); border-radius: 6px; color: white; outline: none; }
-.floating-label { position: absolute; top: 12px; left: 12px; color: var(--text-muted); pointer-events: none; transition: all 0.2s ease; transform-origin: left top; }
-.focus-border { position: absolute; bottom: 0; left: 50%; width: 0; height: 2px; background: var(--primary); transition: all 0.3s ease; transform: translateX(-50%); }
-
-.modern-input:focus ~ .focus-border { width: 100%; }
-.modern-input:focus ~ .floating-label, .modern-input:not(:placeholder-shown) ~ .floating-label { transform: translateY(-8px) scale(0.75); color: var(--primary); }
-
-/* BOTÓN LOADING */
-.loading-capable { position: relative; overflow: hidden; min-width: 140px; justify-content: center; }
-.btn-loader { position: absolute; width: 18px; height: 18px; border: 2px solid transparent; border-top-color: white; border-right-color: white; border-radius: 50%; opacity: 0; animation: spin 0.8s linear infinite; }
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.loading-capable.loading { background: #1d4ed8; pointer-events: none; }
-.loading-capable.loading .btn-text { opacity: 0; transform: translateY(-20px); }
-.loading-capable.loading .btn-loader { opacity: 1; }
-
-.loading-capable.success { background: var(--success); }`
-  }
+const practiceSteps = [
+  { number: 1, text: 'Integra el botón interactivo dentro de la caja del modal', color: 'dm-purple', rotate: '2deg' },
+  { number: 2, text: 'Añade el estado de "Focus" al botón para mejorar accesibilidad', color: 'dm-green', rotate: '-3deg' },
+  { number: 3, text: 'Modifica la curva del modal de rebote a ease-in-out', color: 'app-color-yellow400', rotate: '4deg' },
+  { number: 4, text: 'Supera el desafío final haciendo que el modal se cierre automáticamente tras el éxito', color: 'dm-blue', rotate: '-1deg' },
 ];
-
 ---
 
 <InteractionsLayout
-  title="Proyecto Final de Interactions"
+  title="Proyecto Final de Interactions - Genesis Pixel"
   currentLesson="/interactions/proyecto-final"
-  prevLesson={{ title: 'Performance en Interactions', href: '/interactions/performance' }}
+  prevLesson={{ title: 'Performance', href: '/interactions/performance' }}
 >
-  <div class="mb-12">
-    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
-      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/>
-      </svg>
-      Proyecto Final
-    </div>
-    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
-      Sistema UI Interactivo
-    </h1>
-    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
-      Tu prueba final: Combina todo lo aprendido en un entorno real.
+  <ChapterHeader
+    chapterNumber="04"
+    chapterLabel="Capítulo 4 · Proyecto Final"
+    title="Proyecto Final de Interactions"
+    readingTime={10}
+    difficulty="Interactions"
+  />
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>El arte de la orquestación UI</h3>
+    <p>
+      ¡Felicidades! Has llegado al final del Capítulo 4. A lo largo de estas lecciones, no solo has aprendido a mover cosas en la pantalla, sino a darles <strong>sentido, peso y contexto</strong>. Has dejado de diseñar pantallas estáticas para empezar a diseñar flujos interactivos.
+    </p>
+
+    <h3>1. Botones con retroalimentación completa</h3>
+    <p>
+      El botón "Guardar" que vas a ver combina estados de hover (elevación), active (presión física), loading (asumiendo la asincronía) y success (informando al usuario que todo salió bien). Todo en un mismo componente sin tener que bloquear toda la interfaz del usuario. Es el pilar de un formulario moderno.
+    </p>
+
+    <h3>2. Modales secuenciales</h3>
+    <p>
+      Un modal no es solo un div en el centro de la pantalla. En el proyecto 2, verás cómo la opacidad del fondo oscuro y la caja del modal tienen ritmos diferentes (delay). Esto guía el ojo del usuario primero hacia el centro oscuro y luego le entrega el contenido con una animación de rebote amigable.
+    </p>
+
+    <h3>El verdadero secreto: la consistencia</h3>
+    <p>
+      El sello final de calidad en cualquier interfaz premium es que los botones se sientan parte del mismo universo físico que los modales. Si usas un <code>cubic-bezier</code> elástico en un lado, úsalo en el otro. Mantén los tiempos entre 150ms y 400ms para que las interacciones sean enérgicas pero perceptibles.
+    </p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="¡Has dominado el feedback visual! Estas microinteracciones son lo que diferencia a una aplicación web genérica de un producto digital premium amado por los usuarios." />
+  </div>
+
+  <!-- Proyecto 1: Botón con feedback completo -->
+  <div class="mt-16 mb-4 text-center">
+    <h3 class="font-medium mb-2">Proyecto 1 — Botón con feedback completo</h3>
+    <p class="text-sm mb-6" style="color: white; opacity: 0.7;">
+      Un botón que reacciona físicamente, muestra estado de carga asíncrono y confirma el éxito sin necesidad de molestas alertas de navegador.
     </p>
   </div>
 
-  <article class="prose prose-invert max-w-none">
-    <h2>La integración final</h2>
-    <p>A lo largo de este capítulo, hemos pasado de entender pequeños estados a crear componentes complejos que responden con fluidez. Un excelente desarrollador frontend no solo sabe animar, sabe <em>orquestar</em>.</p>
-    <p>En este proyecto, hemos creado un Dashboard minimalista. En él conviven de manera armoniosa:</p>
-    <ul>
-      <li><strong>Cards Interactivas:</strong> Elevación sutil en hover, rotación de iconos y revelado de acciones.</li>
-      <li><strong>Botones con profundidad:</strong> Estados de hover y active que simulan peso físico.</li>
-      <li><strong>Modales suaves:</strong> El fondo se oscurece y difumina, la caja aparece creciendo y con retraso (delay).</li>
-      <li><strong>Inputs dinámicos:</strong> Patrón de floating label que reacciona tanto al enfoque como al texto.</li>
-      <li><strong>Loading y Success states:</strong> El botón de guardar asume la carga y finaliza con éxito visual.</li>
-    </ul>
-
-    <h3 class="mt-12">El Dashboard en acción</h3>
-    <p>Interactúa con todos los elementos: pasa el ratón sobre las tarjetas, pulsa los botones, abre el modal, escribe en el input y dale a "Subir ahora".</p>
-  </article>
-
-  <div class="my-8 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock files={uiCodeFiles} />
-    <ResultPreview />
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="proyecto-boton"
+      tabs={[
+        { id: 'html', label: 'HTML', code: btnHtml },
+        { id: 'css', label: 'CSS', code: btnCss },
+      ]}
+    />
+    <ResultPreview description="Haz clic en el botón. Observa cómo asume el estado de carga y termina con una palomita de éxito.">
+      <div class="flex items-center justify-center h-full w-full">
+        <button class="btn-guardar-p" id="btnGuardarP">
+          <span class="btn-texto-p">Guardar Cambios</span>
+          <span class="btn-cargando-p"></span>
+          <svg class="btn-exito-p" viewBox="0 0 24 24" width="20" height="20">
+            <path d="M20 6L9 17l-5-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+      </div>
+    </ResultPreview>
   </div>
 
-  <article class="prose prose-invert max-w-none mt-16 mb-8">
-    <div class="rounded-xl border border-[var(--dm-green-500)]/20 bg-[var(--dm-green-500)]/5 p-8">
-      <h3 class="mb-4 text-2xl text-[var(--dm-green-500)]">🚀 Tu Desafío Final</h3>
-      <p>Modifica el código de este proyecto para implementar las siguientes mejoras:</p>
-      <ol class="mb-0 space-y-2">
-        <li><strong>Cierra el modal con tecla:</strong> Añade un event listener en JavaScript para que, si el usuario pulsa la tecla <code>Escape</code>, el modal se cierre quitando la clase <code>.active</code>.</li>
-        <li><strong>Valida el input:</strong> Modifica la lógica JS para que, si el usuario intenta darle a "Subir ahora" con el input vacío, el input haga un <code>shake</code> (vibre) y el borde se ponga rojo, cancelando la carga.</li>
-        <li><strong>Tooltip en el Avatar:</strong> Añade un tooltip CSS (como el que aprendiste) encima de la imagen de perfil que diga "Usuario Activo", con un delay de 0.3s.</li>
-      </ol>
-    </div>
-  </article>
+  <!-- Proyecto 2: Modal animado -->
+  <div class="mt-16 mb-4 text-center">
+    <h3 class="font-medium mb-2">Proyecto 2 — Modal con Delay</h3>
+    <p class="text-sm mb-6" style="color: white; opacity: 0.7;">
+      Un overlay que desenfoca la página y una caja que aparece con retraso secuencial para no abrumar la vista del usuario.
+    </p>
+  </div>
 
-  <!-- SECCIÓN FINAL (Resumen igual que en Keyframes y Transitions) -->
-  <div class="mt-20 border-t border-[var(--color-border)] pt-12">
-    <h2 class="mb-8 text-center font-afronaut text-3xl text-[var(--color-text)]">
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="proyecto-modal"
+      tabs={[
+        { id: 'html', label: 'HTML', code: modalHtml },
+        { id: 'css', label: 'CSS', code: modalCss },
+      ]}
+    />
+    <ResultPreview description="Haz clic en 'Ver Detalles'. Fíjate cómo la caja llega ligeramente después de oscurecerse el fondo.">
+      <div class="flex items-center justify-center h-full w-full">
+        <button class="abrir-modal-p" id="abrirModalP">Ver Detalles</button>
+        <div class="modal-overlay-p" id="modalOverlayP">
+          <div class="modal-caja-p">
+            <h3 style="margin-top:0">Detalles del Componente</h3>
+            <p>Este modal se anima de forma independiente al overlay para dar una sensación física real.</p>
+            <button class="cerrar-modal-p" id="cerrarModalP">Entendido</button>
+          </div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <PracticeCards
+      title="Desafío Final"
+      description="Combina ambos proyectos: pon el botón de guardar dentro del modal. Al hacer clic, que cargue, marque éxito y entonces cierre el modal."
+      steps={practiceSteps}
+    />
+  </div>
+
+  <!-- Resumen del capítulo -->
+  <div class="py-6">
+    <h3 class="mb-8 text-center font-medium text-[var(--color-text)]">
       Lo que aprendiste en este capítulo
-    </h2>
-    <div class="grid gap-6 md:grid-cols-2">
-      <!-- Item 1 -->
-      <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-light)] p-6">
-        <h3 class="mb-2 font-medium text-[var(--color-text)]">1. La función de la interacción</h3>
-        <p class="text-sm text-[var(--dm-light-300)]">A diferenciar animaciones decorativas del comportamiento directo de la UI, respondiendo al usuario en tiempo real.</p>
-      </div>
-      <!-- Item 2 -->
-      <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-light)] p-6">
-        <h3 class="mb-2 font-medium text-[var(--color-text)]">2. Estados de interfaz completos</h3>
-        <p class="text-sm text-[var(--dm-light-300)]">Dominaste los 5 estados (default, hover, active, focus, disabled) asegurando usabilidad y accesibilidad por teclado.</p>
-      </div>
-      <!-- Item 3 -->
-      <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-light)] p-6">
-        <h3 class="mb-2 font-medium text-[var(--color-text)]">3. Microinteracciones vitales</h3>
-        <p class="text-sm text-[var(--dm-light-300)]">Diseñaste interacciones sutiles para validaciones y likes, creando respuestas emocionales positivas y útiles.</p>
-      </div>
-      <!-- Item 4 -->
-      <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-light)] p-6">
-        <h3 class="mb-2 font-medium text-[var(--color-text)]">4. Loading & Success Feedback</h3>
-        <p class="text-sm text-[var(--dm-light-300)]">Reemplazaste aburridos spinners globales por botones dinámicos que asumen la carga y muestran el éxito.</p>
-      </div>
-      <!-- Item 5 -->
-      <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-light)] p-6">
-        <h3 class="mb-2 font-medium text-[var(--color-text)]">5. Rendimiento (GPU vs CPU)</h3>
-        <p class="text-sm text-[var(--dm-light-300)]">Aprendiste la regla de oro: animar solo Transform y Opacity para garantizar 60 FPS, usando will-change sabiamente.</p>
-      </div>
-      <!-- Item 6 -->
-      <div class="rounded-xl border border-[var(--color-border)] bg-[var(--color-bg-light)] p-6">
-        <h3 class="mb-2 font-medium text-[var(--color-text)]">6. Sistemas consistentes</h3>
-        <p class="text-sm text-[var(--dm-light-300)]">Implementaste Motion Tokens (Variables CSS) para mantener el mismo feeling físico a través de botones y cards.</p>
-      </div>
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+      {[
+        { prop: 'Interactions', desc: 'Interfaces vivas que responden a la acción del usuario' },
+        { prop: 'Microinteracciones', desc: 'Pequeñas respuestas (likes, botones) que generan deleite' },
+        { prop: 'Estados de Interfaz', desc: 'Default, hover, active, focus y disabled correctamente diseñados' },
+        { prop: 'Loading States', desc: 'Loaders integrados que evitan bloquear toda la pantalla' },
+        { prop: 'Success/Error Feedback', desc: 'Toasts o botones que cierran el ciclo asíncrono con color' },
+        { prop: 'Cards interactivas', desc: 'Profundidad con hover combinado (scale de imagen + elevate)' },
+        { prop: 'Modales & Overlays', desc: 'Apariciones secuenciales con transition-delay para suavidad' },
+        { prop: 'Dropdowns & Tooltips', desc: 'El uso de transform-origin para una revelación orgánica' },
+        { prop: 'Sistemas consistentes', desc: 'Motion Tokens (Variables CSS) para estandarizar las curvas' },
+        { prop: 'Performance en UI', desc: 'Animar solo Transforms y Opacity para llegar a los 60 FPS' },
+      ].map((item, index) => (
+        <div class="flex gap-4">
+          <span class="mt-0.5 shrink-0 font-afronaut text-[13px] text-[var(--color-text)]" style="opacity: 0.4 !important;">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <div class="flex flex-col gap-1">
+            <span class="text-[14px] text-white" style="color: white; opacity: 1 !important; font-family: var(--font-afronaut, system-ui, sans-serif); font-weight: 300;">
+              {item.prop}
+            </span>
+            <span class="text-[13px] leading-relaxed text-[var(--dm-light-200)]">
+              {item.desc}
+            </span>
+          </div>
+        </div>
+      ))}
     </div>
   </div>
 </InteractionsLayout>
 
+<style>
+  /* BTN PREVIEW */
+  .btn-guardar-p {
+    position: relative; padding: 14px 28px; background: #3b82f6; color: white;
+    border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
+    overflow: hidden; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    display: flex; justify-content: center; align-items: center; min-width: 180px;
+  }
+  .btn-guardar-p:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(59,130,246,0.4); }
+  .btn-guardar-p:active { transform: scale(0.95); box-shadow: 0 2px 4px rgba(59,130,246,0.3); }
+  
+  .btn-texto-p { transition: all 0.3s ease; }
+  .btn-cargando-p {
+    position: absolute; width: 18px; height: 18px;
+    border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%;
+    opacity: 0; transform: scale(0.5); transition: all 0.3s ease;
+  }
+  .btn-exito-p { position: absolute; opacity: 0; transform: scale(0.5); transition: all 0.3s ease; }
+  
+  .btn-guardar-p.loading { background: #2563eb; pointer-events: none; }
+  .btn-guardar-p.loading .btn-texto-p { opacity: 0; transform: translateY(-20px); }
+  .btn-guardar-p.loading .btn-cargando-p { opacity: 1; transform: scale(1); animation: girar 1s linear infinite; }
+  
+  .btn-guardar-p.success { background: #10b981; pointer-events: none; }
+  .btn-guardar-p.success .btn-texto-p { opacity: 0; transform: translateY(-20px); }
+  .btn-guardar-p.success .btn-exito-p { opacity: 1; transform: scale(1); }
+  @keyframes girar { to { transform: rotate(360deg); } }
+
+  /* MODAL PREVIEW */
+  .abrir-modal-p, .cerrar-modal-p {
+    padding: 10px 20px; border-radius: 8px; border: none; font-weight: bold; cursor: pointer;
+    background: #a855f7; color: white; transition: transform 0.2s;
+  }
+  .abrir-modal-p:hover, .cerrar-modal-p:hover { transform: scale(1.05); }
+  
+  .modal-overlay-p {
+    position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px);
+    display: flex; justify-content: center; align-items: center; z-index: 1000;
+    opacity: 0; visibility: hidden; transition: all 0.4s ease;
+  }
+  
+  .modal-caja-p {
+    background: #1e293b; padding: 32px; border-radius: 16px; width: 300px;
+    text-align: center; color: white; border: 1px solid rgba(255,255,255,0.1);
+    box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+    transform: scale(0.9) translateY(20px); opacity: 0;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+  
+  .modal-overlay-p.visible { opacity: 1; visibility: visible; }
+  .modal-overlay-p.visible .modal-caja-p {
+    transform: scale(1) translateY(0); opacity: 1; transition-delay: 0.1s;
+  }
+</style>
+
 <script>
-  import { initCodeInteractions } from '../../scripts/code-interactions';
-  document.addEventListener('astro:page-load', () => {
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  
+  const setupEvents = () => {
     initCodeInteractions();
-  });
+    
+    const btn = document.getElementById('btnGuardarP');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        btn.classList.add('loading');
+        setTimeout(() => {
+          btn.classList.remove('loading');
+          btn.classList.add('success');
+          setTimeout(() => btn.classList.remove('success'), 2000);
+        }, 2000);
+      });
+    }
+
+    const abrir = document.getElementById('abrirModalP');
+    const cerrar = document.getElementById('cerrarModalP');
+    const overlay = document.getElementById('modalOverlayP');
+    
+    if (abrir && cerrar && overlay) {
+      abrir.addEventListener('click', () => overlay.classList.add('visible'));
+      cerrar.addEventListener('click', () => overlay.classList.remove('visible'));
+      overlay.addEventListener('click', (e) => {
+        if(e.target === overlay) overlay.classList.remove('visible');
+      });
+    }
+  };
+
+  document.addEventListener('astro:page-load', setupEvents);
+  document.addEventListener('astro:after-swap', setupEvents);
 </script>

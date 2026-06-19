@@ -1,151 +1,230 @@
 ---
 import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
 import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
 import ResultPreview from '../../components/ResultPreview.astro';
 import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const tabs = [
-  {
-    id: "index-html",
-    label: "index.html",
-    code: `<button class="like-btn" id="likeBtn">
-  <svg viewBox="0 0 24 24" width="24" height="24">
-    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+const htmlCode = `<button class="like-btn" id="likeBtn">
+  <svg viewBox="0 0 24 24" width="28" height="28">
+    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5
+             2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09
+             C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5
+             c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
   </svg>
+  <span class="like-count">24</span>
 </button>
 
 <script>
   const btn = document.getElementById('likeBtn');
+  const count = btn.querySelector('.like-count');
+  let liked = false;
   btn.addEventListener('click', () => {
-    btn.classList.toggle('active');
+    liked = !liked;
+    btn.classList.toggle('active', liked);
+    count.textContent = liked ? '25' : '24';
   });
-</script>`
-  },
-  {
-    id: "styles-css",
-    label: "styles.css",
-    code: `.like-btn {
-  background: transparent;
-  border: 2px solid #555;
-  border-radius: 50%;
-  width: 56px;
-  height: 56px;
+<\/script>`;
+
+const cssCode = `.like-btn {
   display: flex;
   align-items: center;
-  justify-content: center;
+  gap: 10px;
+  padding: 12px 24px;
+  background: transparent;
+  border: 2px solid #475569;
+  border-radius: 999px;
+  color: #94a3b8;
   cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
   transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .like-btn svg {
   fill: transparent;
-  stroke: #555;
+  stroke: #94a3b8;
   stroke-width: 2;
   transition: all 0.3s ease;
 }
 
 .like-btn:hover {
-  border-color: #ff2d55;
+  border-color: #f43f5e;
+  color: #f43f5e;
 }
 
 .like-btn:hover svg {
-  stroke: #ff2d55;
+  stroke: #f43f5e;
 }
 
-/* Estado activo: Animación de microinteracción */
+/* Estado activo */
 .like-btn.active {
-  border-color: #ff2d55;
-  background: rgba(255, 45, 85, 0.1);
-  transform: scale(1.1);
+  background: rgba(244, 63, 94, 0.1);
+  border-color: #f43f5e;
+  color: #f43f5e;
+  transform: scale(1.05);
 }
 
 .like-btn.active svg {
-  fill: #ff2d55;
-  stroke: #ff2d55;
-  transform: scale(1.2);
-}`
-  }
-];
+  fill: #f43f5e;
+  stroke: #f43f5e;
+  animation: heartPop 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes heartPop {
+  0%   { transform: scale(0.8); }
+  60%  { transform: scale(1.3); }
+  100% { transform: scale(1); }
+}`;
 
 const practiceSteps = [
-      {
-        title: "Modifica el rebote",
-        description: "Cambia la curva cubic-bezier en transition para hacer que el botón rebote de forma más dramática al hacer hover o clic."
-      },
-      {
-        title: "Agrega Keyframes",
-        description: "Combínalo con una animación @keyframes que haga latir (pulse) el corazón infinitamente una vez que está en estado .active."
-      }
-    ];
+  { number: 1, text: 'Crea el botón de like con SVG y un contador de texto.', color: 'dm-purple', rotate: '3deg' },
+  { number: 2, text: 'Define el estado .active con fill y color rojo.', color: 'dm-green', rotate: '-3deg' },
+  { number: 3, text: 'Agrega un @keyframes heartPop al SVG dentro de .active.', color: 'app-color-yellow400', rotate: '2deg' },
+  { number: 4, text: 'Con JS, usa classList.toggle para alternar el estado al clic.', color: 'dm-blue', rotate: '-4deg' },
+  { number: 5, text: 'Actualiza el contador numérico junto con la animación.', color: 'dm-purple', rotate: '4deg' },
+];
 ---
 
 <InteractionsLayout
   title="Microinteracciones - Genesis Pixel"
   currentLesson="/interactions/microinteracciones"
+  prevLesson={{ title: '¿Qué son las Interactions?', href: '/interactions/que-son' }}
   nextLesson={{ title: 'Estados de la interfaz', href: '/interactions/estados-interfaz' }}
 >
-  <div class="mb-12">
-    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
-      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-      Interactions
-    </div>
-    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
-      Microinteracciones
-    </h1>
-    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
-      Descubre cómo dar vida a tus interfaces.
-    </p>
-  </div>
+  <ChapterHeader
+    chapterNumber="04"
+    chapterLabel="Capítulo 4 · Lección 2"
+    title="Microinteracciones"
+    readingTime={8}
+    difficulty="Interactions"
+  />
 
-  <article class="prose prose-invert max-w-none">
-    
-      <h2>Los pequeños detalles importan</h2>
-      <p>Las <strong>microinteracciones</strong> son eventos sutiles que cumplen una única tarea dentro de la interfaz. Su objetivo principal es dar feedback inmediato, comunicar el resultado de una acción y mejorar el sentimiento de manipulación directa.</p>
-      <p>Piénsalo así: el <em>"Like"</em> de Twitter es una microinteracción. Cuando haces clic, no solo cambia el color a rojo, sino que explota con confeti y hace un pequeño rebote. Esto genera una respuesta emocional positiva en el usuario.</p>
-      <h3>Cómo mejoran la experiencia</h3>
-      <ul>
-        <li><strong>Informan el estado:</strong> "Sí, tu configuración se guardó".</li>
-        <li><strong>Previenen errores:</strong> Una animación de sacudida (shake) al fallar una contraseña.</li>
-        <li><strong>Añaden deleite:</strong> Hacen que la app no parezca robótica, sino humana y premium.</li>
-      </ul>
-    
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué son las Microinteracciones?</h3>
+    <p>Una microinteracción es un evento minúsculo y altamente enfocado dentro de un producto que tiene una única tarea. A diferencia de una animación de pantalla completa, una microinteracción ocurre en el espacio de un botón, un icono o un interruptor (toggle).</p>
+    <p>Son los detalles invisibles que transforman una aplicación utilitaria en un producto premium y memorable. El famoso "Me gusta" de Twitter o el rebote del switch de iOS son ejemplos icónicos de este concepto.</p>
+
+    <h3>¿Para qué sirven?</h3>
+    <p>El cerebro humano busca recompensas visuales inmediatas. Cuando un usuario interactúa con un elemento y obtiene una respuesta visual deleitante, se genera una micro-dosis de dopamina.</p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Comunicar estatus:</strong> Cambiar un toggle de gris a verde brillante.</li>
+      <li><strong>Educar al usuario:</strong> Animar un icono de hamburguesa convirtiéndose en una "X" enseña dónde hacer clic para cerrar.</li>
+      <li><strong>Prevenir el aburrimiento:</strong> Mantener al usuario entretenido en operaciones rutinarias.</li>
+    </ul>
+
+    <h3>¿Cómo se usan?</h3>
+    <p>Requieren combinar CSS avanzado y SVG. Normalmente usas <code>stroke-dasharray</code> para animar bordes de iconos, <code>fill</code> para cambiar colores con <code>transition</code>, y <code>@keyframes</code> pequeños y explosivos (como un efecto de escala) acoplados al momento exacto en que se añade una clase "active" mediante JavaScript.</p>
   </article>
 
   <div class="my-8 not-prose">
-    <ConsejoProfesional tip="Usa las microinteracciones como &quot;recompensa&quot;. Un botón de &quot;Añadir al carrito&quot; que muestra un pequeño tick de confirmación genera mucha más confianza que un simple texto que cambia." />
+    <ConsejoProfesional tip='Las microinteracciones deben ser extremadamente rápidas. Una regla de oro de diseño es que nunca deben durar más de 400ms, ya que su objetivo es informar y deleitar, no retrasar al usuario.' />
   </div>
 
   <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
-    Microinteracción de un botón de Like (Favorito)
+    Botón de Like con microinteracción de corazón
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock tabs={tabs} />
-    <ResultPreview />
+    <TabbedCodeBlock
+      group="microinteracciones-demo"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Haz clic en el botón para activar la microinteracción del corazón.">
+      <div class="flex items-center justify-center h-full w-full">
+        <button class="like-btn-preview" id="likeBtnPreview">
+          <svg viewBox="0 0 24 24" width="28" height="28">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+          <span class="like-count-p">24</span>
+        </button>
+      </div>
+    </ResultPreview>
   </div>
 
   <div class="my-8 flex flex-col gap-6">
     <ErroresComunesV3 errors={[
-      {
-        title: "Hacerlas demasiado lentas",
-        description: "Una microinteracción debe durar idealmente entre 200ms y 400ms. Si es muy larga, frustrará al usuario al retrasar su flujo."
-      },
-      {
-        title: "Sobreuso",
-        description: "Añadir confeti y rebotes a cada pequeño botón de la pantalla. Resérvalas para acciones significativas (Likes, Checkouts, Éxitos)."
-      }
+      { label: 'Duraciones demasiado largas', description: 'Una microinteracción que dura más de 500ms frustra al usuario porque interrumpe su flujo de trabajo.' },
+      { label: 'Sobreuso en toda la interfaz', description: 'Añadir animaciones de rebote y confeti a cada elemento de la pantalla genera ruido visual y cansa al usuario.' },
+      { label: 'Sin estado de retorno', description: 'Crear un toggle que solo va en una dirección sin que el usuario pueda deshacerlo, perdiendo el sentido de control.' },
     ]} />
-    <PracticeCards steps={practiceSteps} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Construye un botón de favorito completo: estado inactivo, hover con preview del color, estado activo con animación y actualización del contador."
+      steps={practiceSteps}
+    />
   </div>
 </InteractionsLayout>
 
+<style>
+  .like-btn-preview {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 24px;
+    background: transparent;
+    border: 2px solid #475569;
+    border-radius: 999px;
+    color: #94a3b8;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .like-btn-preview svg {
+    fill: transparent;
+    stroke: #94a3b8;
+    stroke-width: 2;
+    transition: all 0.3s ease;
+  }
+
+  .like-btn-preview:hover {
+    border-color: #f43f5e;
+    color: #f43f5e;
+  }
+
+  .like-btn-preview:hover svg { stroke: #f43f5e; }
+
+  .like-btn-preview.active {
+    background: rgba(244, 63, 94, 0.1);
+    border-color: #f43f5e;
+    color: #f43f5e;
+    transform: scale(1.05);
+  }
+
+  .like-btn-preview.active svg {
+    fill: #f43f5e;
+    stroke: #f43f5e;
+    animation: heartPopP 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  @keyframes heartPopP {
+    0%   { transform: scale(0.8); }
+    60%  { transform: scale(1.3); }
+    100% { transform: scale(1); }
+  }
+</style>
+
 <script>
-  import { initCodeInteractions } from '../../scripts/code-interactions';
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
   document.addEventListener('astro:page-load', () => {
     initCodeInteractions();
+    const btn = document.getElementById('likeBtnPreview');
+    if (!btn) return;
+    const count = btn.querySelector('.like-count-p');
+    let liked = false;
+    btn.addEventListener('click', () => {
+      liked = !liked;
+      btn.classList.toggle('active', liked);
+      if (count) count.textContent = liked ? '25' : '24';
+    });
   });
+  document.addEventListener('astro:after-swap', () => initCodeInteractions());
 </script>

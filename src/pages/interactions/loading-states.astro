@@ -1,35 +1,18 @@
 ---
 import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
 import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
 import ResultPreview from '../../components/ResultPreview.astro';
 import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const tabs = [
-  {
-    id: "index-html",
-    label: "index.html",
-    code: `<button class="submit-btn" id="submitBtn">
+const htmlCode = `<button class="submit-btn" id="submitBtn">
   <span class="btn-text">Guardar cambios</span>
   <span class="btn-loader"></span>
-</button>
+</button>`;
 
-<script>
-  const btn = document.getElementById('submitBtn');
-  btn.addEventListener('click', () => {
-    // Simulamos carga
-    btn.classList.add('loading');
-    setTimeout(() => {
-      btn.classList.remove('loading');
-    }, 3000);
-  });
-</script>`
-  },
-  {
-    id: "styles-css",
-    label: "styles.css",
-    code: `.submit-btn {
+const cssCode = `.submit-btn {
   position: relative;
   padding: 14px 28px;
   background: #10b981;
@@ -48,7 +31,6 @@ const tabs = [
   display: inline-block;
 }
 
-/* El loader oculto al inicio */
 .btn-loader {
   position: absolute;
   top: 50%;
@@ -63,7 +45,6 @@ const tabs = [
   transition: all 0.3s ease;
 }
 
-/* --- ESTADO DE CARGA --- */
 .submit-btn.loading {
   background: #059669;
   cursor: wait;
@@ -82,81 +63,194 @@ const tabs = [
 
 @keyframes spin {
   to { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
-}`
-  }
-];
+}`;
 
 const practiceSteps = [
-      {
-        title: "Cambia el Loader",
-        description: "Modifica CSS para que el .btn-loader no sea un spinner circular, sino tres pequeños puntos que saltan secuencialmente (pista: usa box-shadow o varios spans en HTML)."
-      },
-      {
-        title: "Evita el reflow",
-        description: "Asegúrate de definir un min-width en el botón para que al cambiar el texto largo por un loader pequeño, el tamaño del botón no colapse bruscamente."
-      }
-    ];
+  {
+    number: 1,
+    text: 'Crea un botón con min-width fijo para que no colapse.',
+    color: 'dm-purple',
+    rotate: '3deg'
+  },
+  {
+    number: 2,
+    text: 'Añade un span .spinner oculto dentro del botón.',
+    color: 'dm-green',
+    rotate: '-3deg'
+  },
+  {
+    number: 3,
+    text: 'Anima el spinner con @keyframes y border-top.',
+    color: 'app-color-yellow400',
+    rotate: '5deg'
+  },
+  {
+    number: 4,
+    text: 'Con JS, añade la clase .loading al clic y ocúltala tras 3s.',
+    color: 'dm-blue',
+    rotate: '-2deg'
+  },
+  {
+    number: 5,
+    text: 'Mueve el texto fuera con translateY y muestra el spinner.',
+    color: 'dm-purple',
+    rotate: '2deg'
+  }
+];
 ---
 
 <InteractionsLayout
   title="Loading States - Genesis Pixel"
   currentLesson="/interactions/loading-states"
+  prevLesson={{ title: 'Estados de la interfaz', href: '/interactions/estados-interfaz' }}
   nextLesson={{ title: 'Success y Error Feedback', href: '/interactions/success-error' }}
 >
-  <div class="mb-12">
-    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
-      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-      Interactions
-    </div>
-    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
-      Loading States
-    </h1>
-    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
-      Descubre cómo dar vida a tus interfaces.
-    </p>
-  </div>
+  <ChapterHeader
+    chapterNumber="04"
+    chapterLabel="Capítulo 4 · Lección 4"
+    title="Loading States"
+    readingTime={6}
+    difficulty="Interactions"
+  />
 
-  <article class="prose prose-invert max-w-none">
-    
-      <h2>Reduciendo la ansiedad del usuario</h2>
-      <p>Cuando el usuario pide información (hace login, busca un producto, guarda un documento), el servidor tarda en responder. Si la interfaz se queda congelada, el usuario piensa: <em>"¿Ha funcionado? ¿Hago clic otra vez?"</em>.</p>
-      <p>Los <strong>Loading States</strong> o estados de carga son interacciones visuales que dicen: "Tranquilo, estoy trabajando en ello". Los más modernos evitan la sensación de lentitud usando animaciones dinámicas, Skeletons o microinteracciones directamente en los botones de acción.</p>
-    
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué son los Loading States?</h3>
+    <p>Los estados de carga son representaciones visuales interinas que se muestran cuando la aplicación necesita tiempo para recuperar datos, procesar un formulario o conectarse a una API. Son la manera en que la UI pide paciencia de forma elegante.</p>
+
+    <h3>¿Para qué sirven?</h3>
+    <p>Sin un estado de carga, la interfaz parece congelada. Un usuario impaciente hará clic varias veces en un botón de "Comprar" si no sabe que su primer clic ya se está procesando, causando errores graves o cargos duplicados.</p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Reducir la fricción:</strong> Una animación suave hace que el tiempo de espera se perciba como más corto psicológicamente.</li>
+      <li><strong>Prevenir acciones destructivas:</strong> Deshabilita interacciones secundarias mientras algo crítico está sucediendo.</li>
+      <li><strong>Mantener el contexto:</strong> Los inline-loaders en los botones evitan tener que llevar al usuario a otra página.</li>
+    </ul>
+
+    <h3>¿Cómo se usan?</h3>
+    <p>El patrón moderno evita los spinners gigantes de pantalla completa. En su lugar, cuando el usuario hace clic, se inyecta una clase CSS en el propio botón que oculta el texto, inyecta un pequeño SVG rotatorio en el centro, y usa <code>pointer-events: none</code> para evitar el doble envío.</p>
   </article>
 
   <div class="my-8 not-prose">
-    <ConsejoProfesional tip="Para cargas muy cortas (menos de 500ms) es mejor no mostrar un loader. Si el loader parpadea demasiado rápido, la pantalla se sentirá inestable (jitter). Usa delays sutiles antes de mostrar el loader." />
+    <ConsejoProfesional tip='Para peticiones ultra rápidas (menos de 500ms), no muestres el loader de inmediato. Aplica un setTimeout para que el loader solo aparezca si la carga se demora, evitando 'flashes' visuales incómodos.' />
   </div>
 
   <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
-    Botón con estado de carga integrado (Inline Loader)
+    Botón con estado de carga integrado
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock tabs={tabs} />
-    <ResultPreview />
+    <TabbedCodeBlock
+      group="loading-states"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Haz clic en el botón para simular una petición asíncrona de 3 segundos.">
+      <div class="flex items-center justify-center h-full w-full">
+        <button class="submit-btn-p" id="submitBtnP">
+  <span class="btn-text">Guardar cambios</span>
+  <span class="btn-loader"></span>
+</button>
+      </div>
+    </ResultPreview>
   </div>
 
   <div class="my-8 flex flex-col gap-6">
     <ErroresComunesV3 errors={[
-      {
-        title: "Bloquear toda la pantalla",
-        description: "Mostrar un spinner gigante que cubre toda la pantalla por tareas pequeñas, frustrando la navegación y asustando al usuario."
-      },
-      {
-        title: "Dejar el botón activo",
-        description: "Olvidar cambiar el cursor o deshabilitar clicks múltiples mientras se carga, resultando en peticiones duplicadas al servidor."
-      }
-    ]} />
-    <PracticeCards steps={practiceSteps} />
+  {
+    label: 'Bloquear toda la pantalla',
+    description: 'Mostrar un spinner gigante por tareas pequeñas frustra la navegación.'
+  },
+  {
+    label: 'Dejar el botón activo',
+    description: 'Olvidar cambiar el cursor o deshabilitar clicks resulta en peticiones duplicadas.'
+  }
+]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Implementa un botón que asuma el estado de carga al hacer clic con un spinner integrado."
+      steps={practiceSteps}
+    />
   </div>
 </InteractionsLayout>
 
+<style>
+.submit-btn-p {
+  position: relative;
+  padding: 14px 28px;
+  background: #10b981;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  min-width: 160px;
+}
+
+.btn-text {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+}
+
+.btn-loader {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0.5);
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  opacity: 0;
+  transition: all 0.3s ease;
+}
+
+.submit-btn-p.loading {
+  background: #059669;
+  cursor: wait;
+}
+
+.submit-btn-p.loading .btn-text {
+  opacity: 0;
+  transform: translateY(-20px);
+}
+
+.submit-btn-p.loading .btn-loader {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+  animation: spin 1s infinite linear;
+}
+
+@keyframes spin {
+  to { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
+}
+</style>
+
 <script>
-  import { initCodeInteractions } from '../../scripts/code-interactions';
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  
   document.addEventListener('astro:page-load', () => {
     initCodeInteractions();
+    const btnP = document.getElementById('submitBtnP');
+    if(btnP) {
+      btnP.addEventListener('click', () => {
+        btnP.classList.add('loading');
+        setTimeout(() => btnP.classList.remove('loading'), 3000);
+      });
+    }
+  });
+  document.addEventListener('astro:after-swap', () => {
+    initCodeInteractions();
+    const btnP = document.getElementById('submitBtnP');
+    if(btnP) {
+      btnP.addEventListener('click', () => {
+        btnP.classList.add('loading');
+        setTimeout(() => btnP.classList.remove('loading'), 3000);
+      });
+    }
   });
 </script>

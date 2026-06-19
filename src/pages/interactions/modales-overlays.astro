@@ -1,16 +1,13 @@
 ---
 import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
 import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
 import ResultPreview from '../../components/ResultPreview.astro';
 import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const tabs = [
-  {
-    id: "index-html",
-    label: "index.html",
-    code: `<button class="open-modal-btn">Abrir Modal</button>
+const htmlCode = `<button class="open-modal-btn">Abrir Modal</button>
 
 <div class="overlay" id="demoOverlay">
   <div class="modal-box">
@@ -21,141 +18,109 @@ const tabs = [
       <button class="btn-confirm">Guardar</button>
     </div>
   </div>
-</div>
+</div>`;
 
-<script>
-  const openBtn = document.querySelector('.open-modal-btn');
-  const closeBtn = document.getElementById('closeBtn');
-  const overlay = document.getElementById('demoOverlay');
-
-  openBtn.addEventListener('click', () => {
-    overlay.classList.add('active');
-  });
-
-  closeBtn.addEventListener('click', () => {
-    overlay.classList.remove('active');
-  });
-  
-  // Cerrar al hacer clic fuera
-  overlay.addEventListener('click', (e) => {
-    if (e.target === overlay) {
-      overlay.classList.remove('active');
-    }
-  });
-</script>`
-  },
-  {
-    id: "styles-css",
-    label: "styles.css",
-    code: `.open-modal-btn, .btn-confirm, .btn-cancel {
-  padding: 10px 20px;
-  border-radius: 8px;
-  border: none;
-  cursor: pointer;
-  font-weight: 600;
-  color: white;
-}
-.open-modal-btn, .btn-confirm { background: #3b82f6; }
-.btn-cancel { background: transparent; border: 1px solid #444; }
-
-/* OVERLAY (Fondo oscuro) */
+const cssCode = `/* OVERLAY (Fondo oscuro) */
 .overlay {
-  position: fixed;
-  inset: 0; /* top: 0, left: 0, right: 0, bottom: 0 */
+  position: fixed; inset: 0;
   background: rgba(0, 0, 0, 0.7);
   backdrop-filter: blur(4px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; align-items: center; justify-content: center;
   z-index: 1000;
   
-  /* Estado oculto */
-  opacity: 0;
-  visibility: hidden;
+  opacity: 0; visibility: hidden;
   transition: all 0.4s ease;
 }
 
 /* CAJA DEL MODAL */
 .modal-box {
-  background: #1e293b;
-  padding: 32px;
-  border-radius: 16px;
-  width: 90%;
-  max-width: 400px;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-  border: 1px solid rgba(255,255,255,0.1);
-  color: white;
+  background: #1e293b; padding: 32px; border-radius: 16px; width: 90%; max-width: 400px;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white;
   
-  /* Estado oculto (escalado hacia abajo y empujado) */
+  /* Estado oculto (escalado y bajado) */
   transform: scale(0.9) translateY(20px);
   opacity: 0;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
-.modal-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 12px;
-  margin-top: 24px;
-}
-
-/* --- ESTADO ACTIVO --- */
+/* ESTADO ACTIVO */
 .overlay.active {
-  opacity: 1;
-  visibility: visible;
+  opacity: 1; visibility: visible;
 }
 
 .overlay.active .modal-box {
   transform: scale(1) translateY(0);
   opacity: 1;
-  /* Añadimos un pequeño delay para que entre después del overlay */
+  /* Delay para que entre después del overlay */
   transition-delay: 0.05s;
-}`
-  }
-];
+}`;
 
 const practiceSteps = [
-      {
-        title: "Drop from top",
-        description: "Cambia la animación del modal. En lugar de venir de abajo (.modal-box transform: scale(0.9) translateY(20px)), haz que caiga desde arriba de la pantalla (translateY(-100px))."
-      },
-      {
-        title: "Efecto de desenfoque",
-        description: "Aumenta el backdrop-filter: blur() a 10px en el overlay activo para ver cómo el fondo se difumina y concentra más la atención."
-      }
-    ];
+  {
+    number: 1,
+    text: 'Crea el .overlay con position: fixed, inset: 0 y opacity: 0.',
+    color: 'dm-purple',
+    rotate: '4deg'
+  },
+  {
+    number: 2,
+    text: 'Crea el .modal-box con transform: scale(0.9) translateY(20px).',
+    color: 'dm-green',
+    rotate: '-2deg'
+  },
+  {
+    number: 3,
+    text: 'Al añadir .active, el overlay pasa a opacity: 1 y visibility: visible.',
+    color: 'app-color-yellow400',
+    rotate: '3deg'
+  },
+  {
+    number: 4,
+    text: 'La .modal-box llega a scale(1) translateY(0) con delay de 50ms.',
+    color: 'dm-blue',
+    rotate: '-4deg'
+  },
+  {
+    number: 5,
+    text: 'Cierra el modal al hacer clic en el overlay (fuera de la caja).',
+    color: 'dm-purple',
+    rotate: '2deg'
+  }
+];
 ---
 
 <InteractionsLayout
   title="Modales y overlays - Genesis Pixel"
   currentLesson="/interactions/modales-overlays"
+  prevLesson={{ title: 'Cards interactivas', href: '/interactions/cards' }}
   nextLesson={{ title: 'Dropdowns y menús', href: '/interactions/dropdowns-menus' }}
 >
-  <div class="mb-12">
-    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
-      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-      Interactions
-    </div>
-    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
-      Modales y overlays
-    </h1>
-    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
-      Descubre cómo dar vida a tus interfaces.
-    </p>
-  </div>
+  <ChapterHeader
+    chapterNumber="04"
+    chapterLabel="Capítulo 4 · Lección 8"
+    title="Modales y overlays"
+    readingTime={7}
+    difficulty="Interactions"
+  />
 
-  <article class="prose prose-invert max-w-none">
-    
-      <h2>Interrumpiendo con elegancia</h2>
-      <p>Un modal es probablemente el componente más agresivo de la UI. Obliga al usuario a detener lo que está haciendo, oscurece la pantalla (overlay) y exige atención. Por tanto, su aparición debe ser <strong>suave e intencional</strong>.</p>
-      <p>Aparecer instantáneamente genera ceguera e interrupción mental. Una entrada animada (por ejemplo, escalar desde un tamaño más pequeño y difuminarse) guía el ojo hacia el centro y avisa al cerebro que el contexto ha cambiado pero la pantalla detrás sigue ahí.</p>
-    
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué son los Modales y Overlays?</h3>
+    <p>Un modal (o caja de diálogo) es una ventana secundaria que se sobrepone al contenido principal para requerir la atención inmediata del usuario. Un overlay es la capa semi-transparente que se coloca detrás del modal para oscurecer y bloquear la interfaz base, desenfocando al usuario del fondo.</p>
+
+    <h3>¿Para qué sirven?</h3>
+    <p>Son el componente más agresivo de la UI moderna, por lo que su propósito es interrumpir. Se utilizan para flujos críticos que no deben ignorarse o para configuraciones rápidas que no ameritan cargar una página completa.</p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Prevenir errores críticos:</strong> Pedir confirmación (¿Seguro que deseas borrar este proyecto?).</li>
+      <li><strong>Concentración total:</strong> Mostrar un formulario complejo sin distracciones periféricas.</li>
+      <li><strong>Mantener el contexto:</strong> El usuario no abandona la página actual; simplemente abre un paréntesis, lo resuelve y vuelve exactamente donde estaba.</li>
+    </ul>
+
+    <h3>¿Cómo se usan?</h3>
+    <p>Aparecer instantáneamente genera "ceguera de interfaz" (interrupción brusca). Una entrada animada guía el ojo hacia el centro y avisa al cerebro que el contexto ha cambiado suavemente. Usualmente se aplica <code>opacity: 0</code> y <code>visibility: hidden</code> al overlay y se usa un <code>transition-delay</code> en la caja del modal para que aparezca una fracción de segundo <em>después</em> de que el fondo se ha oscurecido.</p>
   </article>
 
   <div class="my-8 not-prose">
-    <ConsejoProfesional tip="Anima siempre el fondo (overlay) con opacidad para oscurecer la pantalla, y el modal en sí usando &quot;transform: scale&quot; u &quot;transform: translateY&quot;. Las salidas (cuando se cierra) deben ser un 30% más rápidas que las entradas." />
+    <ConsejoProfesional tip='Anima siempre el fondo (overlay) con opacidad para oscurecer la pantalla, y el modal en sí usando transform: scale o transform: translateY. Evita animar propiedades de layout como width/height.' />
   </div>
 
   <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
@@ -163,28 +128,115 @@ const practiceSteps = [
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock tabs={tabs} />
-    <ResultPreview />
+    <TabbedCodeBlock
+      group="modales-overlays"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Haz clic en el botón para abrir el modal. Haz clic en la zona oscura o cancelar para cerrarlo.">
+      <div class="flex items-center justify-center h-full w-full">
+        <button class="open-modal-btn-p" style="padding:10px 20px; border-radius:8px; border:none; cursor:pointer; font-weight:600; color:white; background:#3b82f6;">Abrir Modal</button>
+
+<div class="overlay-p" id="demoOverlayP">
+  <div class="modal-box-p">
+    <h3 style="margin-top:0">Configuración</h3>
+    <p>¿Seguro que deseas guardar estos cambios?</p>
+    <div class="modal-actions" style="display:flex; justify-content:flex-end; gap:12px; margin-top:24px;">
+      <button class="btn-cancel-p" id="closeBtnP" style="padding:10px 20px; border-radius:8px; cursor:pointer; background:transparent; border:1px solid #444; color:white;">Cancelar</button>
+      <button class="btn-confirm-p" style="padding:10px 20px; border-radius:8px; border:none; cursor:pointer; background:#3b82f6; color:white;">Guardar</button>
+    </div>
+  </div>
+</div>
+      </div>
+    </ResultPreview>
   </div>
 
   <div class="my-8 flex flex-col gap-6">
     <ErroresComunesV3 errors={[
-      {
-        title: "Ignorar la accesibilidad",
-        description: "Crear modales impresionantes pero olvidar capturar el foco (Focus Trap). Un usuario con teclado podría tabular por los links ocultos bajo el modal."
-      },
-      {
-        title: "Display: none inmediato",
-        description: "En React/Vue, desmontar el modal del DOM antes de dejar que termine la animación de salida de CSS, haciéndolo desaparecer bruscamente."
-      }
-    ]} />
-    <PracticeCards steps={practiceSteps} />
+  {
+    label: 'Ignorar la accesibilidad',
+    description: 'Crear modales impresionantes pero olvidar capturar el foco (Focus Trap). Un usuario con teclado podría tabular por links ocultos.'
+  },
+  {
+    label: 'Display: none inmediato',
+    description: 'En React/Vue, desmontar el modal del DOM antes de dejar que termine la animación de salida de CSS hace que desaparezca bruscamente.'
+  }
+]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Implementa un modal completo con overlay animado y caja que aparece con rebote."
+      steps={practiceSteps}
+    />
   </div>
 </InteractionsLayout>
 
+<style>
+/* OVERLAY (Fondo oscuro) */
+.overlay-p {
+  position: fixed; inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1000;
+  
+  opacity: 0; visibility: hidden;
+  transition: all 0.4s ease;
+}
+
+/* CAJA DEL MODAL */
+.modal-box-p {
+  background: #1e293b; padding: 32px; border-radius: 16px; width: 90%; max-width: 400px;
+  box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white;
+  
+  /* Estado oculto (escalado y bajado) */
+  transform: scale(0.9) translateY(20px);
+  opacity: 0;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ESTADO ACTIVO */
+.overlay-p.active {
+  opacity: 1; visibility: visible;
+}
+
+.overlay-p.active .modal-box-p {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  /* Delay para que entre después del overlay */
+  transition-delay: 0.05s;
+}
+</style>
+
 <script>
-  import { initCodeInteractions } from '../../scripts/code-interactions';
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  
   document.addEventListener('astro:page-load', () => {
     initCodeInteractions();
+    const openBtn = document.querySelector('.open-modal-btn-p');
+    const closeBtn = document.getElementById('closeBtnP');
+    const overlay = document.getElementById('demoOverlayP');
+    if(openBtn && overlay && closeBtn) {
+      openBtn.addEventListener('click', () => overlay.classList.add('active'));
+      closeBtn.addEventListener('click', () => overlay.classList.remove('active'));
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.classList.remove('active');
+      });
+    }
+  });
+  document.addEventListener('astro:after-swap', () => {
+    initCodeInteractions();
+    const openBtn = document.querySelector('.open-modal-btn-p');
+    const closeBtn = document.getElementById('closeBtnP');
+    const overlay = document.getElementById('demoOverlayP');
+    if(openBtn && overlay && closeBtn) {
+      openBtn.addEventListener('click', () => overlay.classList.add('active'));
+      closeBtn.addEventListener('click', () => overlay.classList.remove('active'));
+      overlay.addEventListener('click', (e) => {
+        if (e.target === overlay) overlay.classList.remove('active');
+      });
+    }
   });
 </script>

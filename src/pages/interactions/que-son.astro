@@ -1,69 +1,68 @@
 ---
 import InteractionsLayout from '../../layouts/InteractionsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
 import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
 import ResultPreview from '../../components/ResultPreview.astro';
 import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const tabs = [
-  {
-    id: "index-html",
-    label: "index.html",
-    code: `<!-- Sin interacción -->
-<button class="btn-bad">Click me</button>
+const htmlCode = `<div class="demo-btns">
+  <!-- Sin interacción -->
+  <button class="btn-bad">Sin feedback</button>
 
-<!-- Con interacción clara -->
-<button class="btn-good">Interact with me</button>`
-  },
-  {
-    id: "styles-css",
-    label: "styles.css",
-    code: `.btn-bad {
-  padding: 12px 24px;
-  background: #333;
+  <!-- Con interacción completa -->
+  <button class="btn-good">Con feedback</button>
+</div>`;
+
+const cssCode = `.demo-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  align-items: center;
+}
+
+/* MAL: ningún cambio visual */
+.btn-bad {
+  padding: 14px 28px;
+  background: #334155;
   color: #fff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  /* Ningún feedback visual */
+  font-size: 1rem;
 }
 
+/* BIEN: feedback completo */
 .btn-good {
-  padding: 12px 24px;
+  padding: 14px 28px;
   background: #6d28d9;
   color: #fff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
+  font-size: 1rem;
   transition: all 0.2s ease;
 }
 
-/* Feedback visual al pasar el cursor */
 .btn-good:hover {
   background: #7c3aed;
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(124,58,237,0.4);
 }
 
-/* Feedback visual al presionar */
 .btn-good:active {
-  transform: translateY(0);
-  box-shadow: 0 2px 4px rgba(124, 58, 237, 0.4);
-}`
-  }
-];
+  transform: translateY(1px);
+  box-shadow: 0 2px 6px rgba(124,58,237,0.3);
+}`;
 
 const practiceSteps = [
-      {
-        title: "Añade un estado :active",
-        description: "En el .btn-bad, intenta darle un pequeño cambio visual cuando el usuario haga clic usando la pseudo-clase :active, por ejemplo reduciendo su escala."
-      },
-      {
-        title: "Suaviza el cambio",
-        description: "Recuerda el capítulo anterior: añade una transition al .btn-bad para que el cambio no sea instantáneo."
-      }
-    ];
+  { number: 1, text: 'Crea un botón básico sin ningún estilo de hover.', color: 'dm-purple', rotate: '-3deg' },
+  { number: 2, text: 'Agrega :hover con un cambio de opacidad o color.', color: 'dm-green', rotate: '2deg' },
+  { number: 3, text: 'Añade transition: all 0.2s ease y observa la diferencia.', color: 'app-color-yellow400', rotate: '-5deg' },
+  { number: 4, text: 'Diseña un :active que simule presión física con scale(0.96).', color: 'dm-blue', rotate: '3deg' },
+  { number: 5, text: 'Reflexiona: ¿cuál de los dos botones invita más al clic?', color: 'dm-purple', rotate: '-2deg' },
+];
 ---
 
 <InteractionsLayout
@@ -71,62 +70,115 @@ const practiceSteps = [
   currentLesson="/interactions/que-son"
   nextLesson={{ title: 'Microinteracciones', href: '/interactions/microinteracciones' }}
 >
-  <div class="mb-12">
-    <div class="mb-4 inline-flex items-center gap-2 rounded-full border border-[var(--dm-green-500)]/30 bg-[var(--dm-green-500)]/10 px-3 py-1 text-sm text-[var(--dm-green-500)]">
-      <svg class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
-      </svg>
-      Interactions
-    </div>
-    <h1 class="font-afronaut text-4xl font-light text-[var(--color-text)] md:text-5xl lg:text-6xl">
-      ¿Qué son las Interactions?
-    </h1>
-    <p class="mt-4 text-xl text-[var(--dm-light-300)]">
-      Descubre cómo dar vida a tus interfaces.
-    </p>
-  </div>
+  <ChapterHeader
+    chapterNumber="04"
+    chapterLabel="Capítulo 4 · Lección 1"
+    title="¿Qué son las Interactions?"
+    readingTime={7}
+    difficulty="Interactions"
+  />
 
-  <article class="prose prose-invert max-w-none">
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué son las Interactions?</h3>
+    <p>Las interacciones son la respuesta directa, visual y táctil que una interfaz le da al usuario cuando este realiza una acción. Si Keyframes es el movimiento autónomo de la aplicación, y Transforms es su geometría física, las <strong>Interactions</strong> son el diálogo entre el software y el humano.</p>
     
-      <h2>De lo estático a lo vivo</h2>
-      <p>Hasta ahora, hemos visto cómo las animaciones (Keyframes) y las transformaciones (Transform) nos permiten mover y alterar elementos. También vimos cómo las transiciones (Transitions) suavizan el paso de un estado a otro. Las <strong>Interactions</strong> (Interacciones) son el siguiente nivel: se trata de cómo nuestra interfaz responde directamente a las acciones del usuario.</p>
-      <p>Una interacción ocurre cuando el usuario hace algo (hover, click, focus) y la interfaz le responde con feedback visual inmediato. Esto no es solo estético, es una pieza clave en la <strong>UX (Experiencia de Usuario) moderna</strong>. Si un botón no cambia cuando pasas el cursor, el usuario duda si puede hacer clic.</p>
-      <h3>Diferencia entre animaciones aisladas y UI</h3>
-      <p>Una animación aislada es un elemento que se mueve solo en la pantalla (como un loader que da vueltas). El comportamiento de la UI (interacciones) depende del usuario. Aquí no controlamos <em>cuándo</em> ocurre, pero sí controlamos <em>cómo</em> reacciona la interfaz.</p>
-    
+    <h3>¿Para qué sirven?</h3>
+    <p>Imagina presionar el botón de un ascensor físico y que no se encienda su luz. No sabrías si el botón se rompió o si el ascensor ya viene. Las interacciones sirven exactamente para resolver esa ansiedad en el mundo digital.</p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Confirmación de estado:</strong> Le dicen al usuario "hemos registrado tu acción".</li>
+      <li><strong>Prevención de errores:</strong> Indican si un elemento es clickeable o si está desactivado.</li>
+      <li><strong>Feedback asíncrono:</strong> Ocupan la mente del usuario mientras espera a que el servidor responda.</li>
+    </ul>
+
+    <h3>¿Cómo se usan?</h3>
+    <p>En CSS, las interacciones se gestionan vinculando transiciones (<code>transition</code>) a cambios de estado producidos por pseudo-clases (<code>:hover</code>, <code>:active</code>, <code>:focus</code>) o mediante clases manipuladas por JavaScript (<code>.is-loading</code>, <code>.is-success</code>).</p>
+    <p>El flujo siempre es el mismo: defines un estado base visualmente estable, defines cómo debe verse en el estado alterado, y aplicas una transición en el elemento original para que el cambio de A hacia B sea suave y natural.</p>
   </article>
 
   <div class="my-8 not-prose">
-    <ConsejoProfesional tip="Piensa en las interacciones como una conversación. Si el usuario &quot;habla&quot; haciendo clic o pasando el cursor, la interfaz debe &quot;responder&quot; visualmente de manera clara y rápida, ni muy lenta (aburrido) ni muy abrupta (agresivo)." />
+    <ConsejoProfesional tip='Piensa en las interacciones como una conversación. El usuario habla haciendo clic o pasando el cursor, y la interfaz debe responder de forma clara y rápida. Usa tiempos entre 150ms y 300ms; más lento parecerá lag.' />
   </div>
 
   <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
-    Ejemplo de interacción básica vs ausente
+    Botón sin interacción vs botón con feedback completo
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock tabs={tabs} />
-    <ResultPreview />
+    <TabbedCodeBlock
+      group="interactions-que-son"
+      tabs={[
+        { id: 'html', label: 'HTML', code: htmlCode },
+        { id: 'css', label: 'CSS', code: cssCode },
+      ]}
+    />
+    <ResultPreview description="Pasa el cursor y haz clic en cada botón para sentir la diferencia.">
+      <div class="flex items-center justify-center h-full w-full">
+        <div class="demo-btns">
+          <button class="btn-bad">Sin feedback</button>
+          <button class="btn-good">Con feedback</button>
+        </div>
+      </div>
+    </ResultPreview>
   </div>
 
   <div class="my-8 flex flex-col gap-6">
     <ErroresComunesV3 errors={[
-      {
-        title: "Cero feedback visual",
-        description: "Crear elementos interactivos como botones o enlaces sin cambiar su estado en hover o active, haciendo dudar al usuario si el elemento es clickable."
-      },
-      {
-        title: "Reacciones exageradas",
-        description: "Mover o escalar tanto un botón que el cursor se salga de él accidentalmente, arruinando la usabilidad."
-      }
+      { label: 'Ningún feedback visual', description: 'Crear botones o enlaces sin cambio de estado en hover hace que el usuario dude si el elemento es interactivo.' },
+      { label: 'Reacciones exageradas', description: 'Mover tanto un elemento en hover que el cursor se salga de él accidentalmente destruye la usabilidad.' },
+      { label: 'Ignorar el teclado', description: 'Diseñar solo para el ratón y olvidar los estados :focus-visible deja fuera a los usuarios que navegan por teclado.' },
     ]} />
-    <PracticeCards steps={practiceSteps} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Crea dos botones idénticos en HTML, uno sin interacción y otro con hover, active y focus bien definidos. Compara la sensación al usarlos."
+      steps={practiceSteps}
+    />
   </div>
 </InteractionsLayout>
 
+<style>
+  .demo-btns {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .btn-bad {
+    padding: 14px 28px;
+    background: #334155;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+  }
+
+  .btn-good {
+    padding: 14px 28px;
+    background: #6d28d9;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+  }
+
+  .btn-good:hover {
+    background: #7c3aed;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(124,58,237,0.4);
+  }
+
+  .btn-good:active {
+    transform: translateY(1px);
+    box-shadow: 0 2px 6px rgba(124,58,237,0.3);
+  }
+</style>
+
 <script>
-  import { initCodeInteractions } from '../../scripts/code-interactions';
-  document.addEventListener('astro:page-load', () => {
-    initCodeInteractions();
-  });
+  import { initCodeInteractions } from '../../scripts/code-interactions.js';
+  document.addEventListener('astro:page-load', () => initCodeInteractions());
+  document.addEventListener('astro:after-swap', () => initCodeInteractions());
 </script>
