@@ -7,135 +7,120 @@ import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const htmlCode = `<div class="final-project-dashboard">
-  <!-- 1. Loader Animado -->
-  <div class="project-section">
-    <div class="custom-spinner"></div>
-    <span class="sec-lbl">Cargando...</span>
-  </div>
-  
-  <!-- 2. Card Animada -->
-  <div class="project-section">
-    <div class="glow-card">
-      <div class="card-glow-overlay"></div>
-      <div class="card-content-wrap">
-        <h3>Genesis Pixel</h3>
-        <p>Aprende animaciones CSS avanzadas de forma visual.</p>
-        
-        <!-- 3. Botón Interactivo -->
-        <button class="interactive-btn-final">
-          <span>Explorar Curso</span>
-          <div class="wave-ripple"></div>
-        </button>
-      </div>
-    </div>
-  </div>
+const loaderHtml = `<div class="loader-doble-orbita">
+  <div class="orbita orbita-1"></div>
+  <div class="orbita orbita-2"></div>
 </div>`;
 
-const cssCode = `/* 1. Loader Animado Circular */
-@keyframes doubleOrbit {
+const loaderCss = `@keyframes girar {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
 
-.custom-spinner {
-  width: 40px;
-  height: 40px;
-  border: 3px solid rgba(168, 85, 247, 0.1);
-  border-top-color: #a855f7;
-  border-bottom-color: #3b82f6;
-  border-radius: 50%;
-  animation: doubleOrbit 1s infinite linear;
+.loader-doble-orbita {
+  width: 60px;
+  height: 60px;
+  position: relative;
 }
 
-/* 2. Card Animada con Glow */
-@keyframes cardFloat {
+.orbita {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 3px solid transparent;
+}
+
+.orbita-1 {
+  border-top-color: #9FA6FF;
+  animation: girar 1s linear infinite;
+}
+
+.orbita-2 {
+  inset: 8px;
+  border-bottom-color: #57B0FB;
+  animation: girar 0.7s linear infinite reverse;
+}`;
+
+const cardHtml = `<div class="tarjeta-animada">
+  <div class="brillo-card"></div>
+  <div class="contenido">
+    <h3>Genesis Pixel</h3>
+    <p>Aprende animaciones CSS avanzadas de forma visual.</p>
+    <button class="btn-pulso">
+      <span>Explorar Curso</span>
+    </button>
+  </div>
+</div>`;
+
+const cardCss = `@keyframes flotar {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-6px); }
 }
 
-.glow-card {
+@keyframes pulso {
+  0% { box-shadow: 0 0 0 0 rgba(159, 166, 255, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(159, 166, 255, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(159, 166, 255, 0); }
+}
+
+.tarjeta-animada {
   width: 220px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
+  background: #9FA6FF;
+  border-radius: 0;
   position: relative;
   overflow: hidden;
   padding: 16px;
-  animation: cardFloat 4s infinite ease-in-out;
-  transition: all 0.3s ease;
+  animation: flotar 4s infinite ease-in-out;
 }
 
-.glow-card:hover {
-  transform: translateY(-8px) scale(1.02);
-  border-color: rgba(168, 85, 247, 0.4);
-  box-shadow: 0 12px 30px rgba(168, 85, 247, 0.15);
+.brillo-card {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 60%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
-.glow-card h3 {
+.tarjeta-animada:hover .brillo-card {
+  opacity: 1;
+}
+
+.tarjeta-animada h3 {
   margin: 0 0 6px 0;
   font-size: 1rem;
-  color: #121212;
-  font-family: system-ui, sans-serif;
+  color: var(--color-bg);
+  font-family: var(--font-afronaut, system-ui, sans-serif);
 }
 
-.glow-card p {
+.tarjeta-animada p {
   margin: 0 0 16px 0;
   font-size: 0.75rem;
-  color: #9ca3af;
+  color: var(--color-bg);
+  opacity: 0.7;
   line-height: 1.4;
 }
 
-/* 3. Botón Interactivo con Efecto Ripple */
-@keyframes buttonPulse {
-  0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(168, 85, 247, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
-}
-
-.interactive-btn-final {
+.btn-pulso {
   width: 100%;
   padding: 10px 16px;
-  background: linear-gradient(135deg, #a855f7, #3b82f6);
+  background: var(--color-bg);
   border: none;
   border-radius: 0;
-  color: #121212;
-  font-family: system-ui, sans-serif;
+  color: #9FA6FF;
+  font-family: var(--font-afronaut, system-ui, sans-serif);
   font-weight: bold;
   font-size: 0.75rem;
   cursor: pointer;
-  position: relative;
-  overflow: hidden;
-  animation: buttonPulse 2s infinite;
+  animation: pulso 2s infinite;
   transition: transform 0.2s ease;
 }
 
-.interactive-btn-final:active {
+.btn-pulso:active {
   transform: scale(0.96);
-}
-
-.final-project-dashboard {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 32px;
-  width: 100%;
-}
-
-.project-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.sec-lbl {
-  font-size: 0.65rem;
-  color: #9ca3af;
 }`;
 
 const practiceSteps = [
-  { number: 1, text: 'Integra los tres elementos (Loader, Card y Botón) en un diseño unificado', color: 'dm-purple', rotate: '2deg' },
+  { number: 1, text: 'Integra los dos proyectos en un diseño unificado', color: 'dm-purple', rotate: '2deg' },
   { number: 2, text: 'Aplica secuenciación en la carga de los componentes usando animation-delay', color: 'dm-green', rotate: '-3deg' },
   { number: 3, text: 'Optimiza el rendimiento asegurando que las animaciones cíclicas solo alteren transform y opacity', color: 'app-color-yellow400', rotate: '4deg' },
   { number: 4, text: 'Supera el desafío final añadiendo un efecto de brillo que recorra la tarjeta de izquierda a derecha', color: 'dm-blue', rotate: '-1deg' },
@@ -149,7 +134,7 @@ const practiceSteps = [
 >
   <ChapterHeader
     chapterNumber="01"
-    chapterLabel="Capítulo 1 · Lección 15"
+    chapterLabel="Capítulo 1 · Proyecto Final"
     title="Proyecto Final de Keyframes"
     readingTime={10}
   />
@@ -185,36 +170,58 @@ const practiceSteps = [
     <ConsejoProfesional tip="¡Has dominado el primer pilar de las animaciones CSS! La base de los @keyframes te servirá en cualquier framework o plataforma en la que desarrolles en el futuro." />
   </div>
 
-  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
-    Panel de Proyecto Final
-  </h3>
+  <!-- Proyecto 1: Loader de Doble Órbita -->
+  <div class="mt-16 mb-4 text-center">
+    <h3 class="font-medium mb-2">Proyecto 1 — Loader de Doble Órbita</h3>
+    <p class="text-sm mb-6" style="color: white; opacity: 0.7;">
+      Dos anillos concéntricos, cada uno rotando a velocidad y dirección distinta, creando un spinner premium que transmite procesamiento activo con distintas capas de actividad.
+    </p>
+  </div>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
     <TabbedCodeBlock
-      group="final-project"
+      group="proyecto-loader"
       tabs={[
-        { id: 'html', label: 'HTML', code: htmlCode },
-        { id: 'css', label: 'CSS', code: cssCode },
+        { id: 'html', label: 'HTML', code: loaderHtml },
+        { id: 'css', label: 'CSS', code: loaderCss },
       ]}
     />
-    <ResultPreview description="Una vista del Loader de doble órbita y la Tarjeta interactiva con un botón que palpita continuamente.">
-      <div class="flex items-center justify-center h-full w-full px-4">
-        <div class="final-project-dashboard">
-          <div class="project-section">
-            <div class="custom-spinner"></div>
-            <span class="sec-lbl">Cargando...</span>
-          </div>
-          
-          <div class="project-section">
-            <div class="glow-card">
-              <div class="card-content-wrap">
-                <h3>Genesis Pixel</h3>
-                <p>Aprende animaciones CSS avanzadas de forma visual.</p>
-                <button class="interactive-btn-final">
-                  <span>Explorar Curso</span>
-                </button>
-              </div>
-            </div>
+    <ResultPreview description="Dos anillos con distintas velocidades (1s, 0.7s) y direcciones (normal, reverse). La combinación crea un spinner visualmente rico sin JavaScript.">
+      <div class="flex items-center justify-center h-full w-full">
+        <div class="loader-doble-orbita">
+          <div class="orbita orbita-1"></div>
+          <div class="orbita orbita-2"></div>
+        </div>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <!-- Proyecto 2: Tarjeta Animada con Pulso -->
+  <div class="mt-16 mb-4 text-center">
+    <h3 class="font-medium mb-2">Proyecto 2 — Tarjeta Animada con Pulso</h3>
+    <p class="text-sm mb-6" style="color: white; opacity: 0.7;">
+      Una tarjeta que flota suavemente con un botón que palpita continuamente invitando al usuario a interactuar. El efecto de brillo sigue la posición del cursor.
+    </p>
+  </div>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="proyecto-card"
+      tabs={[
+        { id: 'html', label: 'HTML', code: cardHtml },
+        { id: 'css', label: 'CSS', code: cardCss },
+      ]}
+    />
+    <ResultPreview description="Una tarjeta que flota con ease-in-out y un botón con pulso expansivo de box-shadow. Al hacer hover aparece un efecto de brillo.">
+      <div class="flex items-center justify-center h-full w-full">
+        <div class="tarjeta-animada">
+          <div class="brillo-card"></div>
+          <div class="contenido">
+            <h3>Genesis Pixel</h3>
+            <p>Aprende animaciones CSS avanzadas de forma visual.</p>
+            <button class="btn-pulso">
+              <span>Explorar Curso</span>
+            </button>
           </div>
         </div>
       </div>
@@ -222,123 +229,143 @@ const practiceSteps = [
   </div>
 
   <div class="my-8 flex flex-col gap-6">
-    <ErroresComunesV3 errors={[
-      { label: 'Abuso de box-shadow animado', description: 'Animar box-shadow puede ser costoso para navegadores móviles. Limita su tamaño de onda o utilízalo de forma selectiva.' },
-      { label: 'Omitir transiciones de hover al salir', description: 'Asegúrate de colocar transiciones normales de CSS en los selectores base para que, cuando el usuario quite el ratón, los elementos vuelvan suavemente a su estado original.' },
-    ]} />
-
     <PracticeCards
-      title="Completa el Desafío"
-      description="Consolida tu aprendizaje construyendo y refinando el panel interactivo completo."
+      title="Desafío Final"
+      description="Combina el loader con la tarjeta: cuando pases el ratón sobre la tarjeta, aparece un overlay con el loader (simulando que se está cargando contenido). Al salir el ratón, desaparece."
       steps={practiceSteps}
     />
+  </div>
+
+  <!-- Resumen del capítulo -->
+  <div class="py-6">
+    <h3 class="mb-8 text-center font-medium text-[var(--color-text)]">
+      Lo que aprendiste en este capítulo
+    </h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6">
+      {[
+        { prop: '@keyframes', desc: 'Definir secuencias de movimiento con porcentajes' },
+        { prop: 'animation-duration', desc: 'Controlar la velocidad de cada ciclo' },
+        { prop: 'animation-timing-function', desc: 'Curvas de aceleración: ease, linear, cubic-bezier' },
+        { prop: 'animation-delay', desc: 'Secuenciar elementos en cascada' },
+        { prop: 'animation-iteration-count', desc: 'Repeticiones infinitas o contadas' },
+        { prop: 'animation-direction', desc: 'normal, reverse, alternate y alternate-reverse' },
+        { prop: 'animation-fill-mode', desc: 'Mantener estado final o inicial antes/después' },
+        { prop: 'animation-play-state', desc: 'Pausar y reanudar animaciones con JavaScript' },
+        { prop: 'Shorthand animation', desc: 'Sintaxis completa en una sola línea' },
+        { prop: 'Propiedades animables', desc: 'Solo transform y opacity son compatibles con GPU' },
+      ].map((item, index) => (
+        <div class="flex gap-4">
+          <span class="mt-0.5 shrink-0 font-afronaut text-[13px] text-[var(--color-text)]" style="opacity: 0.4 !important;">
+            {String(index + 1).padStart(2, '0')}
+          </span>
+          <div class="flex flex-col gap-1">
+            <span class="text-[14px] text-white" style="color: white; opacity: 1 !important; font-family: var(--font-afronaut, system-ui, sans-serif); font-weight: 300;">
+              {item.prop}
+            </span>
+            <span class="text-[13px] leading-relaxed text-[var(--dm-light-200)]">
+              {item.desc}
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
   </div>
 </CourseLayout>
 
 <style>
-  @keyframes doubleOrbit {
+  @keyframes girar {
     0% { transform: rotate(0deg); }
     100% { transform: rotate(360deg); }
   }
 
-  .custom-spinner {
-    width: 40px;
-    height: 40px;
-    border: 3px solid rgba(168, 85, 247, 0.1);
-    border-top-color: #a855f7;
-    border-bottom-color: #3b82f6;
-    border-radius: 50%;
-    animation: doubleOrbit 1s infinite linear;
+  .loader-doble-orbita {
+    width: 60px;
+    height: 60px;
+    position: relative;
   }
 
-  @keyframes cardFloat {
+  .orbita {
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 3px solid transparent;
+  }
+
+  .orbita-1 {
+    border-top-color: #9FA6FF;
+    animation: girar 1s linear infinite;
+  }
+
+  .orbita-2 {
+    inset: 8px;
+    border-bottom-color: #57B0FB;
+    animation: girar 0.7s linear infinite reverse;
+  }
+
+  @keyframes flotar {
     0%, 100% { transform: translateY(0); }
     50% { transform: translateY(-6px); }
   }
 
-  .glow-card {
+  @keyframes pulso {
+    0% { box-shadow: 0 0 0 0 rgba(159, 166, 255, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(159, 166, 255, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(159, 166, 255, 0); }
+  }
+
+  .tarjeta-animada {
     width: 220px;
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 16px;
+    background: #9FA6FF;
+    border-radius: 0;
     position: relative;
     overflow: hidden;
     padding: 16px;
-    animation: cardFloat 4s infinite ease-in-out;
-    transition: all 0.3s ease;
+    animation: flotar 4s infinite ease-in-out;
   }
 
-  .glow-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    border-color: rgba(168, 85, 247, 0.4);
-    box-shadow: 0 12px 30px rgba(168, 85, 247, 0.15);
+  .brillo-card {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.2) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
   }
 
-  .glow-card h3 {
+  .tarjeta-animada:hover .brillo-card {
+    opacity: 1;
+  }
+
+  .tarjeta-animada h3 {
     margin: 0 0 6px 0;
     font-size: 1rem;
-    color: #121212;
+    color: var(--color-bg);
     font-family: var(--font-afronaut, system-ui, sans-serif);
-    font-weight: 600;
   }
 
-  .glow-card p {
+  .tarjeta-animada p {
     margin: 0 0 16px 0;
     font-size: 0.75rem;
-    color: #9ca3af;
+    color: var(--color-bg);
+    opacity: 0.7;
     line-height: 1.4;
   }
 
-  @keyframes buttonPulse {
-    0% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0.4); }
-    70% { box-shadow: 0 0 0 10px rgba(168, 85, 247, 0); }
-    100% { box-shadow: 0 0 0 0 rgba(168, 85, 247, 0); }
-  }
-
-  .interactive-btn-final {
+  .btn-pulso {
     width: 100%;
     padding: 10px 16px;
-    background: linear-gradient(135deg, #a855f7, #3b82f6);
+    background: var(--color-bg);
     border: none;
     border-radius: 0;
-    color: #121212;
+    color: #9FA6FF;
     font-family: var(--font-afronaut, system-ui, sans-serif);
     font-weight: bold;
     font-size: 0.75rem;
     cursor: pointer;
-    position: relative;
-    overflow: hidden;
-    animation: buttonPulse 2s infinite;
+    animation: pulso 2s infinite;
     transition: transform 0.2s ease;
   }
 
-  .interactive-btn-final:active {
+  .btn-pulso:active {
     transform: scale(0.96);
   }
-
-  .final-project-dashboard {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 32px;
-    width: 100%;
-  }
-
-  .project-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 8px;
-  }
-
-  .sec-lbl {
-    font-size: 0.65rem;
-    color: #9ca3af;
-  }
 </style>
-
-<script>
-  import { initCodeInteractions } from '../../scripts/code-interactions.js';
-  document.addEventListener('astro:page-load', () => initCodeInteractions());
-  document.addEventListener('astro:after-swap', () => initCodeInteractions());
-</script>
