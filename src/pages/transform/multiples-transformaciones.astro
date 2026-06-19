@@ -9,7 +9,10 @@ import PracticeCards from '../../components/PracticeCards.astro';
 
 const htmlCode = `<div class="icono-contenedor">
   <div class="icono-cta">
-    <span class="icono-flecha">→</span>
+    <svg class="icono-flecha" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <line x1="5" y1="12" x2="19" y2="12"/>
+      <polyline points="12 5 19 12 12 19"/>
+    </svg>
     Descubrir más
   </div>
 </div>`;
@@ -129,7 +132,10 @@ const practiceSteps = [
     <ResultPreview description="Pasa el ratón sobre el botón. Dos transformaciones ocurren coordinadas: el contenedor sube y la flecha se dispara hacia adelante. Cada elemento tiene su propia curva de timing.">
       <div class="flex items-center justify-center h-full w-full">
         <div class="cta-demo">
-          <span class="flecha-demo">→</span>
+          <svg class="flecha-demo" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"/>
+            <polyline points="12 5 19 12 12 19"/>
+          </svg>
           Descubrir más
         </div>
       </div>
