@@ -5,6 +5,7 @@ const navItems = [
   { href: '/keyframes/que-son', label: 'Keyframes' },
   { href: '/transitions/que-son', label: 'Transitions' },
   { href: '/transform/que-es', label: 'Transform' },
+  { href: '/interactions/que-son', label: 'Interactions' },
   { href: '/threejs', label: 'three.js' },
   { href: '/proyectos', label: 'Proyectos' },
   { href: '/recursos', label: 'Recursos' },
@@ -373,6 +374,9 @@ const navItems = [
           {item.label === 'Transform' && (
             <span style="position: absolute; top: -5px; right: -8px; background: #57B0FB; color: var(--color-bg); font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif);">Avanzado</span>
           )}
+          {item.label === 'Interactions' && (
+            <span style="position: absolute; top: -5px; right: -8px; background: #f59e0b; color: var(--color-bg); font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif);">UI/UX</span>
+          )}
         </a>
       ))}
   </div>
@@ -399,6 +403,7 @@ const navItems = [
         href === currentPath ||
         (href === '/keyframes/que-son' && currentPath.startsWith('/keyframes/')) ||
         (href === '/transitions/que-son' && currentPath.startsWith('/transitions/')) ||
+        (href === '/interactions/que-son' && currentPath.startsWith('/interactions/')) ||
         (href === '/transform/que-es' && currentPath.startsWith('/transform/'));
       if (isActive) {
         link.classList.add('active');
@@ -412,6 +417,7 @@ const navItems = [
         href === currentPath ||
         (href === '/keyframes/que-son' && currentPath.startsWith('/keyframes/')) ||
         (href === '/transitions/que-son' && currentPath.startsWith('/transitions/')) ||
+        (href === '/interactions/que-son' && currentPath.startsWith('/interactions/')) ||
         (href === '/transform/que-es' && currentPath.startsWith('/transform/'));
       if (isActive) {
         link.classList.add('active');
