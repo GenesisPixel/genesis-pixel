@@ -6,12 +6,11 @@ import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const codeFiles = [
+const tabs = [
   {
-    name: "index.html",
-    language: "html",
-    icon: "html",
-    content: `<div class="dropdown-wrapper">
+    id: "index-html",
+    label: "index.html",
+    code: `<div class="dropdown-wrapper">
   <button class="dropdown-btn">
     Opciones 
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor">
@@ -29,10 +28,9 @@ const codeFiles = [
 </div>`
   },
   {
-    name: "styles.css",
-    language: "css",
-    icon: "css",
-    content: `.dropdown-wrapper {
+    id: "styles-css",
+    label: "styles.css",
+    code: `.dropdown-wrapper {
   position: relative;
   display: inline-block;
   /* Centrado visual en la pantalla de preview */
@@ -158,7 +156,7 @@ const practiceSteps = [
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock files={codeFiles} />
+    <TabbedCodeBlock tabs={tabs} />
     <ResultPreview />
   </div>
 

@@ -6,12 +6,11 @@ import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const codeFiles = [
+const tabs = [
   {
-    name: "index.html",
-    language: "html",
-    icon: "html",
-    content: `<div class="perf-container">
+    id: "index-html",
+    label: "index.html",
+    code: `<div class="perf-container">
   <!-- MAL: Anima layout properties -->
   <div class="perf-box bad-box">
     CPU (Width/Margin)
@@ -24,10 +23,9 @@ const codeFiles = [
 </div>`
   },
   {
-    name: "styles.css",
-    language: "css",
-    icon: "css",
-    content: `.perf-container {
+    id: "styles-css",
+    label: "styles.css",
+    code: `.perf-container {
   display: flex;
   flex-direction: column;
   gap: 30px;
@@ -120,7 +118,7 @@ const practiceSteps = [
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock files={codeFiles} />
+    <TabbedCodeBlock tabs={tabs} />
     <ResultPreview />
   </div>
 

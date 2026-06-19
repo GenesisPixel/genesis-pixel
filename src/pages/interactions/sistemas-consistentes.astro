@@ -6,22 +6,20 @@ import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const codeFiles = [
+const tabs = [
   {
-    name: "index.html",
-    language: "html",
-    icon: "html",
-    content: `<div class="system-demo">
+    id: "index-html",
+    label: "index.html",
+    code: `<div class="system-demo">
   <button class="sys-btn sys-primary">Botón A</button>
   <button class="sys-btn sys-secondary">Botón B</button>
   <div class="sys-card">Card que sigue las mismas reglas</div>
 </div>`
   },
   {
-    name: "styles.css",
-    language: "css",
-    icon: "css",
-    content: `:root {
+    id: "styles-css",
+    label: "styles.css",
+    code: `:root {
   /* Motion Tokens */
   --t-fast: 0.15s;
   --t-base: 0.3s;
@@ -116,7 +114,7 @@ const practiceSteps = [
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock files={codeFiles} />
+    <TabbedCodeBlock tabs={tabs} />
     <ResultPreview />
   </div>
 

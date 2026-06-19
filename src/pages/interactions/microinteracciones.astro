@@ -6,12 +6,11 @@ import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const codeFiles = [
+const tabs = [
   {
-    name: "index.html",
-    language: "html",
-    icon: "html",
-    content: `<button class="like-btn" id="likeBtn">
+    id: "index-html",
+    label: "index.html",
+    code: `<button class="like-btn" id="likeBtn">
   <svg viewBox="0 0 24 24" width="24" height="24">
     <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
   </svg>
@@ -25,10 +24,9 @@ const codeFiles = [
 </script>`
   },
   {
-    name: "styles.css",
-    language: "css",
-    icon: "css",
-    content: `.like-btn {
+    id: "styles-css",
+    label: "styles.css",
+    code: `.like-btn {
   background: transparent;
   border: 2px solid #555;
   border-radius: 50%;
@@ -126,7 +124,7 @@ const practiceSteps = [
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock files={codeFiles} />
+    <TabbedCodeBlock tabs={tabs} />
     <ResultPreview />
   </div>
 

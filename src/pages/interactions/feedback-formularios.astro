@@ -6,22 +6,20 @@ import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const codeFiles = [
+const tabs = [
   {
-    name: "index.html",
-    language: "html",
-    icon: "html",
-    content: `<div class="input-group">
+    id: "index-html",
+    label: "index.html",
+    code: `<div class="input-group">
   <input type="text" id="username" class="modern-input" placeholder=" ">
   <label for="username" class="floating-label">Nombre de usuario</label>
   <div class="focus-border"></div>
 </div>`
   },
   {
-    name: "styles.css",
-    language: "css",
-    icon: "css",
-    content: `.input-group {
+    id: "styles-css",
+    label: "styles.css",
+    code: `.input-group {
   position: relative;
   margin: 50px auto;
   max-width: 300px;
@@ -130,7 +128,7 @@ const practiceSteps = [
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock files={codeFiles} />
+    <TabbedCodeBlock tabs={tabs} />
     <ResultPreview />
   </div>
 

@@ -6,12 +6,11 @@ import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const codeFiles = [
+const tabs = [
   {
-    name: "index.html",
-    language: "html",
-    icon: "html",
-    content: `<button class="open-modal-btn">Abrir Modal</button>
+    id: "index-html",
+    label: "index.html",
+    code: `<button class="open-modal-btn">Abrir Modal</button>
 
 <div class="overlay" id="demoOverlay">
   <div class="modal-box">
@@ -46,10 +45,9 @@ const codeFiles = [
 </script>`
   },
   {
-    name: "styles.css",
-    language: "css",
-    icon: "css",
-    content: `.open-modal-btn, .btn-confirm, .btn-cancel {
+    id: "styles-css",
+    label: "styles.css",
+    code: `.open-modal-btn, .btn-confirm, .btn-cancel {
   padding: 10px 20px;
   border-radius: 8px;
   border: none;
@@ -165,7 +163,7 @@ const practiceSteps = [
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock files={codeFiles} />
+    <TabbedCodeBlock tabs={tabs} />
     <ResultPreview />
   </div>
 

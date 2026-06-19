@@ -6,12 +6,11 @@ import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const codeFiles = [
+const tabs = [
   {
-    name: "index.html",
-    language: "html",
-    icon: "html",
-    content: `<button class="premium-btn">
+    id: "index-html",
+    label: "index.html",
+    code: `<button class="premium-btn">
   Comenzar Aventura
   <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
     <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -19,10 +18,9 @@ const codeFiles = [
 </button>`
   },
   {
-    name: "styles.css",
-    language: "css",
-    icon: "css",
-    content: `.premium-btn {
+    id: "styles-css",
+    label: "styles.css",
+    code: `.premium-btn {
   display: inline-flex;
   align-items: center;
   gap: 12px;
@@ -115,7 +113,7 @@ const practiceSteps = [
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock files={codeFiles} />
+    <TabbedCodeBlock tabs={tabs} />
     <ResultPreview />
   </div>
 

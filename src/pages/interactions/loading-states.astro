@@ -6,12 +6,11 @@ import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const codeFiles = [
+const tabs = [
   {
-    name: "index.html",
-    language: "html",
-    icon: "html",
-    content: `<button class="submit-btn" id="submitBtn">
+    id: "index-html",
+    label: "index.html",
+    code: `<button class="submit-btn" id="submitBtn">
   <span class="btn-text">Guardar cambios</span>
   <span class="btn-loader"></span>
 </button>
@@ -28,10 +27,9 @@ const codeFiles = [
 </script>`
   },
   {
-    name: "styles.css",
-    language: "css",
-    icon: "css",
-    content: `.submit-btn {
+    id: "styles-css",
+    label: "styles.css",
+    code: `.submit-btn {
   position: relative;
   padding: 14px 28px;
   background: #10b981;
@@ -137,7 +135,7 @@ const practiceSteps = [
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock files={codeFiles} />
+    <TabbedCodeBlock tabs={tabs} />
     <ResultPreview />
   </div>
 

@@ -6,22 +6,20 @@ import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
 import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
 import PracticeCards from '../../components/PracticeCards.astro';
 
-const codeFiles = [
+const tabs = [
   {
-    name: "index.html",
-    language: "html",
-    icon: "html",
-    content: `<!-- Sin interacción -->
+    id: "index-html",
+    label: "index.html",
+    code: `<!-- Sin interacción -->
 <button class="btn-bad">Click me</button>
 
 <!-- Con interacción clara -->
 <button class="btn-good">Interact with me</button>`
   },
   {
-    name: "styles.css",
-    language: "css",
-    icon: "css",
-    content: `.btn-bad {
+    id: "styles-css",
+    label: "styles.css",
+    code: `.btn-bad {
   padding: 12px 24px;
   background: #333;
   color: #fff;
@@ -107,7 +105,7 @@ const practiceSteps = [
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
-    <TabbedCodeBlock files={codeFiles} />
+    <TabbedCodeBlock tabs={tabs} />
     <ResultPreview />
   </div>
 
