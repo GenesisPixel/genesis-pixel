@@ -53,6 +53,18 @@ const navItems = [
     opacity: 0.8;
   }
 
+  @keyframes sacudir {
+    0%, 60%, 100% { transform: rotate(10deg); }
+    65% { transform: rotate(15deg); }
+    70% { transform: rotate(10deg); }
+    75% { transform: rotate(15deg); }
+    80% { transform: rotate(10deg); }
+  }
+
+  .badge-nuevo {
+    animation: sacudir 3s ease-in-out infinite;
+  }
+
   .nav-brand-stars {
     position: absolute;
     top: -3px;
@@ -315,7 +327,13 @@ const navItems = [
         >
           {item.label}
           {item.label === 'three.js' && (
-            <span style="position: absolute; top: -5px; right: -8px; background: #FC5D7D; color: white; font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; margin-left: 4px; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif);">Nuevo</span>
+            <span class="badge-nuevo" style="position: absolute; top: -5px; right: -8px; background: #FC5D7D; color: white; font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; margin-left: 4px; font-family: var(--font-afronaut, system-ui, sans-serif);">Nuevo</span>
+          )}
+          {item.label === 'Keyframes' && (
+            <span style="position: absolute; top: -5px; right: -8px; background: #9FA6FF; color: var(--color-bg); font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; margin-left: 4px; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif);">Principiante</span>
+          )}
+          {item.label === 'Transform' && (
+            <span style="position: absolute; top: -5px; right: -8px; background: #57B0FB; color: var(--color-bg); font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; margin-left: 4px; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif);">Avanzado</span>
           )}
         </a>
       ))}
@@ -340,7 +358,13 @@ const navItems = [
         </svg>
           {item.label}
           {item.label === 'three.js' && (
-            <span style="position: absolute; top: -5px; right: -8px; background: #FC5D7D; color: white; font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif);">Nuevo</span>
+            <span class="badge-nuevo" style="position: absolute; top: -5px; right: -8px; background: #FC5D7D; color: white; font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; font-family: var(--font-afronaut, system-ui, sans-serif);">Nuevo</span>
+          )}
+          {item.label === 'Keyframes' && (
+            <span style="position: absolute; top: -5px; right: -8px; background: #9FA6FF; color: var(--color-bg); font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif);">Principiante</span>
+          )}
+          {item.label === 'Transform' && (
+            <span style="position: absolute; top: -5px; right: -8px; background: #57B0FB; color: var(--color-bg); font-size: 10px; padding: 1px 4px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif);">Avanzado</span>
           )}
         </a>
       ))}
