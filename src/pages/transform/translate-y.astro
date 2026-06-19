@@ -12,14 +12,13 @@ const htmlCode = `<div class="contenedor-cards">
     <div class="card-img"></div>
     <h4>Producto Premium</h4>
     <p>Calidad superior garantizada</p>
-    <button class="btn-comprar">Añadir al carrito</button>
   </div>
 </div>`;
 
 const cssCode = `.card-producto {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid rgba(255,255,255,0.08);
-  border-radius: 16px;
+  background: var(--dm-purple);
+  border: none;
+  border-radius: 0;
   padding: 20px;
   color: white;
   font-family: system-ui, sans-serif;
@@ -33,15 +32,6 @@ const cssCode = `.card-producto {
 .card-producto:hover {
   transform: translateY(-12px);
   box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5);
-}
-
-.btn-comprar {
-  /* El botón también reacciona, pero con un offset distinto */
-  transition: transform 0.25s ease;
-}
-
-.card-producto:hover .btn-comprar {
-  transform: translateY(-3px);
 }`;
 
 const practiceSteps = [
@@ -131,7 +121,6 @@ const practiceSteps = [
           <div class="card-img-demo"></div>
           <h4 class="my-2 text-sm font-semibold text-white">Producto Premium</h4>
           <p class="my-0 text-xs text-white/50">Calidad superior garantizada</p>
-          <button class="btn-demo mt-3">Añadir al carrito</button>
         </div>
       </div>
     </ResultPreview>
@@ -154,12 +143,12 @@ const practiceSteps = [
 
 <style>
   .card-demo {
-    background: rgba(255,255,255,0.04);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
+    background: var(--dm-purple);
+    border: none;
+    border-radius: 0;
     padding: 16px;
     width: 100%;
-    max-width: 220px;
+    max-width: 170px;
     cursor: pointer;
     transition: transform 0.35s ease, box-shadow 0.35s ease;
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
@@ -173,26 +162,8 @@ const practiceSteps = [
   .card-img-demo {
     width: 100%;
     height: 80px;
-    border-radius: 10px;
+    border-radius: 0;
     background: linear-gradient(135deg, #a855f7, #3b82f6);
     margin-bottom: 8px;
-  }
-
-  .btn-demo {
-    background: rgba(168, 85, 247, 0.15);
-    border: 1px solid rgba(168, 85, 247, 0.3);
-    color: #a855f7;
-    border-radius: 8px;
-    padding: 6px 12px;
-    font-size: 11px;
-    font-family: var(--font-afronaut, system-ui, sans-serif);
-    cursor: pointer;
-    transition: transform 0.25s ease, background 0.25s ease;
-    width: 100%;
-  }
-
-  .card-demo:hover .btn-demo {
-    transform: translateY(-3px);
-    background: rgba(168, 85, 247, 0.25);
   }
 </style>
