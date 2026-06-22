@@ -20,14 +20,14 @@ const cssCode = `.container {
 
 .btn {
   background-color: #a855f7;
-  color: var(--color-bg);
+  color: #0f172a;
   padding: 12px 24px;
   border: none;
   border-radius: 0;
   cursor: pointer;
   font-weight: bold;
+  font-family: system-ui, sans-serif;
   display: block;
-  width: 100%;
 }
 
 /* Transiciona TODO lo que cambie */
@@ -40,11 +40,16 @@ const cssCode = `.container {
 .specific {
   transition-property: transform;
   transition-duration: 0.5s;
+  background-color: #3b82f6;
 }
 
 .btn:hover {
   background-color: #c084fc;
   transform: translateY(-8px);
+}
+
+.specific:hover {
+  background-color: #60a5fa;
 }`;
 
 const practiceSteps = [
@@ -121,10 +126,11 @@ const practiceSteps = [
     <ResultPreview description="El primer botón transiciona 'all' (color y posición cambian suavemente). El segundo solo transiciona 'transform' (se mueve suave, pero el color cambia de golpe).">
       <div style="display: flex; flex-direction: column; gap: 16px; justify-content: center; align-items: center; height: 100%; width: 100%;">
         <style>
-          .t-btn { background-color: #a855f7; color: var(--color-bg); padding: 12px 24px; border: none; border-radius: 0; cursor: pointer; font-weight: bold; font-family: system-ui, sans-serif; display: block; width: 100%; }
+          .t-btn { background-color: #a855f7; color: var(--color-bg); padding: 12px 24px; border: none; border-radius: 0; cursor: pointer; font-weight: bold; font-family: var(--font-afronaut, system-ui, sans-serif); display: block; }
           .t-all { transition-property: all; transition-duration: 0.5s; }
-          .t-spec { transition-property: transform; transition-duration: 0.5s; }
-          .t-all:hover, .t-spec:hover { background-color: #c084fc; transform: translateY(-8px); }
+          .t-spec { transition-property: transform; transition-duration: 0.5s; background-color: var(--dm-blue); }
+          .t-all:hover { background-color: #c084fc; transform: translateY(-8px); }
+          .t-spec:hover { background-color: #60a5fa; transform: translateY(-8px); }
         </style>
         <button class="t-btn t-all">transition: all</button>
         <button class="t-btn t-spec">transition: transform</button>

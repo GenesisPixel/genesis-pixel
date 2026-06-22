@@ -20,14 +20,15 @@ const cssCode = `.track:hover .car {
 .car {
   width: 60px;
   height: 40px;
-  background: #f43f5e;
-  border-radius: 8px;
+  background: #a855f7;
+  border-radius: 0;
   margin-bottom: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
+  color: #0f172a;
   font-weight: bold;
+  font-family: system-ui, sans-serif;
   font-size: 12px;
   transition-property: transform;
 }
@@ -110,16 +111,18 @@ const practiceSteps = [
       <div style="width: 100%; padding: 20px;">
         <style>
           .t-track:hover .t-car { transform: translateX(min(300px, 60vw)); }
-          .t-car { width: 60px; height: 40px; background: #f43f5e; border-radius: 8px; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-family: system-ui, sans-serif; font-size: 12px; transition-property: transform; }
+          .t-car { width: 60px; height: 40px; background: #a855f7; border-radius: 0; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; color: #0f172a; font-weight: bold; font-family: system-ui, sans-serif; font-size: 12px; transition-property: transform; }
           .t-fast { transition-duration: 0.2s; }
           .t-medium { transition-duration: 0.8s; }
           .t-slow { transition-duration: 2.5s; }
+          .t-hint { color: rgba(255,255,255,0.4); font-size: 11px; font-family: system-ui, sans-serif; margin-top: 8px; }
         </style>
         <div class="t-track">
           <div class="t-car t-fast">0.2s</div>
           <div class="t-car t-medium">0.8s</div>
           <div class="t-car t-slow">2.5s</div>
         </div>
+        <div class="t-hint">Pasa el cursor sobre la pista</div>
       </div>
     </ResultPreview>
   </div>
