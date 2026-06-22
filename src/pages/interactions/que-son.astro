@@ -28,32 +28,34 @@ const cssCode = `.demo-btns {
   background: #334155;
   color: #fff;
   border: none;
-  border-radius: 8px;
+  border-radius: 0;
   cursor: pointer;
   font-size: 1rem;
+  font-family: 'afronaut', serif;
 }
 
 /* BIEN: feedback completo */
 .btn-good {
   padding: 14px 28px;
-  background: #6d28d9;
-  color: #fff;
+  background: #a855f7;
+  color: #0f172a;
   border: none;
-  border-radius: 8px;
+  border-radius: 0;
   cursor: pointer;
   font-size: 1rem;
+  font-family: 'afronaut', serif;
   transition: all 0.2s ease;
 }
 
 .btn-good:hover {
-  background: #7c3aed;
+  background: #9333ea;
   transform: translateY(-3px);
-  box-shadow: 0 8px 20px rgba(124,58,237,0.4);
+  box-shadow: 0 8px 20px rgba(168,85,247,0.4);
 }
 
 .btn-good:active {
   transform: translateY(1px);
-  box-shadow: 0 2px 6px rgba(124,58,237,0.3);
+  box-shadow: 0 2px 6px rgba(168,85,247,0.3);
 }`;
 
 const practiceSteps = [
@@ -114,8 +116,8 @@ const practiceSteps = [
     <ResultPreview description="Pasa el cursor y haz clic en cada botón para sentir la diferencia.">
       <div class="flex items-center justify-center h-full w-full">
         <div class="demo-btns">
-          <button class="btn-bad">Sin feedback</button>
-          <button class="btn-good">Con feedback</button>
+          <button class="btn-bad" style="padding: 14px 28px; background: #334155; color: #fff; border: none; border-radius: 0; cursor: pointer; font-size: 1rem; font-family: 'afronaut', serif;">Sin feedback</button>
+          <button class="btn-good" style="padding: 14px 28px; background: #a855f7; color: #0f172a; border: none; border-radius: 0; cursor: pointer; font-size: 1rem; font-family: 'afronaut', serif; transition: all 0.2s ease;">Con feedback</button>
         </div>
       </div>
     </ResultPreview>
@@ -143,37 +145,41 @@ const practiceSteps = [
     gap: 16px;
     align-items: center;
   }
+</style>
 
+<style is:global>
   .btn-bad {
     padding: 14px 28px;
     background: #334155;
     color: #fff;
     border: none;
-    border-radius: 8px;
+    border-radius: 0;
     cursor: pointer;
     font-size: 1rem;
+    font-family: 'afronaut', serif;
   }
 
   .btn-good {
     padding: 14px 28px;
-    background: #6d28d9;
-    color: #fff;
+    background: #a855f7;
+    color: #0f172a;
     border: none;
-    border-radius: 8px;
+    border-radius: 0;
     cursor: pointer;
     font-size: 1rem;
+    font-family: 'afronaut', serif;
     transition: all 0.2s ease;
   }
 
   .btn-good:hover {
-    background: #7c3aed;
+    background: #9333ea;
     transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(124,58,237,0.4);
+    box-shadow: 0 8px 20px rgba(168,85,247,0.4);
   }
 
   .btn-good:active {
     transform: translateY(1px);
-    box-shadow: 0 2px 6px rgba(124,58,237,0.3);
+    box-shadow: 0 2px 6px rgba(168,85,247,0.3);
   }
 </style>
 
