@@ -50,10 +50,13 @@ const footerLinks = [
                     <li>
                       <a
                         href={link.href}
-                        class="inline-block font-afronaut text-[15px] font-light text-[var(--dm-light-300)] transition-all duration-300 hover:-translate-y-0.5 hover:text-[var(--color-text)]"
+                        class="inline-flex items-center gap-1.5 font-afronaut text-[15px] font-light text-[var(--dm-light-300)] transition-all duration-300 hover:text-[var(--color-text)]"
                         {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
                       >
                         {link.label}
+                        <svg class="h-3.5 w-3.5 shrink-0 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        </svg>
                       </a>
                     </li>
                   ))}
