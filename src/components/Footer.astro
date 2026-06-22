@@ -1,5 +1,5 @@
 ---
-import GradientBlur from './GradientBlur.astro';
+import GradientBlurFooter from './GradientBlurFooter.astro';
 const currentYear = new Date().getFullYear();
 
 const footerLinks = [
@@ -30,8 +30,8 @@ const footerLinks = [
 ];
 ---
 
-<footer class="relative mt-12 w-full ">
-  <GradientBlur />
+<footer class="relative mt-12 w-full">
+  <GradientBlurFooter />
   <div class="relative mx-auto max-w-[900px] px-6 pb-6">
     <div class="relative overflow-hidden rounded-[40px] bg-white/[0.02] px-10 py-16 backdrop-blur-md md:px-16 md:py-20">
       
@@ -75,7 +75,7 @@ const footerLinks = [
       <!-- Inferior -->
       <div class="relative z-10 mt-16 flex flex-col items-center justify-between gap-6 border-t border-white/10 pt-8 sm:flex-row">
         <p class="text-[13px] text-white/40">
-          &copy; {currentYear} GenesisPixel.
+          &copy; {currentYear} GenesisPixel. Todos los derechos reservados.
         </p>
       </div>
       
