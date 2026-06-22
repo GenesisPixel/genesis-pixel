@@ -16,11 +16,17 @@
     const existing = wrapper.querySelector('canvas');
     if (existing) existing.remove();
 
-    const canvas = document.createElement('canvas');
-    canvas.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block;';
-    wrapper.appendChild(canvas);
+    // Create visible canvas
+    const canvasB = document.createElement('canvas');
+    canvasB.style.cssText = 'position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: block;';
+    wrapper.appendChild(canvasB);
 
-    const ctx = canvas.getContext('2d');
+    // Offscreen canvas for fresh particles
+    const canvasA = document.createElement('canvas');
+    
+    const ctxA = canvasA.getContext('2d');
+    const ctxB = canvasB.getContext('2d');
+    
     let animationId;
     let hue = 220;
     const particles = [];
@@ -29,15 +35,18 @@
     function resize() {
       const rect = container.getBoundingClientRect();
       const dpr = window.devicePixelRatio || 1;
-      canvas.width = rect.width * dpr;
-      canvas.height = rect.height * dpr;
-      canvas.style.width = rect.width + 'px';
-      canvas.style.height = rect.height + 'px';
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    for (let i = 0; i < particleCount; i++) {
-      particles.push(createParticle());
+      const w = Math.round(rect.width * dpr);
+      const h = Math.round(rect.height * dpr);
+      
+      canvasA.width = w;
+      canvasA.height = h;
+      canvasB.width = w;
+      canvasB.height = h;
+      canvasB.style.width = rect.width + 'px';
+      canvasB.style.height = rect.height + 'px';
+      
+      ctxA.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctxB.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
     function createParticle() {
@@ -55,13 +64,18 @@
       };
     }
 
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(createParticle());
+    }
+
     function draw() {
       const rect = container.getBoundingClientRect();
       const w = rect.width;
       const h = rect.height;
 
-      ctx.clearRect(0, 0, w, h);
-      ctx.globalCompositeOperation = 'screen';
+      // Draw fresh particles on offscreen canvas
+      ctxA.clearRect(0, 0, w, h);
+      ctxA.globalCompositeOperation = 'screen';
       hue++;
 
       for (const p of particles) {
@@ -75,17 +89,18 @@
         }
 
         if (p.alpha > 0) {
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.radius * (1 - p.life / p.ttl * 0.5), 0, Math.PI * 2);
-          ctx.fillStyle = `hsla(${p.hue}, 60%, 30%, ${p.alpha * 0.15})`;
-          ctx.fill();
+          ctxA.beginPath();
+          ctxA.arc(p.x, p.y, p.radius * (1 - p.life / p.ttl * 0.5), 0, Math.PI * 2);
+          ctxA.fillStyle = `hsla(${p.hue}, 60%, 30%, ${p.alpha * 0.15})`;
+          ctxA.fill();
         }
       }
 
-      // Self-blur: draw canvas onto itself with blur filter
-      ctx.filter = 'blur(50px)';
-      ctx.drawImage(canvas, 0, 0);
-      ctx.filter = 'none';
+      // Blur offscreen canvas onto visible canvas (double buffer like shift.js)
+      ctxB.save();
+      ctxB.filter = 'blur(50px)';
+      ctxB.drawImage(canvasA, 0, 0);
+      ctxB.restore();
 
       animationId = requestAnimationFrame(draw);
     }
