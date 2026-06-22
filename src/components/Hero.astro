@@ -79,10 +79,13 @@ const titleChars = renderChars(firstLine) + '<br/>' + renderChars(secondLine);
         <Fragment set:html={titleChars} />
       </h1>
     </div>
+   
+    <div class="mx-auto pt-[30px] max-w-[650px]">
+      <span class=" font-normal! text-[20px] text-[var(--dm-light-200)] sm:text-xl">
+        {description}
+      </span>
 
-    <p class="mx-auto mt-6 max-w-2xl font-semibold! text-[23px]! text-[var(--dm-light-200)] sm:text-xl">
-      {description}
-    </p>
+    </div>
 
     <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
       {primaryCTA && (
