@@ -87,61 +87,8 @@ const titleChars = renderChars(firstLine) + '<br/>' + renderChars(secondLine);
 
     </div>
 
-    <div class="mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row">
-      {primaryCTA && (
-        <a
-          href={primaryCTA.href}
-          class="inline-flex items-center justify-center rounded-none bg-[var(--color-text)] px-6 py-3 text-sm font-afronaut text-[var(--dm-dark-500)] transition-all hover:opacity-90"
-        >
-          {primaryCTA.label}
-          <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
-        </a>
-      )}
 
-      {secondaryCTA && (
-        <a
-          href={secondaryCTA.href}
-          class="inline-flex items-center justify-center rounded-none border border-white/10 bg-white/5 px-6 py-3 text-sm font-afronaut text-[var(--color-text)] transition-all hover:bg-white/10"
-        >
-          {secondaryCTA.label}
-        </a>
-      )}
-
-      {tertiaryCTA && (
-        <a
-          href={tertiaryCTA.href}
-          class="inline-flex items-center justify-center rounded-none border border-white/10 bg-white/5 px-6 py-3 text-sm font-afronaut text-[var(--color-text)] transition-all hover:bg-white/10"
-        >
-          {tertiaryCTA.label}
-          <svg class="ml-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6" />
-          </svg>
-        </a>
-      )}
-    </div>
-
-    <div class="mt-16 flex items-center justify-center gap-8 text-sm text-[var(--dm-light-300)]">
-      <div class="flex items-center gap-2">
-        <svg class="h-5 w-5 text-[var(--dm-green)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-        </svg>
-        <span>76+ Lecciones</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <svg class="h-5 w-5 text-[var(--dm-green)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-        </svg>
-        <span>Ejemplos Interactivos</span>
-      </div>
-      <div class="flex items-center gap-2">
-        <svg class="h-5 w-5 text-[var(--dm-green)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-        </svg>
-        <span>100% Gratuito</span>
-      </div>
-    </div>
+    
   </div>
 </section>
 

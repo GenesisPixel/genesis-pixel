@@ -10,7 +10,15 @@ interface Props {
   author?: string;
 }
 
-const { chapterNumber, chapterLabel, title, readingTime, difficulty = '@keyframes', author = 'Genesis Pixel' } = Astro.props;
+const { chapterNumber, chapterLabel, title, readingTime, difficulty = '', author = 'Genesis Pixel' } = Astro.props;
+
+const dateMap = {
+  '@keyframes': '02/04/2025',
+  'CSS Transform': '23/06/2024',
+  'Interactions': '01/07/2025',
+};
+
+const publishedDate = dateMap[difficulty] || '19/03/2024';
 ---
 
 <div class="mb-16" style="margin-bottom: 120px;">
@@ -36,6 +44,10 @@ const { chapterNumber, chapterLabel, title, readingTime, difficulty = '@keyframe
     <div class="flex flex-col">
       <h5 class="text-xs font-medium text-[var(--color-text)]">Tema</h5>
       <p class="mt-1 text-sm font-light italic text-white">{difficulty}</p>
+    </div>
+    <div class="flex flex-col">
+      <h5 class="text-xs font-medium text-[var(--color-text)]">Fecha de publicación</h5>
+      <p class="mt-1 text-sm font-light italic text-white">{publishedDate}</p>
     </div>
   </div>
 </div>
