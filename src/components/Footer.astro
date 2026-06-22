@@ -31,7 +31,7 @@ const footerLinks = [
 ];
 ---
 
-<footer class="relative mx-auto mt-12 max-w-7xl px-6 pb-6">
+<footer class="relative mx-auto mt-12 max-w-[900px] px-6 pb-6">
 
   <div class="relative overflow-hidden rounded-[40px] bg-white/[0.02] px-10 py-16 backdrop-blur-md md:px-16 md:py-20">
     
@@ -39,8 +39,9 @@ const footerLinks = [
       
       <!-- Logo y Descripción -->
       <div class="md:col-span-5 lg:col-span-4">
-        <a href="/" class="font-afronaut text-3xl font-light text-[var(--color-text)] transition-opacity hover:opacity-80">
+        <a href="/" class="relative inline-flex font-afronaut text-[1rem] font-extralight text-white transition-opacity hover:opacity-80">
           GenesisPixel
+          <img src="/svg/stars.svg" alt="" class="pointer-events-none" style="position: absolute; top: -3px; right: 0px; width: 18px; height: 18px; opacity: 0.7;" aria-hidden="true" />
         </a>
         <p class="mt-6 max-w-sm text-[15px] leading-relaxed text-[var(--dm-light-200)]">
           Domina el arte de las animaciones web y el desarrollo creativo paso a paso. Desde los fundamentos de CSS hasta experiencias interactivas en 3D.
@@ -67,7 +68,7 @@ const footerLinks = [
         <div class="grid grid-cols-2 gap-8 sm:grid-cols-3">
           {footerLinks.map((group) => (
             <div class="flex flex-col gap-6">
-              <h3 class="font-afronaut text-sm uppercase tracking-wider text-white/50">{group.title}</h3>
+              <h3 class="font-afronaut text-sm tracking-wider text-white/50">{group.title}</h3>
               <ul class="flex flex-col gap-4">
                 {group.links.map((link) => (
                   <li>
