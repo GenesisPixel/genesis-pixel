@@ -1,12 +1,15 @@
 ---
 import BentoCard from './BentoCard.astro';
+
+const { variant = 'default' } = Astro.props;
+const isEqual = variant === 'equal';
 ---
 
 <section class="mx-auto w-full max-w-[1200px] px-6 py-12">
   <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
     
     <!-- Card 1: AI -->
-    <div class="col-span-1 md:col-span-4 relative group transition-transform duration-300 hover:-translate-y-[6px]">
+    <div class:list={['col-span-1 relative group transition-transform duration-300 hover:-translate-y-[6px]', isEqual ? 'md:col-span-6' : 'md:col-span-4']}>
       <span style="position: absolute; top: 3px; right: 3px; background: #9FA6FF; color: var(--color-bg); font-size: 17px; padding: 2px 8px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif); z-index: 30;">Principiante</span>
       <div class="absolute inset-0 z-20 pointer-events-none">
         <img src="/svg/stars-in-orbit.svg" alt="Icon" class="absolute -top-[46px] left-4 w-[112px] h-[112px] opacity-0 translate-y-[28px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
@@ -18,12 +21,12 @@ import BentoCard from './BentoCard.astro';
         title="AI"
         textColor="text-[#5c3e73]"
         imageAlt="AI Mockup"
-       
+        tall={isEqual}
       />
     </div>
 
     <!-- Card 2: Artículos -->
-    <div class="col-span-1 md:col-span-8 relative group transition-transform duration-300 hover:-translate-y-[6px]">
+    <div class:list={['col-span-1 relative group transition-transform duration-300 hover:-translate-y-[6px]', isEqual ? 'md:col-span-6' : 'md:col-span-8']}>
       <span style="position: absolute; top: 3px; right: 3px; background: #57B0FB; color: var(--color-bg); font-size: 17px; padding: 2px 8px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif); z-index: 30;">Avanzado</span>
       <div class="absolute inset-0 z-20 pointer-events-none">
         <img src="/svg/pencil.svg" alt="Icon" class="absolute -top-[46px] left-8 w-[112px] h-[112px] opacity-0 translate-y-[28px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
@@ -40,7 +43,7 @@ import BentoCard from './BentoCard.astro';
     </div>
 
     <!-- Card 3: Figma Plugins -->
-    <div class="col-span-1 md:col-span-8 relative group transition-transform duration-300 hover:-translate-y-[6px]">
+    <div class:list={['col-span-1 relative group transition-transform duration-300 hover:-translate-y-[6px]', isEqual ? 'md:col-span-6' : 'md:col-span-8']}>
       <span style="position: absolute; top: 3px; right: 3px; background: #FC5D7D; color: white; font-size: 17px; padding: 2px 8px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif); z-index: 30;">Nuevo</span>
       <div class="absolute inset-0 z-20 pointer-events-none">
         <img src="/svg/frame.svg" alt="Icon" class="absolute -top-[46px] left-8 w-[112px] h-[112px] opacity-0 translate-y-[28px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
@@ -57,7 +60,7 @@ import BentoCard from './BentoCard.astro';
     </div>
 
     <!-- Card 4: Help Scout Mobile -->
-    <div class="col-span-1 md:col-span-4 relative group transition-transform duration-300 hover:-translate-y-[6px]">
+    <div class:list={['col-span-1 relative group transition-transform duration-300 hover:-translate-y-[6px]', isEqual ? 'md:col-span-6' : 'md:col-span-4']}>
       <span style="position: absolute; top: 3px; right: 3px; background: #FDD88E; color: var(--color-bg); font-size: 17px; padding: 2px 8px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif); z-index: 30;">Premium</span>
       <div class="absolute inset-0 z-20 pointer-events-none">
         <img src="/svg/mobile-phone.svg" alt="Icon" class="absolute -top-[46px] left-4 w-[112px] h-[112px] opacity-0 translate-y-[28px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
@@ -69,80 +72,11 @@ import BentoCard from './BentoCard.astro';
         title="Mobile"
         textColor="text-[#3e5366]"
         imageAlt="Mobile Mockup"
+        tall={isEqual}
       />
     </div>
 
   </div>
 
-  <!-- Sección Avanzado -->
-  <div class="mt-20">
-    <h1 class="text-center font-medium text-[var(--color-text)] mb-8">Avanzado</h1>
-    <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
-      <!-- Card 1: Amarillo -->
-      <div class="col-span-1 md:col-span-4 relative group transition-transform duration-300 hover:-translate-y-[6px]">
-        <span style="position: absolute; top: 3px; right: 3px; background: #9FA6FF; color: var(--color-bg); font-size: 17px; padding: 2px 8px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif); z-index: 30;">Principiante</span>
-        <div class="absolute inset-0 z-20 pointer-events-none">
-          <img src="/svg/stars-in-orbit.svg" alt="Icon" class="absolute -top-[46px] left-4 w-[112px] h-[112px] opacity-0 translate-y-[28px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
-        </div>
-        <BentoCard 
-          href="#"
-          class="bg-[#FDD88E] px-8"
-          subtitle="CSS"
-          title="Transform"
-          textColor="text-[#5e4b3c]"
-          imageAlt="Transform Mockup"
-        />
-      </div>
-      <!-- Card 2: Lila -->
-      <div class="col-span-1 md:col-span-8 relative group transition-transform duration-300 hover:-translate-y-[6px]">
-        <span style="position: absolute; top: 3px; right: 3px; background: #FC5D7D; color: white; font-size: 17px; padding: 2px 8px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif); z-index: 30;">Nuevo</span>
-        <div class="absolute inset-0 z-20 pointer-events-none">
-          <img src="/svg/pencil.svg" alt="Icon" class="absolute -top-[46px] left-8 w-[112px] h-[112px] opacity-0 translate-y-[28px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
-          <img src="/svg/garabato.svg" alt="Icon" class="absolute -top-[6px] left-1/3 w-[112px] h-[112px] opacity-0 translate-y-[28px] transition-all duration-500 delay-75 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
-        </div>
-        <BentoCard 
-          href="#"
-          class="bg-[#DFE7FF] px-10"
-          subtitle="JavaScript"
-          title="three.js"
-          textColor="text-[#4a5568]"
-          imageAlt="Three.js Mockup"
-        />
-      </div>
-      <!-- Card 3: Negra -->
-      <div class="col-span-1 md:col-span-8 relative group transition-transform duration-300 hover:-translate-y-[6px]" style="opacity: 0.7;">
-        <span style="position: absolute; top: 3px; right: 3px; background: #57B0FB; color: var(--color-bg); font-size: 17px; padding: 2px 8px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif); z-index: 30;">Avanzado</span>
-        <div class="absolute inset-0 z-20 pointer-events-none">
-          <img src="/svg/frame.svg" alt="Icon" class="absolute -top-[46px] left-8 w-[112px] h-[112px] opacity-0 translate-y-[28px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
-          <img src="/svg/stars.svg" alt="Icon" class="absolute -top-[14px] left-1/3 w-[112px] h-[112px] opacity-0 translate-y-[28px] transition-all duration-500 delay-75 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
-        </div>
-        <BentoCard 
-          href="#"
-          class="bg-[#1a1a1a] px-10"
-          subtitle="WebGL"
-          title="Shaders"
-          textColor="text-white"
-          imageAlt="Shaders Mockup"
-          cursor="not-allowed"
-        />
-      </div>
-      <!-- Card 4: Blanca -->
-      <div class="col-span-1 md:col-span-4 relative group transition-transform duration-300 hover:-translate-y-[6px]" style="opacity: 0.7;">
-        <span style="position: absolute; top: 3px; right: 3px; background: #FDD88E; color: var(--color-bg); font-size: 17px; padding: 2px 8px; border-radius: 0; font-weight: 100; transform: rotate(10deg); font-family: var(--font-afronaut, system-ui, sans-serif); z-index: 30;">Premium</span>
-        <div class="absolute inset-0 z-20 pointer-events-none">
-          <img src="/svg/mobile-phone.svg" alt="Icon" class="absolute -top-[46px] left-4 w-[112px] h-[112px] opacity-0 translate-y-[28px] transition-all duration-500 ease-[cubic-bezier(0.34,1.56,0.64,1)] group-hover:opacity-100 group-hover:translate-y-0" />
-        </div>
-        <BentoCard 
-          href="#"
-          class="bg-white px-8"
-          subtitle="CSS"
-          title="Animations"
-          textColor="text-[#1a1a1a]"
-          imageAlt="Animations Mockup"
-          cursor="not-allowed"
-        />
-      </div>
-    </div>
-  </div>
 </section>
 
