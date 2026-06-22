@@ -20,7 +20,6 @@ const cssCode = `.track:hover .car {
 .car {
   width: 60px;
   height: 40px;
-  background: #a855f7;
   border-radius: 0;
   margin-bottom: 12px;
   display: flex;
@@ -33,9 +32,9 @@ const cssCode = `.track:hover .car {
   transition-property: transform;
 }
 
-.fast { transition-duration: 0.2s; }
-.medium { transition-duration: 0.8s; }
-.slow { transition-duration: 2.5s; }`;
+.fast { background: #9FA6FF; transition-duration: 0.2s; }
+.medium { background: #56C288; transition-duration: 0.8s; }
+.slow { background: #57B0FB; transition-duration: 2.5s; }`;
 
 const practiceSteps = [
   { number: 1, text: 'Experimenta con valores en milisegundos (ms) y segundos (s).', color: 'dm-purple', rotate: '10deg' },
@@ -111,11 +110,11 @@ const practiceSteps = [
       <div style="width: 100%; padding: 20px;">
         <style>
           .t-track:hover .t-car { transform: translateX(min(300px, 60vw)); }
-          .t-car { width: 60px; height: 40px; background: #a855f7; border-radius: 0; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; color: #0f172a; font-weight: bold; font-family: system-ui, sans-serif; font-size: 12px; transition-property: transform; }
-          .t-fast { transition-duration: 0.2s; }
-          .t-medium { transition-duration: 0.8s; }
-          .t-slow { transition-duration: 2.5s; }
-          .t-hint { color: rgba(255,255,255,0.4); font-size: 11px; font-family: system-ui, sans-serif; margin-top: 8px; }
+          .t-car { width: 60px; height: 40px; border-radius: 0; margin-bottom: 12px; display: flex; align-items: center; justify-content: center; color: #0f172a; font-weight: bold; font-family: var(--font-google-sans, system-ui, sans-serif); font-size: 12px; transition-property: transform; }
+          .t-fast { background: #9FA6FF; transition-duration: 0.2s; }
+          .t-medium { background: #56C288; transition-duration: 0.8s; }
+          .t-slow { background: #57B0FB; transition-duration: 2.5s; }
+          .t-hint { color: rgba(255,255,255,0.4); font-size: 11px; font-family: var(--font-google-sans, system-ui, sans-serif); margin-top: 8px; }
         </style>
         <div class="t-track">
           <div class="t-car t-fast">0.2s</div>
