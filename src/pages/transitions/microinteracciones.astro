@@ -22,6 +22,11 @@ const cssCode = `.toggle {
   cursor: pointer;
 }
 
+.toggle-text {
+  font-family: 'afronaut', serif;
+  font-weight: 300;
+}
+
 .toggle-input {
   display: none;
 }
@@ -48,7 +53,7 @@ const cssCode = `.toggle {
 
 /* El truco: Cuando el input oculto está activado, transicionamos el hermano (.toggle-bg) */
 .toggle-input:checked + .toggle-bg {
-  background: #06b6d4;
+  background: #a855f7;
 }
 
 .toggle-input:checked + .toggle-bg .toggle-knob {
@@ -126,11 +131,12 @@ const practiceSteps = [
     <ResultPreview description="Haz clic en el control. Al usar una curva de Bezier con rebote y animar el color de fondo simultáneamente, un aburrido checkbox se transforma en una microinteracción premium.">
       <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
         <style>
-          .t-toggle { display: flex; align-items: center; gap: 12px; cursor: pointer; font-family: system-ui, sans-serif; font-weight: bold; color: white; }
+          .t-toggle { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+          .t-toggle-text { font-family: 'afronaut', serif; font-weight: 300; color: white; }
           .t-toggle-input { display: none; }
           .t-toggle-bg { width: 48px; height: 24px; background: #3f3f46; border-radius: 12px; position: relative; transition: background 0.3s ease; }
           .t-toggle-knob { width: 20px; height: 20px; background: white; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: transform 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); box-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-          .t-toggle-input:checked + .t-toggle-bg { background: #06b6d4; }
+          .t-toggle-input:checked + .t-toggle-bg { background: #a855f7; }
           .t-toggle-input:checked + .t-toggle-bg .t-toggle-knob { transform: translateX(24px); }
         </style>
         <label class="t-toggle">
