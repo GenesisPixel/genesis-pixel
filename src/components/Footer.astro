@@ -1,4 +1,5 @@
 ---
+import GradientBlur from './GradientBlur.astro';
 const currentYear = new Date().getFullYear();
 
 const footerLinks = [
@@ -29,8 +30,8 @@ const footerLinks = [
 ];
 ---
 
-<footer class="relative mt-12 w-full bg-red-600">
-
+<footer class="relative mt-12 w-full ">
+  <GradientBlur />
   <div class="relative mx-auto max-w-[900px] px-6 pb-6">
     <div class="relative overflow-hidden rounded-[40px] bg-white/[0.02] px-10 py-16 backdrop-blur-md md:px-16 md:py-20">
       
