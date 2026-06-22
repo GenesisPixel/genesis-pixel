@@ -25,18 +25,52 @@ const cssCode = `:root {
 }
 
 .btn {
-  /* Usando nuestros tokens */
+  padding: 12px 24px;
+  background: #a855f7;
+  color: #0f172a;
+  border: none;
+  border-radius: 0;
+  font-weight: bold;
+  font-family: 'afronaut', serif;
+  cursor: pointer;
   transition: transform var(--dur-fast) var(--ease-bounce),
               background var(--dur-fast) var(--ease-out);
 }
 
+.btn:hover {
+  background: #c084fc;
+  transform: scale(1.05);
+}
+
 .input {
-  transition: border-color var(--dur-base) var(--ease-out),
-              box-shadow var(--dur-base) var(--ease-out);
+  padding: 10px 12px;
+  background: #18181b;
+  border: 1px solid #3f3f46;
+  border-radius: 0;
+  color: white;
+  font-family: 'afronaut', serif;
+  outline: none;
+  transition: border-color var(--dur-base) var(--ease-out);
+}
+
+.input:focus {
+  border-color: #a855f7;
 }
 
 .tag {
+  padding: 6px 12px;
+  background: rgba(255,255,255,0.1);
+  border: 1px dashed rgba(255,255,255,0.3);
+  border-radius: 0;
+  color: white;
+  font-family: 'afronaut', serif;
+  font-weight: 300;
+  cursor: pointer;
   transition: all var(--dur-fast) var(--ease-in-out);
+}
+
+.tag:hover {
+  background: rgba(255,255,255,0.2);
 }`;
 
 const practiceSteps = [
@@ -103,13 +137,13 @@ const practiceSteps = [
     <ResultPreview description="Todos los elementos de este contenedor están sincronizados usando variables. Si hiciéramos un cambio global, todos responderían al unísono manteniendo la armonía en toda la página.">
       <div style="display: flex; gap: 16px; justify-content: center; align-items: center; height: 100%; flex-wrap: wrap; padding: 20px;">
         <style>
-          .t-sys { --d-fast: 0.15s; --d-base: 0.3s; --e-out: cubic-bezier(0, 0, 0.2, 1); --e-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55); font-family: system-ui, sans-serif; }
-          .t-sys-btn { padding: 10px 20px; background: #06b6d4; color: white; border: none; border-radius: 6px; font-weight: bold; cursor: pointer; transition: transform var(--d-fast) var(--e-bounce), background var(--d-fast) var(--e-out); }
-          .t-sys-btn:hover { background: #0891b2; transform: scale(1.05); }
-          .t-sys-input { padding: 10px; background: #18181b; border: 1px solid #3f3f46; border-radius: 6px; color: white; transition: border-color var(--d-base) var(--e-out), box-shadow var(--d-base) var(--e-out); outline: none; }
-          .t-sys-input:focus { border-color: #06b6d4; box-shadow: 0 0 0 3px rgba(6, 182, 212, 0.2); }
-          .t-sys-tag { padding: 6px 12px; background: #27272a; color: #a1a1aa; border-radius: 99px; font-size: 14px; cursor: pointer; transition: all var(--d-fast) var(--e-out); }
-          .t-sys-tag:hover { background: white; color: black; }
+          .t-sys { --d-fast: 0.15s; --d-base: 0.3s; --e-out: cubic-bezier(0, 0, 0.2, 1); --e-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55); }
+          .t-sys-btn { padding: 10px 20px; background: #a855f7; color: #0f172a; border: none; border-radius: 0; font-weight: bold; font-family: 'afronaut', serif; cursor: pointer; transition: transform var(--d-fast) var(--e-bounce), background var(--d-fast) var(--e-out); }
+          .t-sys-btn:hover { background: #c084fc; transform: scale(1.05); }
+          .t-sys-input { padding: 10px 12px; background: #18181b; border: 1px solid #3f3f46; border-radius: 0; color: white; font-family: 'afronaut', serif; outline: none; transition: border-color var(--d-base) var(--e-out); }
+          .t-sys-input:focus { border-color: #a855f7; }
+          .t-sys-tag { padding: 6px 12px; background: rgba(255,255,255,0.1); border: 1px dashed rgba(255,255,255,0.3); border-radius: 0; color: white; font-family: 'afronaut', serif; font-weight: 300; cursor: pointer; transition: all var(--d-fast) var(--e-out); }
+          .t-sys-tag:hover { background: rgba(255,255,255,0.2); }
         </style>
         <div class="t-sys" style="display: flex; gap: 16px; align-items: center;">
           <button class="t-sys-btn">Botón Principal</button>
