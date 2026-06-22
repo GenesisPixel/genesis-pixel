@@ -115,22 +115,14 @@ const practiceSteps = [
     />
     <ResultPreview description="Pasa el cursor por el contenedor. ¡Todos llegan al mismo tiempo exacto (1s), pero mira cómo el viaje es totalmente diferente!">
       <div style="width: 100%; padding: 20px;">
-        <style>
-          .t-race:hover .t-box { transform: translateX(min(300px, 60vw)); }
-          .t-box { width: 100px; height: 40px; background: #10b981; border-radius: 8px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-family: system-ui, sans-serif; font-size: 12px; transition: transform 1s; }
-          .t-linear { transition-timing-function: linear; }
-          .t-ease { transition-timing-function: ease; }
-          .t-ease-in { transition-timing-function: ease-in; }
-          .t-ease-out { transition-timing-function: ease-out; }
-          .t-bouncy { transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55); background: #f59e0b; }
-        </style>
-        <div class="t-race">
-          <div class="t-box t-linear">linear</div>
-          <div class="t-box t-ease">ease</div>
-          <div class="t-box t-ease-in">ease-in</div>
-          <div class="t-box t-ease-out">ease-out</div>
-          <div class="t-box t-bouncy">cubic-bezier</div>
+        <div class="t-race" onmouseenter="this.querySelectorAll('.t-box').forEach(c => c.style.transform='translateX(min(300px, 60vw))')" onmouseleave="this.querySelectorAll('.t-box').forEach(c => c.style.transform='translateX(0)')" style="cursor: pointer;">
+          <div style="width: 100px; height: 40px; border-radius: 0; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; color: #0f172a; font-weight: bold; font-family: 'afronaut', serif; font-size: 12px; background: #9FA6FF; transition: transform 1s; transition-timing-function: linear; transform: translateX(0);" class="t-box">linear</div>
+          <div style="width: 100px; height: 40px; border-radius: 0; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; color: #0f172a; font-weight: bold; font-family: 'afronaut', serif; font-size: 12px; background: #56C288; transition: transform 1s; transition-timing-function: ease; transform: translateX(0);" class="t-box">ease</div>
+          <div style="width: 100px; height: 40px; border-radius: 0; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; color: #0f172a; font-weight: bold; font-family: 'afronaut', serif; font-size: 12px; background: #FDD88E; transition: transform 1s; transition-timing-function: ease-in; transform: translateX(0);" class="t-box">ease-in</div>
+          <div style="width: 100px; height: 40px; border-radius: 0; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; color: #0f172a; font-weight: bold; font-family: 'afronaut', serif; font-size: 12px; background: #57B0FB; transition: transform 1s; transition-timing-function: ease-out; transform: translateX(0);" class="t-box">ease-out</div>
+          <div style="width: 100px; height: 40px; border-radius: 0; margin-bottom: 8px; display: flex; align-items: center; justify-content: center; color: #0f172a; font-weight: bold; font-family: 'afronaut', serif; font-size: 12px; background: #FC5D7D; transition: transform 1s; transition-timing-function: cubic-bezier(0.68, -0.55, 0.265, 1.55); transform: translateX(0);" class="t-box">cubic-bezier</div>
         </div>
+        <div style="color: rgba(255,255,255,0.4); font-size: 11px; font-family: 'afronaut', serif; margin-top: 8px;">Pasa el cursor sobre la carrera</div>
       </div>
     </ResultPreview>
   </div>
