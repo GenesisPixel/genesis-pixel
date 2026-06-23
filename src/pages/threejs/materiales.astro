@@ -86,6 +86,7 @@ import PracticeCards from '../../components/PracticeCards.astro';
 <script>
 
   import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
   document.addEventListener('astro:page-load', () => {
     const container = document.getElementById('demo-mat');
@@ -103,6 +104,10 @@ import PracticeCards from '../../components/PracticeCards.astro';
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.enablePan = false;
 
     // Luces para poder ver el Standard y el Phong
     const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -131,6 +136,7 @@ import PracticeCards from '../../components/PracticeCards.astro';
     let animationId;
     const animate = () => {
       animationId = requestAnimationFrame(animate);
+      controls.update();
       renderer.render(scene, camera);
     };
     animate();
@@ -145,6 +151,7 @@ import PracticeCards from '../../components/PracticeCards.astro';
     document.addEventListener('astro:before-swap', () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', handleResize);
+      controls.dispose();
       renderer.dispose();
     }, { once: true });
   });

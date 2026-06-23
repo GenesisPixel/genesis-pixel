@@ -57,7 +57,8 @@ import PracticeCards from '../../components/PracticeCards.astro';
     <TabbedCodeBlock
       group="threejs-intro"
       tabs={[
-        { id: 'js', label: 'JavaScript', code: "import * as THREE from 'three';\n\n// El estudio de cine: Escena, Cámara y Render\nconst scene = new THREE.Scene();\nconst camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);\nconst renderer = new THREE.WebGLRenderer();\n\n// ¡Así de simple inicias el viaje 3D!" }
+        { id: 'js', label: 'JavaScript', code: "import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n\n// El estudio de cine: Escena, Cámara y Render\nconst scene = new THREE.Scene();\nconst camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);\nconst renderer = new THREE.WebGLRenderer();\n\n// ¡Así de simple inicias el viaje 3D!" }
       ]}
     />
     <ResultPreview description="Una vista previa simbólica: El poder del 3D.">
@@ -108,6 +109,10 @@ import PracticeCards from '../../components/PracticeCards.astro';
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
 
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.enablePan = false;
+
     const geometry = new THREE.IcosahedronGeometry(1, 1);
     const material = new THREE.MeshBasicMaterial({ color: 0x9FA6FF, wireframe: true });
     const sphere = new THREE.Mesh(geometry, material);
@@ -116,6 +121,7 @@ import PracticeCards from '../../components/PracticeCards.astro';
     let animationId;
     const animate = () => {
       animationId = requestAnimationFrame(animate);
+      controls.update();
       sphere.rotation.x += 0.005;
       sphere.rotation.y += 0.01;
       renderer.render(scene, camera);
@@ -125,6 +131,7 @@ import PracticeCards from '../../components/PracticeCards.astro';
     // Limpieza al cambiar de página
     document.addEventListener('astro:before-swap', () => {
       cancelAnimationFrame(animationId);
+      controls.dispose();
       renderer.dispose();
     }, { once: true });
   });

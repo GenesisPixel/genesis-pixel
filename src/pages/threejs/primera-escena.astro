@@ -55,11 +55,12 @@ import PracticeCards from '../../components/PracticeCards.astro';
     <TabbedCodeBlock
       group="threejs-scene"
       tabs={[
-        { id: 'js', label: 'JavaScript', code: "import * as THREE from 'three';\n\n// 1. Escena\nconst scene = new THREE.Scene();\n\n// 2. Cámara (FOV, Aspect Ratio, Near, Far)\nconst camera = new THREE.PerspectiveCamera(\n  75, \n  window.innerWidth / window.innerHeight,\n  0.1, \n  1000\n);\ncamera.position.z = 5; // Alejamos la cámara\n\n// 3. Renderer\nconst renderer = new THREE.WebGLRenderer();\nrenderer.setSize(window.innerWidth, window.innerHeight);\ndocument.body.appendChild(renderer.domElement);\n\n// Objeto (Cubo)\nconst geometry = new THREE.BoxGeometry();\nconst material = new THREE.MeshBasicMaterial({ color: 0x56C288 });\nconst cube = new THREE.Mesh(geometry, material);\nscene.add(cube);\n\n// 4. Render Loop\nfunction animate() {\n  requestAnimationFrame(animate);\n  cube.rotation.x += 0.01;\n  cube.rotation.y += 0.01;\n  renderer.render(scene, camera);\n}\n\nanimate();" },
-        { id: 'html', label: 'HTML', code: "<!-- Solo necesitas un contenedor -->\n<div id="mi-mundo-3d"></div>" }
+        { id: 'js', label: 'JavaScript', code: "import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n\n// 1. Escena\nconst scene = new THREE.Scene();\n\n// 2. Cámara (FOV, Aspect Ratio, Near, Far)\nconst camera = new THREE.PerspectiveCamera(\n  75, \n  window.innerWidth / window.innerHeight,\n  0.1, \n  1000\n);\ncamera.position.z = 5; // Alejamos la cámara\n\n// 3. Renderer\nconst renderer = new THREE.WebGLRenderer();\nrenderer.setSize(window.innerWidth, window.innerHeight);\ndocument.body.appendChild(renderer.domElement);\n\n// Objeto (Cubo)\nconst geometry = new THREE.BoxGeometry();\nconst material = new THREE.MeshBasicMaterial({ color: 0x56C288 });\nconst cube = new THREE.Mesh(geometry, material);\nscene.add(cube);\n\n// 4. Render Loop\nfunction animate() {\n  requestAnimationFrame(animate);\n  cube.rotation.x += 0.01;\n  cube.rotation.y += 0.01;\n  renderer.render(scene, camera);\n}\n\nanimate();" },
+        { id: 'html', label: 'HTML', code: "<!-- Solo necesitas un contenedor -->\n<div id=\"mi-mundo-3d\"></div>" }
       ]}
     />
-    <ResultPreview description="Tu primer "Hola Mundo" en 3D.">
+    <ResultPreview description="Tu primer 'Hola Mundo' en 3D.">
       <div class="flex items-center justify-center h-full w-full bg-[#1a1a2e] overflow-hidden rounded-xl" id="demo-scene">
       </div>
     </ResultPreview>
@@ -105,6 +106,10 @@ import PracticeCards from '../../components/PracticeCards.astro';
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
 
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.enablePan = false;
+
     const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
     const material = new THREE.MeshBasicMaterial({ color: 0x56C288, wireframe: false });
     
@@ -119,6 +124,7 @@ import PracticeCards from '../../components/PracticeCards.astro';
     let animationId;
     const animate = () => {
       animationId = requestAnimationFrame(animate);
+      controls.update();
       cube.rotation.x += 0.005;
       cube.rotation.y += 0.01;
       renderer.render(scene, camera);
@@ -127,6 +133,7 @@ import PracticeCards from '../../components/PracticeCards.astro';
 
     document.addEventListener('astro:before-swap', () => {
       cancelAnimationFrame(animationId);
+      controls.dispose();
       renderer.dispose();
     }, { once: true });
   });

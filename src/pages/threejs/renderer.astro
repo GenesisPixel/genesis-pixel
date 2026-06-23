@@ -85,6 +85,7 @@ import PracticeCards from '../../components/PracticeCards.astro';
 <script>
 
   import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 
   document.addEventListener('astro:page-load', () => {
     const container = document.getElementById('demo-renderer');
@@ -102,6 +103,10 @@ import PracticeCards from '../../components/PracticeCards.astro';
     renderer.setSize(container.clientWidth, container.clientHeight);
     container.appendChild(renderer.domElement);
 
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.enablePan = false;
+
     const geometry = new THREE.TorusKnotGeometry(0.8, 0.25, 100, 16);
     const material = new THREE.MeshNormalMaterial();
     const mesh = new THREE.Mesh(geometry, material);
@@ -110,6 +115,7 @@ import PracticeCards from '../../components/PracticeCards.astro';
     let animationId;
     const animate = () => {
       animationId = requestAnimationFrame(animate);
+      controls.update();
       mesh.rotation.x += 0.01;
       mesh.rotation.y += 0.01;
       renderer.render(scene, camera);
@@ -127,6 +133,7 @@ import PracticeCards from '../../components/PracticeCards.astro';
     document.addEventListener('astro:before-swap', () => {
       cancelAnimationFrame(animationId);
       window.removeEventListener('resize', handleResize);
+      controls.dispose();
       renderer.dispose();
     }, { once: true });
   });
