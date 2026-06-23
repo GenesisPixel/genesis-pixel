@@ -83,7 +83,21 @@ const modalHtml = `<button class="abrir-modal" id="abrirModal">Ver Detalles</but
       </button>
     </div>
   </div>
-</div>`;
+</div>
+
+<script>
+  const abrir = document.getElementById('abrirModal');
+  const cerrar = document.getElementById('cerrarModal');
+  const aceptar = document.querySelector('.aceptar-modal');
+  const overlay = document.getElementById('modalOverlay');
+
+  abrir.addEventListener('click', () => overlay.classList.add('visible'));
+  cerrar.addEventListener('click', () => overlay.classList.remove('visible'));
+  aceptar.addEventListener('click', () => overlay.classList.remove('visible'));
+  overlay.addEventListener('click', (e) => {
+    if(e.target === overlay) overlay.classList.remove('visible');
+  });
+<\/script>`;
 
 const modalCss = `.abrir-modal {
   padding: 10px 20px; border-radius: 0; border: none;
@@ -355,11 +369,13 @@ const practiceSteps = [
 
     const abrir = document.getElementById('abrirModalP');
     const cerrar = document.getElementById('cerrarModalP');
+    const aceptar = document.querySelector('.aceptar-modal-p');
     const overlay = document.getElementById('modalOverlayP');
     
     if (abrir && cerrar && overlay) {
       abrir.addEventListener('click', () => overlay.classList.add('visible'));
       cerrar.addEventListener('click', () => overlay.classList.remove('visible'));
+      if (aceptar) aceptar.addEventListener('click', () => overlay.classList.remove('visible'));
       overlay.addEventListener('click', (e) => {
         if(e.target === overlay) overlay.classList.remove('visible');
       });
