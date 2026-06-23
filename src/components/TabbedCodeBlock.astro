@@ -106,3 +106,43 @@ const tabGroupId = `tab-group-${group}`;
     background: rgba(255, 255, 255, 0.4);
   }
 </style>
+
+<script>
+  function initCopyButtons() {
+    document.querySelectorAll('.copy-btn').forEach((btn) => {
+      btn.removeEventListener('click', handleCopy);
+      btn.addEventListener('click', handleCopy);
+    });
+  }
+
+  function handleCopy(e) {
+    const btn = e.currentTarget;
+    const container = btn.closest('.overflow-hidden');
+    if (!container) return;
+
+    const activeTab = container.querySelector('.code-content:not(.hidden) code');
+    if (!activeTab) return;
+
+    const code = activeTab.textContent || '';
+
+    navigator.clipboard.writeText(code).then(() => {
+      const originalHTML = btn.innerHTML;
+      btn.innerHTML = `
+        <svg class="h-3.5 w-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+        </svg>
+        Copiado
+      `;
+      btn.style.color = '#10b981';
+
+      setTimeout(() => {
+        btn.innerHTML = originalHTML;
+        btn.style.color = '';
+      }, 2000);
+    });
+  }
+
+  document.addEventListener('astro:page-load', initCopyButtons);
+  document.addEventListener('astro:after-swap', initCopyButtons);
+  document.addEventListener('DOMContentLoaded', initCopyButtons);
+</script>
