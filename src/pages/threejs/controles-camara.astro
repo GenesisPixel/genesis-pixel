@@ -1,0 +1,148 @@
+---
+import ThreejsLayout from '../../layouts/ThreejsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ThreejsLayout
+  title="Controles de cámara - Genesis Pixel"
+  currentLesson="/threejs/controles-camara"
+  prevLesson={{ title: 'Animaciones', href: '/threejs/animaciones' }}
+  nextLesson={{ title: 'Modelos 3D', href: '/threejs/modelos-3d' }}
+>
+  <ChapterHeader
+    chapterNumber="05"
+    chapterLabel="Capítulo 5 · Lección 11"
+    title="Controles de cámara"
+    readingTime={6}
+    difficulty="Three.js"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Dejando que el usuario explore</h3>
+    <p>Hemos animado la cámara matemáticamente, pero la magia del 3D en la web es la interactividad. Queremos que el usuario pueda hacer clic, arrastrar para rotar el mundo, y usar la rueda del ratón para hacer zoom. Programar esto desde cero es una pesadilla matemática de quaternions y vectores.</p>
+    
+    <h3>OrbitControls al rescate</h3>
+    <p>Three.js viene con un paquete de "addons" (ejemplos o complementos). El más famoso es <strong>OrbitControls</strong>. Este script toma el control de tu cámara y permite que "orbite" alrededor de un punto central automáticamente usando los eventos del ratón o los dedos en pantallas táctiles.</p>
+
+    <h3>Damping (Inercia)</h3>
+    <p>Si usas OrbitControls por defecto, al soltar el ratón la cámara se detiene de golpe, sintiéndose rígido y barato. Si activas <code>controls.enableDamping = true</code>, la cámara continuará deslizándose suavemente con inercia, dando una sensación premium y ultra suave.</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Siempre restringe a tus usuarios. Si no pones límites en el OrbitControls (como maxDistance, minDistance o maxPolarAngle), el usuario podría hacer zoom infinito hacia atrás y perder tu escena en el vacío negro del universo." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Implementando OrbitControls
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="threejs-orbit"
+      tabs={[
+        { id: 'js', label: 'JavaScript', code: "import { OrbitControls } from 'three/addons/controls/OrbitControls.js';\n\n// 1. Instanciamos el control pasándole la cámara y el DOM element del renderer\nconst controls = new OrbitControls(camera, renderer.domElement);\n\n// 2. Activamos el damping para la sensación premium\ncontrols.enableDamping = true;\ncontrols.dampingFactor = 0.05; // Ajusta la fricción\n\n// 3. Restringimos al usuario (Buenas prácticas)\ncontrols.enablePan = false; // Bloquear arrastre lateral\ncontrols.minDistance = 2; // Zoom in máximo\ncontrols.maxDistance = 10; // Zoom out máximo\ncontrols.maxPolarAngle = Math.PI / 2; // Evitar que vea por debajo del suelo\n\nfunction animate() {\n  requestAnimationFrame(animate);\n  \n  // IMPORTANTE: Si usas Damping, DEBES actualizar los controles cada frame\n  controls.update();\n  \n  renderer.render(scene, camera);\n}" }
+      ]}
+    />
+    <ResultPreview description="Haz clic y arrastra. Usa la rueda del ratón. Observa la suavidad al soltar.">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-orbit" style="cursor: grab;">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'El Damping no funciona', description: 'Activaste enableDamping = true, pero no llamaste a controls.update() dentro de tu requestAnimationFrame. La inercia no existirá sin el update.' },
+      { label: 'Conflicto con el Scroll de la página', description: 'Al usar OrbitControls en un canvas que no ocupa toda la pantalla, el usuario intentará hacer scroll en la web y en su lugar hará zoom al canvas. Desactiva el zoom (enableZoom = false) si el canvas es solo decorativo.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Toma el control de la cámara."
+      steps={[
+        { number: 1, text: 'Importa OrbitControls de three/addons/controls/OrbitControls.js.', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Instáncialo pasándole tu cámara y tu renderer.domElement.', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Prueba la escena sin límites, luego añade minDistance y maxDistance y siente la diferencia.', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
+  </div>
+
+</ThreejsLayout>
+
+<script>
+
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-orbit');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#1a1a2e');
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.set(0, 2, 6);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    dirLight.position.set(5, 5, 2);
+    scene.add(dirLight);
+
+    // Un objeto interesante
+    const geometry = new THREE.TorusKnotGeometry(1, 0.3, 100, 16);
+    const material = new THREE.MeshStandardMaterial({ color: 0xFC5D7D, metalness: 0.2, roughness: 0.1 });
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    // Controles
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.enablePan = false; // Sin movimiento lateral
+    controls.minDistance = 3;
+    controls.maxDistance = 10;
+
+    // Cambiar cursor al arrastrar
+    controls.addEventListener('start', () => container.style.cursor = 'grabbing');
+    controls.addEventListener('end', () => container.style.cursor = 'grab');
+
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      
+      // Requerido por el damping
+      controls.update();
+      
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      controls.dispose();
+      renderer.dispose();
+    }, { once: true });
+  });
+
+</script>

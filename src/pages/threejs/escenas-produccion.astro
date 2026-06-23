@@ -1,0 +1,89 @@
+---
+import ThreejsLayout from '../../layouts/ThreejsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ThreejsLayout
+  title="Escenas para producción - Genesis Pixel"
+  currentLesson="/threejs/escenas-produccion"
+  prevLesson={{ title: 'Interacciones 3D', href: '/threejs/interacciones-3d' }}
+  nextLesson={{ title: 'Proyecto Final de Three.js', href: '/threejs/proyecto-final' }}
+>
+  <ChapterHeader
+    chapterNumber="05"
+    chapterLabel="Capítulo 5 · Lección 14"
+    title="Escenas para producción"
+    readingTime={7}
+    difficulty="Three.js"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Dejando de jugar, empezando a profesionalizar</h3>
+    <p>Hacer un cubo que gira en un archivo HTML es fácil. Mantener una experiencia Three.js compleja dentro de un framework moderno como Astro, React o Vue requiere disciplina arquitectónica. Si construyes tu código a lo bruto en un solo archivo, tendrás Memory Leaks, ventiladores sonando fuerte y una web inmanejable.</p>
+    
+    <h3>El problema de la basura (Garbage Collection)</h3>
+    <p>A diferencia de los elementos del DOM que desaparecen cuando cambias de página, WebGL es terco. Si instancias Geometrías y Materiales en la memoria de la tarjeta gráfica (VRAM) y cambias de ruta en tu web, esa memoria <strong>NO se libera automáticamente</strong>.</p>
+    <p>Si el usuario entra y sale de tu página 3D varias veces, llenará la VRAM y el navegador cerrará la pestaña por seguridad (el clásico "Aw, Snap!" en Chrome).</p>
+
+    <h3>El arte del Dispose</h3>
+    <p>Todo lo que tenga una geometría, un material, o un renderer, tiene un método llamado <code>.dispose()</code>. Cuando la página se destruye (o el componente se desmonta), es TU responsabilidad recorrer la escena y ejecutar dispose en cada cosa.</p>
+
+    <h3>Organización con Clases</h3>
+    <p>En producción, no metemos todo en un archivo <code>script.js</code>. Creamos una clase <code>WebGLApp</code> o usamos patrones de arquitectura (como react-three-fiber en React). Separamos responsabilidades: un archivo para la escena, otro para la luz, y otro para manejar el resize.</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="En Astro, las View Transitions hacen que la página nunca recargue realmente. Esto agrava el problema de los memory leaks. Usa el evento astro:before-swap para cancelar el requestAnimationFrame y hacer el dispose completo de la escena antes de que cambie la ruta." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    El Cleanup Perfecto
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="threejs-prod"
+      tabs={[
+        { id: 'js', label: 'JavaScript', code: "let animationId;\n\nfunction animate() {\n  animationId = requestAnimationFrame(animate);\n  renderer.render(scene, camera);\n}\n\n// Cuando el usuario sale de la página...\nfunction cleanUp() {\n  // 1. Detener el bucle, la CPU descansa\n  cancelAnimationFrame(animationId);\n  \n  // 2. Liberar eventos del navegador\n  window.removeEventListener('resize', handleResize);\n  \n  // 3. Recorrer y destruir geometrías y materiales de la VRAM\n  scene.traverse((child) => {\n    if (child.isMesh) {\n      child.geometry.dispose();\n      \n      // Los materiales pueden ser un array\n      if (Array.isArray(child.material)) {\n        child.material.forEach(mat => mat.dispose());\n      } else {\n        child.material.dispose();\n      }\n    }\n  });\n  \n  // 4. Destruir el proyector\n  renderer.dispose();\n}" }
+      ]}
+    />
+    <ResultPreview description="Una escena optimizada. Observa el código y memoriza el proceso de limpieza, salvará tu proyecto real.">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-prod">
+        <p class="text-[var(--dm-green-500)] font-afronaut text-sm">Escena segura y lista para producción</p>
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Ventiladores a toda potencia', description: 'Significa que perdiste control del requestAnimationFrame. Al cambiar de página, dejaste el bucle corriendo infinitamente renderizando una escena que ya ni siquiera es visible.' },
+      { label: 'VRAM Exhausta', description: 'Crear texturas nuevas o materiales nuevos DENTRO de la función animate. En 1 minuto tendrás miles de objetos en memoria colapsando la web.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Sé un profesional responsable."
+      steps={[
+        { number: 1, text: 'Guarda el ID devuelto por requestAnimationFrame en una variable externa.', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'En el evento unmount (o before-swap en Astro), llama a cancelAnimationFrame(id).', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Recorre la escena con scene.traverse() y llama .dispose() en cada geometría y material.', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
+  </div>
+
+</ThreejsLayout>
+
+<script>
+
+  // Esta demo es deliberadamente estática para representar la estabilidad requerida.
+  document.addEventListener('astro:page-load', () => {
+    // Simulando el concepto de production-ready
+  });
+
+</script>

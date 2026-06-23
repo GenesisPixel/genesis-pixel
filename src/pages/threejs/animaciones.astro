@@ -1,0 +1,143 @@
+---
+import ThreejsLayout from '../../layouts/ThreejsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ThreejsLayout
+  title="Animaciones - Genesis Pixel"
+  currentLesson="/threejs/animaciones"
+  prevLesson={{ title: 'Texturas', href: '/threejs/texturas' }}
+  nextLesson={{ title: 'Controles de cámara', href: '/threejs/controles-camara' }}
+>
+  <ChapterHeader
+    chapterNumber="05"
+    chapterLabel="Capítulo 5 · Lección 10"
+    title="Animaciones"
+    readingTime={6}
+    difficulty="Three.js"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>El Latido del Mundo</h3>
+    <p>Un mundo estático en 3D es solo una fotografía aburrida. Para que las cosas se sientan vivas y dinámicas (un molino girando, partículas flotando, naves avanzando), necesitamos el concepto de <strong>Game Loop</strong> o Bucle de Animación.</p>
+    
+    <h3>requestAnimationFrame</h3>
+    <p>En el capítulo de Keyframes, dejábamos que CSS calculara todo. En WebGL, tú eres el dueño del bucle. El navegador nos ofrece la función <code>requestAnimationFrame(funcion)</code>. Su única tarea es llamar a una función justo antes de pintar el siguiente frame de la pantalla. Si tu pantalla corre a 60 hercios (60 fps), llamará a tu función 60 veces por segundo.</p>
+
+    <h3>El problema de los FPS</h3>
+    <p>Si simplemente sumas <code>mesh.rotation.y += 0.01</code> en cada frame, y mi ordenador es potentísimo corriendo a 144 fps, mi cubo girará al doble de velocidad que el tuyo si tu pantalla es de 60 fps. Esto arruina las experiencias jugables o sincrónicas.</p>
+    
+    <h3>Clock al rescate</h3>
+    <p>Para solucionar que la velocidad dependa del hardware, Three.js trae <code>THREE.Clock()</code>. En lugar de sumar un número fijo cada frame, le preguntas al reloj "¿Cuánto tiempo (Delta) ha pasado desde el frame anterior?". Multiplicas tu movimiento por ese tiempo. Así, tu cubo girará siempre a 90 grados por segundo de forma real, ya sea en un iPhone 8 o en una PC Gamer de 5000 dólares.</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="GSAP se lleva maravillosamente bien con Three.js. Puedes usar gsap.to(mesh.position, { x: 5, duration: 2 }) para animar cosas a lugares exactos con easings, mientras requestAnimationFrame se encarga solo de mantener el renderizado activo." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    El bucle perfecto usando Delta Time
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="threejs-anim"
+      tabs={[
+        { id: 'js', label: 'JavaScript', code: "// 1. Instanciamos el Reloj\nconst clock = new THREE.Clock();\n\nfunction animate() {\n  // Solicitamos el próximo frame inmediatamente\n  requestAnimationFrame(animate);\n\n  // Obtenemos el tiempo transcurrido desde el último frame\n  const elapsedTime = clock.getElapsedTime(); // Tiempo total\n  const deltaTime = clock.getDelta(); // Tiempo entre frames\n\n  // Rotación basada en el tiempo total (ideal para movimientos cíclicos continuos)\n  mesh.rotation.y = elapsedTime * Math.PI * 0.5; // Medio giro por segundo\n\n  // Oscilación estilo flotación con funciones trigonométricas\n  mesh.position.y = Math.sin(elapsedTime * 2) * 0.5;\n\n  // Renderizado final\n  renderer.render(scene, camera);\n}\n\nanimate();" }
+      ]}
+    />
+    <ResultPreview description="Una geometría flotando suavemente, usando Math.sin() impulsado por el reloj.">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-anim">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Olvidar el render() en el bucle', description: 'Actualizaste la matemática de la posición maravillosamente, pero olvidaste llamar a renderer.render(scene, camera) al final del requestAnimationFrame. Resultado: pantalla congelada.' },
+      { label: 'Memoria desbordada (Memory Leaks)', description: 'En SPAs (como Astro con view transitions o React), si cambias de página y no llamas a cancelAnimationFrame(), el bucle seguirá corriendo invisible en el fondo comiendo recursos de la PC. ¡Cierra tu bucle!' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Domina el movimiento basado en tiempo."
+      steps={[
+        { number: 1, text: 'Instancia new THREE.Clock() antes de tu función animate().', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Consigue el elapsedTime dentro del bucle.', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Asigna mesh.position.x = Math.sin(elapsedTime) y observa cómo el objeto oscila de izquierda a derecha sin fin.', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
+  </div>
+
+</ThreejsLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-anim');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.z = 5;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    dirLight.position.set(5, 5, 5);
+    scene.add(dirLight);
+
+    const geometry = new THREE.TetrahedronGeometry(1, 1);
+    const material = new THREE.MeshStandardMaterial({ color: 0x9FA6FF, flatShading: true, roughness: 0.1, metalness: 0.5 });
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    const clock = new THREE.Clock();
+    let animationId;
+
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      
+      const elapsedTime = clock.getElapsedTime();
+
+      // Animación suave y matemática
+      mesh.rotation.y = elapsedTime * 0.5;
+      mesh.rotation.x = elapsedTime * 0.2;
+      
+      // Oscilación vertical
+      mesh.position.y = Math.sin(elapsedTime * 2) * 0.4;
+
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      renderer.dispose();
+    }, { once: true });
+  });
+
+</script>

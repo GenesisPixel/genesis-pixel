@@ -1,0 +1,180 @@
+---
+import ThreejsLayout from '../../layouts/ThreejsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ThreejsLayout
+  title="Meshes - Genesis Pixel"
+  currentLesson="/threejs/meshes"
+  prevLesson={{ title: 'Materiales', href: '/threejs/materiales' }}
+  nextLesson={{ title: 'Luces', href: '/threejs/luces' }}
+>
+  <ChapterHeader
+    chapterNumber="05"
+    chapterLabel="Capítulo 5 · Lección 7"
+    title="Meshes"
+    readingTime={6}
+    difficulty="Three.js"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es un Mesh?</h3>
+    <p>Hasta este punto tenemos Geometrías (el esqueleto) y Materiales (la piel) como entes separados. Un <strong>Mesh</strong> (Malla) es el objeto final real y tangible. Es la fusión mágica entre una geometría y un material. Es el objeto que finalmente existe en la escena 3D.</p>
+    
+    <h3>El sistema TRS: Transform, Rotate, Scale</h3>
+    <p>Una vez que tienes un Mesh, necesitas poder manipularlo en tu universo. Para ello, los Meshes heredan un conjunto de propiedades que te permiten manipularlos en los ejes X (izquierda/derecha), Y (arriba/abajo) y Z (adelante/atrás).</p>
+
+    <h4>Position (Posición)</h4>
+    <p>Donde está el objeto relativo al centro del mundo (0,0,0). Puedes moverlo de dos maneras:<br>
+    <code>mesh.position.x = 2;</code> o <code>mesh.position.set(2, 0, 0);</code></p>
+
+    <h4>Rotation (Rotación)</h4>
+    <p>Hacia dónde mira el objeto. CUIDADO: La rotación en Three.js NO usa grados (0 a 360). Usa <strong>Radianes</strong>. Medio giro (180 grados) es <code>Math.PI</code>. Un cuarto de giro (90 grados) es <code>Math.PI / 2</code>.</p>
+
+    <h4>Scale (Escala)</h4>
+    <p>El tamaño del objeto relativo a sí mismo. Por defecto es 1 en todos los ejes. Si pones <code>mesh.scale.set(2, 2, 2)</code> el objeto será el doble de grande. Usar escalas negativas (ej. -1) volteará el objeto como un espejo.</p>
+
+    <h3>Grupos (La Organización del Mundo)</h3>
+    <p>Imagina que tienes un coche hecho de varios meshes (llantas, chasis, vidrios). Si quieres mover el coche hacia adelante, ¿vas a mover los 10 meshes uno por uno? No. Creas un <strong>THREE.Group</strong>, metes todos los meshes allí, y solo mueves el grupo. Las piezas se moverán juntas relativas al grupo.</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Math.PI es tu mejor amigo en rotaciones. Piensa en Math.PI como 180° y Math.PI * 2 como 360°. Te ahorrará muchos dolores de cabeza intentar convertir grados a radianes manualmente." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Posicionando Meshes y Grupos
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="threejs-mesh"
+      tabs={[
+        { id: 'js', label: 'JavaScript', code: "// 1. Unir esqueleto y piel\nconst geometry = new THREE.BoxGeometry(1, 1, 1);\nconst material = new THREE.MeshStandardMaterial({ color: 0xff0000 });\nconst cube = new THREE.Mesh(geometry, material);\n\n// 2. Manipular TRS\ncube.position.set(0, 1, 0);     // 1 unidad hacia arriba\ncube.rotation.y = Math.PI / 4;  // Rotar 45 grados en Y\ncube.scale.set(2, 0.5, 1);      // Estirar y aplastar\n\n// 3. Agrupar objetos\nconst carGroup = new THREE.Group();\ncarGroup.add(chasisMesh);\ncarGroup.add(llantaMesh);\n\n// Al rotar el grupo, las llantas y el chasis rotan juntos\ncarGroup.rotation.y = Math.PI;\nscene.add(carGroup);" }
+      ]}
+    />
+    <ResultPreview description="Varios meshes contenidos en un mismo grupo giratorio.">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-mesh">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Gimbal Lock (Bloqueo de ejes)', description: 'Al rotar objetos en varios ejes a la vez, puedes causar un "Gimbal Lock" donde los ejes se solapan. Three.js usa Euler order (XYZ). Si esto pasa, podrías necesitar usar Quaternions (matemáticas avanzadas).' },
+      { label: 'Reutilizar Materiales mal', description: 'Si tienes 100 cubos con el MISMO material y haces cube[0].material.color.set("red"), ¡los 100 cubos se volverán rojos! Los materiales se comparten por defecto por eficiencia. Usa clone() si necesitas materiales únicos.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Alinea tus objetos."
+      steps={[
+        { number: 1, text: 'Instancia un Mesh que fusione SphereGeometry y BasicMaterial.', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Desplaza el Mesh en el eje X usando .position.x = 2.', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Créate un THREE.Group(), añade tu Mesh al grupo, y luego añade el grupo a la Scene.', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
+  </div>
+
+</ThreejsLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-mesh');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.z = 8;
+    camera.position.y = 2;
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+    dirLight.position.set(2, 5, 2);
+    scene.add(dirLight);
+
+    // Crear el Grupo
+    const orbitGroup = new THREE.Group();
+    scene.add(orbitGroup);
+
+    // Sol central (No en el grupo rotatorio)
+    const sunGeo = new THREE.SphereGeometry(0.8, 32, 32);
+    const sunMat = new THREE.MeshStandardMaterial({ color: 0xFDD88E, emissive: 0xFDD88E, emissiveIntensity: 0.5 });
+    const sun = new THREE.Mesh(sunGeo, sunMat);
+    scene.add(sun);
+
+    // Planeta (En el grupo rotatorio, pero desplazado)
+    const planetGeo = new THREE.SphereGeometry(0.4, 32, 32);
+    const planetMat = new THREE.MeshStandardMaterial({ color: 0x57B0FB, roughness: 0.4 });
+    const planet = new THREE.Mesh(planetGeo, planetMat);
+    planet.position.x = 3; // Su posición es relativa al grupo
+    orbitGroup.add(planet);
+    
+    // Luna (En otro subgrupo)
+    const moonGroup = new THREE.Group();
+    moonGroup.position.x = 3;
+    orbitGroup.add(moonGroup);
+    
+    const moonGeo = new THREE.SphereGeometry(0.15, 16, 16);
+    const moonMat = new THREE.MeshStandardMaterial({ color: 0xcccccc });
+    const moon = new THREE.Mesh(moonGeo, moonMat);
+    moon.position.x = 0.8;
+    moonGroup.add(moon);
+
+    // Órbita visual
+    const pathGeo = new THREE.RingGeometry(2.95, 3.05, 64);
+    const pathMat = new THREE.MeshBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.1, side: THREE.DoubleSide });
+    const path = new THREE.Mesh(pathGeo, pathMat);
+    path.rotation.x = Math.PI / 2;
+    scene.add(path);
+
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      
+      // Rotamos el grupo entero, y el planeta gira alrededor del centro
+      orbitGroup.rotation.y += 0.01;
+      
+      // La luna orbita el planeta
+      moonGroup.rotation.y += 0.05;
+      
+      // El planeta también rota sobre sí mismo
+      planet.rotation.y += 0.02;
+      
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      renderer.dispose();
+    }, { once: true });
+  });
+
+</script>

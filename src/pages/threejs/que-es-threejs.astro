@@ -1,0 +1,132 @@
+---
+import ThreejsLayout from '../../layouts/ThreejsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ThreejsLayout
+  title="¿Qué es Three.js? - Genesis Pixel"
+  currentLesson="/threejs/que-es-threejs"
+  
+  nextLesson={{ title: 'Tu primera escena', href: '/threejs/primera-escena' }}
+>
+  <ChapterHeader
+    chapterNumber="05"
+    chapterLabel="Capítulo 5 · Lección 1"
+    title="¿Qué es Three.js?"
+    readingTime={6}
+    difficulty="Three.js"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es Three.js?</h3>
+    <p>Hasta ahora, en Genesis Pixel hemos manipulado el DOM para crear animaciones y transformaciones maravillosas. Todo esto ocurría en un plano de dos dimensiones, una hoja de papel plana (incluso cuando simulábamos 3D con <code>perspective</code>).</p>
+    <p><strong>Three.js</strong> es como recibir unas gafas de realidad virtual y una caja de legos. Es una librería de JavaScript que hace que crear experiencias 3D en el navegador sea sorprendentemente fácil. Oculta las matemáticas complejas de WebGL (el motor gráfico del navegador) y te da herramientas intuitivas para construir mundos.</p>
+    
+    <h3>¿Para qué sirve?</h3>
+    <p>Imagina entrar a una tienda online de zapatos y poder girar el zapato 360 grados, o navegar por un portafolio donde eres el piloto de una nave espacial en un universo interactivo. Three.js sirve para romper la barrera de lo plano y crear <strong>experiencias inmersivas</strong> que antes solo eran posibles en videojuegos.</p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>Productos 3D:</strong> Visualizadores e-commerce (coches, zapatillas, relojes).</li>
+      <li><strong>Portafolios Creativos:</strong> Experiencias premiadas en Awwwards con navegación espacial.</li>
+      <li><strong>Data Visualization:</strong> Representaciones complejas de datos globales.</li>
+      <li><strong>Juegos web:</strong> Experiencias lúdicas accesibles desde un simple enlace.</li>
+    </ul>
+
+    <h3>¿Cómo funciona?</h3>
+    <p>Piensa en Three.js como un estudio de cine. Para grabar una película necesitas tres cosas fundamentales: un <strong>Escenario</strong> (Scene), una <strong>Cámara</strong> (Camera) para grabar, y un <strong>Proyector</strong> (Renderer) para mostrar la película en la pantalla.</p>
+    <p>A diferencia de CSS, donde estilizas elementos que ya existen en HTML, en Three.js tú debes crear desde cero la geometría (la forma), el material (la textura/color) y la luz para que tus objetos existan.</p>
+
+    <h3>Diferencia entre CSS 3D y Three.js</h3>
+    <p>CSS Transform 3D es excelente para voltear tarjetas o crear paralaje simple. Sin embargo, no tiene iluminación real, sombras dinámicas ni la capacidad de renderizar millones de polígonos. Three.js es un motor completo de gráficos rasterizados.</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="No uses Three.js para todo. Si solo necesitas girar una tarjeta o animar un botón, CSS es más rápido, accesible y eficiente. Reserva Three.js para verdaderas experiencias inmersivas que requieren volumen, iluminación o miles de partículas." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    El paso de 2D a 3D Inmersivo
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="threejs-intro"
+      tabs={[
+        { id: 'js', label: 'JavaScript', code: "import * as THREE from 'three';\n\n// El estudio de cine: Escena, Cámara y Render\nconst scene = new THREE.Scene();\nconst camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);\nconst renderer = new THREE.WebGLRenderer();\n\n// ¡Así de simple inicias el viaje 3D!" }
+      ]}
+    />
+    <ResultPreview description="Una vista previa simbólica: El poder del 3D.">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-intro">
+        <!-- Canvas generado por Three.js -->
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Sobrecargar la página', description: 'Cargar un canvas 3D enorme en dispositivos móviles lentos arruinará la experiencia y consumirá batería rápidamente.' },
+      { label: 'Olvidar el Resize', description: 'Si el usuario cambia el tamaño de la ventana y no actualizas la cámara y el renderer, tu escena se verá estirada y deforme.' },
+      { label: 'Importar sin bundler', description: 'Intentar usar Three.js sin un sistema como Vite o Astro puede causar problemas con los modulos ES6.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Familiarízate con el ecosistema y la mentalidad 3D."
+      steps={[
+        { number: 1, text: 'Visita un sitio como Awwwards y busca la etiqueta WebGL.', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Observa cómo los objetos 3D reaccionan a la luz y al scroll del usuario.', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Identifica qué elementos son 3D (Three.js) y cuáles son UI sobrepuesta (HTML/CSS).', color: 'app-color-yellow400', rotate: '-5deg' }
+      ]}
+    />
+  </div>
+
+</ThreejsLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-intro');
+    if (!container) return;
+    
+    // Cleanup previo
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#0a0f0c');
+
+    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.z = 3;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const geometry = new THREE.IcosahedronGeometry(1, 1);
+    const material = new THREE.MeshBasicMaterial({ color: 0x9FA6FF, wireframe: true });
+    const sphere = new THREE.Mesh(geometry, material);
+    scene.add(sphere);
+
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      sphere.rotation.x += 0.005;
+      sphere.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    // Limpieza al cambiar de página
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      renderer.dispose();
+    }, { once: true });
+  });
+
+</script>

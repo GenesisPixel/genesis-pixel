@@ -1,0 +1,134 @@
+---
+import ThreejsLayout from '../../layouts/ThreejsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ThreejsLayout
+  title="El Renderer - Genesis Pixel"
+  currentLesson="/threejs/renderer"
+  prevLesson={{ title: 'Cámaras', href: '/threejs/camaras' }}
+  nextLesson={{ title: 'Geometrías', href: '/threejs/geometrias' }}
+>
+  <ChapterHeader
+    chapterNumber="05"
+    chapterLabel="Capítulo 5 · Lección 4"
+    title="El Renderer"
+    readingTime={6}
+    difficulty="Three.js"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es el Renderer?</h3>
+    <p>Hemos construido nuestro estudio de cine (Scene) y posicionado nuestra cámara (Camera). Pero nadie puede ver nada sin un proyector. El <strong>WebGLRenderer</strong> es el motor incansable que procesa todas las matemáticas de luces, formas y cámara, y decide qué color exacto pintar en cada píxel de tu pantalla.</p>
+    
+    <h3>Calidad vs Rendimiento</h3>
+    <p>El Renderer te da el poder absoluto sobre la calidad visual. Siendo desarrolladores creativos, queremos que todo se vea espectacular, pero debemos tener cuidado de no incendiar la tarjeta gráfica del usuario.</p>
+    
+    <h4>Antialiasing</h4>
+    <p>En el mundo digital, las líneas diagonales se construyen con píxeles cuadrados, lo que produce "bordes de sierra" (pixeles dentados). El <code>antialias: true</code> es un proceso matemático que suaviza estos bordes mezclando los colores. Es crucial para un aspecto premium.</p>
+
+    <h4>Device Pixel Ratio</h4>
+    <p>Los teléfonos modernos y pantallas Retina (Mac) tienen más píxeles físicos por cada píxel "lógico" de CSS. Si no le avisas a Three.js sobre esto, tu 3D se verá borroso en pantallas caras. El método <code>setPixelRatio(window.devicePixelRatio)</code> soluciona esto instantáneamente.</p>
+
+    <h3>Responsividad</h3>
+    <p>En la web clásica, CSS se encarga de adaptar el diseño si la ventana cambia de tamaño. En WebGL, el canvas actúa como una imagen estática. Si el usuario gira el teléfono o cambia el tamaño del navegador, <strong>tú eres el responsable</strong> de actualizar el tamaño del renderer y la proporción de la cámara.</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="En pantallas de muy alta resolución (como un iPhone 15 o un MacBook), el pixel ratio puede ser 3 o más. Renderizar 3D complejo en esas densidades puede causar lag severo. Un truco ninja en producción es limitar el pixel ratio a 2: renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));" />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    El Setup Perfecto del Renderer
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="threejs-renderer"
+      tabs={[
+        { id: 'js', label: 'JavaScript', code: "// 1. Instanciación con Antialias (bordes suaves) y Alpha (fondo transparente)\nconst renderer = new THREE.WebGLRenderer({ \n  antialias: true, \n  alpha: true \n});\n\n// 2. Establecer el tamaño exacto de la pantalla\nrenderer.setSize(window.innerWidth, window.innerHeight);\n\n// 3. Soporte para pantallas Retina / Móviles\nrenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));\n\n// 4. Inyectar el canvas mágico en nuestro HTML\ndocument.body.appendChild(renderer.domElement);\n\n// 5. El Evento de Resize (Crucial)\nwindow.addEventListener('resize', () => {\n  // Actualizar cámara\n  camera.aspect = window.innerWidth / window.innerHeight;\n  camera.updateProjectionMatrix();\n  \n  // Actualizar renderer\n  renderer.setSize(window.innerWidth, window.innerHeight);\n});" }
+      ]}
+    />
+    <ResultPreview description="Una geometría suave y de alta definición sobre un fondo transparente de la web.">
+      <div class="flex items-center justify-center h-full w-full bg-gradient-to-br from-[#1a1a2e] to-[#4a1a5e] overflow-hidden rounded-xl" id="demo-renderer">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Bordes de sierra', description: 'Olvidaste pasar { antialias: true } al crear el WebGLRenderer. Tu experiencia se verá barata y antigua.' },
+      { label: 'Imágenes borrosas en móvil', description: 'Si no configuras el setPixelRatio, el móvil estirará los pocos píxeles básicos sobre su pantalla de alta densidad, viéndose borroso.' },
+      { label: 'El canvas no se adapta', description: 'No añadiste el event listener de resize. El tamaño del canvas se queda fijo con el tamaño que tenía la ventana al cargar.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Configura un Renderer profesional listo para producción."
+      steps={[
+        { number: 1, text: 'Instancia el WebGLRenderer activando antialias y alpha.', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Ajusta el tamaño y el devicePixelRatio con Math.min(..., 2).', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Añade el domElement al body de tu documento.', color: 'app-color-yellow400', rotate: '-5deg' },
+        { number: 4, text: 'Implementa el evento resize de la ventana, es obligatorio en todo proyecto web.', color: 'dm-blue', rotate: '3deg' },
+      ]}
+    />
+  </div>
+
+</ThreejsLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-renderer');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.z = 4;
+
+    // Renderer super suave y con fondo transparente para dejar ver el gradiente CSS
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const geometry = new THREE.TorusKnotGeometry(0.8, 0.25, 100, 16);
+    const material = new THREE.MeshNormalMaterial();
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      mesh.rotation.x += 0.01;
+      mesh.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    // Resize handler interno para la demo
+    const handleResize = () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      renderer.dispose();
+    }, { once: true });
+  });
+
+</script>

@@ -1,0 +1,158 @@
+---
+import ThreejsLayout from '../../layouts/ThreejsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ThreejsLayout
+  title="Modelos 3D - Genesis Pixel"
+  currentLesson="/threejs/modelos-3d"
+  prevLesson={{ title: 'Controles de cámara', href: '/threejs/controles-camara' }}
+  nextLesson={{ title: 'Interacciones 3D', href: '/threejs/interacciones-3d' }}
+>
+  <ChapterHeader
+    chapterNumber="05"
+    chapterLabel="Capítulo 5 · Lección 12"
+    title="Modelos 3D"
+    readingTime={8}
+    difficulty="Three.js"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Traer arte al código</h3>
+    <p>Construir mundos usando solo cubos y esferas programadas está bien para matemáticas, pero para experiencias impactantes necesitas Modelos 3D reales creados por artistas en programas como Blender, Maya o Cinema4D.</p>
+    
+    <h3>El formato GLTF / GLB</h3>
+    <p>Históricamente existían formatos pesados como OBJ o FBX. Hoy en día, la industria web ha estandarizado el uso de <strong>GLTF</strong> (y su versión binaria empaquetada, <strong>.glb</strong>). Es conocido como el "JPEG del 3D". Es ligero, comprime texturas y geometrías, y soporta animaciones integradas.</p>
+
+    <h3>GLTFLoader</h3>
+    <p>Para traer estos modelos a tu escena, usamos un Addon llamado <code>GLTFLoader</code>. Este loader descargará el archivo, desempaquetará su geometría y materiales PBR automáticamente, y te devolverá una estructura lista para añadir a tu Scene.</p>
+
+    <h3>Optimización en Producción</h3>
+    <p>Un modelo descargado de internet puede tener millones de vértices y texturas 4K. Si lo cargas en la web, tardará 15 segundos en descargar y luego trabará el móvil de tu usuario. <strong>Siempre debes pasar tus modelos por Blender o herramientas como Draco para comprimirlos antes de llevarlos a Three.js.</strong></p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="¿Tu modelo es muy oscuro cuando lo importas? Blender usa sistemas de iluminación complejos, pero Three.js importa el modelo crudo. Tendrás que configurar tus propias luces en Three.js o, mejor aún, usar un Environment Map (HDRI) para que los materiales metálicos tengan algo que reflejar." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Cargando un archivo .GLB
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="threejs-model"
+      tabs={[
+        { id: 'js', label: 'JavaScript', code: "import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';\n\n// Instanciamos el loader\nconst loader = new GLTFLoader();\n\n// load( url, onLoad, onProgress, onError )\nloader.load(\n  '/models-three.js/small-airplane.glb',\n  function (gltf) {\n    // El modelo cargó correctamente\n    const model = gltf.scene;\n    \n    // Ajustar escala si es muy grande o pequeño\n    model.scale.set(0.5, 0.5, 0.5);\n    \n    // Centrarlo y añadirlo a la escena\n    model.position.set(0, 0, 0);\n    scene.add(model);\n  },\n  function (xhr) {\n    // Para mostrar barras de progreso\n    console.log((xhr.loaded / xhr.total * 100) + '% cargado');\n  },\n  function (error) {\n    console.error('Un error ocurrió', error);\n  }\n);" }
+      ]}
+    />
+    <ResultPreview description="Modelo GLB de un pequeño avión cargado y renderizado.">
+      <div class="flex items-center justify-center h-full w-full bg-[#87CEEB] overflow-hidden rounded-xl" id="demo-model">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Ruta incorrecta del archivo', description: 'En Astro/Vite, los archivos estáticos van en la carpeta public/. Debes cargarlos con la ruta absoluta desde la raíz: /models-three.js/modelo.glb, no con rutas relativas.' },
+      { label: 'Modelo invisible', description: 'A veces el modelo es 1000 veces más grande que tu cámara y estás atascado dentro de él, o es microscópico. Usa model.scale.set() para ajustarlo y revisa su tamaño en Blender antes de exportar.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Integra arte profesional."
+      steps={[
+        { number: 1, text: 'Importa GLTFLoader.', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Carga el modelo de prueba /models-three.js/small-airplane.glb.', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Agrega luces a la escena para que el modelo no se vea negro.', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
+  </div>
+
+</ThreejsLayout>
+
+<script>
+
+  import * as THREE from 'three';
+  import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-model');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.set(0, 1, 4);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+
+    // Iluminación para resaltar el modelo
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+    
+    const dirLight = new THREE.DirectionalLight(0xffffff, 2);
+    dirLight.position.set(5, 5, 5);
+    scene.add(dirLight);
+
+    let airplane;
+
+    const loader = new GLTFLoader();
+    loader.load('/models-three.js/small-airplane.glb', (gltf) => {
+      airplane = gltf.scene;
+      // Ajustamos escala y centramos el avión
+      airplane.scale.set(0.5, 0.5, 0.5);
+      airplane.position.y = -0.5;
+      scene.add(airplane);
+    });
+
+    let animationId;
+    const clock = new THREE.Clock();
+
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      controls.update();
+
+      // Animación sutil de vuelo
+      if (airplane) {
+        const time = clock.getElapsedTime();
+        airplane.position.y = Math.sin(time * 2) * 0.1 - 0.2;
+        airplane.rotation.z = Math.sin(time) * 0.05;
+        airplane.rotation.x = Math.cos(time) * 0.05;
+      }
+
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      controls.dispose();
+      renderer.dispose();
+    }, { once: true });
+  });
+
+</script>

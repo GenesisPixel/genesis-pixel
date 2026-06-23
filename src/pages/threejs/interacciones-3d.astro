@@ -1,0 +1,180 @@
+---
+import ThreejsLayout from '../../layouts/ThreejsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ThreejsLayout
+  title="Interacciones 3D - Genesis Pixel"
+  currentLesson="/threejs/interacciones-3d"
+  prevLesson={{ title: 'Modelos 3D', href: '/threejs/modelos-3d' }}
+  nextLesson={{ title: 'Escenas para producción', href: '/threejs/escenas-produccion' }}
+>
+  <ChapterHeader
+    chapterNumber="05"
+    chapterLabel="Capítulo 5 · Lección 13"
+    title="Interacciones 3D"
+    readingTime={8}
+    difficulty="Three.js"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>El clic en un mundo sin DOM</h3>
+    <p>En HTML normal, hacer clic en un botón es fácil: añades un <code>addEventListener</code>. Pero en Three.js, toda tu escena es un único elemento HTML: el <code>&lt;canvas&gt;</code>. El navegador no tiene ni idea de si has hecho clic en un cubo 3D, una esfera, o en el vacío del espacio.</p>
+    
+    <h3>Raycaster: El francotirador invisible</h3>
+    <p>Para detectar clics u hovers en objetos 3D, usamos un <strong>Raycaster</strong>. Funciona lanzando un rayo láser invisible matemáticamente exacto desde tu ratón (en la pantalla 2D), atravesando la lente de la cámara hacia las profundidades de la escena 3D.</p>
+    <p>El Raycaster devolverá una lista de TODOS los objetos que ese láser tocó en su camino, ordenados desde el más cercano hasta el más lejano.</p>
+
+    <h3>Normalizando coordenadas</h3>
+    <p>Tu ratón se mueve en píxeles (ej. 1920x1080), pero el mundo 3D y WebGL usan un sistema coordinado normalizado donde el centro de la pantalla es [0,0], arriba a la derecha es [1,1] y abajo a la izquierda es [-1,-1]. Deberás convertir la posición de tu ratón a este formato antes de disparar el rayo.</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="El Raycaster es costoso. Si tienes 1000 árboles, no lances el rayo contra todos en cada movimiento del ratón. Mete solo los objetos 'clickeables' en un Array y dile al Raycaster que solo compruebe las colisiones con esos objetos." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Detectando Hover en Objetos 3D
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="threejs-ray"
+      tabs={[
+        { id: 'js', label: 'JavaScript', code: "// 1. Instanciamos el Raycaster y un vector para el ratón\nconst raycaster = new THREE.Raycaster();\nconst mouse = new THREE.Vector2();\n\n// Array de cosas interactuables\nconst objectsToTest = [cubo1, cubo2, esfera];\n\n// 2. Rastreamos el ratón y normalizamos coordenadas\nwindow.addEventListener('mousemove', (event) => {\n  // Fórmula estándar para convertir a escala -1 a +1\n  mouse.x = (event.clientX / window.innerWidth) * 2 - 1;\n  mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;\n});\n\n// 3. En el bucle de animación, disparamos el rayo\nfunction animate() {\n  requestAnimationFrame(animate);\n  \n  // Actualizar el rayo desde la cámara y la posición del ratón\n  raycaster.setFromCamera(mouse, camera);\n  \n  // Obtener los objetos tocados\n  const intersects = raycaster.intersectObjects(objectsToTest);\n  \n  // Restaurar el color de todos primero (pseudo :mouseout)\n  for(const object of objectsToTest) {\n    object.material.color.set('#ffffff');\n  }\n  \n  // Si tocamos algo, cambiamos su color (pseudo :hover)\n  if(intersects.length > 0) {\n    intersects[0].object.material.color.set('#ff0000');\n  }\n  \n  renderer.render(scene, camera);\n}" }
+      ]}
+    />
+    <ResultPreview description="Pasa el ratón sobre los objetos. El Raycaster detectará la colisión matemáticamente.">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-ray">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'El hover está desfasado', description: 'Si tu canvas no ocupa toda la pantalla (window.innerWidth), la fórmula de normalización fallará. Debes usar el clientWidth de tu contenedor y el offsetX del ratón.' },
+      { label: 'La cámara cambió, el raycaster no', description: 'Al usar setFromCamera(mouse, camera), si mueves la cámara con OrbitControls, el raycaster debe seguir actualizándose dentro del bucle animate, no fuera de él.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Dale tacto a tu mundo 3D."
+      steps={[
+        { number: 1, text: 'Instancia new THREE.Raycaster() y un new THREE.Vector2().', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'En el mousemove, convierte las coordenadas del evento a -1 y 1.', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'En animate(), dispara raycaster.intersectObjects(tusMeshes) y cambia el color del primer elemento intersectado.', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
+  </div>
+
+</ThreejsLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-ray');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.z = 6;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    const dirLight = new THREE.DirectionalLight(0xffffff, 1);
+    dirLight.position.set(5, 5, 5);
+    scene.add(dirLight);
+
+    // Objetos a interactuar
+    const geometry = new THREE.IcosahedronGeometry(0.8, 0);
+    const objectsToTest = [];
+
+    for (let i = -1; i <= 1; i++) {
+      const material = new THREE.MeshStandardMaterial({ color: 0x57B0FB, roughness: 0.2 });
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.x = i * 2;
+      scene.add(mesh);
+      objectsToTest.push(mesh);
+    }
+
+    // Raycaster Setup
+    const raycaster = new THREE.Raycaster();
+    const mouse = new THREE.Vector2();
+    let isHovering = false;
+
+    // Calcular posición del ratón relativa al contenedor
+    const onMouseMove = (event) => {
+      const rect = container.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      mouse.x = (x / container.clientWidth) * 2 - 1;
+      mouse.y = -(y / container.clientHeight) * 2 + 1;
+    };
+    container.addEventListener('mousemove', onMouseMove);
+
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      
+      // Animamos los objetos
+      for(const obj of objectsToTest) {
+        obj.rotation.x += 0.01;
+        obj.rotation.y += 0.01;
+      }
+
+      // Raycaster lógica
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(objectsToTest);
+
+      // Resetear colores
+      for(const obj of objectsToTest) {
+        // Volver gradualmente al color original usando lerp para suavidad
+        obj.material.color.lerp(new THREE.Color(0x57B0FB), 0.1);
+        obj.scale.lerp(new THREE.Vector3(1, 1, 1), 0.1);
+      }
+
+      if (intersects.length > 0) {
+        container.style.cursor = 'pointer';
+        const hoveredObj = intersects[0].object;
+        hoveredObj.material.color.lerp(new THREE.Color(0xFC5D7D), 0.2);
+        hoveredObj.scale.lerp(new THREE.Vector3(1.2, 1.2, 1.2), 0.2);
+      } else {
+        container.style.cursor = 'default';
+      }
+
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      container.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('resize', handleResize);
+      renderer.dispose();
+    }, { once: true });
+  });
+
+</script>

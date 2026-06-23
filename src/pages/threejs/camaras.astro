@@ -1,0 +1,141 @@
+---
+import ThreejsLayout from '../../layouts/ThreejsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ThreejsLayout
+  title="Cámaras - Genesis Pixel"
+  currentLesson="/threejs/camaras"
+  prevLesson={{ title: 'Tu primera escena', href: '/threejs/primera-escena' }}
+  nextLesson={{ title: 'El Renderer', href: '/threejs/renderer' }}
+>
+  <ChapterHeader
+    chapterNumber="05"
+    chapterLabel="Capítulo 5 · Lección 3"
+    title="Cámaras"
+    readingTime={7}
+    difficulty="Three.js"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es una Cámara?</h3>
+    <p>En la vida real, lo que ves de una habitación depende de dónde estás parado y a dónde apuntas tus ojos. En Three.js, la <strong>Cámara</strong> es el ojo humano. Todo lo que esté delante de ella y dentro de su rango de visión, será dibujado en la pantalla.</p>
+    
+    <h3>PerspectiveCamera vs OrthographicCamera</h3>
+    <p>Existen dos tipos principales de cámara, y elegir una u otra cambia drásticamente cómo se siente tu experiencia web:</p>
+    
+    <h4>1. PerspectiveCamera (La Realista)</h4>
+    <p>Imagina que estás en una autopista. Los coches que están cerca se ven grandes, y los que están lejos se ven pequeñitos hasta desaparecer en el horizonte. Esa es la perspectiva. Esta cámara imita cómo funciona el ojo humano y se usa en el 95% de las experiencias 3D.</p>
+    
+    <h4>2. OrthographicCamera (La Técnica)</h4>
+    <p>Imagina un juego isométrico (como SimCity clásico o Monument Valley). El tamaño de los objetos se mantiene constante sin importar qué tan lejos estén. Es ideal para interfaces de usuario en 3D, mapas arquitectónicos o juegos de estrategia.</p>
+
+    <h3>Parámetros de PerspectiveCamera</h3>
+    <p>Cuando creas tu cámara: <code>new THREE.PerspectiveCamera(fov, aspect, near, far)</code>, le estás pasando cuatro datos vitales:</p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>FOV (Field of View):</strong> Campo de visión en grados. Como hacer zoom con una lente. 75 es lo estándar. Un FOV muy alto (120) crea efecto ojo de pez.</li>
+      <li><strong>Aspect Ratio:</strong> La relación de aspecto (ancho dividido por alto de tu pantalla). Si no coincide con tu pantalla, todo se verá aplastado.</li>
+      <li><strong>Near y Far:</strong> Es el rango de renderizado. Los objetos más cerca del valor "near" (ej. 0.1) o más lejos del "far" (ej. 1000) no se dibujarán. Esto se llama "clipping" y ahorra memoria.</li>
+    </ul>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Si sientes que tus objetos desaparecen misteriosamente cuando se acercan mucho a la pantalla o cuando se alejan demasiado, revisa los valores Near y Far de tu cámara. Aumentar el 'far' a 10000 te dará más profundidad, pero bajará el rendimiento." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Posicionando la cámara en el espacio
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="threejs-cam"
+      tabs={[
+        { id: 'js', label: 'JavaScript', code: "const fov = 75;\nconst aspect = window.innerWidth / window.innerHeight;\nconst near = 0.1;\nconst far = 1000;\n\n// Crear cámara\nconst camera = new THREE.PerspectiveCamera(fov, aspect, near, far);\n\n// Posicionar la cámara\n// [x: izquierda/derecha, y: arriba/abajo, z: adelante/atrás]\ncamera.position.set(2, 2, 5);\n\n// IMPORTANTE: Por defecto, la cámara mira hacia -Z.\n// Si la movimos, debemos ordenarle que mire de nuevo al centro.\ncamera.lookAt(0, 0, 0); // O camera.lookAt(scene.position);" }
+      ]}
+    />
+    <ResultPreview description="Una cámara moviéndose en órbita alrededor de un objetivo central.">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-cam">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Olvidar el Aspect Ratio en Resize', description: 'Cuando redimensionas la ventana, tu aspect ratio cambia. Si no actualizas camera.aspect y llamas a camera.updateProjectionMatrix(), el 3D se deformará.' },
+      { label: 'Mover la cámara y perder de vista los objetos', description: 'Si elevas la cámara en el eje Y, dejará de mirar hacia adelante y no verás nada. Usa siempre camera.lookAt() después de moverla.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Juega con la posición de la cámara y su punto de enfoque."
+      steps={[
+        { number: 1, text: 'Instancia una PerspectiveCamera con FOV de 75.', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Posiciónala en [0, 5, 5] (arriba y atrás).', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Usa camera.lookAt(0,0,0) para apuntar hacia abajo, al centro de la escena.', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
+  </div>
+
+</ThreejsLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-cam');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    
+    // Rejilla para dar contexto espacial
+    const gridHelper = new THREE.GridHelper(10, 10, 0x444444, 0x222222);
+    scene.add(gridHelper);
+
+    const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 100);
+    
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const geometry = new THREE.ConeGeometry(1, 2, 4);
+    const material = new THREE.MeshNormalMaterial();
+    const cone = new THREE.Mesh(geometry, material);
+    cone.position.y = 1;
+    scene.add(cone);
+
+    let time = 0;
+    let animationId;
+    
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      time += 0.01;
+      
+      // La cámara orbita en un círculo
+      camera.position.x = Math.sin(time) * 6;
+      camera.position.z = Math.cos(time) * 6;
+      camera.position.y = 3;
+      
+      // Siempre miramos al cono
+      camera.lookAt(cone.position);
+      
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      renderer.dispose();
+    }, { once: true });
+  });
+
+</script>

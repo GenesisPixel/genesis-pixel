@@ -1,0 +1,144 @@
+---
+import ThreejsLayout from '../../layouts/ThreejsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ThreejsLayout
+  title="Geometrías - Genesis Pixel"
+  currentLesson="/threejs/geometrias"
+  prevLesson={{ title: 'El Renderer', href: '/threejs/renderer' }}
+  nextLesson={{ title: 'Materiales', href: '/threejs/materiales' }}
+>
+  <ChapterHeader
+    chapterNumber="05"
+    chapterLabel="Capítulo 5 · Lección 5"
+    title="Geometrías"
+    readingTime={6}
+    difficulty="Three.js"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué son las Geometrías?</h3>
+    <p>En el mundo real, los objetos tienen forma porque están hechos de materia continua. En 3D, todo objeto es una ilusión creada al unir puntos en el espacio. Las <strong>Geometries</strong> (Geometrías) definen la estructura matemática, el esqueleto de tu objeto.</p>
+    <p>Ese esqueleto está compuesto de <strong>Vértices</strong> (los puntos en el espacio) y <strong>Caras</strong> (los triángulos que se forman al conectar tres vértices). Entre más vértices tenga una geometría, más suave y detallada será, pero también le costará más esfuerzo al ordenador calcularla.</p>
+    
+    <h3>Las Geometrías Primitivas</h3>
+    <p>Al igual que HTML te da etiquetas predefinidas (div, p, h1), Three.js te regala formas básicas listas para usar, llamadas primitivas. Las más comunes son:</p>
+    
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>BoxGeometry:</strong> Un cubo o prisma rectangular. Ideal para cajas, edificios o píxeles 3D.</li>
+      <li><strong>SphereGeometry:</strong> Una esfera. Perfecta para planetas, partículas o gotas.</li>
+      <li><strong>PlaneGeometry:</strong> Un plano 2D. Se usa muchísimo para simular suelos, paredes o para proyectar imágenes encima como tarjetas interactivas.</li>
+      <li><strong>TorusGeometry:</strong> Un donut gigante. Muy usado en motion design abstracto.</li>
+    </ul>
+
+    <h3>Segmentos: El coste de la curva</h3>
+    <p>Cuando creas una SphereGeometry, debes indicarle su radio, pero también sus segmentos de ancho y alto. Una esfera con 8x8 segmentos se verá como un diamante rudo (low-poly). Una esfera con 64x64 se verá perfectamente redonda, pero requiere mucho procesamiento. <strong>El secreto de un buen desarrollo 3D es usar el menor número de segmentos posible para engañar al ojo.</strong></p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Cuando crees efectos de cientos de partículas, NO uses SphereGeometry. Usa una geometría súper básica (como un plano o un triángulo) y aplica una textura de círculo con transparencia. Ahorrarás miles de vértices por objeto." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Explorando Primitivas
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="threejs-geo"
+      tabs={[
+        { id: 'js', label: 'JavaScript', code: "// BoxGeometry(width, height, depth)\nconst box = new THREE.BoxGeometry(1, 1, 1);\n\n// PlaneGeometry(width, height, widthSegments, heightSegments)\nconst plane = new THREE.PlaneGeometry(2, 2);\n\n// SphereGeometry(radius, widthSegments, heightSegments)\n// ¡Cuidado! Valores mayores a 32 consumen más recursos.\nconst sphere = new THREE.SphereGeometry(1, 32, 32);\n\n// TorusGeometry(radius, tube, radialSegments, tubularSegments)\nconst donut = new THREE.TorusGeometry(1, 0.4, 16, 100);" }
+      ]}
+    />
+    <ResultPreview description="Diferentes geometrías rotando. (En modo Wireframe para ver su esqueleto)">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-geo">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Exceso de Segmentos', description: 'Crear una esfera con 256x256 segmentos pensando que "más es mejor". La web colapsará y el ventilador del usuario sonará como un avión.' },
+      { label: 'Crear geometrías en bucle', description: 'NUNCA instancies geometrías dentro de la función requestAnimationFrame(). Instáncialas una sola vez y reutilízalas.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Crea el esqueleto de tu mundo."
+      steps={[
+        { number: 1, text: 'Instancia una SphereGeometry de bajo poligonaje: new THREE.SphereGeometry(1, 8, 8).', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Instancia un PlaneGeometry para hacer el suelo.', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Reflexiona: ¿Ves los triángulos que forman la esfera? Eso es la geometría cruda.', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
+  </div>
+
+</ThreejsLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-geo');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.z = 8;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const material = new THREE.MeshBasicMaterial({ color: 0x57B0FB, wireframe: true });
+    
+    const geometries = [
+      new THREE.BoxGeometry(1.5, 1.5, 1.5),
+      new THREE.SphereGeometry(1, 12, 12),
+      new THREE.TorusGeometry(1, 0.4, 8, 20)
+    ];
+
+    const meshes = geometries.map((geo, i) => {
+      const mesh = new THREE.Mesh(geo, material);
+      mesh.position.x = (i - 1) * 3;
+      scene.add(mesh);
+      return mesh;
+    });
+
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      meshes.forEach(mesh => {
+        mesh.rotation.x += 0.005;
+        mesh.rotation.y += 0.01;
+      });
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      renderer.dispose();
+    }, { once: true });
+  });
+
+</script>

@@ -1,0 +1,189 @@
+---
+import ThreejsLayout from '../../layouts/ThreejsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ThreejsLayout
+  title="Luces - Genesis Pixel"
+  currentLesson="/threejs/luces"
+  prevLesson={{ title: 'Meshes', href: '/threejs/meshes' }}
+  nextLesson={{ title: 'Texturas', href: '/threejs/texturas' }}
+>
+  <ChapterHeader
+    chapterNumber="05"
+    chapterLabel="Capítulo 5 · Lección 8"
+    title="Luces"
+    readingTime={8}
+    difficulty="Three.js"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Hágase la luz</h3>
+    <p>La luz es lo que da volumen al 3D. Sin sombras ni luces, el cerebro humano no puede interpretar la profundidad. En Three.js, añadir luces es similar a posicionar focos en un estudio fotográfico. Tienes diferentes tipos para diferentes necesidades.</p>
+    
+    <h3>Los Cuatro Tipos Principales</h3>
+    <ul class="space-y-4 list-none p-0 mb-6">
+      <li>
+        <strong>AmbientLight (Luz de Relleno):</strong><br>
+        Es una luz que viene de todas direcciones al mismo tiempo. No tiene fuente ni dirección, por lo que NO proyecta sombras. Se usa para que las partes "oscuras" de tu objeto no queden 100% negras, sino tenuemente visibles.
+      </li>
+      <li>
+        <strong>DirectionalLight (El Sol):</strong><br>
+        Es una luz que viene desde infinitamente lejos (como el sol). Todos sus rayos son paralelos. Es la luz principal para generar sombras duras e iluminar escenarios enteros de forma uniforme.
+      </li>
+      <li>
+        <strong>PointLight (La Bombilla):</strong><br>
+        Es una luz que nace de un punto específico y se expande en todas direcciones (como una vela o una bombilla). Su intensidad disminuye a medida que te alejas de ella (esto se llama <em>decay</em>).
+      </li>
+      <li>
+        <strong>SpotLight (El Foco):</strong><br>
+        Un cono de luz, como los de un escenario de teatro o los faros de un coche. Tienes control total sobre su ángulo, penumbra y distancia.
+      </li>
+    </ul>
+
+    <h3>Sombras: El devorador de rendimiento</h3>
+    <p>Las sombras en el mundo digital son extremadamente caras matemáticamente. Por eso, en Three.js vienen desactivadas por defecto en TODOS los objetos y en el Renderer. Para activarlas, necesitas un proceso de 4 pasos:</p>
+    <ol class="space-y-2 list-decimal pl-6 mb-6">
+      <li>Avisar al Renderer: <code>renderer.shadowMap.enabled = true;</code></li>
+      <li>Avisar a la Luz que proyecte: <code>light.castShadow = true;</code></li>
+      <li>Avisar al Objeto que bloquee la luz: <code>mesh.castShadow = true;</code></li>
+      <li>Avisar al Suelo que reciba la sombra: <code>suelo.receiveShadow = true;</code></li>
+    </ol>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Las sombras pueden verse dentadas (como si fueran de Minecraft). Para suavizarlas, aumenta el tamaño del mapa de sombras de la luz: light.shadow.mapSize.width = 2048 y light.shadow.mapSize.height = 2048. ¡Pero ojo, esto baja el rendimiento!" />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    El Setup de Iluminación Clásico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="threejs-light"
+      tabs={[
+        { id: 'js', label: 'JavaScript', code: "// 1. Luz Ambiental (Relleno base, color blanco, intensidad 0.2)\nconst ambient = new THREE.AmbientLight(0xffffff, 0.2);\nscene.add(ambient);\n\n// 2. Luz Direccional (El Sol, intensidad 1)\nconst sun = new THREE.DirectionalLight(0xffffff, 1);\nsun.position.set(5, 5, 2);\n\n// 3. Activar sombras en la luz\nsun.castShadow = true;\nsun.shadow.camera.near = 0.5;\nsun.shadow.camera.far = 15;\nscene.add(sun);\n\n// 4. Activar sombras en Renderer y Meshes\nrenderer.shadowMap.enabled = true;\n// El objeto proyecta sombra\nmesh.castShadow = true;\n// El suelo la recibe\nplane.receiveShadow = true;" }
+      ]}
+    />
+    <ResultPreview description="PointLight (roja y azul) moviéndose sobre una geometría blanca.">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-light">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Luces que no afectan a nada', description: 'Creaste luces maravillosas, pero tus objetos usan MeshBasicMaterial. Recuerda: ¡BasicMaterial ignora la luz! Debes usar Standard o Phong.' },
+      { label: 'Sombras cortadas o desaparecidas', description: 'La cámara de sombras de la DirectionalLight es como una caja. Si tu escena es muy grande y escapa de esa caja (shadow.camera.left, right, top, bottom), la sombra no se renderizará.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Ilumina tu escena con drama."
+      steps={[
+        { number: 1, text: 'Añade una AmbientLight muy tenue azul marino.', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Crea una PointLight amarilla cerca de tu objeto para crear un alto contraste.', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Habilita las sombras paso a paso (Renderer, Light, Caster, Receiver).', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
+  </div>
+
+</ThreejsLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-light');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color('#0a0f18');
+    scene.fog = new THREE.Fog('#0a0f18', 5, 15);
+
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.set(0, 3, 7);
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap; // Sombras suaves
+    container.appendChild(renderer.domElement);
+
+    // Suelo
+    const planeGeo = new THREE.PlaneGeometry(20, 20);
+    const planeMat = new THREE.MeshStandardMaterial({ color: 0x888888, roughness: 0.8 });
+    const plane = new THREE.Mesh(planeGeo, planeMat);
+    plane.rotation.x = -Math.PI / 2;
+    plane.position.y = -1;
+    plane.receiveShadow = true;
+    scene.add(plane);
+
+    // Objeto central
+    const cubeGeo = new THREE.BoxGeometry(2, 2, 2);
+    const cubeMat = new THREE.MeshStandardMaterial({ color: 0xffffff, roughness: 0.1, metalness: 0.1 });
+    const cube = new THREE.Mesh(cubeGeo, cubeMat);
+    cube.castShadow = true;
+    scene.add(cube);
+
+    // Luces
+    const ambientLight = new THREE.AmbientLight(0x111111);
+    scene.add(ambientLight);
+
+    const light1 = new THREE.PointLight(0xFC5D7D, 150, 10);
+    light1.castShadow = true;
+    scene.add(light1);
+
+    const light2 = new THREE.PointLight(0x57B0FB, 150, 10);
+    light2.castShadow = true;
+    scene.add(light2);
+
+    let time = 0;
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      time += 0.02;
+
+      // Movimiento dinámico de luces
+      light1.position.x = Math.sin(time) * 3;
+      light1.position.z = Math.cos(time) * 3;
+      light1.position.y = Math.sin(time * 2) * 1 + 1;
+
+      light2.position.x = Math.sin(time + Math.PI) * 3;
+      light2.position.z = Math.cos(time + Math.PI) * 3;
+      light2.position.y = Math.cos(time * 2) * 1 + 1;
+
+      cube.rotation.x += 0.005;
+      cube.rotation.y += 0.01;
+
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      renderer.dispose();
+    }, { once: true });
+  });
+
+</script>

@@ -1,0 +1,152 @@
+---
+import ThreejsLayout from '../../layouts/ThreejsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ThreejsLayout
+  title="Materiales - Genesis Pixel"
+  currentLesson="/threejs/materiales"
+  prevLesson={{ title: 'Geometrías', href: '/threejs/geometrias' }}
+  nextLesson={{ title: 'Meshes', href: '/threejs/meshes' }}
+>
+  <ChapterHeader
+    chapterNumber="05"
+    chapterLabel="Capítulo 5 · Lección 6"
+    title="Materiales"
+    readingTime={7}
+    difficulty="Three.js"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué son los Materiales?</h3>
+    <p>Si la geometría es el esqueleto de tu objeto 3D, el <strong>Material</strong> es su piel. Define de qué está hecho el objeto: ¿es madera mate, metal pulido brillante o cristal transparente? El material determina cómo los vértices y caras reaccionarán a la luz y al entorno.</p>
+    
+    <h3>Los 3 Materiales Fundamentales</h3>
+    <p>Three.js tiene decenas de materiales, pero en producción, usarás principalmente estos tres:</p>
+    
+    <h4>1. MeshBasicMaterial (El rebelde)</h4>
+    <p>Este material no reacciona a la luz en absoluto. Si lo pintas de rojo, será un círculo o cuadrado rojo plano en tu pantalla, sin volumen ni sombras. Es excelente para UI 3D o estilos "flat design" o "cel-shading" (como Zelda Breath of the Wild). Es el más rápido y ligero.</p>
+    
+    <h4>2. MeshStandardMaterial (El profesional PBR)</h4>
+    <p>PBR significa "Physically Based Rendering" (Renderizado basado en físicas). Este material intenta imitar el mundo real basándose en dos propiedades mágicas: <strong>Metalness</strong> (qué tan metálico es) y <strong>Roughness</strong> (qué tan rugosa/borrosa es la superficie). Es el estándar de la industria hoy en día.</p>
+    
+    <h4>3. MeshPhongMaterial (El clásico brillante)</h4>
+    <p>Antes del PBR existía Phong. Es ideal para plásticos brillantes o cerámica. Reacciona a la luz produciendo un "specular highlight" (el típico punto blanco de brillo en las manzanas o bolas de billar). Es más barato computacionalmente que el Standard.</p>
+
+    <h3>Color en Three.js</h3>
+    <p>Olvídate del HEX string tradicional. En Three.js usamos números hexadecimales directos: <code>0xff0000</code> en lugar de <code>"#ff0000"</code>, o instanciamos una clase de color: <code>new THREE.Color('hotpink')</code>.</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="No todo tiene que ser ultra realista. El MeshMatcapMaterial es un material asombroso que no necesita luces en la escena para tener sombras y brillos complejos. Utiliza una imagen circular de referencia (Matcap) y es increíblemente ligero para la web." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Materiales en acción
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="threejs-mat"
+      tabs={[
+        { id: 'js', label: 'JavaScript', code: "// 1. Básico (Sin luz)\nconst basicMat = new THREE.MeshBasicMaterial({ \n  color: 0x9FA6FF, \n  wireframe: true \n});\n\n// 2. Standard PBR (Requiere luces en la escena)\nconst standardMat = new THREE.MeshStandardMaterial({\n  color: 0x56C288,\n  metalness: 0.8, // 0 = plástico, 1 = metal\n  roughness: 0.2  // 0 = espejo pulido, 1 = mate\n});\n\n// 3. Phong (Plástico brillante)\nconst phongMat = new THREE.MeshPhongMaterial({\n  color: 0xFC5D7D,\n  shininess: 100 // Qué tan concentrado es el brillo\n});" }
+      ]}
+    />
+    <ResultPreview description="De izquierda a derecha: Basic (plano), Phong (plástico) y Standard (metal).">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-mat">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Mi objeto es todo negro', description: 'Usaste un MeshStandardMaterial pero olvidaste poner una luz en la escena. Si no hay luz, en el mundo real (y en Three.js), todo es negro.' },
+      { label: 'Uso ineficiente de colores', description: 'Instanciar new THREE.Color() dentro del bucle animate() creará miles de objetos nuevos por segundo y congelará la pestaña. Crea los colores afuera.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Experimenta con las físicas PBR."
+      steps={[
+        { number: 1, text: 'Crea un MeshStandardMaterial de color dorado (0xffd700).', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Pon el metalness en 1.0 y el roughness en 0.1.', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Reflexiona: Observa cómo refleja el entorno o la luz, comportándose como oro real.', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
+  </div>
+
+</ThreejsLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-mat');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(40, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.z = 6;
+    camera.position.y = 1;
+    camera.lookAt(0, 0, 0);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    // Luces para poder ver el Standard y el Phong
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+    
+    const pointLight = new THREE.PointLight(0xffffff, 100);
+    pointLight.position.set(2, 3, 4);
+    scene.add(pointLight);
+
+    const geometry = new THREE.SphereGeometry(0.8, 32, 32);
+
+    const mat1 = new THREE.MeshBasicMaterial({ color: 0x9FA6FF });
+    const mesh1 = new THREE.Mesh(geometry, mat1);
+    mesh1.position.x = -2;
+
+    const mat2 = new THREE.MeshPhongMaterial({ color: 0xFC5D7D, shininess: 100 });
+    const mesh2 = new THREE.Mesh(geometry, mat2);
+    mesh2.position.x = 0;
+
+    const mat3 = new THREE.MeshStandardMaterial({ color: 0x56C288, metalness: 0.9, roughness: 0.1 });
+    const mesh3 = new THREE.Mesh(geometry, mat3);
+    mesh3.position.x = 2;
+
+    scene.add(mesh1, mesh2, mesh3);
+
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      renderer.dispose();
+    }, { once: true });
+  });
+
+</script>

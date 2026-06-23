@@ -1,0 +1,134 @@
+---
+import ThreejsLayout from '../../layouts/ThreejsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ThreejsLayout
+  title="Tu primera escena - Genesis Pixel"
+  currentLesson="/threejs/primera-escena"
+  prevLesson={{ title: '¿Qué es Three.js?', href: '/threejs/que-es-threejs' }}
+  nextLesson={{ title: 'Cámaras', href: '/threejs/camaras' }}
+>
+  <ChapterHeader
+    chapterNumber="05"
+    chapterLabel="Capítulo 5 · Lección 2"
+    title="Tu primera escena"
+    readingTime={8}
+    difficulty="Three.js"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>¿Qué es una Escena?</h3>
+    <p>En el mundo del 3D, no hay nada hasta que tú lo declaras. El espacio es un vacío infinito. Una <strong>Scene</strong> (Escena) en Three.js es el contenedor principal, el universo mismo donde vivirán todos tus objetos, luces y cámaras.</p>
+    <p>Imagina un cuarto completamente oscuro. Hasta que no enciendas una luz o coloques un objeto dentro, el cuarto existe, pero no hay nada que ver. La escena es ese cuarto.</p>
+    
+    <h3>La Santísima Trinidad de Three.js</h3>
+    <p>Para ver algo en la pantalla, SIEMPRE necesitas tres componentes fundamentales interactuando entre sí:</p>
+    <ol class="space-y-2 list-decimal pl-6 mb-6">
+      <li><strong>Scene:</strong> El contenedor del mundo.</li>
+      <li><strong>Camera:</strong> Tus ojos, el punto de vista desde donde se graba el mundo.</li>
+      <li><strong>Renderer:</strong> La máquina de revelado que toma la escena y la cámara, y pinta los píxeles en el elemento <code>&lt;canvas&gt;</code> de HTML.</li>
+    </ol>
+
+    <h3>¿Cómo funciona?</h3>
+    <p>El flujo de trabajo es sistemático. Primero, instancias la escena. Luego, instancias la cámara y la alejas un poco (porque por defecto nace en la coordenada [0,0,0], justo en el centro, y si pones un objeto ahí, la cámara estaría dentro de él). Finalmente, conectas el renderer a un elemento HTML de tu página y le ordenas: <em>"¡Renderiza esto!"</em>.</p>
+
+    <h3>El Bucle de Animación</h3>
+    <p>Si solo renderizas una vez, obtienes una fotografía. Si quieres movimiento, necesitas un <strong>bucle de animación</strong> usando <code>requestAnimationFrame</code>. Es como decirle al navegador: "Toma una foto, muévela un poco, toma otra foto, rápido, ¡60 veces por segundo!".</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Siempre separa la lógica de Three.js de tu estructura HTML. Mantén un contenedor limpio, como un div con id='canvas-container', y deja que tu script de Three.js inyecte el elemento canvas dinámicamente. Esto evita conflictos y mantiene tu HTML semántico." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    La anatomía de una escena básica
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="threejs-scene"
+      tabs={[
+        { id: 'js', label: 'JavaScript', code: "import * as THREE from 'three';\n\n// 1. Escena\nconst scene = new THREE.Scene();\n\n// 2. Cámara (FOV, Aspect Ratio, Near, Far)\nconst camera = new THREE.PerspectiveCamera(\n  75, \n  window.innerWidth / window.innerHeight,\n  0.1, \n  1000\n);\ncamera.position.z = 5; // Alejamos la cámara\n\n// 3. Renderer\nconst renderer = new THREE.WebGLRenderer();\nrenderer.setSize(window.innerWidth, window.innerHeight);\ndocument.body.appendChild(renderer.domElement);\n\n// Objeto (Cubo)\nconst geometry = new THREE.BoxGeometry();\nconst material = new THREE.MeshBasicMaterial({ color: 0x56C288 });\nconst cube = new THREE.Mesh(geometry, material);\nscene.add(cube);\n\n// 4. Render Loop\nfunction animate() {\n  requestAnimationFrame(animate);\n  cube.rotation.x += 0.01;\n  cube.rotation.y += 0.01;\n  renderer.render(scene, camera);\n}\n\nanimate();" },
+        { id: 'html', label: 'HTML', code: "<!-- Solo necesitas un contenedor -->\n<div id="mi-mundo-3d"></div>" }
+      ]}
+    />
+    <ResultPreview description="Tu primer "Hola Mundo" en 3D.">
+      <div class="flex items-center justify-center h-full w-full bg-[#1a1a2e] overflow-hidden rounded-xl" id="demo-scene">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Pantalla en negro', description: 'El error más común. Suele pasar porque olvidaste alejar la cámara (camera.position.z = 5) y estás renderizando desde dentro del cubo.' },
+      { label: 'Cubo deformado', description: 'Pasa si el "aspect ratio" de la cámara no coincide con las dimensiones del renderer.' },
+      { label: 'Olvidar scene.add()', description: 'Creaste el objeto perfecto, pero olvidaste decirle a la escena que lo incluyera. Si no está en la escena, el renderer no lo dibuja.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Construye paso a paso tu primera escena real."
+      steps={[
+        { number: 1, text: 'Instancia la Scene, Camera y Renderer.', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Agrega un cubo verde y aléjate de él moviendo la cámara en el eje Z.', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Llama al método renderer.render(scene, camera) para ver el cubo estático.', color: 'app-color-yellow400', rotate: '-5deg' },
+        { number: 4, text: 'Mete el render dentro de una función animate() con requestAnimationFrame.', color: 'dm-blue', rotate: '3deg' },
+      ]}
+    />
+  </div>
+
+</ThreejsLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-scene');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+    camera.position.z = 4;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+    const material = new THREE.MeshBasicMaterial({ color: 0x56C288, wireframe: false });
+    
+    // Añadimos bordes para que se vea el 3D sin luces
+    const edges = new THREE.EdgesGeometry(geometry);
+    const line = new THREE.LineSegments(edges, new THREE.LineBasicMaterial({ color: 0xffffff }));
+    
+    const cube = new THREE.Mesh(geometry, material);
+    cube.add(line);
+    scene.add(cube);
+
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      cube.rotation.x += 0.005;
+      cube.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      renderer.dispose();
+    }, { once: true });
+  });
+
+</script>

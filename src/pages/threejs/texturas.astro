@@ -1,0 +1,169 @@
+---
+import ThreejsLayout from '../../layouts/ThreejsLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ThreejsLayout
+  title="Texturas - Genesis Pixel"
+  currentLesson="/threejs/texturas"
+  prevLesson={{ title: 'Luces', href: '/threejs/luces' }}
+  nextLesson={{ title: 'Animaciones', href: '/threejs/animaciones' }}
+>
+  <ChapterHeader
+    chapterNumber="05"
+    chapterLabel="Capítulo 5 · Lección 9"
+    title="Texturas"
+    readingTime={7}
+    difficulty="Three.js"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Pintura para tus modelos</h3>
+    <p>Los colores sólidos están bien, pero la vida real tiene imperfecciones, granos, patrones y fotografías. Las <strong>Texturas</strong> te permiten envolver una imagen 2D (como un .jpg o .png) alrededor de tu geometría 3D, igual que cuando envuelves un regalo.</p>
+    
+    <h3>El TextureLoader</h3>
+    <p>Cargar imágenes lleva tiempo, no ocurre de forma instantánea. Por eso, usamos el <code>TextureLoader</code> de Three.js. Su función es pedirle la imagen al servidor y devolvértela en un formato que la tarjeta gráfica (WebGL) pueda entender.</p>
+    
+    <h3>Mapeo UV</h3>
+    <p>¿Cómo sabe Three.js qué parte de la imagen va en qué parte de la esfera o el cubo? A esto se le llama UV Mapping. Imagina pelar una naranja y aplanar la cáscara sobre la mesa. Los vértices de la geometría (XYZ) están mapeados a coordenadas 2D en la imagen (UV). Las primitivas de Three.js ya vienen con coordenadas UV perfectas por defecto.</p>
+
+    <h3>Tipos de Texturas en PBR</h3>
+    <p>Para lograr fotorrealismo real, no se usa una sola imagen. Se usa un set de texturas para alimentar el <code>MeshStandardMaterial</code>:</p>
+    <ul class="space-y-2 list-disc pl-6 mb-6">
+      <li><strong>map (Albedo):</strong> La foto del color puro de la superficie (como madera).</li>
+      <li><strong>normalMap:</strong> Una imagen extraña morada/azul que finge profundidad, haciendo que la superficie se vea rugosa con luces y sombras falsas increíblemente detalladas sin añadir más polígonos.</li>
+      <li><strong>roughnessMap:</strong> Una imagen en blanco y negro donde lo negro es muy brillante (mojado) y lo blanco es mate (seco).</li>
+    </ul>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="¡Cuidado con el tamaño de las texturas! Una textura 4K (4096x4096px) pesa muchísimo en la RAM de video. Para web, trata de usar texturas en resoluciones potencias de 2 (512x512, 1024x1024) y altamente comprimidas en JPG o formato WebP." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Envolviendo geometrías con imágenes
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="threejs-tex"
+      tabs={[
+        { id: 'js', label: 'JavaScript', code: "// 1. Instanciar el Loader\nconst textureLoader = new THREE.TextureLoader();\n\n// 2. Cargar texturas (Esto es asíncrono, pero Three.js te permite pasarlo directamente)\nconst colorTexture = textureLoader.load('/imagenes/ladrillo-color.jpg');\nconst normalTexture = textureLoader.load('/imagenes/ladrillo-normal.jpg');\n\n// 3. Aplicarlo al material\nconst material = new THREE.MeshStandardMaterial({\n  map: colorTexture,\n  normalMap: normalTexture,\n  roughness: 0.7\n});\n\n// 4. Opcional: Repetir la textura como mosaico\ncolorTexture.repeat.set(2, 2);\ncolorTexture.wrapS = THREE.RepeatWrapping;\ncolorTexture.wrapT = THREE.RepeatWrapping;" }
+      ]}
+    />
+    <ResultPreview description="Una esfera generando la ilusión óptica del planeta Tierra usando una textura plana.">
+      <div class="flex items-center justify-center h-full w-full bg-[#050505] overflow-hidden rounded-xl" id="demo-tex">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'La textura se ve borrosa', description: 'A veces tu textura es pequeña. Puedes cambiar el filtro de muestreo para que se vea pixelada estilo retro en lugar de borrosa: texture.magFilter = THREE.NearestFilter.' },
+      { label: 'Bloquear el renderizado principal', description: 'Cargar muchas texturas puede retrasar que tu sitio inicie. Usa gestores de carga (LoadingManager) para mostrar una pantalla de carga mientras todo el peso descarga en segundo plano.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Dale vida real a tus objetos."
+      steps={[
+        { number: 1, text: 'Instancia un TextureLoader y carga una imagen que tengas en tu carpeta public/ (ej. un logo).', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Pasa esa textura a la propiedad map de un MeshBasicMaterial.', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Aplica el material a un PlaneGeometry para hacer un letrero 3D.', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
+  </div>
+
+</ThreejsLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-tex');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.z = 4;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+    scene.add(ambientLight);
+    const sunLight = new THREE.DirectionalLight(0xffffff, 2);
+    sunLight.position.set(5, 3, 5);
+    scene.add(sunLight);
+
+    // Como no podemos asegurar que haya texturas alojadas en el sistema para esta demo,
+    // usamos una textura generada proceduralmente usando un canvas oculto
+    const canvas = document.createElement('canvas');
+    canvas.width = 512;
+    canvas.height = 512;
+    const ctx = canvas.getContext('2d');
+    
+    // Generar patrón de tablero de ajedrez futurista
+    ctx.fillStyle = '#0f172a';
+    ctx.fillRect(0, 0, 512, 512);
+    ctx.fillStyle = '#56C288';
+    for(let i=0; i<8; i++) {
+      for(let j=0; j<8; j++) {
+        if((i+j)%2 === 0) {
+          ctx.fillRect(i*64, j*64, 64, 64);
+        }
+      }
+    }
+    
+    // Añadir texto
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 80px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('GENESIS', 256, 256);
+
+    const texture = new THREE.CanvasTexture(canvas);
+    
+    const geometry = new THREE.BoxGeometry(1.5, 1.5, 1.5);
+    const material = new THREE.MeshStandardMaterial({ 
+      map: texture,
+      roughness: 0.2,
+      metalness: 0.8
+    });
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      mesh.rotation.x += 0.005;
+      mesh.rotation.y += 0.008;
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      renderer.dispose();
+    }, { once: true });
+  });
+
+</script>
