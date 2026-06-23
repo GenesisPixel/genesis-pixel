@@ -200,11 +200,10 @@ const practiceSteps = [
 .modal-box-p {
   background: hsla(160,52%,71%,1); padding: 32px; border-radius: 0; width: 300px; height: 300px;
   box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: hsla(158,23%,18%,1);
-  transform: rotate(-10deg);
   display: flex; flex-direction: column; justify-content: space-between;
   
-  /* Estado oculto (escalado y bajado) */
-  transform: scale(0.9) translateY(20px);
+  /* Estado oculto (escalado, bajado y rotado) */
+  transform: rotate(-5deg) scale(0.9) translateY(20px);
   opacity: 0;
   transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -215,9 +214,8 @@ const practiceSteps = [
 }
 
 .overlay-p.active .modal-box-p {
-  transform: scale(1) translateY(0);
+  transform: rotate(-5deg) scale(1) translateY(0);
   opacity: 1;
-  /* Delay para que entre después del overlay */
   transition-delay: 0.05s;
 }
 </style>
