@@ -28,10 +28,11 @@ const btnHtml = `<button class="btn-guardar" id="btnGuardar">
 <\/script>`;
 
 const btnCss = `.btn-guardar {
-  position: relative; padding: 14px 28px; background: #3b82f6; color: white;
-  border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
+  position: relative; padding: 14px 28px; background: #9FA6FF; color: hsla(158,23%,18%,1);
+  border: none; border-radius: 0; font-weight: 600; cursor: pointer;
   overflow: hidden; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   display: flex; justify-content: center; align-items: center; min-width: 180px;
+  font-family: 'afronaut', serif;
 }
 
 .btn-guardar:hover {
@@ -294,10 +295,14 @@ const practiceSteps = [
 <style>
   /* BTN PREVIEW */
   .btn-guardar-p {
-    position: relative; padding: 14px 28px; background: #3b82f6; color: white;
-    border: none; border-radius: 8px; font-weight: 600; cursor: pointer;
+    position: relative; padding: 14px 28px; background: #9FA6FF; color: hsla(158,23%,18%,1);
+    border: none; border-radius: 0; font-weight: 600; cursor: pointer;
     overflow: hidden; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
     display: flex; justify-content: center; align-items: center; min-width: 180px;
+    font-family: 'afronaut', serif !important;
+  }
+  .btn-guardar-p span, .btn-guardar-p svg {
+    font-family: 'afronaut', serif !important;
   }
   .btn-guardar-p:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(59,130,246,0.4); }
   .btn-guardar-p:active { transform: scale(0.95); box-shadow: 0 2px 4px rgba(59,130,246,0.3); }
