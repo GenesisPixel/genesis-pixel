@@ -14,31 +14,53 @@ const htmlCode = `<div class="magic-card">
       <path d="M12 2L2 22h20L12 2z"/>
     </svg>
   </div>
-  <h3>Interacción Total</h3>
+  <h5>Interacción Total</h5>
 </div>`;
 
 const cssCode = `.magic-card {
+  position: relative;
+  width: 200px;
+  height: 220px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 0;
+  border: 1px dashed rgba(255,255,255,0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  cursor: pointer;
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
               box-shadow 0.4s ease;
+}
+
+.magic-card h5 {
+  z-index: 1;
+  color: white;
+  margin-top: 20px;
+  text-align: center;
+}
+
+.magic-icon {
+  z-index: 1;
+  color: white;
+  transition: transform 0.4s ease, color 0.4s ease;
 }
 
 /* HOVER INTERACTIONS */
 .magic-card:hover {
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
-  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: none;
+  border-color: rgba(255,255,255,0.3);
 }
 
 .magic-card:hover .card-glow {
   opacity: 0.4;
-  /* Keyframe 1: Glow animado al hacer hover */
   animation: pulseGlow 2s infinite alternate ease-in-out;
 }
 
 .magic-card:hover .magic-icon {
-  color: white;
   transform: translateY(-5px);
-  /* Keyframe 2: Icono flotando al hacer hover */
   animation: float 3s infinite ease-in-out;
 }
 
@@ -177,7 +199,7 @@ const practiceSteps = [
 /* HOVER INTERACTIONS */
 .magic-card-p:hover {
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(255,255,255,0.2);
+  box-shadow: none;
   border-color: rgba(255,255,255,0.3);
 }
 
