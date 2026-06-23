@@ -1,0 +1,141 @@
+---
+import ShadersLayout from '../../layouts/ShadersLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ShadersLayout
+  title="Introducción a GLSL - Genesis Pixel"
+  currentLesson="/shaders/introduccion-glsl"
+  prevLesson={{ title: '¿Qué son los Shaders?', href: '/shaders/que-son-los-shaders' }}
+  nextLesson={{ title: 'Vertex Shaders', href: '/shaders/vertex-shaders' }}
+>
+  <ChapterHeader
+    chapterNumber="06"
+    chapterLabel="Capítulo 6 · Lección 2"
+    title="Introducción a GLSL"
+    readingTime="8"
+    difficulty="Shaders GLSL"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Un nuevo idioma: GLSL</h3>
+    <p>Los Shaders no se escriben en JavaScript. Se escriben en <strong>GLSL</strong> (OpenGL Shading Language). Es un lenguaje muy parecido a C. Es fuertemente tipado, estricto y no perdona errores. Si olvidas un punto y coma (;), la pantalla se quedará negra.</p>
+    
+    <h3>Tipos de Datos (El casting estricto)</h3>
+    <p>En JS puedes sumar <code>1 + 1.5</code> y no pasa nada. En GLSL, eso es un crimen que colapsa el programa. Tienes que ser explícito.</p>
+    <ul>
+      <li><code>int</code>: Números enteros (ej. <code>1</code>, <code>2</code>)</li>
+      <li><code>float</code>: Números decimales (ej. <code>1.0</code>, <code>2.5</code>). <strong>Importante:</strong> Siempre pon el <code>.0</code> aunque sea un número cerrado.</li>
+      <li><code>vec2</code>: Un vector de 2 dimensiones (x, y). Se usa para posiciones 2D o coordenadas UV.</li>
+      <li><code>vec3</code>: Un vector de 3 dimensiones (x, y, z) o (r, g, b). Se usa para colores y posiciones 3D.</li>
+      <li><code>vec4</code>: (x, y, z, w) o (r, g, b, a). El clásico para colores con opacidad (Alpha).</li>
+    </ul>
+
+    <h3>Swizzling: Magia con vectores</h3>
+    <p>GLSL tiene un atajo maravilloso llamado "Swizzling". Si tienes un color <code>vec3 miColor = vec3(1.0, 0.0, 0.5);</code>, puedes acceder a sus canales usando <code>.rgb</code> o <code>.xyz</code>.</p>
+    <p>Puedes extraer partes y mezclarlas como piezas de Lego: <code>vec2 rojoYVerde = miColor.rg;</code> o incluso invertirlas: <code>vec3 invertido = miColor.bgr;</code>.</p>
+
+    <h3>La función main()</h3>
+    <p>Todo shader GLSL DEBE tener una función llamada <code>void main() { ... }</code>. Es la puerta de entrada, lo primero que la GPU ejecutará. La palabra "void" significa que esta función no devuelve ningún valor con "return", sino que asigna un valor a una variable global especial (como <code>gl_FragColor</code>).</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Acostúmbrate a pensar en rangos normalizados. En diseño web estamos acostumbrados a RGB(255, 255, 255). En GLSL, los colores van de 0.0 a 1.0. El blanco es vec3(1.0, 1.0, 1.0) y el negro vec3(0.0, 0.0, 0.0)." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Sintaxis GLSL
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="glsl-syntax"
+      tabs={[
+        { id: 'glsl', label: 'GLSL', code: "// Comentarios igual que en JS
+
+void main() {
+  // Casting estricto
+  float a = 1.0;
+  float b = 2.0;
+  float c = a + b;
+
+  // Declaración de un vector de color (RGB)
+  vec3 colorPurpura = vec3(0.6, 0.2, 1.0);
+  
+  // Convertirlo a vec4 añadiendo la opacidad (Alpha de 1.0)
+  vec4 colorFinal = vec4(colorPurpura, 1.0);
+
+  // Variable global de salida obligatoria en Fragment Shaders
+  gl_FragColor = colorFinal;
+}" }
+      ]}
+    />
+    <ResultPreview description="El resultado de este Fragment Shader simple es un bloque de color sólido.">
+      <div class="flex items-center justify-center h-full w-full bg-[#1a1a2e] overflow-hidden rounded-xl" id="demo-glsl">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Olvidar los flotantes', description: 'Escribir vec3(1, 0, 0) en lugar de vec3(1.0, 0.0, 0.0). Algunas tarjetas gráficas más permisivas lo aceptarán, pero fallará estrepitosamente en los iPhones de tus usuarios.' },
+      { label: 'Variables no inicializadas', description: 'En JS si no defines el valor de algo, es undefined. En GLSL, tienes que darle valor a las variables al crearlas o tendrás comportamientos aleatorios en la GPU.' },
+    ]} />
+  </div>
+
+</ShadersLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-glsl');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+    camera.position.z = 1;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: false });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    
+    const fragmentShader = `
+      void main() {
+        vec3 colorPurpura = vec3(0.6, 0.2, 1.0);
+        gl_FragColor = vec4(colorPurpura, 1.0);
+      }
+    `;
+
+    const material = new THREE.ShaderMaterial({ fragmentShader });
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    renderer.render(scene, camera);
+
+    const handleResize = () => {
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      renderer.render(scene, camera);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      window.removeEventListener('resize', handleResize);
+      renderer.dispose();
+      material.dispose();
+      geometry.dispose();
+    }, { once: true });
+  });
+
+</script>

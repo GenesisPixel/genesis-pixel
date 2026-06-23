@@ -1,0 +1,155 @@
+---
+import ShadersLayout from '../../layouts/ShadersLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ShadersLayout
+  title="Efectos Visuales Avanzados - Genesis Pixel"
+  currentLesson="/shaders/efectos-visuales"
+  prevLesson={{ title: 'Shaders Animados', href: '/shaders/shaders-animados' }}
+  nextLesson={{ title: 'Integración con Three.js', href: '/shaders/integracion-threejs' }}
+>
+  <ChapterHeader
+    chapterNumber="06"
+    chapterLabel="Capítulo 6 · Lección 13"
+    title="Efectos Visuales Avanzados"
+    readingTime="8"
+    difficulty="Shaders GLSL"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>El arsenal de trucos del Motion Designer</h3>
+    <p>Los grandes efectos (Hologramas, Glitch, Aberración Cromática, Neón) rara vez son una sola fórmula secreta. Suelen ser la combinación de técnicas que ya aprendiste: coordenadas UV, ruido, tiempo y matemáticas puras.</p>
+    
+    <h3>Aberración Cromática (RGB Split)</h3>
+    <p>Un efecto muy popular en el cyberpunk y el desarrollo creativo moderno. Consiste en separar ligeramente los canales Rojo, Verde y Azul de una imagen o textura.</p>
+    <p>En lugar de leer la textura una sola vez, la lees TRES veces en tu Fragment Shader, usando UVs ligeramente desplazadas para cada canal.</p>
+
+    <h3>Hologramas y Escaneos</h3>
+    <p>Se logran tomando el eje Y de la coordenada UV (<code>vUv.y</code>), multiplicándolo por una gran cantidad para crear muchas bandas, y usando funciones como <code>sin()</code> combinadas con <code>step()</code> y <code>u_time</code> para hacer que las líneas suban constantemente.</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Estos efectos son visualmente potentes pero matemáticamente pesados. Leer una textura 3 veces por cada píxel para un glitch cuesta el triple de recursos gráficos que leerla una vez. En móvil, esto puede bajar los FPS a la mitad. Úsalo con sabiduría y solo en los elementos hero." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    El Efecto Holograma Glitch
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <ResultPreview description="Mezclamos líneas de escaneo animadas, ruido y separación RGB para crear un material futurista.">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-fx" style="cursor: grab;">
+      </div>
+    </ResultPreview>
+  </div>
+
+</ShadersLayout>
+
+<script>
+
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-fx');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.set(0, 0, 3);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.enablePan = false;
+
+    const geometry = new THREE.TorusKnotGeometry(0.6, 0.2, 100, 16);
+    
+    const vertexShader = `
+      varying vec2 vUv;
+      varying vec3 vPosition;
+      void main() {
+        vUv = uv;
+        vPosition = position;
+        gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
+      }
+    `;
+
+    const fragmentShader = `
+      uniform float u_time;
+      varying vec2 vUv;
+      varying vec3 vPosition;
+
+      void main() {
+        // Efecto Scanline basado en la posición en Y y el tiempo
+        float scanline = sin(vPosition.y * 50.0 - u_time * 10.0);
+        // Hacemos que sea una línea delgada y filosa
+        scanline = smoothstep(0.8, 1.0, scanline);
+
+        // Color base azul neón
+        vec3 colorBase = vec3(0.34, 0.69, 0.98); // 57B0FB
+        
+        // Sumamos el blanco del scanline
+        vec3 finalColor = colorBase + vec3(scanline * 0.5);
+
+        // Efecto holograma: hacemos los bordes más brillantes y el centro transparente
+        float rim = smoothstep(0.0, 0.5, abs(vUv.x - 0.5) * 2.0);
+
+        gl_FragColor = vec4(finalColor, rim * 0.8 + 0.2);
+      }
+    `;
+
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms: { u_time: { value: 0 } },
+      transparent: true,
+      wireframe: false
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    let animationId;
+    const clock = new THREE.Clock();
+
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      controls.update();
+      material.uniforms.u_time.value = clock.getElapsedTime();
+      mesh.rotation.y += 0.005;
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      controls.dispose();
+      renderer.dispose();
+      material.dispose();
+      geometry.dispose();
+    }, { once: true });
+  });
+
+</script>

@@ -1,0 +1,152 @@
+---
+import ShadersLayout from '../../layouts/ShadersLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ShadersLayout
+  title="Distorsiones - Genesis Pixel"
+  currentLesson="/shaders/distorsiones"
+  prevLesson={{ title: 'Ruido Procedural', href: '/shaders/ruido-procedural' }}
+  nextLesson={{ title: 'Shaders Reactivos al Mouse', href: '/shaders/shaders-reactivos' }}
+>
+  <ChapterHeader
+    chapterNumber="06"
+    chapterLabel="Capítulo 6 · Lección 10"
+    title="Distorsiones"
+    readingTime="7"
+    difficulty="Shaders GLSL"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Derritiendo la web</h3>
+    <p>Uno de los efectos más premium que verás en agencias digitales de alto nivel es la distorsión de imágenes. Cuando pasas el ratón por encima de una foto de un proyecto y ésta se ondula como si estuviera bajo el agua.</p>
+    
+    <h3>¿Cómo se distorsiona una imagen?</h3>
+    <p>La imagen se envía al shader como una textura (<code>uniform sampler2D u_image;</code>). En condiciones normales, lees el color de la textura usando <code>texture2D(u_image, vUv)</code>, pidiendo exactamente el color que corresponde a la coordenada actual.</p>
+    
+    <p>Pero... ¿qué pasa si le mientes a la función? ¿Qué pasa si le pasas unas UVs ligeramente desplazadas usando ruido o funciones seno?</p>
+
+    <h3>La matemática del engaño</h3>
+    <p>Si la coordenada actual es <code>(0.5, 0.5)</code> pero le dices a la textura que lea el color de <code>(0.5 + sin(time), 0.5)</code>, terminarás leyendo colores de otros lados de la imagen, creando un efecto óptico de ondulación líquida o distorsión sin modificar el archivo original ni el DOM.</p>
+  </article>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    El Espejo de Agua
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <ResultPreview description="Generamos un mapa procedural en el Fragment y lo usamos para desviar la lectura de una textura.">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-distort">
+      </div>
+    </ResultPreview>
+  </div>
+
+</ShadersLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-distort');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+    camera.position.z = 1;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: false });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const geometry = new THREE.PlaneGeometry(2, 2);
+
+    // Creamos un canvas con texto para usar como textura (ya que no queremos dependencias externas)
+    const ctxCanvas = document.createElement('canvas');
+    ctxCanvas.width = 512;
+    ctxCanvas.height = 512;
+    const ctx = ctxCanvas.getContext('2d');
+    ctx.fillStyle = '#FC5D7D';
+    ctx.fillRect(0, 0, 512, 512);
+    ctx.fillStyle = '#111';
+    ctx.font = 'bold 80px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillText('GENESIS', 256, 220);
+    ctx.fillText('PIXEL', 256, 300);
+    const texture = new THREE.CanvasTexture(ctxCanvas);
+    
+    const fragmentShader = `
+      uniform float u_time;
+      uniform sampler2D u_texture;
+      varying vec2 vUv;
+
+      void main() {
+        vec2 distortedUv = vUv;
+        
+        // Desplazamiento en X basado en Y y el tiempo
+        distortedUv.x += sin(vUv.y * 10.0 + u_time) * 0.03;
+        // Desplazamiento en Y basado en X y el tiempo
+        distortedUv.y += cos(vUv.x * 10.0 + u_time) * 0.03;
+
+        // Leemos la textura usando las coordenadas mentirosas
+        vec4 textureColor = texture2D(u_texture, distortedUv);
+
+        gl_FragColor = textureColor;
+      }
+    `;
+
+    const vertexShader = `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = vec4(position, 1.0);
+      }
+    `;
+
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms: { 
+        u_time: { value: 0 },
+        u_texture: { value: texture }
+      }
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    let animationId;
+    const clock = new THREE.Clock();
+
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      material.uniforms.u_time.value = clock.getElapsedTime();
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      renderer.dispose();
+      material.dispose();
+      geometry.dispose();
+      texture.dispose();
+    }, { once: true });
+  });
+
+</script>

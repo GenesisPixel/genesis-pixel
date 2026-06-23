@@ -1,0 +1,151 @@
+---
+import ShadersLayout from '../../layouts/ShadersLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ShadersLayout
+  title="Coordenadas UV - Genesis Pixel"
+  currentLesson="/shaders/coordenadas-uv"
+  prevLesson={{ title: 'Varyings', href: '/shaders/varyings' }}
+  nextLesson={{ title: 'Colores y Gradientes', href: '/shaders/colores-y-gradientes' }}
+>
+  <ChapterHeader
+    chapterNumber="06"
+    chapterLabel="Capítulo 6 · Lección 7"
+    title="Coordenadas UV"
+    readingTime="6"
+    difficulty="Shaders GLSL"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>El GPS de las texturas</h3>
+    <p>Hemos pintado la pantalla usando `gl_FragCoord` (la posición del píxel en la pantalla). Pero si nuestra geometría 3D se mueve, el píxel de la pantalla seguirá en su lugar y el objeto parecerá transparente revelando un fondo. Necesitamos pintar basándonos en la <strong>superficie de la geometría misma</strong>, no en la pantalla.</p>
+    
+    <h3>¿Qué son las UV?</h3>
+    <p>Las coordenadas UV son como un mapa que envuelve tu modelo 3D. `U` es el eje horizontal (0.0 a 1.0) y `V` es el eje vertical (0.0 a 1.0).</p>
+    <p>Si miras la esquina inferior izquierda de un plano, su UV es (0.0, 0.0). La esquina superior derecha es (1.0, 1.0). Three.js inyecta automáticamente el atributo `uv` en el Vertex Shader de casi todas las geometrías base.</p>
+
+    <h3>El puente clásico</h3>
+    <p>Para usar las UV en el Fragment Shader (que es donde realmente pintamos), debes capturar el atributo en el Vertex Shader y enviarlo a través de un <code>varying</code>.</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Visualizar las UV directamente en el Fragment Shader es la mejor forma de depurar. Si asignas gl_FragColor = vec4(vUv, 0.0, 1.0); verás un hermoso gradiente de negro a rojo y verde. Ese patrón rojo-verde es el 'Hola Mundo' de los Shaders." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    El clásico patrón UV
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="uvs"
+      tabs={[
+        { id: 'vertex', label: 'Vertex', code: "varying vec2 vUv;
+
+void main() {
+  // uv es un atributo provisto por Three.js mágicamente
+  vUv = uv;
+
+  gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
+}" },
+        { id: 'fragment', label: 'Fragment', code: "varying vec2 vUv;
+
+void main() {
+  // x = Rojo, y = Verde, z(azul) = 0.0
+  gl_FragColor = vec4(vUv.x, vUv.y, 0.0, 1.0);
+}" }
+      ]}
+    />
+    <ResultPreview description="La representación visual pura de las coordenadas UV.">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-uvs" style="cursor: grab;">
+      </div>
+    </ResultPreview>
+  </div>
+
+</ShadersLayout>
+
+<script>
+
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-uvs');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.set(0, 0, 3);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.enablePan = false;
+
+    // Un cubo y un plano para ver cómo se aplican las UVs
+    const geometry = new THREE.BoxGeometry(1.2, 1.2, 1.2);
+    
+    const vertexShader = `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
+      }
+    `;
+
+    const fragmentShader = `
+      varying vec2 vUv;
+      void main() {
+        gl_FragColor = vec4(vUv.x, vUv.y, 0.0, 1.0);
+      }
+    `;
+
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      controls.update();
+      mesh.rotation.x += 0.005;
+      mesh.rotation.y += 0.005;
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      controls.dispose();
+      renderer.dispose();
+      material.dispose();
+      geometry.dispose();
+    }, { once: true });
+  });
+
+</script>

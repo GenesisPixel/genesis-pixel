@@ -1,0 +1,159 @@
+---
+import ShadersLayout from '../../layouts/ShadersLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ShadersLayout
+  title="¿Qué son los Shaders? - Genesis Pixel"
+  currentLesson="/shaders/que-son-los-shaders"
+  
+  nextLesson={{ title: 'Introducción a GLSL', href: '/shaders/introduccion-glsl' }}
+>
+  <ChapterHeader
+    chapterNumber="06"
+    chapterLabel="Capítulo 6 · Lección 1"
+    title="¿Qué son los Shaders?"
+    readingTime="6"
+    difficulty="Shaders GLSL"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>El siguiente nivel del desarrollo creativo</h3>
+    <p>Hasta ahora, con Three.js, hemos sido directores de cine. Hemos colocado cámaras, luces y actores (geometrías y materiales) en una escena, y le hemos pedido a Three.js que renderice la película. Pero, ¿qué pasa cuando quieres crear un efecto que no existe en el catálogo de materiales predefinidos? ¿Qué pasa si quieres que un cubo se derrita como gelatina o que el mar tenga espuma reactiva?</p>
+    
+    <h3>¿Qué es un Shader?</h3>
+    <p>Un Shader no es más que un pequeño programa que se ejecuta <strong>directamente en la Tarjeta Gráfica (GPU)</strong>, no en el Procesador (CPU) como el resto de tu código JavaScript.</p>
+    <p>La CPU es como un profesor súper inteligente que puede resolver problemas matemáticos complejos uno por uno, muy rápido. La GPU es como un ejército de un millón de hormigas obreras. No son tan listas, pero pueden hacer la misma tarea sencilla al mismo tiempo. Los shaders aprovechan este ejército para calcular la posición y el color de millones de píxeles <strong>simultáneamente</strong>, 60 veces por segundo.</p>
+
+    <h3>¿Para qué sirven?</h3>
+    <p>Los shaders son el secreto detrás de las webs que ganan premios Awwwards. Sirven para:</p>
+    <ul>
+      <li>Distorsionar imágenes al pasar el ratón por encima.</li>
+      <li>Crear gradientes fluidos y orgánicos que nunca se repiten.</li>
+      <li>Generar partículas mágicas y simulaciones físicas ligeras.</li>
+      <li>Modificar la geometría de un modelo 3D en tiempo real (ej. hacer que respire).</li>
+    </ul>
+
+    <h3>Los dos tipos principales</h3>
+    <p>Para dibujar algo en pantalla usando shaders, necesitas trabajar en equipo con dos programas diferentes:</p>
+    <ol>
+      <li><strong>Vertex Shader:</strong> Se encarga de la <em>forma</em>. Mueve los vértices de tus geometrías.</li>
+      <li><strong>Fragment Shader:</strong> Se encarga del <em>color</em>. Pinta los píxeles (fragmentos) que quedan entre esos vértices.</li>
+    </ol>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Aprender Shaders requiere un cambio de mentalidad. Ya no programas con if/else o bucles for para cada cosa. Programas usando matemáticas puras (seno, coseno, vectores) para decirle a la GPU cómo calcular el estado final de un píxel ciego." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    El poder de la GPU en acción
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <ResultPreview description="Este gradiente orgánico y fluido no es un video ni un Canvas 2D. Es un Fragment Shader calculando el color de cada píxel matemáticamente usando la posición y el tiempo.">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-shaders-1">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Intentar usar console.log', description: 'El código de los shaders corre en la GPU. No hay consola. Si te equivocas en una letra, la pantalla se pondrá negra o roja y tendrás que deducir por qué leyendo errores crípticos del compilador de WebGL.' },
+      { label: 'Pensar secuencialmente', description: 'En JavaScript puedes decir: "Pinta esto rojo, luego espera, luego píntalo azul". En Shaders, el programa se ejecuta para todos los píxeles a la vez en una fracción de milisegundo. Todo depende de fórmulas matemáticas basadas en el tiempo.' },
+    ]} />
+
+    <PracticeCards
+      title="Resumen del Capítulo"
+      description="Tu nuevo modelo mental."
+      steps={[
+        { number: 1, text: 'Un Shader es un programa escrito para la GPU.', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Vertex Shader = Controla la posición (forma).', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Fragment Shader = Controla los píxeles (color).', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
+  </div>
+
+</ShadersLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-shaders-1');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+    camera.position.z = 1;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: false });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    
+    // Shader Mágico de Introducción
+    const fragmentShader = `
+      uniform float u_time;
+      uniform vec2 u_resolution;
+
+      void main() {
+        vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+        vec3 color = vec3(0.0);
+        
+        // Matemáticas para colores orgánicos
+        color.r = 0.5 + 0.5 * sin(u_time * 0.5 + uv.x * 5.0);
+        color.g = 0.5 + 0.5 * cos(u_time * 0.6 + uv.y * 3.0);
+        color.b = 0.8 + 0.2 * sin(u_time * 0.4 + uv.x * 2.0 + uv.y * 4.0);
+        
+        gl_FragColor = vec4(color, 1.0);
+      }
+    `;
+
+    const material = new THREE.ShaderMaterial({
+      fragmentShader,
+      uniforms: {
+        u_time: { value: 0 },
+        u_resolution: { value: new THREE.Vector2(container.clientWidth, container.clientHeight) }
+      }
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    let animationId;
+    const clock = new THREE.Clock();
+
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      material.uniforms.u_time.value = clock.getElapsedTime();
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      material.uniforms.u_resolution.value.set(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      renderer.dispose();
+      material.dispose();
+      geometry.dispose();
+    }, { once: true });
+  });
+
+</script>

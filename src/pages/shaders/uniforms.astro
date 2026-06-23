@@ -1,0 +1,169 @@
+---
+import ShadersLayout from '../../layouts/ShadersLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ShadersLayout
+  title="Uniforms - Genesis Pixel"
+  currentLesson="/shaders/uniforms"
+  prevLesson={{ title: 'Fragment Shaders', href: '/shaders/fragment-shaders' }}
+  nextLesson={{ title: 'Varyings', href: '/shaders/varyings' }}
+>
+  <ChapterHeader
+    chapterNumber="06"
+    chapterLabel="Capítulo 6 · Lección 5"
+    title="Uniforms"
+    readingTime="8"
+    difficulty="Shaders GLSL"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>El mensajero de la CPU a la GPU</h3>
+    <p>Hemos visto que los Shaders corren aislados en la GPU haciendo puras matemáticas. Pero, ¿qué pasa si quieres que el color cambie basado en un <code>input</code> de React en tu página? ¿O qué pasa si quieres que un plano se anime con el paso del tiempo?</p>
+    <p>El Shader está ciego y no tiene acceso a las variables globales de JavaScript, ni a <code>Date.now()</code>, ni a <code>window.innerWidth</code>.</p>
+    
+    <h3>¿Qué es un Uniform?</h3>
+    <p>Un <strong>Uniform</strong> es una variable de "solo lectura" que enviamos <em>desde</em> nuestro código JavaScript (CPU) <em>hacia</em> el código del Shader (GPU). Se llama "uniform" porque su valor es uniforme (es el mismo) para todos los millones de píxeles y vértices procesados en ese frame exacto.</p>
+
+    <h3>Los clásicos: u_time y u_resolution</h3>
+    <p>Hay dos uniforms que usarás en el 99% de tus shaders creativos:</p>
+    <ul>
+      <li><strong>u_time (float):</strong> Le mandas el tiempo transcurrido desde Three.js para usarlo en funciones seno/coseno dentro del shader y darle vida y movimiento a la escena.</li>
+      <li><strong>u_resolution (vec2):</strong> Le mandas el ancho y alto del <code>&lt;canvas&gt;</code> para que el shader sepa mantener la proporción de los dibujos en la pantalla y no aplastarlos al redimensionar la ventana.</li>
+    </ul>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Enviar Uniforms no es gratis. Tienen un costo de comunicación entre el procesador y la tarjeta gráfica. Si vas a enviar variables de JavaScript (como la posición del ratón o el scroll), hazlo dentro del bucle requestAnimationFrame usando 'material.uniforms.u_mouse.value = X'." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    El Puente entre JS y GLSL
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="uniforms"
+      tabs={[
+        { id: 'js', label: 'JavaScript', code: "import * as THREE from 'three';
+
+// 1. Declarar Uniforms en el Material
+const material = new THREE.ShaderMaterial({
+  vertexShader,
+  fragmentShader,
+  uniforms: {
+    u_time: { value: 0.0 },
+    u_color: { value: new THREE.Color('#FC5D7D') }
+  }
+});
+
+const clock = new THREE.Clock();
+
+function animate() {
+  requestAnimationFrame(animate);
+  
+  // 2. Actualizar el Uniform del tiempo cada frame!
+  material.uniforms.u_time.value = clock.getElapsedTime();
+  
+  renderer.render(scene, camera);
+}" },
+        { id: 'glsl', label: 'Fragment Shader', code: "// 3. Recibir las variables en GLSL usando 'uniform'
+uniform float u_time;
+uniform vec3 u_color;
+
+void main() {
+  // Hacer palpitar el color oscuro a claro usando un Seno del tiempo
+  float palpito = (sin(u_time * 2.0) + 1.0) / 2.0;
+  
+  vec3 colorFinal = u_color * palpito;
+  gl_FragColor = vec4(colorFinal, 1.0);
+}" }
+      ]}
+    />
+    <ResultPreview description="El color late porque el JS le está enviando un valor constante de u_time que aumenta cada frame.">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-uniforms">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'El Shader no compila', description: 'Olvidaste usar la palabra reservada "uniform" antes de declarar la variable dentro del código GLSL, o los tipos de datos no coinciden (mandaste un new THREE.Color() desde JS pero lo recibiste como float en GLSL).' },
+    ]} />
+  </div>
+
+</ShadersLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-uniforms');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+    camera.position.z = 1;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: false });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    
+    const fragmentShader = `
+      uniform float u_time;
+      uniform vec3 u_color;
+      
+      void main() {
+        // Rango de -1 a 1 convertido a 0.2 a 1.0
+        float opacityPulse = (sin(u_time * 3.0) + 1.0) * 0.4 + 0.2;
+        gl_FragColor = vec4(u_color * opacityPulse, 1.0);
+      }
+    `;
+
+    const material = new THREE.ShaderMaterial({
+      fragmentShader,
+      uniforms: {
+        u_time: { value: 0 },
+        u_color: { value: new THREE.Color(0xFC5D7D) } // Rosa de Genesis Pixel
+      }
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    let animationId;
+    const clock = new THREE.Clock();
+
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      material.uniforms.u_time.value = clock.getElapsedTime();
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      renderer.dispose();
+      material.dispose();
+      geometry.dispose();
+    }, { once: true });
+  });
+
+</script>

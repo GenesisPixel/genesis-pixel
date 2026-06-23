@@ -1,0 +1,61 @@
+---
+import ShadersLayout from '../../layouts/ShadersLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ShadersLayout
+  title="Shaders Animados - Genesis Pixel"
+  currentLesson="/shaders/shaders-animados"
+  prevLesson={{ title: 'Shaders Reactivos al Mouse', href: '/shaders/shaders-reactivos' }}
+  nextLesson={{ title: 'Efectos Visuales Avanzados', href: '/shaders/efectos-visuales' }}
+>
+  <ChapterHeader
+    chapterNumber="06"
+    chapterLabel="Capítulo 6 · Lección 12"
+    title="Shaders Animados"
+    readingTime="6"
+    difficulty="Shaders GLSL"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>El reloj de la GPU</h3>
+    <p>Hemos usado el tiempo antes, pero aquí profundizaremos en su poder. Un <code>u_time</code> que se incrementa en cada frame es el motor absoluto de la vida en los Shaders. Funciona como un contador de segundos desde que la página cargó.</p>
+    
+    <h3>El poder de las funciones periódicas</h3>
+    <p>Si multiplicas una coordenada UV por el tiempo (<code>vUv.x * u_time</code>), el shader explotará visualmente en un borrón estroboscópico casi de inmediato. El tiempo crece hasta el infinito. Necesitas atrapar el tiempo en un ciclo repetitivo.</p>
+    <p>Aquí es donde brillan las funciones matemáticas como <code>sin()</code>, <code>cos()</code>, o <code>fract()</code>. Un <code>sin(u_time)</code> garantiza que, sin importar cuánto avance el reloj, tu valor siempre estará rebotando suavemente entre -1.0 y 1.0 en un loop perfecto.</p>
+
+    <h3>Animación Espacial</h3>
+    <p>Si mezclas <code>u_time</code> con las coordenadas espaciales (<code>vUv.y + u_time</code>), creas un efecto de desplazamiento continuo. Es la base de las cascadas, los túneles infinitos y el fuego.</p>
+  </article>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Multiplicar el tiempo a lo loco', description: 'u_time crece constante. Si haces sin(u_time * 100.0), el shader parpadeará epilépticamente. Usa multiplicadores pequeños: sin(u_time * 0.5) para una respiración calmada.' },
+    ]} />
+
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Domina el pulso del tiempo."
+      steps={[
+        { number: 1, text: 'Instancia un THREE.Clock() en JS y pasa su getElapsedTime() al u_time.', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Usa sin(u_time) para modificar un color o escalar un radio gradualmente.', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Usa fract(vUv.x - u_time) para crear un patrón de líneas que se muevan hacia la derecha.', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
+  </div>
+
+</ShadersLayout>
+
+<script>
+
+  // Demo intencionalmente en blanco o simbólica ya que es un concepto matemático explicado
+  // document.addEventListener('astro:page-load', () => { ... });
+
+</script>

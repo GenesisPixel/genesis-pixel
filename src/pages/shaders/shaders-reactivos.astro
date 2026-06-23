@@ -1,0 +1,199 @@
+---
+import ShadersLayout from '../../layouts/ShadersLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ShadersLayout
+  title="Shaders Reactivos al Mouse - Genesis Pixel"
+  currentLesson="/shaders/shaders-reactivos"
+  prevLesson={{ title: 'Distorsiones', href: '/shaders/distorsiones' }}
+  nextLesson={{ title: 'Shaders Animados', href: '/shaders/shaders-animados' }}
+>
+  <ChapterHeader
+    chapterNumber="06"
+    chapterLabel="Capítulo 6 · Lección 11"
+    title="Shaders Reactivos al Mouse"
+    readingTime="6"
+    difficulty="Shaders GLSL"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Tocando el Canvas</h3>
+    <p>Hemos animado nuestros shaders con el tiempo (<code>u_time</code>). Eso los hace estar vivos. Pero para que la experiencia sea verdaderamente inmersiva y premium, el shader debe reaccionar a las acciones del usuario. La interacción número uno en web de escritorio es el movimiento del ratón.</p>
+    
+    <h3>El Uniform del Mouse</h3>
+    <p>Para lograr esto, necesitamos enviar un nuevo <code>uniform</code> desde nuestro archivo JavaScript hacia la GPU. Lo llamaremos <code>u_mouse</code> y será un vector de dos dimensiones (<code>vec2</code>).</p>
+    
+    <h3>Normalización: El secreto</h3>
+    <p>La posición del ratón en la pantalla del usuario puede ser (1920, 1080) píxeles. Si mandamos esos números brutos a un shader que trabaja con coordenadas UV entre 0.0 y 1.0, el shader se volverá loco. <strong>Siempre debes normalizar</strong> la posición del ratón en JS dividiendo la coordenada actual entre el ancho o alto total de la ventana.</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="En lugar de enviar la posición exacta y fría del ratón en cada frame, usa una función de interpolación lineal (Lerp) en tu archivo JavaScript. Esto hará que el shader persiga al cursor con un pequeño retraso suave, dándole una sensación fluida y lujosa a la interacción." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    El Cursor como Linterna
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="mouse-reactive"
+      tabs={[
+        { id: 'js', label: 'JavaScript', code: "let targetMouse = new THREE.Vector2();
+let currentMouse = new THREE.Vector2();
+
+window.addEventListener('mousemove', (e) => {
+  // Normalizamos de 0 a 1
+  targetMouse.x = e.clientX / window.innerWidth;
+  targetMouse.y = 1.0 - (e.clientY / window.innerHeight);
+});
+
+function animate() {
+  // Lerp para suavidad premium (Inercia)
+  currentMouse.lerp(targetMouse, 0.05);
+  material.uniforms.u_mouse.value = currentMouse;
+}" },
+        { id: 'glsl', label: 'Fragment Shader', code: "uniform vec2 u_mouse;
+varying vec2 vUv;
+
+void main() {
+  // Distancia entre el píxel actual y el ratón
+  float dist = distance(vUv, u_mouse);
+
+  // Invertimos: luz intensa cerca (dist = 0), oscura lejos
+  float luz = 1.0 - smoothstep(0.0, 0.3, dist);
+
+  vec3 colorFondo = vec3(0.04, 0.06, 0.1);
+  vec3 colorLuz = vec3(0.34, 0.69, 0.98); // Azul brillante
+
+  gl_FragColor = vec4(mix(colorFondo, colorLuz, luz), 1.0);
+}" }
+      ]}
+    />
+    <ResultPreview description="Pasa el ratón por el área. El Fragment Shader reacciona en tiempo real, calculando la distancia a tu cursor suavizado.">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-mouse" style="cursor: crosshair;">
+      </div>
+    </ResultPreview>
+  </div>
+
+</ShadersLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-mouse');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+    camera.position.z = 1;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: false });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    
+    const fragmentShader = `
+      uniform vec2 u_mouse;
+      uniform vec2 u_resolution;
+      varying vec2 vUv;
+
+      void main() {
+        // Compensamos el aspect ratio para que el círculo no se vuelva un óvalo
+        vec2 st = vUv;
+        vec2 m = u_mouse;
+        
+        float aspect = u_resolution.x / u_resolution.y;
+        st.x *= aspect;
+        m.x *= aspect;
+
+        float dist = distance(st, m);
+        float luz = 1.0 - smoothstep(0.0, 0.3, dist);
+
+        vec3 colorFondo = vec3(0.04, 0.06, 0.1);
+        vec3 colorLuz = vec3(0.34, 0.69, 0.98); // 57B0FB
+
+        // Añadimos un poco de ruido de fondo
+        float grid = sin(vUv.x * 100.0) * sin(vUv.y * 100.0);
+        colorFondo += grid * 0.02;
+
+        gl_FragColor = vec4(mix(colorFondo, colorLuz, luz), 1.0);
+      }
+    `;
+
+    const vertexShader = `
+      varying vec2 vUv;
+      void main() {
+        vUv = uv;
+        gl_Position = vec4(position, 1.0);
+      }
+    `;
+
+    const targetMouse = new THREE.Vector2(0.5, 0.5);
+    const currentMouse = new THREE.Vector2(0.5, 0.5);
+
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms: { 
+        u_mouse: { value: currentMouse },
+        u_resolution: { value: new THREE.Vector2(container.clientWidth, container.clientHeight) }
+      }
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    const onMouseMove = (event) => {
+      const rect = container.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+      
+      targetMouse.x = x / container.clientWidth;
+      targetMouse.y = 1.0 - (y / container.clientHeight);
+    };
+    container.addEventListener('mousemove', onMouseMove);
+
+    let animationId;
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      
+      // Interpolación lineal (Lerp) manual
+      currentMouse.x += (targetMouse.x - currentMouse.x) * 0.1;
+      currentMouse.y += (targetMouse.y - currentMouse.y) * 0.1;
+      
+      material.uniforms.u_mouse.value = currentMouse;
+      
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      material.uniforms.u_resolution.value.set(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      container.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('resize', handleResize);
+      renderer.dispose();
+      material.dispose();
+      geometry.dispose();
+    }, { once: true });
+  });
+
+</script>

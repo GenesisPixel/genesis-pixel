@@ -1,0 +1,185 @@
+---
+import ShadersLayout from '../../layouts/ShadersLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ShadersLayout
+  title="Vertex Shaders - Genesis Pixel"
+  currentLesson="/shaders/vertex-shaders"
+  prevLesson={{ title: 'Introducción a GLSL', href: '/shaders/introduccion-glsl' }}
+  nextLesson={{ title: 'Fragment Shaders', href: '/shaders/fragment-shaders' }}
+>
+  <ChapterHeader
+    chapterNumber="06"
+    chapterLabel="Capítulo 6 · Lección 3"
+    title="Vertex Shaders"
+    readingTime="7"
+    difficulty="Shaders GLSL"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Esculpiendo el espacio</h3>
+    <p>Todo objeto en 3D está formado por puntos llamados <strong>Vértices</strong>. Una esfera tiene miles de vértices unidos por caras. Un plano tiene cuatro vértices en sus esquinas (o más, si lo subdivides).</p>
+    
+    <p>El <strong>Vertex Shader</strong> es un programa que la GPU ejecuta <em>una vez por cada vértice</em> que existe en tu geometría. Su único objetivo en la vida es responder a la pregunta: <em>"¿En qué coordenada exacta de la pantalla 2D del usuario debo dibujar este vértice 3D?"</em>.</p>
+
+    <h3>La Variable Sagrada: gl_Position</h3>
+    <p>Al final de tu Vertex Shader, debes asignar un <code>vec4</code> a la variable reservada <code>gl_Position</code>. Para llegar ahí, tienes que multiplicar la posición original del vértice (<code>position</code>) por tres matrices mágicas que Three.js nos provee automáticamente:</p>
+    
+    <ol>
+      <li><strong>modelMatrix:</strong> Mueve el vértice desde el "centro de sí mismo" al "centro del mundo" (Scale, Rotation, Position del Mesh).</li>
+      <li><strong>viewMatrix:</strong> Ajusta esa posición según dónde esté parada la Cámara en el mundo.</li>
+      <li><strong>projectionMatrix:</strong> Aplica la perspectiva final (hace que lo lejano se vea más pequeño) para aplastar todo en la pantalla 2D.</li>
+    </ol>
+
+    <h3>Magia Procedural</h3>
+    <p>Lo divertido del Vertex Shader es que, <strong>antes</strong> de multiplicar esas matrices, puedes hackear la variable <code>position</code> original matemáticamente. Por ejemplo, puedes sumar una onda sinusoidal a la posición Z de un plano, creando banderas ondeando al viento o agua realista, todo sin usar CPU.</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Para deformar una geometría con el Vertex Shader, tu geometría base necesita tener suficientes vértices. Un BoxGeometry por defecto tiene solo 8 esquinas. Si intentas doblarlo por el centro con un Shader, no pasará nada porque no hay vértices en el medio para doblar." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    Modificando Vértices
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="vertex-shader"
+      tabs={[
+        { id: 'glsl', label: 'Vertex Shader', code: "uniform float u_time;
+
+void main() {
+  // 1. Copiamos la posición original en una variable que podamos modificar
+  vec3 newPosition = position;
+
+  // 2. MAGIA: Movemos el vértice en el eje Z usando una onda Sinusoidal basada en su eje X y el Tiempo
+  newPosition.z += sin(newPosition.x * 5.0 + u_time) * 0.2;
+
+  // 3. Proyección obligatoria de Three.js
+  vec4 modelPosition = modelMatrix * vec4(newPosition, 1.0);
+  vec4 viewPosition = viewMatrix * modelPosition;
+  vec4 projectedPosition = projectionMatrix * viewPosition;
+
+  // 4. Salida
+  gl_Position = projectedPosition;
+}" }
+      ]}
+    />
+    <ResultPreview description="Una esfera deformada usando puras matemáticas en el Vertex Shader.">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-vertex" style="cursor: grab;">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Domina las formas tridimensionales."
+      steps={[
+        { number: 1, text: 'Recupera el atributo "position" por defecto de Three.js.', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Añade ruido o senos a sus coordenadas (X, Y o Z).', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Multiplica por las matrices Projection, View y Model.', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
+  </div>
+
+</ShadersLayout>
+
+<script>
+
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-vertex');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.set(0, 0, 3);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.enablePan = false;
+
+    // Alta densidad de vértices para que se deforme suave
+    const geometry = new THREE.SphereGeometry(0.8, 64, 64);
+    
+    const vertexShader = `
+      uniform float u_time;
+      void main() {
+        vec3 pos = position;
+        
+        // Deformación: como si respirara o fuera un erizo bailando
+        float wave = sin(pos.y * 10.0 + u_time) * 0.1;
+        pos.x += wave * normal.x;
+        pos.z += wave * normal.z;
+
+        gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(pos, 1.0);
+      }
+    `;
+
+    const fragmentShader = `
+      void main() {
+        gl_FragColor = vec4(0.337, 0.69, 0.984, 1.0); // 57B0FB
+      }
+    `;
+
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms: {
+        u_time: { value: 0 }
+      },
+      wireframe: true // Mostramos la malla para que se vea la deformación de vértices
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    let animationId;
+    const clock = new THREE.Clock();
+
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      controls.update();
+      material.uniforms.u_time.value = clock.getElapsedTime();
+      mesh.rotation.y += 0.005;
+      mesh.rotation.x += 0.005;
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      controls.dispose();
+      renderer.dispose();
+      material.dispose();
+      geometry.dispose();
+    }, { once: true });
+  });
+
+</script>

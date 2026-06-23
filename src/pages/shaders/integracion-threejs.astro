@@ -1,0 +1,54 @@
+---
+import ShadersLayout from '../../layouts/ShadersLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ShadersLayout
+  title="Integración con Three.js - Genesis Pixel"
+  currentLesson="/shaders/integracion-threejs"
+  prevLesson={{ title: 'Efectos Visuales Avanzados', href: '/shaders/efectos-visuales' }}
+  nextLesson={{ title: 'Proyecto Final de Shaders', href: '/shaders/proyecto-final' }}
+>
+  <ChapterHeader
+    chapterNumber="06"
+    chapterLabel="Capítulo 6 · Lección 14"
+    title="Integración con Three.js"
+    readingTime="7"
+    difficulty="Shaders GLSL"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Uniendo los dos mundos</h3>
+    <p>Escribir Shaders puros en un archivo de texto es genial para aprender, pero en el mundo real, los vas a inyectar en mallas, luces y cámaras de Three.js. El componente principal que te permite hacer esto es <code>THREE.ShaderMaterial</code>.</p>
+    
+    <h3>El ShaderMaterial</h3>
+    <p>Es un material como <code>MeshBasicMaterial</code>, pero te da una hoja en blanco. Le pasas un string de tu <code>vertexShader</code>, un string de tu <code>fragmentShader</code> y un objeto con tus <code>uniforms</code>.</p>
+    
+    <h3>Hackeando materiales existentes</h3>
+    <p>¿Qué pasa si quieres que tu objeto mantenga las sombras y el sistema de luces hiperrealista de Three.js (MeshStandardMaterial) pero quieres hacer que los vértices se deformen como olas?</p>
+    <p>No puedes usar ShaderMaterial porque perderías todas las luces. El truco avanzado es usar <code>onBeforeCompile</code>. Es un método que te permite inyectar código GLSL dentro de los materiales predefinidos de Three.js justo antes de que se compilen hacia la tarjeta gráfica. Es un terreno oscuro pero inmensamente poderoso.</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="En lugar de escribir tus shaders como largas y feas strings en tu archivo JavaScript, usa bloques de backticks ` ` o impórtalos como archivos .glsl separados usando Vite (import vertexShader from './miShader.vert?raw'). Mantendrá tu código limpio e inteligente." />
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Luces ignoradas', description: 'Tu ShaderMaterial no reacciona a los DirectionalLights de tu escena. Es normal. Un ShaderMaterial puro no sabe qué es una luz a menos que tú programes la matemática de iluminación Lambert o Phong a mano. Si necesitas luces, investiga onBeforeCompile.' },
+    ]} />
+  </div>
+
+</ShadersLayout>
+
+<script>
+
+  // Conceptos teóricos avanzados, demo omitida.
+
+</script>

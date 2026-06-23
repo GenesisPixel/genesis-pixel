@@ -1,0 +1,187 @@
+---
+import ShadersLayout from '../../layouts/ShadersLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ShadersLayout
+  title="Varyings - Genesis Pixel"
+  currentLesson="/shaders/varyings"
+  prevLesson={{ title: 'Uniforms', href: '/shaders/uniforms' }}
+  nextLesson={{ title: 'Coordenadas UV', href: '/shaders/coordenadas-uv' }}
+>
+  <ChapterHeader
+    chapterNumber="06"
+    chapterLabel="Capítulo 6 · Lección 6"
+    title="Varyings"
+    readingTime="6"
+    difficulty="Shaders GLSL"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>El puente entre el Vértice y el Píxel</h3>
+    <p>Ya sabes cómo mover los vértices de una figura (Vertex Shader) y cómo pintar cada píxel (Fragment Shader). Pero, ¿qué pasa si quieres pintar un píxel basándote en lo que le pasó a su vértice correspondiente? Por ejemplo, ¿qué tal si quieres pintar de blanco los picos altos de una montaña, y de verde los valles bajos?</p>
+    
+    <h3>¿Qué es un Varying?</h3>
+    <p>Un <strong>Varying</strong> es una variable que sirve exclusivamente para pasar información <em>desde el Vertex Shader hacia el Fragment Shader</em>. No puedes enviarla al revés (del fragment al vertex).</p>
+    <p>Se llama "varying" (variante) porque la GPU hace algo mágico: la <strong>interpola</strong>. Si le envías un valor `1.0` en el vértice izquierdo y `0.0` en el vértice derecho, el Fragment Shader no recibe un salto brusco. Recibirá `0.5` exactamente en el píxel del medio. ¡Transiciones automáticas suaves!</p>
+
+    <h3>Cómo se declara</h3>
+    <p>A diferencia de los <code>uniforms</code> que vienen de JavaScript, los <code>varyings</code> se declaran en la parte superior de <strong>ambos</strong> shaders con el mismo nombre y tipo de dato. En el Vertex Shader le asignas el valor, y en el Fragment Shader lo lees.</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="Una convención profesional es nombrar todas tus variables varying empezando con la letra 'v' minúscula. Por ejemplo: vUv, vElevation, vPosition. Así, cuando leas tu Fragment Shader, sabrás inmediatamente que ese valor fue calculado y enviado por el Vertex Shader." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    El mapa topográfico
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="varyings"
+      tabs={[
+        { id: 'vertex', label: 'Vertex Shader', code: "varying float vElevation;
+
+void main() {
+  vec3 newPosition = position;
+  
+  // Generamos un 'valle' matemático
+  float elevation = sin(position.x * 5.0) * 0.5;
+  newPosition.y += elevation;
+
+  // Guardamos la elevación en el varying para enviarla al Fragment Shader
+  vElevation = elevation;
+
+  gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(newPosition, 1.0);
+}" },
+        { id: 'fragment', label: 'Fragment Shader', code: "varying float vElevation;
+
+void main() {
+  // Leemos el varying. El centro del valle será negro, los picos blancos.
+  // Ajustamos el rango porque el seno va de -0.5 a 0.5.
+  float colorIntensity = vElevation + 0.5;
+
+  gl_FragColor = vec4(vec3(colorIntensity), 1.0);
+}" }
+      ]}
+    />
+    <ResultPreview description="La altura (calculada en el Vertex Shader) determina el color (pintado en el Fragment Shader).">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-varyings" style="cursor: grab;">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Tipos desajustados', description: 'Declaraste varying vec2 vUv en el Vertex, pero varying vec3 vUv en el Fragment. Fallará instantáneamente.' },
+    ]} />
+  </div>
+
+</ShadersLayout>
+
+<script>
+
+  import * as THREE from 'three';
+  import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-varyings');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 100);
+    camera.position.set(0, 1.5, 3);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.enablePan = false;
+
+    const geometry = new THREE.PlaneGeometry(3, 3, 64, 64);
+    geometry.rotateX(-Math.PI * 0.5); // Acostarlo
+    
+    const vertexShader = `
+      varying float vElevation;
+      uniform float u_time;
+
+      void main() {
+        vec3 pos = position;
+        float elevation = sin(pos.x * 4.0 + u_time) * cos(pos.z * 4.0 + u_time) * 0.3;
+        pos.y += elevation;
+
+        // Enviamos la elevación al Fragment Shader
+        vElevation = elevation;
+
+        gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(pos, 1.0);
+      }
+    `;
+
+    const fragmentShader = `
+      varying float vElevation;
+
+      void main() {
+        // vElevation va de -0.3 a 0.3
+        // Lo convertimos a un rango de 0.0 a 1.0
+        float intensity = (vElevation + 0.3) / 0.6;
+        
+        vec3 colorValles = vec3(0.04, 0.06, 0.1); // Oscuro
+        vec3 colorPicos = vec3(0.34, 0.69, 0.98); // 57B0FB
+
+        vec3 finalColor = mix(colorValles, colorPicos, intensity);
+
+        gl_FragColor = vec4(finalColor, 1.0);
+      }
+    `;
+
+    const material = new THREE.ShaderMaterial({
+      vertexShader,
+      fragmentShader,
+      uniforms: { u_time: { value: 0 } },
+      wireframe: false
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    let animationId;
+    const clock = new THREE.Clock();
+
+    const animate = () => {
+      animationId = requestAnimationFrame(animate);
+      controls.update();
+      material.uniforms.u_time.value = clock.getElapsedTime();
+      renderer.render(scene, camera);
+    };
+    animate();
+
+    const handleResize = () => {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      cancelAnimationFrame(animationId);
+      window.removeEventListener('resize', handleResize);
+      controls.dispose();
+      renderer.dispose();
+      material.dispose();
+      geometry.dispose();
+    }, { once: true });
+  });
+
+</script>

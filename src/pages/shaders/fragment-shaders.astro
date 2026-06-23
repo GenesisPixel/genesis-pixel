@@ -1,0 +1,154 @@
+---
+import ShadersLayout from '../../layouts/ShadersLayout.astro';
+import ChapterHeader from '../../components/ChapterHeader.astro';
+import TabbedCodeBlock from '../../components/TabbedCodeBlock.astro';
+import ResultPreview from '../../components/ResultPreview.astro';
+import ConsejoProfesional from '../../components/ConsejoProfesional.astro';
+import ErroresComunesV3 from '../../components/ErroresComunesV3.astro';
+import PracticeCards from '../../components/PracticeCards.astro';
+---
+
+<ShadersLayout
+  title="Fragment Shaders - Genesis Pixel"
+  currentLesson="/shaders/fragment-shaders"
+  prevLesson={{ title: 'Vertex Shaders', href: '/shaders/vertex-shaders' }}
+  nextLesson={{ title: 'Uniforms', href: '/shaders/uniforms' }}
+>
+  <ChapterHeader
+    chapterNumber="06"
+    chapterLabel="Capítulo 6 · Lección 4"
+    title="Fragment Shaders"
+    readingTime="7"
+    difficulty="Shaders GLSL"
+  />
+
+
+  <article class="prose prose-invert max-w-none" style="margin-top: 64px;">
+    <h3>Los pintores de la GPU</h3>
+    <p>Si el Vertex Shader acomodó las esquinas de tu plano en la pantalla, ahora tienes un espacio vacío entre esos vértices. Aquí entra el <strong>Fragment Shader</strong>. La GPU lo ejecutará ciegamente millones de veces, <em>una vez por cada píxel (fragmento)</em> que forme parte de esa geometría en tu monitor.</p>
+    
+    <p>Su única misión en la vida es responder: <em>"¿Qué color RGBA le asigno a este píxel microscópico?"</em>.</p>
+
+    <h3>La Variable Sagrada: gl_FragColor</h3>
+    <p>Todo el código de tu Fragment Shader converge en un solo objetivo: construir un vector de 4 dimensiones (R, G, B, Alpha) y entregárselo a la variable reservada de salida <code>gl_FragColor</code>.</p>
+
+    <h3>Pintar a ciegas</h3>
+    <p>Imagina que tienes un millón de empleados trabajando en habitaciones oscuras sin verse entre ellos. Les dices: "Pinta de rojo si estás en la coordenada X mayor a 0.5". Ellos no saben qué están dibujando en conjunto. Tu habilidad en Fragment Shaders es inventar reglas matemáticas basadas en coordenadas para que, al ver a todos los empleados juntos, formen una imagen, una textura o un gradiente.</p>
+  </article>
+
+  <div class="my-8 not-prose">
+    <ConsejoProfesional tip="En un Material normal de Three.js (MeshStandardMaterial), Three.js inyecta toneladas de código de Fragment Shader complejo por debajo para calcular las sombras, luces y reflejos. Cuando usas un ShaderMaterial personalizado, TODO eso desaparece. Eres tú contra el negro puro. Tendrás que dibujar tu propia luz (o aprender a importar los 'chunks' de Three.js)." />
+  </div>
+
+  <h3 class="mb-8 mt-12 text-center font-medium text-[var(--color-text)]">
+    El Gradiente por Coordenadas
+  </h3>
+
+  <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="fragment-shader"
+      tabs={[
+        { id: 'glsl', label: 'Fragment Shader', code: "void main() {
+  // gl_FragCoord.xy nos da las coordenadas del píxel en la pantalla
+  // Aquí creamos una lógica inventada: 
+  // Si la X es pequeña, será menos rojo.
+  // Haremos cálculos estáticos.
+
+  vec3 colorA = vec3(0.98, 0.36, 0.49); // Rosa FC5D7D
+  vec3 colorB = vec3(0.34, 0.69, 0.98); // Azul 57B0FB
+
+  // Dividimos la coordenada actual por una resolución ficticia para obtener un % entre 0 y 1
+  float mixValue = gl_FragCoord.x / 800.0;
+
+  // mix() es una función de GLSL equivalente a lerp o transiciones
+  vec3 colorFinal = mix(colorA, colorB, mixValue);
+
+  gl_FragColor = vec4(colorFinal, 1.0);
+}" }
+      ]}
+    />
+    <ResultPreview description="Mezclando dos colores según en qué píxel X de la pantalla esté trabajando el shader.">
+      <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-xl" id="demo-fragment">
+      </div>
+    </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Sé el maestro del color."
+      steps={[
+        { number: 1, text: 'Comprende que el Fragment se ejecuta por cada píxel.', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Aprende a usar la función mix(colorA, colorB, porcentaje) en GLSL.', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Asigna el color a la variable vec4 gl_FragColor.', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
+  </div>
+
+</ShadersLayout>
+
+<script>
+
+  import * as THREE from 'three';
+
+  document.addEventListener('astro:page-load', () => {
+    const container = document.getElementById('demo-fragment');
+    if (!container) return;
+    
+    while(container.firstChild) container.removeChild(container.firstChild);
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0.1, 10);
+    camera.position.z = 1;
+
+    const renderer = new THREE.WebGLRenderer({ antialias: false });
+    renderer.setSize(container.clientWidth, container.clientHeight);
+    container.appendChild(renderer.domElement);
+
+    const geometry = new THREE.PlaneGeometry(2, 2);
+    
+    const fragmentShader = `
+      uniform vec2 u_resolution;
+      
+      void main() {
+        // Normalizamos la coordenada del pixel de 0.0 a 1.0
+        vec2 st = gl_FragCoord.xy / u_resolution.xy;
+        
+        vec3 colorA = vec3(0.988, 0.364, 0.490); // FC5D7D
+        vec3 colorB = vec3(0.623, 0.650, 1.0);   // 9FA6FF
+
+        // st.x es 0 en la izquierda, y 1 en la derecha
+        vec3 color = mix(colorA, colorB, st.x);
+
+        gl_FragColor = vec4(color, 1.0);
+      }
+    `;
+
+    const material = new THREE.ShaderMaterial({
+      fragmentShader,
+      uniforms: {
+        u_resolution: { value: new THREE.Vector2(container.clientWidth, container.clientHeight) }
+      }
+    });
+
+    const mesh = new THREE.Mesh(geometry, material);
+    scene.add(mesh);
+
+    renderer.render(scene, camera);
+
+    const handleResize = () => {
+      renderer.setSize(container.clientWidth, container.clientHeight);
+      material.uniforms.u_resolution.value.set(container.clientWidth, container.clientHeight);
+      renderer.render(scene, camera);
+    };
+    window.addEventListener('resize', handleResize);
+
+    document.addEventListener('astro:before-swap', () => {
+      window.removeEventListener('resize', handleResize);
+      renderer.dispose();
+      material.dispose();
+      geometry.dispose();
+    }, { once: true });
+  });
+
+</script>
