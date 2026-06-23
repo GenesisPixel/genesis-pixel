@@ -137,12 +137,12 @@ const practiceSteps = [
       <div class="flex items-center justify-center h-full w-full">
         <div class="magic-card-p" style="position:relative; width:200px; height:220px; background:rgba(255,255,255,0.1); border-radius:0; border:1px dashed rgba(255,255,255,0.1); display:flex; flex-direction:column; align-items:center; justify-content:center; overflow:hidden; cursor:pointer;">
   <div class="card-glow" style="position:absolute; width:120px; height:120px; background:#8b5cf6; border-radius:50%; filter:blur(40px); opacity:0; transition:opacity 0.5s ease;"></div>
-  <div class="magic-icon" style="z-index:1; color:#8b5cf6; transition:transform 0.4s ease, color 0.4s ease;">
+  <div class="magic-icon" style="z-index:1; color:white; transition:transform 0.4s ease, color 0.4s ease;">
     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <path d="M12 2L2 22h20L12 2z"/>
     </svg>
   </div>
-  <h5 style="z-index:1; color:white; margin-top:20px;">Interacción Total</h5>
+  <h5 style="z-index:1; color:white; margin-top:20px; text-align:center;">Interacción Total</h5>
 </div>
       </div>
     </ResultPreview>
@@ -177,8 +177,8 @@ const practiceSteps = [
 /* HOVER INTERACTIONS */
 .magic-card-p:hover {
   transform: translateY(-10px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(139, 92, 246, 0.2);
-  border-color: rgba(139, 92, 246, 0.5);
+  box-shadow: 0 20px 40px rgba(255,255,255,0.2);
+  border-color: rgba(255,255,255,0.3);
 }
 
 .magic-card-p:hover .card-glow {
