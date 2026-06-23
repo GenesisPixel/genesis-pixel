@@ -84,6 +84,10 @@ void main() {
   </div>
 
   <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'El mouse no actualiza en tiempo real', description: 'Estás actualizando el uniform del mouse fuera del loop de requestAnimationFrame. Mándalo dentro del loop, no en el evento mousemove directamente.' },
+      { label: 'La luz sigue al ratón de toda la ventana, no del canvas', description: 'Usaste event.clientX directamente sin restarle el getBoundingClientRect() del contenedor. La luz aparecerá desplazada si el canvas no está en la esquina superior izquierda de la pantalla.' },
+    ]} />
     <PracticeCards
       title="Practica lo Aprendido"
       description="Haz que tu shader sienta."

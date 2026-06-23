@@ -77,6 +77,10 @@ void main() {
   </div>
 
   <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'El objeto se ve completamente transparente', description: 'Pusiste transparent: true en el ShaderMaterial pero el canal Alpha de tu gl_FragColor está en 0.0. Revisa el cálculo del "rim" (borde) y asegúrate de que tenga un valor mínimo.' },
+      { label: 'Los scanlines no se mueven', description: 'Olvidaste actualizar el uniform u_time en el loop de animación. Sin ello las líneas de escaneo están estáticas.' },
+    ]} />
     <PracticeCards
       title="Practica lo Aprendido"
       description="Crea tu propio holograma."
