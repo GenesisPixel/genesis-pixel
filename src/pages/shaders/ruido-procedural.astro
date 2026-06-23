@@ -43,10 +43,47 @@ import PracticeCards from '../../components/PracticeCards.astro';
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="procedural-noise"
+      tabs={[
+        { id: 'glsl', label: 'Fragment Shader', code: `void main() {
+  // Escalar la UV para tener más "manchas"
+  vec2 st = vUv * 3.0;
+
+  // Le pasamos las coordenadas escaladas y el tiempo a la función de ruido 3D
+  float noiseValue = cnoise(vec3(st, u_time * 0.4));
+  
+  // El ruido va de -1 a 1, lo pasamos a 0-1
+  noiseValue = (noiseValue + 1.0) * 0.5;
+
+  // Colores
+  vec3 colorA = vec3(0.04, 0.06, 0.1);
+  vec3 colorB = vec3(0.988, 0.364, 0.490); // Rosa
+  
+  // Añadimos escalones dramáticos
+  noiseValue = smoothstep(0.4, 0.6, noiseValue);
+
+  vec3 finalColor = mix(colorA, colorB, noiseValue);
+  gl_FragColor = vec4(finalColor, 1.0);
+}` }
+      ]}
+    />
     <ResultPreview description="Ruido Simplex animado por el tiempo. La base de casi todo efecto orgánico avanzado en web.">
       <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-none" id="demo-noise">
       </div>
     </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Domina el caos procedural."
+      steps={[
+        { number: 1, text: 'Importa una función de Simplex Noise o Perlin Noise a tu Fragment Shader.', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Pásale coordenadas escaladas (vUv * 10.0) para ajustar el tamaño del ruido.', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Usa el valor resultante para mezclar colores o afectar el canal Alpha.', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
   </div>
 
 </ShadersLayout>

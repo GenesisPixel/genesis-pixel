@@ -57,6 +57,25 @@ import PracticeCards from '../../components/PracticeCards.astro';
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="intro-shader"
+      tabs={[
+        { id: 'glsl', label: 'Fragment Shader', code: `uniform float u_time;
+uniform vec2 u_resolution;
+
+void main() {
+  vec2 uv = gl_FragCoord.xy / u_resolution.xy;
+  vec3 color = vec3(0.0);
+  
+  // Matemáticas para colores orgánicos
+  color.r = 0.5 + 0.5 * sin(u_time * 0.5 + uv.x * 5.0);
+  color.g = 0.5 + 0.5 * cos(u_time * 0.6 + uv.y * 3.0);
+  color.b = 0.8 + 0.2 * sin(u_time * 0.4 + uv.x * 2.0 + uv.y * 4.0);
+  
+  gl_FragColor = vec4(color, 1.0);
+}` }
+      ]}
+    />
     <ResultPreview description="Este gradiente orgánico y fluido no es un video ni un Canvas 2D. Es un Fragment Shader calculando el color de cada píxel matemáticamente usando la posición y el tiempo.">
       <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-none" id="demo-shaders-1">
       </div>

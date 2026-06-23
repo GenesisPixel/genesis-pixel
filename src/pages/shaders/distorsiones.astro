@@ -41,10 +41,44 @@ import PracticeCards from '../../components/PracticeCards.astro';
   </h3>
 
   <div class="mb-6 flex flex-col gap-6 lg:flex-row">
+    <TabbedCodeBlock
+      group="distortions"
+      tabs={[
+        { id: 'glsl', label: 'Fragment Shader', code: `uniform float u_time;
+uniform sampler2D u_texture;
+varying vec2 vUv;
+
+void main() {
+  vec2 distortedUv = vUv;
+  
+  // Desplazamiento en X basado en Y y el tiempo
+  distortedUv.x += sin(vUv.y * 10.0 + u_time) * 0.03;
+  // Desplazamiento en Y basado en X y el tiempo
+  distortedUv.y += cos(vUv.x * 10.0 + u_time) * 0.03;
+
+  // Leemos la textura usando las coordenadas mentirosas
+  vec4 textureColor = texture2D(u_texture, distortedUv);
+
+  gl_FragColor = textureColor;
+}` }
+      ]}
+    />
     <ResultPreview description="Generamos un mapa procedural en el Fragment y lo usamos para desviar la lectura de una textura.">
       <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-none" id="demo-distort">
       </div>
     </ResultPreview>
+  </div>
+
+  <div class="my-8 flex flex-col gap-6">
+    <PracticeCards
+      title="Practica lo Aprendido"
+      description="Engaña a la cámara de la textura."
+      steps={[
+        { number: 1, text: 'Recibe una textura en tu Fragment Shader usando sampler2D.', color: 'dm-purple', rotate: '-3deg' },
+        { number: 2, text: 'Copia vUv a una nueva variable (vec2 distortedUv = vUv).', color: 'dm-green', rotate: '2deg' },
+        { number: 3, text: 'Súmale ruido o funciones matemáticas a distortedUv y úsala en texture2D.', color: 'app-color-yellow400', rotate: '-5deg' },
+      ]}
+    />
   </div>
 
 </ShadersLayout>
