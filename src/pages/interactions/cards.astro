@@ -9,19 +9,31 @@ import PracticeCards from '../../components/PracticeCards.astro';
 
 const htmlCode = `<div class="interactive-card">
   <div class="card-image-wrapper">
-    <img src="https://images.unsplash.com/photo-1618005182384?w=400&h=250&fit=crop" alt="Abstract">
+    <img src="/img/example-banner.jpg" alt="Abstract">
   </div>
   <div class="card-content">
     <span class="card-tag">Design</span>
     <h4>Construyendo con Motion</h4>
-    <p>Aprende a transformar interfaces aburridas.</p>
     <a href="#" class="card-link">Leer artículo &rarr;</a>
   </div>
 </div>`;
 
 const cssCode = `.interactive-card {
+  width: 250px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 0;
+  overflow: hidden;
+  border: 1px dashed rgba(255, 255, 255, 0.05);
   transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275),
               box-shadow 0.4s ease;
+}
+
+.card-tag {
+  color: #a855f7;
+  font-size: 0.8rem;
+  font-weight: 300;
+  text-transform: uppercase;
+  letter-spacing: 2px;
 }
 
 .interactive-card img {
