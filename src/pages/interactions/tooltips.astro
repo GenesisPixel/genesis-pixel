@@ -139,7 +139,7 @@ const practiceSteps = [
     <ResultPreview description="Mantén el ratón medio segundo sobre el botón para revelar el globo.">
       <div class="flex items-center justify-center h-full w-full">
         <div class="tooltip-container-p" style="position:relative; display:inline-block; margin-top:50px;">
-  <button class="icon-btn-p" style="background:#334155; border:none; color:#94a3b8; padding:12px; border-radius:50%; cursor:pointer;">
+  <button class="icon-btn-p" style="background:#334155; border:1px dashed #475569; color:#94a3b8; padding:12px; border-radius:50%; cursor:pointer;">
     <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
       <circle cx="12" cy="12" r="10" />
       <line x1="12" y1="16" x2="12" y2="12" />
@@ -179,14 +179,20 @@ const practiceSteps = [
   position: relative; display: inline-block;
 }
 
+.icon-btn-p:hover {
+  background: rgba(255,255,255,0.1) !important;
+}
+
 .tooltip-box-p {
   position: absolute;
   bottom: calc(100% + 12px);
   left: 50%;
   transform: translateX(-50%) translateY(8px);
-  background: #0f172a; color: white;
-  padding: 8px 12px; border-radius: 6px;
-  font-size: 0.85rem; white-space: nowrap;
+  background: rgba(255,255,255,0.1); color: white;
+  padding: 8px 12px; border-radius: 0; border: 1px dashed rgba(255,255,255,0.2);
+  font-size: 0.7rem; font-weight: 300;
+  font-family: 'afronaut', serif;
+  white-space: nowrap;
   pointer-events: none;
   
   /* ESTADO INICIAL */
