@@ -137,7 +137,7 @@ const practiceSteps = [
     />
     <ResultPreview description="Haz clic en el botón para abrir el modal. Haz clic en la zona oscura o cancelar para cerrarlo.">
       <div class="flex items-center justify-center h-full w-full">
-        <button class="open-modal-btn-p" style="padding:10px 20px; border-radius:0; border:none; cursor:pointer; font-weight:600; color:white; background:#a855f7; font-family:'afronaut',serif;">Abrir Modal</button>
+        <button class="open-modal-btn-p" style="padding:10px 20px; border-radius:0; border:none; cursor:pointer; font-weight:600; color:hsla(158,23%,18%,1); background:#a855f7; font-family:'afronaut',serif;">Abrir Modal</button>
 
 <div class="overlay-p" id="demoOverlayP">
   <div class="modal-box-p">
@@ -145,7 +145,7 @@ const practiceSteps = [
     <p>¿Seguro que deseas guardar estos cambios?</p>
     <div class="modal-actions" style="display:flex; justify-content:flex-end; gap:12px; margin-top:24px;">
       <button class="btn-cancel-p" id="closeBtnP" style="padding:10px 20px; border-radius:8px; cursor:pointer; background:transparent; border:1px solid #444; color:white;">Cancelar</button>
-      <button class="btn-confirm-p" style="padding:10px 20px; border-radius:8px; border:none; cursor:pointer; background:#3b82f6; color:white;">Guardar</button>
+      <button class="btn-confirm-p" style="padding:10px 20px; border-radius:0; border:none; cursor:pointer; background:#a855f7; color:hsla(158,23%,18%,1); font-family:'afronaut',serif; font-weight:600;">Guardar</button>
     </div>
   </div>
 </div>
@@ -178,7 +178,7 @@ const practiceSteps = [
 .overlay-p {
   position: fixed; inset: 0;
   background: rgba(0, 0, 0, 0.7);
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
   display: flex; align-items: center; justify-content: center;
   z-index: 1000;
   
@@ -188,7 +188,7 @@ const practiceSteps = [
 
 /* CAJA DEL MODAL */
 .modal-box-p {
-  background: #1e293b; padding: 32px; border-radius: 16px; width: 90%; max-width: 400px;
+  background: rgba(255,255,255,0.1); padding: 32px; border-radius: 0; width: 90%; max-width: 400px;
   box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.1); color: white;
   
   /* Estado oculto (escalado y bajado) */
