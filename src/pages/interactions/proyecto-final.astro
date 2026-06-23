@@ -36,17 +36,17 @@ const btnCss = `.btn-guardar {
 }
 
 .btn-guardar:hover {
-  transform: translateY(-2px); box-shadow: 0 8px 16px rgba(59,130,246,0.4);
+  transform: translateY(-2px); box-shadow: none;
 }
 
 .btn-guardar:active {
-  transform: scale(0.95); box-shadow: 0 2px 4px rgba(59,130,246,0.3);
+  transform: scale(0.95); box-shadow: 0 2px 4px rgba(159,166,255,0.3);
 }
 
 .btn-texto { transition: all 0.3s ease; }
 .btn-cargando {
   position: absolute; width: 18px; height: 18px;
-  border: 2px solid rgba(255,255,255,0.3); border-top-color: white; border-radius: 50%;
+  border: 2px solid rgba(158,23%,18%,0.3); border-top-color: hsla(158,23%,18%,1); border-radius: 50%;
   opacity: 0; transform: scale(0.5); transition: all 0.3s ease;
 }
 .btn-exito {
@@ -54,7 +54,7 @@ const btnCss = `.btn-guardar {
 }
 
 /* Estado Loading */
-.btn-guardar.loading { background: #2563eb; pointer-events: none; }
+.btn-guardar.loading { background: #8090e0; pointer-events: none; }
 .btn-guardar.loading .btn-texto { opacity: 0; transform: translateY(-20px); }
 .btn-guardar.loading .btn-cargando { opacity: 1; transform: scale(1); animation: girar 1s linear infinite; }
 
@@ -304,7 +304,7 @@ const practiceSteps = [
   .btn-guardar-p span, .btn-guardar-p svg {
     font-family: 'afronaut', serif !important;
   }
-  .btn-guardar-p:hover { transform: translateY(-2px); box-shadow: 0 8px 16px rgba(59,130,246,0.4); }
+  .btn-guardar-p:hover { transform: translateY(-2px); box-shadow: none; }
   .btn-guardar-p:active { transform: scale(0.95); box-shadow: 0 2px 4px rgba(59,130,246,0.3); }
   
   .btn-texto-p { transition: all 0.3s ease; }
