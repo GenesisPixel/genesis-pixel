@@ -80,6 +80,10 @@ void main() {
   </div>
 
   <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Geometría sin suficientes vértices', description: 'Si usas un PlaneGeometry(2, 2) por defecto, solo tiene 4 vértices (esquinas). Una ola sinusoidal en el vertex shader necesita docenas de puntos intermedios. Usa PlaneGeometry(2, 2, 64, 64) para subdividirla.' },
+      { label: 'No multiplicar por las matrices', description: 'Olvidaste multiplicar la posición modificada por projectionMatrix, viewMatrix y modelMatrix. Tu objeto aparacerá enorme, en la posición incorrecta o directamente en negro.' },
+    ]} />
     <PracticeCards
       title="Practica lo Aprendido"
       description="Domina las formas tridimensionales."

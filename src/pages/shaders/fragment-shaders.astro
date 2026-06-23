@@ -74,6 +74,10 @@ import PracticeCards from '../../components/PracticeCards.astro';
   </div>
 
   <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'Pantalla en negro', description: 'Olvidaste asignar un valor a gl_FragColor, o el valor que asignaste tiene todos sus canales en 0.0. Prueba a poner gl_FragColor = vec4(1.0); para depurar (blanco puro).' },
+      { label: 'Usar coordenadas de pantalla sin u_resolution', description: 'Si usas gl_FragCoord.x directamente sin dividir por u_resolution, el gradiente dependerá del tamaño del monitor. Un monitor 4K verá algo completamente diferente a uno HD.' },
+    ]} />
     <PracticeCards
       title="Practica lo Aprendido"
       description="Sé el maestro del color."

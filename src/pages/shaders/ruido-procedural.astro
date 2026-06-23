@@ -75,6 +75,10 @@ import PracticeCards from '../../components/PracticeCards.astro';
   </div>
 
   <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'La función de ruido no está definida', description: 'GLSL no tiene noise() nativo. Debes copiar la implementación de la función Perlin o Simplex Noise encima de tu void main(). Sin eso, el compilador te dará un error de función no encontrada.' },
+      { label: 'El ruido parece granulado y feo', description: 'Pasaste las UVs sin escalar a la función de ruido. Prueba multiplicar: cnoise(vUv * 5.0) para obtener manchas más grandes, o cnoise(vUv * 50.0) para un granulado fino.' },
+    ]} />
     <PracticeCards
       title="Practica lo Aprendido"
       description="Domina el caos procedural."

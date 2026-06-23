@@ -70,7 +70,13 @@ void main() {
       <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-none" id="demo-gradients">
       </div>
     </ResultPreview>
+  </div>
+
   <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'El círculo se vuelve óvalo', description: 'Calculaste la distancia sin compensar el aspect ratio. Un canvas de 400x200 estirará el círculo horizontalmente. Corrígelo multiplicando vUv.x por (ancho/alto) antes de calcular la distancia.' },
+      { label: 'El color no mezcla bien', description: 'Usaste mix(A, B, valor) con un valor mayor a 1.0 o menor a 0.0. El resultado será un color extrapolado fuera del rango normal. Usa clamp(valor, 0.0, 1.0) para mantenerlo en rango.' },
+    ]} />
     <PracticeCards
       title="Practica lo Aprendido"
       description="Domina el mix() y el smoothstep()."

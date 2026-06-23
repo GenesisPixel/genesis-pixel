@@ -70,6 +70,10 @@ void main() {
   </div>
 
   <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'La textura no se carga', description: 'Pasaste la textura como uniform de tipo sampler2D pero olvidaste definirla como tal en el shader (uniform sampler2D u_texture;). Sin ese tipo exacto el compilador falla.' },
+      { label: 'Distorsión demasiado agresiva', description: 'El offset que le sumas a las UVs es demasiado grande y la imagen se parte o pierde su forma. Mantén el rango de offset entre 0.01 y 0.05 para distorsiones elegantes y realistas.' },
+    ]} />
     <PracticeCards
       title="Practica lo Aprendido"
       description="Engaña a la cámara de la textura."

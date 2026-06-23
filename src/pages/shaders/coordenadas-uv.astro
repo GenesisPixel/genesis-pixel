@@ -67,7 +67,13 @@ void main() {
       <div class="flex items-center justify-center h-full w-full bg-[#111] overflow-hidden rounded-none" id="demo-uvs" style="cursor: grab;">
       </div>
     </ResultPreview>
+  </div>
+
   <div class="my-8 flex flex-col gap-6">
+    <ErroresComunesV3 errors={[
+      { label: 'UVs fuera de rango', description: 'Multiplicar las UV sin controlar el resultado puede sacarlas del rango 0.0-1.0. Si usas una textura, los píxeles de los bordes se repetirán o se cortarán inesperadamente. Usa fract() para mantenerlas siempre entre 0 y 1.' },
+      { label: 'UV en cero en todas partes', description: 'Olvidaste pasar el atributo uv al varying en el Vertex Shader. El resultado será que vUv siempre vale vec2(0.0, 0.0) y tu efecto solo se verá en la esquina inferior izquierda.' },
+    ]} />
     <PracticeCards
       title="Practica lo Aprendido"
       description="Domina el mapa 2D."
