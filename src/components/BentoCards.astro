@@ -138,6 +138,7 @@ const isEqual = variant === 'equal';
         textColor="text-white"
         imageSrc="/img/card-3.jpg"
         imageAlt="WebGL Mockup"
+        cursor="none"
       />
     </div>
 
@@ -155,9 +156,37 @@ const isEqual = variant === 'equal';
         textColor="text-[#1a1a1a]"
         imageSrc="/img/card-4.jpg"
         imageAlt="Canvas Mockup"
+        cursor="none"
       />
     </div>
 
   </div>
 </section>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const cursor = document.createElement('div');
+    cursor.className = 'custom-cursor';
+    cursor.innerHTML = '<div class="w-3 h-3 rounded-full bg-[#FC5D7D]"></div>';
+    cursor.style.cssText = 'position: fixed; pointer-events: none; z-index: 9999; display: none; transform: translate(-50%, -50%);';
+    document.body.appendChild(cursor);
+
+    const cards = document.querySelectorAll('[data-custom-cursor]');
+    
+    cards.forEach(card => {
+      card.addEventListener('mouseenter', () => {
+        cursor.style.display = 'block';
+      });
+      
+      card.addEventListener('mouseleave', () => {
+        cursor.style.display = 'none';
+      });
+      
+      card.addEventListener('mousemove', (e) => {
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+      });
+    });
+  });
+</script>
 
