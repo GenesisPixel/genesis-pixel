@@ -19,8 +19,8 @@ const renderChars = (text) => text.split(' ').map(word =>
   `</span>`
 ).join(' ');
 
-const rot1 = Math.floor(Math.random() * 21) - 10;
-const rot2 = Math.floor(Math.random() * 21) - 10;
+const rot1 = Math.floor(Math.random() * 41) - 20;
+const rot2 = Math.floor(Math.random() * 41) - 20;
 
 const titleChars = renderChars(firstLine) + '<br/>' + renderChars(secondLine);
 ---
