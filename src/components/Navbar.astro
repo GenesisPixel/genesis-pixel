@@ -195,24 +195,14 @@ const navItems = [...mainNavItems, ...moreNavItems];
   }
 
   .more-chapters-dropdown {
-    position: absolute;
-    top: calc(100% + 7px);
-    left: 50%;
-    transform: translateX(-50%) translateY(-8px);
+    position: fixed;
+    top: 0;
+    left: 0;
     opacity: 0;
     pointer-events: none;
-    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    z-index: 100;
+    transition: opacity 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    z-index: 101;
     min-width: 200px;
-  }
-
-  .more-chapters-wrapper:hover .more-chapters-dropdown {
-    opacity: 1;
-    pointer-events: all;
-    transform: translateX(-50%) translateY(0);
-  }
-
-  .more-chapters-dropdown-inner {
     background: rgba(28, 28, 30, 0.72);
     backdrop-filter: blur(40px) saturate(180%);
     -webkit-backdrop-filter: blur(40px) saturate(180%);
@@ -223,6 +213,13 @@ const navItems = [...mainNavItems, ...moreNavItems];
       0 8px 32px rgba(0, 0, 0, 0.3),
       0 2px 8px rgba(0, 0, 0, 0.2),
       inset 0 1px 0 rgba(255, 255, 255, 0.05);
+    transform: translateX(-50%) translateY(-8px);
+  }
+
+  .more-chapters-dropdown.open {
+    opacity: 1;
+    pointer-events: all;
+    transform: translateX(-50%) translateY(0);
   }
 
   .more-chapters-dropdown a {
@@ -556,18 +553,6 @@ const navItems = [...mainNavItems, ...moreNavItems];
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
           </svg>
         </button>
-        <div class="more-chapters-dropdown" id="more-chapters-dropdown">
-          <div class="more-chapters-dropdown-inner">
-            {moreNavItems.map((item) => (
-              <a href={item.href} data-nav-item>
-                {item.label}
-                {item.badge && (
-                  <span class="dropdown-badge" style={`background: ${item.badgeColor}; color: ${item.badgeTextColor};`}>{item.badge}</span>
-                )}
-              </a>
-            ))}
-          </div>
-        </div>
       </div>
     </div>
 
@@ -580,6 +565,17 @@ const navItems = [...mainNavItems, ...moreNavItems];
     </div>
   </nav>
 </header>
+
+<div class="more-chapters-dropdown" id="more-chapters-dropdown">
+  {moreNavItems.map((item) => (
+    <a href={item.href} data-nav-item>
+      {item.label}
+      {item.badge && (
+        <span class="dropdown-badge" style={`background: ${item.badgeColor}; color: ${item.badgeTextColor};`}>{item.badge}</span>
+      )}
+    </a>
+  ))}
+</div>
 
 <div class="mobile-overlay" id="mobile-overlay"></div>
 
@@ -717,6 +713,35 @@ const navItems = [...mainNavItems, ...moreNavItems];
     });
 
     setTimeout(updateIndicator, 50);
+
+    // More chapters dropdown
+    const moreChaptersBtn = document.getElementById('more-chapters-btn');
+    const moreChaptersDropdown = document.getElementById('more-chapters-dropdown');
+    let dropdownTimeout: ReturnType<typeof setTimeout>;
+
+    function positionDropdown() {
+      if (!moreChaptersBtn || !moreChaptersDropdown) return;
+      const rect = moreChaptersBtn.getBoundingClientRect();
+      moreChaptersDropdown.style.left = `${rect.left + rect.width / 2}px`;
+      moreChaptersDropdown.style.top = `${rect.bottom + 7}px`;
+    }
+
+    function openDropdown() {
+      clearTimeout(dropdownTimeout);
+      positionDropdown();
+      moreChaptersDropdown?.classList.add('open');
+    }
+
+    function closeDropdown() {
+      dropdownTimeout = setTimeout(() => {
+        moreChaptersDropdown?.classList.remove('open');
+      }, 150);
+    }
+
+    moreChaptersBtn?.addEventListener('mouseenter', openDropdown);
+    moreChaptersBtn?.addEventListener('mouseleave', closeDropdown);
+    moreChaptersDropdown?.addEventListener('mouseenter', () => clearTimeout(dropdownTimeout));
+    moreChaptersDropdown?.addEventListener('mouseleave', closeDropdown);
 
     // Cycle indicator icon through svg-1.png to svg-11.png with 3s display + fade transition
     const iconEl = indicator?.querySelector('.nav-indicator-icon') as HTMLImageElement | null;
