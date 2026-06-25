@@ -632,14 +632,25 @@ const navItems = [...mainNavItems, ...moreNavItems];
 </div>
 
 <script>
-  let navbarInitialized = false;
-
-  function updateActiveStates() {
+  function initNavbar() {
+    const island = document.getElementById('nav-island');
     const navLinks = document.getElementById('nav-links');
     const indicator = document.getElementById('nav-indicator');
+    const menuToggle = document.getElementById('mobile-menu-toggle');
     const mobileMenu = document.getElementById('mobile-menu');
-    const currentPath = window.location.pathname;
+    const mobileOverlay = document.getElementById('mobile-overlay');
+    const mobileClose = document.getElementById('mobile-close');
 
+    let mobileOpen = false;
+
+    // Mark island as loaded so the CSS entry animation never replays
+    if (island && !island.classList.contains('nav-island--loaded')) {
+      island.classList.add('nav-island--loaded');
+    }
+
+    // Update active links based on the current URL (since navbar is persisted)
+    const currentPath = window.location.pathname;
+    
     function isActive(href: string) {
       return href === currentPath ||
         (href === '/keyframes/que-son' && currentPath.startsWith('/keyframes/')) ||
@@ -652,51 +663,36 @@ const navItems = [...mainNavItems, ...moreNavItems];
 
     navLinks?.querySelectorAll('a[data-nav-item]').forEach((link) => {
       const href = link.getAttribute('href') || '';
-      link.classList.toggle('active', isActive(href));
+      if (isActive(href)) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
     });
-
+    
     mobileMenu?.querySelectorAll('a').forEach((link) => {
       const href = link.getAttribute('href') || '';
-      link.classList.toggle('active', isActive(href));
+      if (isActive(href)) {
+        link.classList.add('active');
+      } else {
+        link.classList.remove('active');
+      }
     });
 
-    if (indicator) {
+    function updateIndicator() {
       const activeLink = navLinks?.querySelector('a.active') as HTMLElement;
-      if (activeLink) {
-        const rect = activeLink.getBoundingClientRect();
-        indicator.style.left = `${rect.left}px`;
-        indicator.style.top = `${rect.top}px`;
-        indicator.style.width = `${rect.width}px`;
-        indicator.style.height = `${rect.height}px`;
-        indicator.classList.add('visible');
-      } else {
-        indicator.classList.remove('visible');
+      if (!activeLink || !indicator) {
+        if (indicator) indicator.classList.remove('visible');
+        return;
       }
+
+      const rect = activeLink.getBoundingClientRect();
+      indicator.style.left = `${rect.left}px`;
+      indicator.style.top = `${rect.top}px`;
+      indicator.style.width = `${rect.width}px`;
+      indicator.style.height = `${rect.height}px`;
+      indicator.classList.add('visible');
     }
-  }
-
-  function initNavbar() {
-    if (navbarInitialized) {
-      updateActiveStates();
-      return;
-    }
-    navbarInitialized = true;
-
-    const island = document.getElementById('nav-island');
-    const navLinks = document.getElementById('nav-links');
-    const indicator = document.getElementById('nav-indicator');
-    const menuToggle = document.getElementById('mobile-menu-toggle');
-    const mobileMenu = document.getElementById('mobile-menu');
-    const mobileOverlay = document.getElementById('mobile-overlay');
-    const mobileClose = document.getElementById('mobile-close');
-
-    let mobileOpen = false;
-
-    if (island && !island.classList.contains('nav-island--loaded')) {
-      island.classList.add('nav-island--loaded');
-    }
-
-    updateActiveStates();
 
     function moveIndicatorTo(el: HTMLElement) {
       if (!indicator) return;
@@ -708,14 +704,18 @@ const navItems = [...mainNavItems, ...moreNavItems];
       indicator.classList.add('visible');
     }
 
-    navLinks?.addEventListener('mouseover', (e: Event) => {
+    function handleHover(e: Event) {
       const target = (e.target as HTMLElement).closest('a[data-nav-item], .more-chapters-btn') as HTMLElement;
-      if (target) moveIndicatorTo(target);
-    });
+      if (!target) return;
+      moveIndicatorTo(target);
+    }
 
-    navLinks?.addEventListener('mouseout', () => {
-      updateActiveStates();
-    });
+    function handleHoverEnd() {
+      updateIndicator();
+    }
+
+    navLinks?.addEventListener('mouseover', handleHover);
+    navLinks?.addEventListener('mouseout', handleHoverEnd);
 
     function openMobile() {
       mobileOpen = true;
@@ -734,7 +734,11 @@ const navItems = [...mainNavItems, ...moreNavItems];
     }
 
     menuToggle?.addEventListener('click', () => {
-      mobileOpen ? closeMobile() : openMobile();
+      if (mobileOpen) {
+        closeMobile();
+      } else {
+        openMobile();
+      }
     });
 
     mobileClose?.addEventListener('click', closeMobile);
@@ -743,6 +747,8 @@ const navItems = [...mainNavItems, ...moreNavItems];
     mobileMenu?.querySelectorAll('a').forEach((link) => {
       link.addEventListener('click', closeMobile);
     });
+
+    setTimeout(updateIndicator, 50);
 
     // More chapters dropdown
     const moreChaptersBtn = document.getElementById('more-chapters-btn');
@@ -757,41 +763,39 @@ const navItems = [...mainNavItems, ...moreNavItems];
       moreChaptersDropdown.style.width = `${rect.width}px`;
     }
 
-    moreChaptersBtn?.addEventListener('mouseenter', () => {
+    function openDropdown() {
       clearTimeout(dropdownTimeout);
       positionDropdown();
       moreChaptersDropdown?.classList.add('open');
       if (moreChaptersBtn) moveIndicatorTo(moreChaptersBtn);
-    });
+    }
 
-    moreChaptersBtn?.addEventListener('mouseleave', () => {
+    function closeDropdown() {
       dropdownTimeout = setTimeout(() => {
         moreChaptersDropdown?.classList.remove('open');
       }, 200);
-    });
+    }
 
+    moreChaptersBtn?.addEventListener('mouseenter', openDropdown);
+    moreChaptersBtn?.addEventListener('mouseleave', closeDropdown);
     moreChaptersDropdown?.addEventListener('mouseenter', () => {
       clearTimeout(dropdownTimeout);
     });
-
     moreChaptersDropdown?.addEventListener('mouseleave', () => {
-      dropdownTimeout = setTimeout(() => {
-        moreChaptersDropdown?.classList.remove('open');
-      }, 200);
-      updateActiveStates();
+      closeDropdown();
+      updateIndicator();
     });
-
     moreChaptersDropdown?.addEventListener('mouseover', (e: Event) => {
       const target = (e.target as HTMLElement).closest('a[data-nav-item]') as HTMLElement;
       if (target) moveIndicatorTo(target);
     });
 
-    // Cycle indicator icon
+    // Cycle indicator icon through svg-1.png to svg-11.png with 3s display + fade transition
     const iconEl = indicator?.querySelector('.nav-indicator-icon') as HTMLImageElement | null;
     if (iconEl && !iconEl.dataset.iconCycleInit) {
       iconEl.dataset.iconCycleInit = 'true';
       const totalIcons = 11;
-      let iconIndex = 1;
+      let iconIndex = 1; // starts at svg-1.png
 
       function cycleIcon() {
         iconEl.classList.add('fade-out');
@@ -806,10 +810,11 @@ const navItems = [...mainNavItems, ...moreNavItems];
           }, 250);
         }, 250);
       }
-      setTimeout(cycleIcon, 3000);
+      setTimeout(cycleIcon, 3000); // first cycle starts after initial 3s display
     }
   }
 
   document.addEventListener('astro:page-load', initNavbar);
+  document.addEventListener('astro:after-swap', initNavbar);
   document.addEventListener('DOMContentLoaded', initNavbar);
 </script>
