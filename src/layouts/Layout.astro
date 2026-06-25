@@ -32,15 +32,7 @@ const { title } = Astro.props;
 </html>
 
 <script is:inline>
-  // Skip the view transition visual animation entirely.
-  // This prevents the browser from taking DOM snapshots (which cause
-  // a brief green flash from the body background). The DOM swap and
-  // transition:persist still work — only the visual layer is skipped.
-  document.addEventListener('astro:before-swap', (e) => {
-    if (e.viewTransition) {
-      e.viewTransition.skipTransition();
-    }
-  });
+
 
   // Always scroll to top on page navigation
   document.addEventListener('astro:after-swap', () => {

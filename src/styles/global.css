@@ -378,15 +378,38 @@ html {
   }
 }
 
+@keyframes blur-out {
+  0% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+  100% {
+    opacity: 0;
+    filter: blur(40px);
+  }
+}
+
+@keyframes blur-in {
+  0% {
+    opacity: 0;
+    filter: blur(40px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0px);
+  }
+}
+
 /* ========================================
    View Transitions
    ======================================== */
 
-/* Completely disable all view transition animations for instant navigation */
-::view-transition-group(*),
-::view-transition-old(*),
-::view-transition-new(*) {
-  animation: none !important;
+::view-transition-old(root) {
+  animation: blur-out 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+::view-transition-new(root) {
+  animation: blur-in 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
 }
 
 /* ========================================
