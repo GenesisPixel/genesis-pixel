@@ -146,7 +146,7 @@ const navItems = [...mainNavItems, ...moreNavItems];
   .nav-indicator-icon {
     width: 14px;
     height: 14px;
-    transition: opacity 0.4s ease, transform 0.4s ease, filter 0.4s ease;
+    transition: opacity 0.25s ease, transform 0.25s ease, filter 0.25s ease;
   }
 
   .nav-indicator-icon.fade-out {
@@ -791,8 +791,8 @@ const navItems = [...mainNavItems, ...moreNavItems];
           setTimeout(() => {
             iconEl.classList.remove('fade-in');
             setTimeout(cycleIcon, 3000);
-          }, 400);
-        }, 400);
+          }, 250);
+        }, 250);
       }
       setTimeout(cycleIcon, 3000); // first cycle starts after initial 3s display
     }
