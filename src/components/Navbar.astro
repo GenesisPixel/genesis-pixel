@@ -126,10 +126,12 @@ const navItems = [...mainNavItems, ...moreNavItems];
     border-radius: 9999px;
     background: rgba(255, 255, 255, 0.08);
     border: none;
-    transition: left 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.3s ease, height 0.3s ease;
+    transition: left 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.3s ease, height 0.3s ease, opacity 0.3s ease, filter 0.3s ease, transform 0.3s ease;
     pointer-events: none;
     z-index: 102;
     opacity: 0;
+    filter: blur(4px);
+    transform: scale(0.8);
     display: flex;
     align-items: center;
     padding-left: 9px;
@@ -137,6 +139,8 @@ const navItems = [...mainNavItems, ...moreNavItems];
 
   .nav-indicator.visible {
     opacity: 1;
+    filter: blur(0px);
+    transform: scale(1);
   }
 
   .nav-indicator-icon {
@@ -653,7 +657,10 @@ const navItems = [...mainNavItems, ...moreNavItems];
 
     function updateIndicator() {
       const activeLink = navLinks?.querySelector('a.active') as HTMLElement;
-      if (!activeLink || !indicator) return;
+      if (!activeLink || !indicator) {
+        if (indicator) indicator.classList.remove('visible');
+        return;
+      }
 
       const rect = activeLink.getBoundingClientRect();
       indicator.style.left = `${rect.left}px`;
