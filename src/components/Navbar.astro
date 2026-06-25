@@ -98,8 +98,7 @@ const navItems = [...mainNavItems, ...moreNavItems];
     position: relative;
     padding: 6px 14px;
     padding-left: 31px;
-    font-size: 0.8125rem;
-    font-weight: 500;
+   
     color: var(--dm-light-300);
     text-decoration: none;
     border-radius: 9999px;
@@ -121,15 +120,15 @@ const navItems = [...mainNavItems, ...moreNavItems];
   }
 
   .nav-indicator {
-    position: absolute;
+    position: fixed;
     top: 0;
-    bottom: 0;
+    height: 32px;
     border-radius: 9999px;
     background: rgba(255, 255, 255, 0.08);
     border: none;
-    transition: all 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: left 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), width 0.45s cubic-bezier(0.34, 1.56, 0.64, 1), top 0.3s ease, height 0.3s ease;
     pointer-events: none;
-    z-index: 0;
+    z-index: 102;
     opacity: 0;
     display: flex;
     align-items: center;
@@ -158,13 +157,13 @@ const navItems = [...mainNavItems, ...moreNavItems];
 
   .more-chapters-wrapper {
     position: relative;
-    margin-left: 24px;
+    margin-left: 8px;
   }
 
   .more-chapters-btn {
     position: relative;
     padding: 6px 14px;
-   
+    padding-left: 31px;
     color: var(--dm-light-300);
     text-decoration: none;
    
@@ -533,9 +532,6 @@ const navItems = [...mainNavItems, ...moreNavItems];
     <div class="nav-divider"></div>
 
     <div class="nav-links" id="nav-links">
-      <div class="nav-indicator" id="nav-indicator">
-        <img src="/svg/svg-1.png" alt="" class="nav-indicator-icon" aria-hidden="true" />
-      </div>
       {mainNavItems.map((item) => (
         <a
           href={item.href}
@@ -576,6 +572,10 @@ const navItems = [...mainNavItems, ...moreNavItems];
       )}
     </a>
   ))}
+</div>
+
+<div class="nav-indicator" id="nav-indicator">
+  <img src="/svg/svg-1.png" alt="" class="nav-indicator-icon" aria-hidden="true" />
 </div>
 
 <div class="mobile-overlay" id="mobile-overlay"></div>
@@ -653,26 +653,30 @@ const navItems = [...mainNavItems, ...moreNavItems];
 
     function updateIndicator() {
       const activeLink = navLinks?.querySelector('a.active') as HTMLElement;
-      if (!activeLink || !indicator || !navLinks) return;
+      if (!activeLink || !indicator) return;
 
-      const linksRect = navLinks.getBoundingClientRect();
-      const activeRect = activeLink.getBoundingClientRect();
+      const rect = activeLink.getBoundingClientRect();
+      indicator.style.left = `${rect.left}px`;
+      indicator.style.top = `${rect.top}px`;
+      indicator.style.width = `${rect.width}px`;
+      indicator.style.height = `${rect.height}px`;
+      indicator.classList.add('visible');
+    }
 
-      indicator.style.left = `${activeRect.left - linksRect.left}px`;
-      indicator.style.width = `${activeRect.width}px`;
+    function moveIndicatorTo(el: HTMLElement) {
+      if (!indicator) return;
+      const rect = el.getBoundingClientRect();
+      indicator.style.left = `${rect.left}px`;
+      indicator.style.top = `${rect.top}px`;
+      indicator.style.width = `${rect.width}px`;
+      indicator.style.height = `${rect.height}px`;
       indicator.classList.add('visible');
     }
 
     function handleHover(e: Event) {
       const target = (e.target as HTMLElement).closest('a[data-nav-item], .more-chapters-btn') as HTMLElement;
-      if (!target || !indicator || !navLinks) return;
-
-      const linksRect = navLinks.getBoundingClientRect();
-      const targetRect = target.getBoundingClientRect();
-
-      indicator.style.left = `${targetRect.left - linksRect.left}px`;
-      indicator.style.width = `${targetRect.width}px`;
-      indicator.classList.add('visible');
+      if (!target) return;
+      moveIndicatorTo(target);
     }
 
     function handleHoverEnd() {
@@ -681,6 +685,18 @@ const navItems = [...mainNavItems, ...moreNavItems];
 
     navLinks?.addEventListener('mouseover', handleHover);
     navLinks?.addEventListener('mouseout', handleHoverEnd);
+
+    // Dropdown indicator
+    moreChaptersDropdown?.addEventListener('mouseover', (e: Event) => {
+      const target = (e.target as HTMLElement).closest('a[data-nav-item]') as HTMLElement;
+      if (target) moveIndicatorTo(target);
+    });
+    moreChaptersDropdown?.addEventListener('mouseout', (e: Event) => {
+      const related = e.relatedTarget as HTMLElement;
+      if (!related || !moreChaptersDropdown?.contains(related)) {
+        moveIndicatorTo(moreChaptersBtn!);
+      }
+    });
 
     function openMobile() {
       mobileOpen = true;
@@ -731,6 +747,7 @@ const navItems = [...mainNavItems, ...moreNavItems];
       clearTimeout(dropdownTimeout);
       positionDropdown();
       moreChaptersDropdown?.classList.add('open');
+      if (moreChaptersBtn) moveIndicatorTo(moreChaptersBtn);
     }
 
     function closeDropdown() {
