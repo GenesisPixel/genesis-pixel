@@ -146,11 +146,19 @@ const navItems = [...mainNavItems, ...moreNavItems];
   .nav-indicator-icon {
     width: 14px;
     height: 14px;
-    transition: opacity 0.4s ease;
+    transition: opacity 0.4s ease, transform 0.4s ease, filter 0.4s ease;
   }
 
   .nav-indicator-icon.fade-out {
     opacity: 0;
+    transform: scale(0.7) rotate(-20deg);
+    filter: blur(4px);
+  }
+
+  .nav-indicator-icon.fade-in {
+    opacity: 0;
+    transform: scale(0.7) rotate(20deg);
+    filter: blur(4px);
   }
 
   .nav-actions {
@@ -779,7 +787,11 @@ const navItems = [...mainNavItems, ...moreNavItems];
           iconIndex = (iconIndex % totalIcons) + 1;
           iconEl.src = `/svg/svg-${iconIndex}.png`;
           iconEl.classList.remove('fade-out');
-          setTimeout(cycleIcon, 3000 + 400); // 3s fully visible + 400ms remaining fade-in
+          iconEl.classList.add('fade-in');
+          setTimeout(() => {
+            iconEl.classList.remove('fade-in');
+            setTimeout(cycleIcon, 3000);
+          }, 400);
         }, 400);
       }
       setTimeout(cycleIcon, 3000); // first cycle starts after initial 3s display
