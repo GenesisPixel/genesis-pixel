@@ -227,18 +227,13 @@ const navItems = [...mainNavItems, ...moreNavItems];
     align-items: center;
     gap: 8px;
     padding: 8px 12px;
+    padding-left: 31px;
     font-size: 0.8125rem;
     font-weight: 500;
     color: var(--dm-light-300);
     text-decoration: none;
     border-radius: 10px;
-    transition: all 0.2s ease;
     white-space: nowrap;
-  }
-
-  .more-chapters-dropdown a:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.06);
   }
 
   .more-chapters-dropdown a.active {
@@ -686,18 +681,6 @@ const navItems = [...mainNavItems, ...moreNavItems];
     navLinks?.addEventListener('mouseover', handleHover);
     navLinks?.addEventListener('mouseout', handleHoverEnd);
 
-    // Dropdown indicator
-    moreChaptersDropdown?.addEventListener('mouseover', (e: Event) => {
-      const target = (e.target as HTMLElement).closest('a[data-nav-item]') as HTMLElement;
-      if (target) moveIndicatorTo(target);
-    });
-    moreChaptersDropdown?.addEventListener('mouseout', (e: Event) => {
-      const related = e.relatedTarget as HTMLElement;
-      if (!related || !moreChaptersDropdown?.contains(related)) {
-        moveIndicatorTo(moreChaptersBtn!);
-      }
-    });
-
     function openMobile() {
       mobileOpen = true;
       mobileMenu?.classList.add('open');
@@ -753,13 +736,19 @@ const navItems = [...mainNavItems, ...moreNavItems];
     function closeDropdown() {
       dropdownTimeout = setTimeout(() => {
         moreChaptersDropdown?.classList.remove('open');
-      }, 150);
+      }, 200);
     }
 
     moreChaptersBtn?.addEventListener('mouseenter', openDropdown);
     moreChaptersBtn?.addEventListener('mouseleave', closeDropdown);
-    moreChaptersDropdown?.addEventListener('mouseenter', () => clearTimeout(dropdownTimeout));
+    moreChaptersDropdown?.addEventListener('mouseenter', () => {
+      clearTimeout(dropdownTimeout);
+    });
     moreChaptersDropdown?.addEventListener('mouseleave', closeDropdown);
+    moreChaptersDropdown?.addEventListener('mouseover', (e: Event) => {
+      const target = (e.target as HTMLElement).closest('a[data-nav-item]') as HTMLElement;
+      if (target) moveIndicatorTo(target);
+    });
 
     // Cycle indicator icon through svg-1.png to svg-11.png with 3s display + fade transition
     const iconEl = indicator?.querySelector('.nav-indicator-icon') as HTMLImageElement | null;
