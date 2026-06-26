@@ -64,7 +64,7 @@ const { title } = Astro.props;
       }
 
       e.preventDefault();
-      targetScroll += e.deltaY;
+      targetScroll += e.deltaY * 0.8;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
       targetScroll = Math.max(0, Math.min(targetScroll, maxScroll));
 
