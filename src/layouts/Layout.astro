@@ -56,6 +56,13 @@ const { title } = Astro.props;
     const smoothness = 0.08;
 
     window.addEventListener('wheel', (e) => {
+      const target = e.target as HTMLElement;
+      const scrollableParent = target.closest('[style*="overflow"], .sidebar, .code-block, pre, code, canvas, [data-scrollable]');
+      
+      if (scrollableParent) {
+        return;
+      }
+
       e.preventDefault();
       targetScroll += e.deltaY;
       const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
