@@ -122,25 +122,26 @@
 
 <script is:inline>
   (function() {
-    const loadingScreen = document.getElementById('loading-screen');
+    var loadingScreen = document.getElementById('loading-screen');
     if (!loadingScreen) return;
 
-    const isInitialLoad = !sessionStorage.getItem('genesis-loaded');
-
-    if (!isInitialLoad) {
-      loadingScreen.classList.add('hidden');
+    if (sessionStorage.getItem('genesis-loaded')) {
+      loadingScreen.remove();
       return;
     }
 
-    const startTime = Date.now();
-    const MIN_LOAD_TIME = 3000;
+    var startTime = Date.now();
+    var MIN_LOAD_TIME = 3000;
 
     function hideLoader() {
-      const elapsed = Date.now() - startTime;
-      const remaining = Math.max(0, MIN_LOAD_TIME - elapsed);
+      var elapsed = Date.now() - startTime;
+      var remaining = Math.max(0, MIN_LOAD_TIME - elapsed);
       setTimeout(function() {
         loadingScreen.classList.add('hidden');
         sessionStorage.setItem('genesis-loaded', 'true');
+        setTimeout(function() {
+          loadingScreen.remove();
+        }, 600);
       }, remaining);
     }
 
