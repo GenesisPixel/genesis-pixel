@@ -1,6 +1,6 @@
 <div align="center">
 
-# 💻✨ GenesisPixel 🎨🚀
+# <img src="public/svg/svg-1.png" width="35" align="center" /> GenesisPixel <img src="public/svg/svg-2.png" width="35" align="center" /> <img src="public/svg/svg-4.png" width="35" align="center" />
 
 
 <img src="public/img/preview.jpg" alt="GenesisPixel Preview" width="100%" />
