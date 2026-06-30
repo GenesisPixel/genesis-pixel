@@ -1,14 +1,8 @@
-<div align="center">
+<img src="public/svg/svg-8.png" width="40" /> <img src="public/svg/svg-1.png" width="40" /> <img src="public/svg/svg-2.png" width="40" /> <img src="public/svg/svg-4.png" width="40" />
 
-# <img src="public/svg/svg-8.png" width="35" align="center" /> <img src="public/svg/svg-1.png" width="35" align="center" /> &nbsp; GenesisPixel &nbsp; <img src="public/svg/svg-2.png" width="35" align="center" /> <img src="public/svg/svg-4.png" width="35" align="center" />
-
+# GenesisPixel
 
 <img src="public/img/preview.jpg" alt="GenesisPixel Preview" width="100%" />
-
-<br />
-
-
-</div>
 
 A comprehensive Spanish-language educational platform for mastering modern web animation and creative coding techniques.
 
