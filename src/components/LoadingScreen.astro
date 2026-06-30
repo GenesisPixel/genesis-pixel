@@ -6,6 +6,11 @@
     <div class="loading-text">
       <h1 class="loading-dots">Cargando</h1>
     </div>
+    <div class="loading-emojis">
+      <img src="/svg/star.svg" alt="" class="svg-icon bounce-1" />
+      <img src="/svg/stars.svg" alt="" class="svg-icon bounce-2" />
+      <img src="/svg/garabato.svg" alt="" class="svg-icon bounce-3" />
+    </div>
     <div class="loading-bar">
       <div class="loading-bar-fill"></div>
     </div>
@@ -62,6 +67,37 @@
     100% { content: ''; }
   }
 
+  .loading-emojis {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .svg-icon {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+    object-fit: contain;
+  }
+
+  .bounce-1 {
+    animation: bounce 2s ease-in-out infinite;
+  }
+
+  .bounce-2 {
+    animation: bounce 2s ease-in-out 0.3s infinite;
+  }
+
+  .bounce-3 {
+    animation: bounce 2s ease-in-out 0.6s infinite;
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+
   .loading-bar {
     width: 230px;
     height: 7px;
@@ -89,7 +125,6 @@
     const loadingScreen = document.getElementById('loading-screen');
     if (!loadingScreen) return;
 
-    // Only show on initial load, not on navigation
     const isInitialLoad = !sessionStorage.getItem('genesis-loaded');
 
     if (!isInitialLoad) {
@@ -97,18 +132,22 @@
       return;
     }
 
-    // Wait for all resources to load
+    const startTime = Date.now();
+    const MIN_LOAD_TIME = 3000;
+
     function hideLoader() {
-      loadingScreen.classList.add('hidden');
-      sessionStorage.setItem('genesis-loaded', 'true');
+      const elapsed = Date.now() - startTime;
+      const remaining = Math.max(0, MIN_LOAD_TIME - elapsed);
+      setTimeout(function() {
+        loadingScreen.classList.add('hidden');
+        sessionStorage.setItem('genesis-loaded', 'true');
+      }, remaining);
     }
 
     if (document.readyState === 'complete') {
-      setTimeout(hideLoader, 500);
+      hideLoader();
     } else {
-      window.addEventListener('load', function() {
-        setTimeout(hideLoader, 500);
-      });
+      window.addEventListener('load', hideLoader);
     }
   })();
 </script>
