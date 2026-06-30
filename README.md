@@ -1,61 +1,99 @@
-# Genesis Pixel
+# GenesisPixel
 
-Genesis Pixel is a comprehensive educational platform designed to help developers master modern CSS techniques. This project focuses on the practical application of CSS animations, transforms, and transitions through interactive learning experiences.
+A comprehensive Spanish-language educational platform for mastering modern web animation and creative coding techniques. Built with cutting-edge technologies to deliver interactive, visually stunning learning experiences.
 
-## Core Purpose
+## Overview
 
-Modern web development requires a solid understanding of how to create engaging user interfaces. Genesis Pixel bridges the gap between theoretical CSS knowledge and practical implementation by providing:
+GenesisPixel is designed to help developers go from zero to mastery in CSS animations, 3D graphics, and shader programming. The platform features **90 lessons** across **6 structured chapters**, each with hands-on examples, interactive playgrounds, and real-world projects.
 
-- **Interactive Lessons**: Hands-on examples that allow you to modify CSS properties in real-time and observe the immediate impact.
-- **Structured Paths**: Carefully designed learning modules that guide you from foundational concepts to advanced animation techniques.
-- **Project-Based Learning**: Real-world scenarios to apply your skills in creating consistent and performant interfaces.
+## Learning Chapters
 
-## Learning Modules
+| Chapter | Level | Lessons | Topics |
+|---------|-------|---------|--------|
+| **CSS Transitions** | Beginner | 15 | transition-property, duration, timing-function, delay, shorthand, hover, focus, performance, microinteractions |
+| **CSS Transform** | Intermediate | 15 | translate, scale, rotate, skew, transform-origin, 3D transforms, perspective |
+| **CSS Keyframes** | Advanced | 15 | @keyframes syntax, timeline, animation properties, fill-mode, play-state, shorthand |
+| **Interactions** | Advanced | 15 | Microinteractions, loading states, modals, dropdowns, tooltips, form feedback |
+| **Three.js** | Advanced | 15 | Scenes, cameras, renderers, geometries, materials, lights, textures, animations, 3D models |
+| **Shaders** | Advanced | 15 | GLSL, vertex/fragment shaders, uniforms, varyings, UV coordinates, noise, procedural effects |
 
-The platform is organized into distinct areas of expertise:
+## Tech Stack
 
-- **Keyframes**: Master the art of animation sequences, timing functions, and complex property manipulation.
-- **Transforms**: Explore 2D and 3D transformations, including rotation, scaling, skewing, and perspective.
-- **Transitions**: Learn the nuances of smoothly transitioning states, handling hover interactions, and optimizing performance.
-- **Interactions**: Understand best practices for button behaviors, interface states, loading animations, and micro-interactions.
+| Technology | Purpose |
+|------------|---------|
+| [Astro v5](https://astro.build/) | Static site generator with ViewTransitions |
+| [Tailwind CSS](https://tailwindcss.com/) | Utility-first styling |
+| [GSAP](https://greensock.com/gsap/) | Character-by-character title animations, smooth scrolling |
+| [Three.js](https://threejs.org/) | 3D WebGL graphics for interactive lessons |
+| TypeScript | Type-safe development |
 
-## Technical Architecture
+## Key Features
 
-This project is built using modern web standards to ensure performance and maintainability:
+- **Interactive Code Playgrounds** — Live HTML/CSS editors with real-time preview on every lesson
+- **Animated Hero** — GSAP-powered character-by-character title reveal with canvas gradient background
+- **Floating Navbar** — Pill-shaped navigation with animated indicator, dropdown menu, and mobile sidebar
+- **Bento Grid Homepage** — Visual course catalog with level badges and hover effects
+- **Code Blocks** — Terminal-style code display with copy functionality and tabbed HTML/CSS views
+- **Canvas Backgrounds** — Animated gradient blur and particle effects using custom noise algorithms
+- **Responsive Design** — Fully responsive across desktop, tablet, and mobile devices
+- **Dark Theme** — Custom dark UI with green accent colors and smooth transitions
 
-- **Framework**: [Astro](https://astro.build/) - Selected for its excellent support for content-driven websites and optimized performance.
-- **Language**: TypeScript - Used throughout the project to ensure type safety and robust code structure.
-- **Styling**: Vanilla CSS - Prioritized to demonstrate core CSS concepts without the overhead of heavy abstraction layers.
+## Project Structure
 
-## Development Setup
+```
+src/
+├── components/        # 21 Astro components
+│   ├── Navbar.astro
+│   ├── Hero.astro
+│   ├── BentoCards.astro
+│   ├── Footer.astro
+│   ├── CodeBlock.astro
+│   ├── TabbedCodeBlock.astro
+│   ├── Playground.astro
+│   ├── GradientBlur.astro
+│   └── ...
+├── layouts/           # 7 layout files
+│   ├── Layout.astro
+│   ├── CourseLayout.astro
+│   ├── TransitionsLayout.astro
+│   ├── TransformLayout.astro
+│   ├── InteractionsLayout.astro
+│   ├── ThreejsLayout.astro
+│   └── ShadersLayout.astro
+├── pages/             # 12+ page entries (90 lesson pages)
+├── styles/            # Global CSS and fonts
+├── data/              # Categories, courses, projects
+└── scripts/           # Code interaction handlers
+```
 
-To contribute to or run this project locally, follow these steps:
+## Getting Started
 
-1. **Clone the repository**:
-   ```bash
-   git clone https://github.com/GenesisPixel/genesis-pixel.git
-   cd genesis-pixel
-   ```
+```bash
+# Clone the repository
+git clone https://github.com/GenesisPixel/genesis-pixel.git
+cd genesis-pixel
 
-2. **Install dependencies**:
-   ```bash
-   npm install
-   ```
+# Install dependencies
+npm install
 
-3. **Start the development server**:
-   ```bash
-   npm run dev
-   ```
+# Start development server
+npm run dev
+```
 
 ## Contributing
 
-We welcome contributions to improve the learning content and the platform's features. Please ensure your contributions align with the project's educational focus and coding standards.
+Contributions are welcome! Please follow these steps:
 
-1. Fork the repository.
-2. Create a new branch for your feature or fix.
-3. Commit your changes following the [Conventional Commits](https://www.conventionalcommits.org/) standard.
-4. Push to your branch and open a Pull Request.
+1. Fork the repository
+2. Create a feature branch (`git checkout -b feature/amazing-feature`)
+3. Commit your changes following [Conventional Commits](https://www.conventionalcommits.org/)
+4. Push to the branch (`git push origin feature/amazing-feature`)
+5. Open a Pull Request
 
 ## License
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+This project is licensed under the MIT License.
+
+---
+
+❤️ Hecho con amor por [Sebastián V.](https://sebas-dev.vercel.app/)

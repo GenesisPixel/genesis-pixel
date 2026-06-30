@@ -3,7 +3,6 @@ import '../styles/fonts.css';
 import '../styles/global.css';
 import GradientBlur from '../components/GradientBlur.astro';
 import Navbar from '../components/Navbar.astro';
-import LoadingScreen from '../components/LoadingScreen.astro';
 import { ViewTransitions } from 'astro:transitions';
 
 interface Props {
@@ -25,7 +24,6 @@ const { title } = Astro.props;
     <ViewTransitions />
   </head>
   <body class="min-h-screen" style="background-color: var(--color-bg); color: var(--color-text);">
-    <LoadingScreen />
     <!-- Navbar is persisted globally so it never re-animates between pages -->
     <Navbar transition:persist transition:animate="none" />
     <GradientBlur transition:persist transition:animate="none" />
