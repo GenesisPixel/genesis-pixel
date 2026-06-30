@@ -1,6 +1,22 @@
+<div align="center">
+
 # GenesisPixel
 
-A comprehensive Spanish-language educational platform for mastering modern web animation and creative coding techniques. Built with cutting-edge technologies to deliver interactive, visually stunning learning experiences.
+A comprehensive Spanish-language educational platform for mastering modern web animation and creative coding techniques.
+
+<img src="public/img/preview.jpg" alt="GenesisPixel Preview" width="100%" />
+
+<br />
+
+![Astro](https://img.shields.io/badge/Astro-v5-FF5D01?style=flat&logo=astro&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v3.4-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
+![GSAP](https://img.shields.io/badge/GSAP-v3.15-88CE02?style=flat&logo=greensock&logoColor=white)
+![Three.js](https://img.shields.io/badge/Three.js-v0.184-000000?style=flat&logo=three.js&logoColor=white)
+![TypeScript](https://img.shields.io/badge/TypeScript-v5-3178C6?style=flat&logo=typescript&logoColor=white)
+
+</div>
+
+---
 
 ## Overview
 
@@ -16,16 +32,6 @@ GenesisPixel is designed to help developers go from zero to mastery in CSS anima
 | **Interactions** | Advanced | 15 | Microinteractions, loading states, modals, dropdowns, tooltips, form feedback |
 | **Three.js** | Advanced | 15 | Scenes, cameras, renderers, geometries, materials, lights, textures, animations, 3D models |
 | **Shaders** | Advanced | 15 | GLSL, vertex/fragment shaders, uniforms, varyings, UV coordinates, noise, procedural effects |
-
-## Tech Stack
-
-| Technology | Purpose |
-|------------|---------|
-| [Astro v5](https://astro.build/) | Static site generator with ViewTransitions |
-| [Tailwind CSS](https://tailwindcss.com/) | Utility-first styling |
-| [GSAP](https://greensock.com/gsap/) | Character-by-character title animations, smooth scrolling |
-| [Three.js](https://threejs.org/) | 3D WebGL graphics for interactive lessons |
-| TypeScript | Type-safe development |
 
 ## Key Features
 
@@ -94,6 +100,10 @@ Contributions are welcome! Please follow these steps:
 
 This project is licensed under the MIT License.
 
----
+<br />
+
+<div align="center">
 
 ❤️ Hecho con amor por [Sebastián V.](https://sebas-dev.vercel.app/)
+
+</div>
