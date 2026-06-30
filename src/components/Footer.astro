@@ -2,6 +2,15 @@
 import GradientBlurFooter from './GradientBlurFooter.astro';
 const currentYear = new Date().getFullYear();
 
+const cursosLinks = [
+  { label: 'Transitions', href: '/transitions/que-son', badge: 'Principiante', badgeColor: '#9FA6FF', badgeTextColor: 'var(--color-bg)' },
+  { label: 'Transform', href: '/transform/que-es', badge: 'Intermedio', badgeColor: '#57B0FB', badgeTextColor: 'var(--color-bg)' },
+  { label: 'Keyframes', href: '/keyframes/que-son', badge: 'Avanzado', badgeColor: '#FFC555', badgeTextColor: 'var(--color-bg)' },
+  { label: 'Interactions', href: '/interactions/que-son', badge: 'Avanzado', badgeColor: '#FFC555', badgeTextColor: 'var(--color-bg)' },
+  { label: 'Three.js', href: '/threejs/que-es-threejs', badge: 'Nuevo', badgeColor: '#FC5D7D', badgeTextColor: 'white' },
+  { label: 'Shaders', href: '/shaders/que-son-los-shaders', badge: 'Nuevo', badgeColor: '#FC5D7D', badgeTextColor: 'white' },
+];
+
 const footerLinks = [
   {
     title: 'Comunidad',
@@ -21,39 +30,61 @@ const footerLinks = [
       <div class="relative z-10 grid grid-cols-1 gap-12 md:grid-cols-12 md:gap-8">
         
         <!-- Logo y Descripción -->
-        <div class="md:col-span-5 lg:col-span-4">
+        <div class="md:col-span-6 lg:col-span-6">
           <a href="/" class="relative inline-flex font-afronaut text-[1rem] font-extralight text-white transition-opacity hover:opacity-80">
             GenesisPixel
             <img src="/svg/stars.svg" alt="" class="pointer-events-none" style="position: absolute; top: -3px; right: 0px; width: 18px; height: 18px; opacity: 0.7;" aria-hidden="true" />
           </a>
-          
-
         </div>
 
-        <!-- Enlaces Grid -->
-        <div class="md:col-span-7 lg:col-span-8">
-          <div class="flex justify-end gap-6">
-            {footerLinks.map((group) => (
-              <div class="flex flex-col gap-4">
-                <h4 class="font-afronaut text-lg tracking-wider text-white/50">{group.title}</h4>
-                <ul class="flex flex-col gap-3">
-                  {group.links.map((link) => (
-                    <li>
-                      <a
-                        href={link.href}
-                        class="inline-flex items-center gap-1.5 font-afronaut text-[15px] font-light text-[var(--dm-light-300)] transition-all duration-300 hover:text-[var(--color-text)]"
-                        {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
-                      >
-                        {link.label}
-                        <svg class="h-3.5 w-3.5 shrink-0 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
-                      </a>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+        <!-- Cursos y Comunidad -->
+        <div class="md:col-span-6 lg:col-span-6">
+          <div class="flex justify-end gap-10">
+            <!-- Cursos -->
+            <div class="flex flex-col gap-4">
+              <h4 class="font-afronaut text-lg tracking-wider text-white/50">Cursos</h4>
+              <ul class="flex flex-col gap-3">
+                {cursosLinks.map((link) => (
+                  <li>
+                    <a
+                      href={link.href}
+                      class="inline-flex items-center gap-2 font-afronaut text-[15px] font-light text-[var(--dm-light-300)] transition-all duration-300 hover:text-[var(--color-text)]"
+                    >
+                      {link.label}
+                      {link.badge && (
+                        <span
+                          class="inline-block rounded-full px-2 py-0.5 text-[11px] font-medium leading-none"
+                          style={`background-color: ${link.badgeColor}; color: ${link.badgeTextColor};`}
+                        >
+                          {link.badge}
+                        </span>
+                      )}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <!-- Comunidad -->
+            <div class="flex flex-col gap-4">
+              <h4 class="font-afronaut text-lg tracking-wider text-white/50">Comunidad</h4>
+              <ul class="flex flex-col gap-3">
+                {footerLinks[0].links.map((link) => (
+                  <li>
+                    <a
+                      href={link.href}
+                      class="inline-flex items-center gap-1.5 font-afronaut text-[15px] font-light text-[var(--dm-light-300)] transition-all duration-300 hover:text-[var(--color-text)]"
+                      {...(link.external ? { target: '_blank', rel: 'noopener noreferrer' } : {})}
+                    >
+                      {link.label}
+                      <svg class="h-3.5 w-3.5 shrink-0 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
           </div>
         </div>
       </div>

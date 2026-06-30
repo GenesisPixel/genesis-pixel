@@ -207,8 +207,11 @@ const practiceSteps = [
 <script>
   import * as THREE from 'three';
   import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+  import { initAllCodeInteractions } from '../../scripts/code-interactions.js';
 
   document.addEventListener('astro:page-load', () => {
+    initAllCodeInteractions();
+
     // ── PROYECTO 1: ORBE PROCEDURAL ──────────────────────────────────────
     const containerOrbe = document.getElementById('demo-orbe');
     if (containerOrbe) {
