@@ -85,7 +85,7 @@ npm run dev
 
 Contributions are welcome! Please follow these steps:
 
-> 👥 **Meet the people who make this project possible in our [Contributors file](CONTRIBUTORS.md).**
+> 👥 **Meet the people who make this project possible in our [Contributors file](CONTRIBUTING.md).**
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
