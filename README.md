@@ -1,6 +1,6 @@
 <div align="center">
 
-# GenesisPixel
+# 💻✨ GenesisPixel 🎨🚀
 
 
 <img src="public/img/preview.jpg" alt="GenesisPixel Preview" width="100%" />
@@ -81,9 +81,11 @@ npm install
 npm run dev
 ```
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome! Please follow these steps:
+
+> 👥 **Meet the people who make this project possible in our [Contributors file](CONTRIBUTORS.md).**
 
 1. Fork the repository
 2. Create a feature branch (`git checkout -b feature/amazing-feature`)
