@@ -1,7 +1,7 @@
 ---
 ---
 
-<div id="loading-screen" class="loading-screen">
+<div id="loading-screen" class="loading-screen" transition:persist transition:animate="none">
   <div class="loading-content">
     <div class="loading-text">
       <h1 class="loading-dots">Cargando</h1>
@@ -122,11 +122,11 @@
 
 <script is:inline>
   (function() {
-    var loadingScreen = document.getElementById('loading-screen');
-    if (!loadingScreen) return;
+    var el = document.getElementById('loading-screen');
+    if (!el) return;
 
-    if (sessionStorage.getItem('genesis-loaded')) {
-      loadingScreen.remove();
+    if (localStorage.getItem('genesis-loaded')) {
+      el.remove();
       return;
     }
 
@@ -137,11 +137,8 @@
       var elapsed = Date.now() - startTime;
       var remaining = Math.max(0, MIN_LOAD_TIME - elapsed);
       setTimeout(function() {
-        loadingScreen.classList.add('hidden');
-        sessionStorage.setItem('genesis-loaded', 'true');
-        setTimeout(function() {
-          loadingScreen.remove();
-        }, 600);
+        el.classList.add('hidden');
+        localStorage.setItem('genesis-loaded', '1');
       }, remaining);
     }
 
