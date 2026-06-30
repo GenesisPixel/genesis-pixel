@@ -1,22 +1,22 @@
 <div align="center">
 
 # GenesisPixel
-
-A comprehensive Spanish-language educational platform for mastering modern web animation and creative coding techniques.
-
-<img src="public/img/preview.jpg" alt="GenesisPixel Preview" width="100%" />
-
-<br />
-
 ![Astro](https://img.shields.io/badge/Astro-v5-FF5D01?style=flat&logo=astro&logoColor=white)
 ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v3.4-06B6D4?style=flat&logo=tailwindcss&logoColor=white)
 ![GSAP](https://img.shields.io/badge/GSAP-v3.15-88CE02?style=flat&logo=greensock&logoColor=white)
 ![Three.js](https://img.shields.io/badge/Three.js-v0.184-000000?style=flat&logo=three.js&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-v5-3178C6?style=flat&logo=typescript&logoColor=white)
 
+
+<img src="public/img/preview.jpg" alt="GenesisPixel Preview" width="100%" />
+
+<br />
+
+
 </div>
 
 ---
+A comprehensive Spanish-language educational platform for mastering modern web animation and creative coding techniques.
 
 ## Overview
 
